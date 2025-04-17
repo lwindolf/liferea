@@ -1,51 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name plugins.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="plugins">
-    <property name="title" translatable="1">Plugins</property>
-    <property name="default-width">500</property>
     <property name="default-height">300</property>
-    <child internal-child="content_area">
-      <object class="GtkBox" id="dialog_vbox">
-        <property name="visible">1</property>
+    <property name="default-width">500</property>
+    <property name="title" translatable="yes">Plugin Manager</property>
+    <child>
+      <object class="GtkBox" id="dialog-vbox1">
+        <property name="margin-bottom">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkScrolledWindow">
-            <property name="vexpand">1</property>
-            <property name="visible">1</property>
-            <property name="focusable">1</property>
-            <property name="child">
-              <object class="GtkViewport">
-                <property name="child">
-                  <object class="GtkListBox" id="plugins_listbox">
-                    <property name="visible">1</property>
-                    <property name="hexpand">1</property>
-                    <property name="vexpand">1</property>
+          <object class="GtkBox" id="vbox1">
+            <property name="can-focus">0</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkBox">
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <child>
+                      <object class="GtkListBox">
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">True</property>
+                      </object>
+                    </child>
                   </object>
-                </property>
+                </child>
               </object>
-            </property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child internal-child="action_area">
-      <object class="GtkBox" id="dialog_action_area">
-        <property name="valign">center</property>
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <child>
-          <object class="GtkButton" id="configure">
-            <property name="label" translatable="1">_Configure</property>
-            <property name="focusable">1</property>
-            <property name="receives-default">1</property>
-            <property name="use-underline">1</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="close">
-            <property name="label">Close</property>
-            <property name="focusable">1</property>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="halign">end</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkButton" id="cancelbutton">
+                    <property name="focusable">1</property>
+                    <property name="label">Configure</property>
+                    <property name="sensitive">False</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="okbutton">
+                    <property name="focusable">1</property>
+                    <property name="label">Close</property>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
         </child>
       </object>

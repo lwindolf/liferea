@@ -1,30 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
-  <requires lib="gtk" version="4.0"/>
+  <!-- interface-name auth.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="auth">
-    <property name="visible">1</property>
-    <property name="title" translatable="1">Authentication</property>
-    <property name="resizable">0</property>
-    <child>
-      <placeholder/>
-    </child>
+    <property name="default-height">100</property>
+    <property name="default-width">400</property>
+    <property name="focus-widget">usernameEntry</property>
+    <property name="title" translatable="yes">Authentication</property>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox14">
-        <property name="visible">0</property>
+        <property name="hexpand">True</property>
+        <property name="hexpand-set">True</property>
+        <property name="margin-bottom">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">6</property>
+        <property name="vexpand">True</property>
         <child>
           <object class="GtkGrid">
-            <property name="visible">0</property>
-            <property name="halign">start</property>
-            <property name="hexpand">0</property>
+            <property name="hexpand">True</property>
+            <property name="hexpand-set">True</property>
             <property name="orientation">vertical</property>
-            <property name="row_spacing">12</property>
+            <property name="row-spacing">12</property>
             <child>
               <object class="GtkLabel" id="prompt">
-                <property name="visible">0</property>
-                <property name="label" translatable="1">Enter the username and password for &quot;%s&quot; (%s)</property>
+                <property name="hexpand">True</property>
+                <property name="hexpand-set">True</property>
+                <property name="label" translatable="yes">Enter the username and password for "%s" (%s)</property>
                 <property name="wrap">1</property>
                 <property name="xalign">0</property>
                 <layout>
@@ -35,15 +40,15 @@
             </child>
             <child>
               <object class="GtkGrid">
-                <property name="visible">0</property>
-                <property name="row_spacing">6</property>
-                <property name="column_spacing">12</property>
+                <property name="column-spacing">6</property>
+                <property name="hexpand">True</property>
+                <property name="hexpand-set">True</property>
+                <property name="row-spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label107">
-                    <property name="visible">0</property>
-                    <property name="label" translatable="1">User_name:</property>
-                    <property name="use_underline">1</property>
-                    <property name="mnemonic_widget">usernameEntry</property>
+                    <property name="label" translatable="yes">User_name:</property>
+                    <property name="mnemonic-widget">usernameEntry</property>
+                    <property name="use-underline">1</property>
                     <property name="xalign">0</property>
                     <layout>
                       <property name="column">0</property>
@@ -53,9 +58,10 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="usernameEntry">
-                    <property name="visible">0</property>
+                    <property name="activates-default">1</property>
                     <property name="focusable">1</property>
-                    <property name="activates_default">1</property>
+                    <property name="hexpand">True</property>
+                    <property name="hexpand-set">True</property>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">0</property>
@@ -64,10 +70,9 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="label108">
-                    <property name="visible">0</property>
-                    <property name="label" translatable="1">_Password:</property>
-                    <property name="use_underline">1</property>
-                    <property name="mnemonic_widget">passwordEntry</property>
+                    <property name="label" translatable="yes">_Password:</property>
+                    <property name="mnemonic-widget">passwordEntry</property>
+                    <property name="use-underline">1</property>
                     <property name="xalign">0</property>
                     <layout>
                       <property name="column">0</property>
@@ -77,10 +82,11 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="passwordEntry">
-                    <property name="visible">0</property>
+                    <property name="activates-default">1</property>
                     <property name="focusable">1</property>
+                    <property name="hexpand">True</property>
+                    <property name="hexpand-set">True</property>
                     <property name="visibility">0</property>
-                    <property name="activates_default">1</property>
                     <layout>
                       <property name="column">1</property>
                       <property name="row">1</property>
@@ -95,48 +101,29 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="GtkBox">
+            <property name="halign">end</property>
+            <property name="spacing">6</property>
+            <child type="action">
+              <object class="GtkButton" id="cancelbutton">
+                <property name="focusable">1</property>
+                <property name="label">Cancel</property>
+              </object>
+            </child>
+            <child type="action">
+              <object class="GtkButton" id="okbutton">
+                <property name="focusable">1</property>
+                <property name="label">OK</property>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
     <action-widgets>
-      <action-widget response="-6">cancelbutton2</action-widget>
-      <action-widget response="-5">okbutton1</action-widget>
+      <action-widget response="cancel">cancelbutton</action-widget>
+      <action-widget response="ok">okbutton</action-widget>
     </action-widgets>
-    <child internal-child="action_area">
-      <object class="GtkButtonBox" id="dialog-action_area14">
-        <property name="valign">center</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="layout_style">end</property>
-        <child>
-          <object class="GtkButton" id="cancelbutton2">
-            <property name="visible">0</property>
-            <property name="label">gtk-cancel</property>
-            <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="okbutton1">
-            <property name="visible">0</property>
-            <property name="label">gtk-ok</property>
-            <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="has_default">1</property>
-            <property name="use_stock">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>
