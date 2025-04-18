@@ -116,7 +116,7 @@ async function load_item(data, baseURL, direction) {
 		let mediathumb = metadata_get(item, "mediathumbnail");
 		let mediadesc = metadata_get(item, "mediadescription");
 		let article;
-		let debugfooter = "<hr/>DEBUG:";
+		let debugfooter = `<hr/>DEBUG: item_id=${item?.id} `;
 
 		if (richContent) {
 			let shadowDoc = document.implementation.createHTMLDocument();

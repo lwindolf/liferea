@@ -244,7 +244,7 @@ db_open (void)
 	db_exec("PRAGMA synchronous=NORMAL");
 }
 
-#define SCHEMA_TARGET_VERSION 10
+#define SCHEMA_TARGET_VERSION 11
 
 /* opening or creation of database */
 void
@@ -428,6 +428,34 @@ db_init (void)
 
 			searchFolderRebuild = TRUE;
 		}
+
+		if (db_get_schema_version () == 10) {
+			/* 1.16-RC3 -> 1.16-RC4 item ids must be unique */
+			db_exec ("BEGIN; "
+			         "CREATE TEMP TABLE items_new ("
+				 "   item_id		INTEGER PRIMARY KEY AUTOINCREMENT,"
+				 "   parent_item_id     INTEGER,"
+				 "   node_id		TEXT,"
+				 "   parent_node_id     TEXT,"
+				 "   title		TEXT,"
+				 "   read		INTEGER,"
+				 "   updated		INTEGER,"
+				 "   popup		INTEGER,"
+				 "   marked		INTEGER,"
+				 "   source		TEXT,"
+				 "   source_id		TEXT,"
+				 "   valid_guid		INTEGER,"
+				 "   description	TEXT,"
+				 "   date		INTEGER,"
+				 "   comment_feed_id	TEXT,"
+				 "   comment            INTEGER"
+				 ");"
+			         "INSERT INTO items_new SELECT * FROM items ORDER BY (item_id);"
+			         "DROP TABLE items;"
+				 "ALTER TABLE items_new RENAME TO items;"
+			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',11); "
+			         "END;" );
+		}
 	}
 
 	if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
@@ -443,7 +471,7 @@ db_init (void)
 
 	/* 1. Create tables if they do not exist yet */
 	db_exec ("CREATE TABLE items ("
-        	 "   item_id		INTEGER,"
+        	 "   item_id		INTEGER PRIMARY KEY AUTOINCREMENT,"
 		 "   parent_item_id     INTEGER,"
         	 "   node_id		TEXT," /* FIXME: migrate node ids to real integers */
 		 "   parent_node_id     TEXT," /* FIXME: migrate node ids to real integers */
