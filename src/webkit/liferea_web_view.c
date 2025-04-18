@@ -100,14 +100,21 @@ liferea_web_view_update_actions_sensitivity (LifereaWebView *self)
 }
 
 static void
-menu_add_item (GMenu *menu, const gchar *label, const gchar *action, const gchar *parameter)
-{
-	GMenuItem *menu_item;
+menu_add_separator (WebKitContextMenu *menu) {
+	webkit_context_menu_append (menu, webkit_context_menu_item_new_separator ());
+}
 
-	menu_item = g_menu_item_new (label, NULL);
-	g_menu_item_set_action_and_target (menu_item, action, "s", parameter);
-	g_menu_append_item (menu, menu_item);
-	g_object_unref (menu_item);
+static void
+menu_add_item (WebKitContextMenu *menu, const gchar *label, const gchar *actionName, const gchar *format, GVariant *v)
+{
+	g_autoptr(GVariantType) type = NULL;
+	g_autoptr(GSimpleAction) action;
+
+	if (format)
+		type = g_variant_type_new (format);
+
+	action = g_simple_action_new (actionName, type);
+	webkit_context_menu_append (menu, webkit_context_menu_item_new_from_gaction (G_ACTION (action), label, v));
 }
 
 /**
@@ -124,15 +131,12 @@ menu_add_item (GMenu *menu, const gchar *label, const gchar *action, const gchar
 static gboolean
 liferea_web_view_on_menu (WebKitWebView 	*view,
 			WebKitContextMenu   	*context_menu,
-			GdkEvent            	*event,
 			WebKitHitTestResult 	*hit_result,
 			gpointer             	user_data)
 {
-	GMenu 			*menu_model,*section;
-	GMenuItem		*menu_item = NULL;
-	gchar			*image_uri = NULL;
-	gchar			*link_uri = NULL;
-	gchar			*link_title = NULL;
+	g_autofree gchar	*image_uri = NULL;
+	g_autofree gchar	*link_uri = NULL;
+	g_autofree gchar	*link_title = NULL;
 	gboolean 		link, image;
 
 	webkit_context_menu_remove_all (context_menu);
@@ -154,85 +158,63 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 
 	liferea_web_view_update_actions_sensitivity (LIFEREA_WEB_VIEW (view));
 
-	menu_model = g_menu_new ();
-	section = g_menu_new (); /* Sections are used to get separators.*/
+	g_autoptr(GVariant) vl = NULL;
+	g_autoptr(GVariant) vi = NULL;
+
+	if (link_uri)
+		g_variant_new ("(s)", link_uri);
+	if (image_uri)
+		g_variant_new ("(s)", image_uri);
 
 	/* and now add all we want to see */
-	if (link) {
+	if (link) {	
 		gchar *path;
 
-		menu_add_item (section, _("Open Link In _Tab"), "app.open-link-in-tab", link_uri);
-		menu_add_item (section, _("Open Link In Browser"), "app.open-link-in-browser", link_uri);
-		menu_add_item (section, _("Open Link In External Browser"), "app.open-link-in-external-browser", link_uri);
+		menu_add_item (context_menu, _("Open Link In _Tab"), "app.open-link-in-tab", "(s)", vl);
+		menu_add_item (context_menu, _("Open Link In Browser"), "app.open-link-in-browser", "(s)", vl);
+		menu_add_item (context_menu, _("Open Link In External Browser"), "app.open-link-in-external-browser", "(s)", vl);
 
-		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
-		g_object_unref (section);
-		section = g_menu_new ();
+		menu_add_separator (context_menu);
 
-		path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
+		/*path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
 		menu_item = g_menu_item_new (path, NULL);
 		g_menu_item_set_action_and_target (menu_item, "app.social-bookmark-link", "(ss)", link_uri, link_title?link_title:"");
 		g_menu_append_item (section, menu_item);
 		g_object_unref (menu_item);
-		g_free (path);
+		g_free (path);*/
 
-		menu_add_item (section, _("_Copy Link Location"), "app.copy-link-to-clipboard", link_uri);
+		menu_add_item (context_menu, _("_Copy Link Location"), "app.copy-link-to-clipboard", "(s)", vl);
 	}
 	if (image) {
-		menu_add_item (section, _("_View Image"),           "app.open-link-in-tab", image_uri);
-		menu_add_item (section, _("_Copy Image Location"),  "app.copy-link-to-clipboard", image_uri);
+		menu_add_item (context_menu, _("_View Image"),           "app.open-link-in-tab", "(s)", vi);
+		menu_add_item (context_menu, _("_Copy Image Location"),  "app.copy-link-to-clipboard", "(s)", vi);
 	}
 	if (link) {
-		menu_add_item (section, _("S_ave Link As"), "liferea_web_view.save-link", link_uri);
+		menu_add_item (context_menu, _("S_ave Link As"), "liferea_web_view.save-link", "(s)", vl);
 	}
 	if (image) {
-		menu_add_item (section, _("S_ave Image As"), "liferea_web_view.save-link", image_uri);
+		menu_add_item (context_menu, _("S_ave Image As"), "liferea_web_view.save-link", "(s)", vi);
 	}
 	if (link) {
-		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
-		g_object_unref (section);
-		section = g_menu_new ();
+		menu_add_separator (context_menu);
 
-		menu_add_item (section, _("_Subscribe..."), "liferea_web_view.subscribe-link", link_uri);
+		menu_add_item (context_menu, _("_Subscribe..."), "liferea_web_view.subscribe-link", "(s)", vl);
 	}
 
 	if(!link && !image) {
-		g_menu_append (section, _("_Copy"), "liferea_web_view.copy-selection");
+		menu_add_item (context_menu, _("_Copy"), "liferea_web_view.copy-selection", NULL, NULL);
 
-		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
-		g_object_unref (section);
-		section = g_menu_new ();
+		menu_add_separator (context_menu);
 
-		g_menu_append (section, _("_Increase Text Size"), "liferea_web_view.zoom-in");
-		g_menu_append (section, _("_Decrease Text Size"), "liferea_web_view.zoom-out");
+		menu_add_item (context_menu, _("_Increase Text Size"), "liferea_web_view.zoom-in", NULL, NULL);
+		menu_add_item (context_menu, _("_Decrease Text Size"), "liferea_web_view.zoom-out", NULL, NULL);
 	}
-
-	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
-	g_object_unref (section);
-	section = g_menu_new ();
-
-	//g_menu_append (section, _("_Reader Mode"), "liferea_web_view.toggle-reader-mode");
-
-	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
-	g_object_unref (section);
-	g_free (link_uri);
-	g_free (image_uri);
-	g_free (link_title);
 
 	if(debug_get_flags () & DEBUG_HTML) {
-		section = g_menu_new ();
-		g_menu_append (section, "Inspect", "liferea_web_view.web-inspector");
-		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
-		g_object_unref (section);
+		menu_add_item (context_menu, "Inspect", "liferea_web_view.web-inspector", NULL, NULL);
 	}
 
-	//menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
-	//gtk_menu_attach_to_widget (GTK_MENU (menu), GTK_WIDGET (view), NULL);
-
-	//gtk_menu_popup_at_pointer (GTK_MENU (menu), event);
-	g_warning ("FIXME: GTK4 webkit menu");
-
-	return FALSE; // FALSE, because we use Webkit's context menu
+	return FALSE;
 }
 
 static void
