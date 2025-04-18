@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 from pathlib import Path
 import gettext
-from gi.repository import GObject, Liferea
+from gi.repository import GObject, Gtk, Liferea
 
 # Initialize translations for tooltips
 _ = lambda x: x
@@ -51,22 +51,22 @@ class GetFocusPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivatab
     def do_activate(self):
         self.feedlist = self.shell.lookup('feedlist')
         self.read_opacity_from_file()
-        self.set_opacity_leave(self.feedlist, None)
-        self.leave_event = self.feedlist.connect('leave-notify-event',
-                                                 self.set_opacity_leave)
-        self.enter_event = self.feedlist.connect('enter-notify-event',
-                                                 self.set_opacity_enter)
+        self.set_opacity_leave(self, self.feedlist)
+        event_controller = Gtk.EventControllerMotion.new()
+        event_controller.connect('enter', self.set_opacity_enter, self.feedlist)
+        event_controller.connect('leave', self.set_opacity_leave, self.feedlist)
+        self.feedlist.add_controller(event_controller)
 
     def do_deactivate(self):
         self.feedlist.disconnect(self.enter_event)
         self.feedlist.disconnect(self.leave_event)
         self.set_opacity_enter(self.feedlist, None)
 
-    def set_opacity_enter(self, widget, event):
+    def set_opacity_enter(self, x, y, userdata, widget):
         self.opacity = widget.get_property('opacity')
         widget.set_property('opacity', 1)
 
-    def set_opacity_leave(self, widget, event):
+    def set_opacity_leave(self, userdata, widget):
         widget.set_property('opacity', self.opacity)
 
     def read_opacity_from_file(self):
