@@ -45,15 +45,27 @@ class LibnotifyPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivata
 
     def do_activate(self):
         Notify.init('Liferea')
-        self._handler_id = self.shell.props.feed_list.connect("node-updated", self.on_node_updated)
+        self.feedlist = self.shell.get_property('feedlist')
+        self._handler_id = self.feedlist.connect("node-updated", self.on_node_updated)
         self.notification = Notify.Notification.new(self.notification_title, self.notification_body, self.notification_icon)
         self.notification.connect("closed", self.on_closed)
 
     def do_deactivate(self):
         Notify.uninit()
-        self.shell.props.feed_list.disconnect(self._handler_id)
+        self.feedlist.disconnect(self._handler_id)
 
-    def on_node_updated(self, widget, node_title):
+    def on_node_updated(self, widget, node_id):
+        node = Liferea.Node.from_id(node_id)
+        if node is None:
+            return
+        
+        node_title = node.get_title()
+        if node_title is None:
+            return
+        # Check if the node is already in the notification body
+        if node_title in self.notification_body:
+            return
+        
         # Update the existing notification if it hasn't been closed yet
         if self.notification_body:
             self.notification_body += "\n" + node_title
