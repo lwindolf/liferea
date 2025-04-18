@@ -432,7 +432,7 @@ db_init (void)
 		if (db_get_schema_version () == 10) {
 			/* 1.16-RC3 -> 1.16-RC4 item ids must be unique */
 			db_exec ("BEGIN; "
-			         "CREATE TEMP TABLE items_new ("
+			         "CREATE TABLE items_new ("
 				 "   item_id		INTEGER PRIMARY KEY AUTOINCREMENT,"
 				 "   parent_item_id     INTEGER,"
 				 "   node_id		TEXT,"
