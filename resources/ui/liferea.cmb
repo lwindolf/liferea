@@ -5,14 +5,16 @@
 	(2,None,"auth.ui","auth.ui",None,None,None,None,None,None,None),
 	(8,None,"google_source.ui","google_source.ui",None,None,None,None,None,None,None),
 	(9,None,"plugins.ui","plugins.ui",None,None,None,None,None,None,None),
-	(12,None,"mainwindow.ui","mainwindow.ui",None,None,None,None,None,None,None)
+	(12,None,"mainwindow.ui","mainwindow.ui",None,None,None,None,None,None,None),
+	(13,None,"update_monitor.ui","update_monitor.ui",None,None,None,None,None,None,None)
   </ui>
   <ui_library>
 	(2,"gtk","4.0",None),
 	(8,"gtk","4.0",None),
 	(9,"gtk","4.0",None),
 	(12,"gio","2.0",None),
-	(12,"gtk","4.0",None)
+	(12,"gtk","4.0",None),
+	(13,"gtk","4.0",None)
   </ui_library>
   <object>
 	(2,1,"GtkDialog","auth",None,None,None,None,0,None,None),
@@ -142,7 +144,21 @@
 	(12,88,"(item)",None,86,None,None,None,1,None,None),
 	(12,89,"(item)",None,86,None,None,None,2,None,None),
 	(12,90,"(section)",None,85,None,None,None,1,None,None),
-	(12,91,"(item)",None,90,None,None,None,0,None,None)
+	(12,91,"(item)",None,90,None,None,None,0,None,None),
+	(13,1,"GtkDialog","update_monitor",None,None,None,None,0,None,None),
+	(13,2,"GtkBox","dialog-vbox18",1,"content_area",None,None,0,None,None),
+	(13,3,"GtkGrid",None,2,None,None,None,0,None,None),
+	(13,4,"GtkScrolledWindow","scrolledwindow9",3,None,None,None,0,None,None),
+	(13,5,"GtkTreeView","left",4,None,None,None,0,None,None),
+	(13,6,"GtkTreeSelection",None,5,"selection",None,None,0,None,None),
+	(13,7,"GtkScrolledWindow","scrolledwindow10",3,None,None,None,1,None,None),
+	(13,8,"GtkTreeView","right",7,None,None,None,0,None,None),
+	(13,9,"GtkTreeSelection",None,8,"selection",None,None,0,None,None),
+	(13,10,"GtkLabel",None,3,None,None,None,2,None,None),
+	(13,11,"GtkLabel",None,3,None,None,None,3,None,None),
+	(13,12,"GtkBox","dialog-action_area18",2,"action_area",None,None,1,None,None),
+	(13,13,"GtkButton","button4",12,None,None,None,0,None,None),
+	(13,14,"GtkButton","button5",12,None,None,None,1,None,None)
   </object>
   <object_property>
 	(2,1,"GtkWindow","default-height","100",None,None,None,None,None,None,None,None,None),
@@ -405,7 +421,47 @@
 	(12,89,"(item)","action","app.show-help-faq",0,None,None,None,None,None,None,None,None),
 	(12,89,"(item)","label","_FAQ",1,None,None,None,None,None,None,None,None),
 	(12,91,"(item)","action","app.show-about",0,None,None,None,None,None,None,None,None),
-	(12,91,"(item)","label","_About",1,None,None,None,None,None,None,None,None)
+	(12,91,"(item)","label","_About",1,None,None,None,None,None,None,None,None),
+	(13,1,"GtkWindow","default-height","300",0,None,None,None,None,None,None,None,None),
+	(13,1,"GtkWindow","default-width","400",0,None,None,None,None,None,None,None,None),
+	(13,1,"GtkWindow","destroy-with-parent","1",0,None,None,None,None,None,None,None,None),
+	(13,1,"GtkWindow","title","Update Monitor",1,None,None,None,None,None,None,None,None),
+	(13,1,"GtkWindow","visible","1",0,None,None,None,None,None,None,None,None),
+	(13,2,"GtkOrientable","orientation","vertical",0,None,None,None,None,None,None,None,None),
+	(13,2,"GtkWidget","margin-bottom","12",None,None,None,None,None,None,None,None,None),
+	(13,2,"GtkWidget","margin-end","12",None,None,None,None,None,None,None,None,None),
+	(13,2,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None),
+	(13,2,"GtkWidget","margin-top","12",None,None,None,None,None,None,None,None,None),
+	(13,3,"GtkGrid","column-spacing","6",0,None,None,None,None,None,None,None,None),
+	(13,3,"GtkGrid","row-spacing","6",0,None,None,None,None,None,None,None,None),
+	(13,3,"GtkWidget","vexpand","1",0,None,None,None,None,None,None,None,None),
+	(13,4,"GtkScrolledWindow","child",None,0,None,None,None,5,None,None,None,None),
+	(13,4,"GtkScrolledWindow","focusable","1",0,None,None,None,None,None,None,None,None),
+	(13,4,"GtkWidget","hexpand","1",0,None,None,None,None,None,None,None,None),
+	(13,4,"GtkWidget","vexpand","1",0,None,None,None,None,None,None,None,None),
+	(13,5,"GtkTreeView","focusable","1",0,None,None,None,None,None,None,None,None),
+	(13,5,"GtkTreeView","headers-visible","0",0,None,None,None,None,None,None,None,None),
+	(13,7,"GtkScrolledWindow","child",None,0,None,None,None,8,None,None,None,None),
+	(13,7,"GtkScrolledWindow","focusable","1",0,None,None,None,None,None,None,None,None),
+	(13,7,"GtkWidget","hexpand","1",0,None,None,None,None,None,None,None,None),
+	(13,7,"GtkWidget","vexpand","1",0,None,None,None,None,None,None,None,None),
+	(13,8,"GtkTreeView","focusable","1",0,None,None,None,None,None,None,None,None),
+	(13,8,"GtkTreeView","headers-visible","0",0,None,None,None,None,None,None,None,None),
+	(13,10,"GtkLabel","label","_Pending Requests",1,None,None,None,None,None,None,None,None),
+	(13,10,"GtkLabel","mnemonic-widget","8",0,None,None,None,None,None,None,None,None),
+	(13,10,"GtkLabel","use-underline","1",0,None,None,None,None,None,None,None,None),
+	(13,10,"GtkLabel","xalign","0",0,None,None,None,None,None,None,None,None),
+	(13,11,"GtkLabel","label","_Downloading Now",1,None,None,None,None,None,None,None,None),
+	(13,11,"GtkLabel","mnemonic-widget","5",0,None,None,None,None,None,None,None,None),
+	(13,11,"GtkLabel","use-underline","1",0,None,None,None,None,None,None,None,None),
+	(13,11,"GtkLabel","xalign","0",0,None,None,None,None,None,None,None,None),
+	(13,12,"GtkBox","spacing","6",None,None,None,None,None,None,None,None,None),
+	(13,12,"GtkWidget","valign","center",0,None,None,None,None,None,None,None,None),
+	(13,12,"GtkWidget","visible","True",0,None,None,None,None,None,None,None,None),
+	(13,13,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(13,13,"GtkButton","label","Stop All",1,None,None,None,None,None,None,None,None),
+	(13,14,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(13,14,"GtkButton","label","Close",0,None,None,None,None,None,None,None,None)
   </object_property>
   <object_layout_property>
 	(2,3,4,"GtkGridLayoutChild","column","0",0,None,None,None),
@@ -459,15 +515,44 @@
 	(12,12,13,"GtkGridLayoutChild","column","0",0,None,None,None),
 	(12,12,13,"GtkGridLayoutChild","row","0",0,None,None,None),
 	(12,19,20,"GtkGridLayoutChild","column","0",0,None,None,None),
-	(12,19,20,"GtkGridLayoutChild","row","0",0,None,None,None)
+	(12,19,20,"GtkGridLayoutChild","row","0",0,None,None,None),
+	(13,3,4,"GtkGridLayoutChild","column","0",0,None,None,None),
+	(13,3,4,"GtkGridLayoutChild","row","1",0,None,None,None),
+	(13,3,7,"GtkGridLayoutChild","column","1",0,None,None,None),
+	(13,3,7,"GtkGridLayoutChild","row","1",0,None,None,None),
+	(13,3,10,"GtkGridLayoutChild","column","1",0,None,None,None),
+	(13,3,10,"GtkGridLayoutChild","row","0",0,None,None,None),
+	(13,3,11,"GtkGridLayoutChild","column","0",0,None,None,None),
+	(13,3,11,"GtkGridLayoutChild","row","0",0,None,None,None)
   </object_layout_property>
+  <object_signal>
+	(1,13,13,"GtkButton","clicked","on_cancel_all_requests_clicked",None,None,0,0,None),
+	(2,13,14,"GtkButton","clicked","on_close_update_monitor_clicked",None,None,0,0,None)
+  </object_signal>
   <object_data>
 	(2,1,"GtkDialog",1,1,None,None,None,None,None,None),
 	(2,1,"GtkDialog",2,2,"10",1,None,None,None,None),
-	(2,1,"GtkDialog",2,3,"11",1,None,None,None,None)
+	(2,1,"GtkDialog",2,3,"11",1,None,None,None,None),
+	(13,10,"GtkLabel",1,1,None,None,None,None,None,None),
+	(13,10,"GtkLabel",2,2,None,1,None,None,None,None),
+	(13,11,"GtkLabel",1,1,None,None,None,None,None,None),
+	(13,11,"GtkLabel",2,2,None,1,None,None,None,None),
+	(13,1,"GtkDialog",1,1,None,None,None,None,None,None),
+	(13,1,"GtkDialog",2,2,"13",1,None,None,None,None),
+	(13,1,"GtkDialog",2,3,"14",1,None,None,None,None)
   </object_data>
   <object_data_arg>
 	(2,1,"GtkDialog",2,2,"response","cancel"),
-	(2,1,"GtkDialog",2,3,"response","ok")
+	(2,1,"GtkDialog",2,3,"response","ok"),
+	(13,10,"GtkLabel",2,2,"end",None),
+	(13,10,"GtkLabel",2,2,"name","weight"),
+	(13,10,"GtkLabel",2,2,"start",None),
+	(13,10,"GtkLabel",2,2,"value","bold"),
+	(13,11,"GtkLabel",2,2,"end",None),
+	(13,11,"GtkLabel",2,2,"name","weight"),
+	(13,11,"GtkLabel",2,2,"start",None),
+	(13,11,"GtkLabel",2,2,"value","bold"),
+	(13,1,"GtkDialog",2,2,"response","0"),
+	(13,1,"GtkDialog",2,3,"response","-7")
   </object_data_arg>
 </cambalache-project>

@@ -1,40 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name update_monitor.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="update_monitor">
+    <property name="default-height">300</property>
+    <property name="default-width">400</property>
+    <property name="destroy-with-parent">1</property>
+    <property name="title" translatable="yes">Update Monitor</property>
     <property name="visible">1</property>
-    <property name="title" translatable="1">Update Monitor</property>
-    <property name="default_width">400</property>
-    <property name="default_height">300</property>
-    <property name="destroy_with_parent">1</property>
-    <property name="type_hint">dialog</property>
-    <child>
-      <placeholder/>
-    </child>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox18">
+        <property name="margin-bottom">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkGrid">
+            <property name="column-spacing">6</property>
+            <property name="row-spacing">6</property>
             <property name="vexpand">1</property>
-            <property name="border_width">6</property>
-            <property name="row_spacing">6</property>
-            <property name="column_spacing">6</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow9">
-                <property name="focusable">1</property>
-                <property name="hexpand">1</property>
-                <property name="vexpand">1</property>
-                <property name="shadow_type">in</property>
                 <property name="child">
                   <object class="GtkTreeView" id="left">
                     <property name="focusable">1</property>
-                    <property name="headers_visible">0</property>
+                    <property name="headers-visible">0</property>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection"/>
                     </child>
                   </object>
                 </property>
+                <property name="focusable">1</property>
+                <property name="hexpand">1</property>
+                <property name="vexpand">1</property>
                 <layout>
                   <property name="column">0</property>
                   <property name="row">1</property>
@@ -43,19 +43,18 @@
             </child>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow10">
-                <property name="focusable">1</property>
-                <property name="hexpand">1</property>
-                <property name="vexpand">1</property>
-                <property name="shadow_type">in</property>
                 <property name="child">
                   <object class="GtkTreeView" id="right">
                     <property name="focusable">1</property>
-                    <property name="headers_visible">0</property>
+                    <property name="headers-visible">0</property>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection"/>
                     </child>
                   </object>
                 </property>
+                <property name="focusable">1</property>
+                <property name="hexpand">1</property>
+                <property name="vexpand">1</property>
                 <layout>
                   <property name="column">1</property>
                   <property name="row">1</property>
@@ -64,12 +63,12 @@
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="label" translatable="1">_Pending Requests</property>
-                <property name="use_underline">1</property>
-                <property name="mnemonic_widget">right</property>
+                <property name="label" translatable="yes">_Pending Requests</property>
+                <property name="mnemonic-widget">right</property>
+                <property name="use-underline">1</property>
                 <property name="xalign">0</property>
                 <attributes>
-                  <attribute name="weight" value="bold"></attribute>
+                  <attribute name="weight" value="bold"/>
                 </attributes>
                 <layout>
                   <property name="column">1</property>
@@ -79,17 +78,38 @@
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="label" translatable="1">_Downloading Now</property>
-                <property name="use_underline">1</property>
-                <property name="mnemonic_widget">left</property>
+                <property name="label" translatable="yes">_Downloading Now</property>
+                <property name="mnemonic-widget">left</property>
+                <property name="use-underline">1</property>
                 <property name="xalign">0</property>
                 <attributes>
-                  <attribute name="weight" value="bold"></attribute>
+                  <attribute name="weight" value="bold"/>
                 </attributes>
                 <layout>
                   <property name="column">0</property>
                   <property name="row">0</property>
                 </layout>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkBox" id="dialog-action_area18">
+            <property name="spacing">6</property>
+            <property name="valign">center</property>
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkButton" id="button4">
+                <property name="focusable">1</property>
+                <property name="label" translatable="yes">Stop All</property>
+                <signal name="clicked" handler="on_cancel_all_requests_clicked"/>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="button5">
+                <property name="focusable">1</property>
+                <property name="label">Close</property>
+                <signal name="clicked" handler="on_close_update_monitor_clicked"/>
               </object>
             </child>
           </object>
@@ -100,40 +120,5 @@
       <action-widget response="0">button4</action-widget>
       <action-widget response="-7">button5</action-widget>
     </action-widgets>
-    <child internal-child="action_area">
-      <object class="GtkButtonBox" id="dialog-action_area18">
-        <property name="valign">center</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="layout_style">end</property>
-        <child>
-          <object class="GtkButton" id="button4">
-            <property name="label" translatable="1">Stop All</property>
-            <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <signal name="clicked" handler="on_cancel_all_requests_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="button5">
-            <property name="label">gtk-close</property>
-            <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
-            <signal name="clicked" handler="on_close_update_monitor_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>
