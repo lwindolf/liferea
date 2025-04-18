@@ -123,6 +123,7 @@
         </script>
 </head>
 <body>
+	<noscript>ERROR: Javascript needs to be activated. Please report an issue with Liferea!</noscript>
 </body>
 <script type="module">
 	import { load_node } from '/js/htmlview.js';
