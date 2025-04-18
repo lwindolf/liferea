@@ -16,7 +16,6 @@
     <file compressed="true">ui/auth.ui</file>
     <file compressed="true">ui/google_source.ui</file>
     <file compressed="true">ui/liferea_menu.ui</file>
-    <file compressed="true">ui/liferea_headerbar.ui</file>
     <file compressed="true">ui/mainwindow.ui</file>
     <file compressed="true">ui/mark_read_dialog.ui</file>
     <file compressed="true">ui/new_folder.ui</file>

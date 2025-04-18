@@ -941,15 +941,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
 
-	/* 2.) Headerbar and menu creation */
-	debug (DEBUG_GUI, "Setting up header bar");
-	gtk_builder_add_from_file (shell->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_header.ui", NULL);
-	shell->headerbar = GTK_WIDGET (gtk_builder_get_object (shell->xml, "headerbar"));
-
-	gtk_builder_add_from_file (shell->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui", NULL);
-	menubar_model = G_MENU_MODEL (gtk_builder_get_object (shell->xml, "menubar"));
-	gtk_application_set_menubar (app, menubar_model);
-
 	/* 3. Add accelerators for shell */
 	gtk_application_set_accels_for_action (app, "app.update-all", liferea_accels_update_all);
 	gtk_application_set_accels_for_action (app, "app.quit", liferea_accels_quit);

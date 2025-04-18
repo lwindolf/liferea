@@ -1,32 +1,139 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name mainwindow.ui -->
+  <requires lib="gio" version="2.0"/>
   <requires lib="gtk" version="4.0"/>
-  <object class="GtkAdjustment" id="adjustment6">
-    <property name="upper">100</property>
-    <property name="value">1</property>
-    <property name="step-increment">1</property>
-  </object>
   <object class="GtkApplicationWindow" id="mainwindow">
-    <property name="title" translatable="1">Liferea</property>
-    <property name="default-width">640</property>
     <property name="default-height">480</property>
+    <property name="default-width">640</property>
     <property name="icon-name">liferea</property>
+    <property name="title" translatable="yes">Liferea</property>
+    <property name="titlebar">
+      <object class="GtkHeaderBar">
+        <child>
+          <object class="GtkButton">
+            <property name="label">Hi</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkMenuButton">
+            <property name="menu-model">menubar</property>
+          </object>
+        </child>
+      </object>
+    </property>
+    <property name="visible">True</property>
     <child>
       <object class="GtkGrid" id="vbox1">
         <property name="hexpand">1</property>
-        <property name="vexpand">1</property>
         <property name="orientation">vertical</property>
+        <property name="vexpand">1</property>
         <child>
           <object class="GtkPaned" id="leftpane">
-            <property name="resize-start-child">0</property>
+            <property name="end-child">
+              <object class="GtkNotebook" id="browsertabs">
+                <property name="focusable">1</property>
+                <property name="scrollable">1</property>
+                <property name="show-border">0</property>
+                <child>
+                  <object class="GtkNotebookPage">
+                    <property name="child">
+                      <object class="GtkNotebook" id="itemtabs">
+                        <property name="focusable">1</property>
+                        <property name="show-border">0</property>
+                        <property name="show-tabs">0</property>
+                        <child>
+                          <object class="GtkNotebookPage">
+                            <property name="child">
+                              <object class="GtkPaned" id="normalViewPane">
+                                <property name="end-child">
+                                  <object class="GtkGrid" id="normalViewVBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkViewport" id="normalViewHtml">
+                                        <property name="hexpand">1</property>
+                                        <property name="vexpand">1</property>
+                                        <child>
+                                          <object class="GtkMenuButton"/>
+                                        </child>
+                                        <layout>
+                                          <property name="column">0</property>
+                                          <property name="row">0</property>
+                                        </layout>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                                <property name="focusable">1</property>
+                                <property name="orientation">vertical</property>
+                                <property name="position">199</property>
+                                <property name="position-set">1</property>
+                                <property name="resize-start-child">0</property>
+                                <property name="start-child">
+                                  <object class="GtkViewport" id="normalViewItems"/>
+                                </property>
+                              </object>
+                            </property>
+                            <property name="tab">
+                              <object class="GtkLabel">
+                                <property name="label" translatable="yes">page 1</property>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkNotebookPage">
+                            <property name="child">
+                              <object class="GtkPaned" id="wideViewPane">
+                                <property name="end-child">
+                                  <object class="GtkGrid" id="wideViewVBox">
+                                    <child>
+                                      <object class="GtkViewport" id="wideViewHtml">
+                                        <property name="hexpand">1</property>
+                                        <property name="vexpand">1</property>
+                                        <layout>
+                                          <property name="column">0</property>
+                                          <property name="row">0</property>
+                                        </layout>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </property>
+                                <property name="focusable">1</property>
+                                <property name="position">100</property>
+                                <property name="position-set">1</property>
+                                <property name="resize-start-child">0</property>
+                                <property name="start-child">
+                                  <object class="GtkViewport" id="wideViewItems"/>
+                                </property>
+                              </object>
+                            </property>
+                            <property name="position">1</property>
+                            <property name="tab">
+                              <object class="GtkLabel">
+                                <property name="label" translatable="yes">page 2</property>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+                      </object>
+                    </property>
+                    <property name="tab">
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes">Headlines</property>
+                      </object>
+                    </property>
+                  </object>
+                </child>
+              </object>
+            </property>
             <property name="focusable">1</property>
             <property name="hexpand">1</property>
-            <property name="vexpand">1</property>
             <property name="position">170</property>
+            <property name="resize-start-child">0</property>
             <property name="start-child">
               <object class="GtkScrolledWindow" id="scrolledwindow3">
-                <property name="focusable">1</property>
-                <property name="hscrollbar-policy">never</property>
                 <property name="child">
                   <object class="GtkTreeView" id="feedlist">
                     <property name="focusable">1</property>
@@ -37,173 +144,11 @@
                     </child>
                   </object>
                 </property>
-              </object>
-            </property>
-            <property name="end-child">
-              <object class="GtkNotebook" id="browsertabs">
                 <property name="focusable">1</property>
-                <property name="show-border">0</property>
-                <property name="scrollable">1</property>
-                <child>
-                  <object class="GtkNotebookPage">
-                    <property name="child">
-                      <object class="GtkNotebook" id="itemtabs">
-                        <property name="focusable">1</property>
-                        <property name="show-tabs">0</property>
-                        <property name="show-border">0</property>
-                        <child>
-                          <object class="GtkNotebookPage">
-                            <property name="child">
-                              <object class="GtkPaned" id="normalViewPane">
-                                <property name="resize-start-child">0</property>
-                                <property name="focusable">1</property>
-                                <property name="orientation">vertical</property>
-                                <property name="position">199</property>
-                                <property name="position-set">1</property>
-                                <property name="start-child">
-                                  <object class="GtkViewport" id="normalViewItems">
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                </property>
-                                <property name="end-child">
-                                  <object class="GtkGrid" id="normalViewVBox">
-                                    <property name="orientation">vertical</property>
-                                    <child>
-                                      <object class="GtkViewport" id="normalViewHtml">
-                                        <property name="hexpand">1</property>
-                                        <property name="vexpand">1</property>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
-                                        <layout>
-                                          <property name="column">0</property>
-                                          <property name="row">0</property>
-                                        </layout>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </property>
-                            <property name="tab">
-                              <object class="GtkLabel">
-                                <property name="label" translatable="1">page 1</property>
-                              </object>
-                            </property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkNotebookPage">
-                            <property name="position">1</property>
-                            <property name="child">
-                              <object class="GtkPaned" id="wideViewPane">
-                                <property name="resize-start-child">0</property>
-                                <property name="focusable">1</property>
-                                <property name="position">100</property>
-                                <property name="position-set">1</property>
-                                <property name="start-child">
-                                  <object class="GtkViewport" id="wideViewItems">
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                </property>
-                                <property name="end-child">
-                                  <object class="GtkGrid" id="wideViewVBox">
-                                    <child>
-                                      <object class="GtkViewport" id="wideViewHtml">
-                                        <property name="hexpand">1</property>
-                                        <property name="vexpand">1</property>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
-                                        <layout>
-                                          <property name="column">0</property>
-                                          <property name="row">0</property>
-                                        </layout>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                </property>
-                              </object>
-                            </property>
-                            <property name="tab">
-                              <object class="GtkLabel">
-                                <property name="label" translatable="1">page 2</property>
-                              </object>
-                            </property>
-                          </object>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                    </property>
-                    <property name="tab">
-                      <object class="GtkLabel">
-                        <property name="label" translatable="1">Headlines</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
+                <property name="hscrollbar-policy">never</property>
               </object>
             </property>
+            <property name="vexpand">1</property>
             <layout>
               <property name="column">0</property>
               <property name="row">0</property>
@@ -212,36 +157,226 @@
         </child>
         <child>
           <object class="GtkStatusbar" id="statusbar">
-            <property name="margin-start">6</property>
             <property name="margin-end">6</property>
+            <property name="margin-start">6</property>
             <layout>
               <property name="column">0</property>
               <property name="row">1</property>
             </layout>
           </object>
         </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
       </object>
     </child>
   </object>
+  <menu id="menubar">
+    <submenu id="subscription_menu">
+      <attribute name="label" translatable="yes">_Subscriptions</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.update-all</attribute>
+          <attribute name="label" translatable="yes">Update _All</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.mark-all-feeds-read</attribute>
+          <attribute name="label" translatable="yes">Mark All As _Read</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.new-subscription</attribute>
+          <attribute name="label" translatable="yes">_New Subscription...</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.new-folder</attribute>
+          <attribute name="label" translatable="yes">New _Folder...</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.new-vfolder</attribute>
+          <attribute name="label" translatable="yes">New S_earch Folder...</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.new-source</attribute>
+          <attribute name="label" translatable="yes">New _Source...</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.new-newsbin</attribute>
+          <attribute name="label" translatable="yes">New _News Bin...</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.import-feed-list</attribute>
+          <attribute name="label" translatable="yes">_Import Feed List...</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.export-feed-list</attribute>
+          <attribute name="label" translatable="yes">_Export Feed List...</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.quit</attribute>
+          <attribute name="label" translatable="yes">_Quit</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu id="feed_menu">
+      <attribute name="label" translatable="yes">_Feed</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.update-selected</attribute>
+          <attribute name="label" translatable="yes">_Update</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.mark-selected-feed-as-read</attribute>
+          <attribute name="label" translatable="yes">_Mark Items Read</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.remove-selected-feed-items</attribute>
+          <attribute name="label" translatable="yes">Remove _All Items</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.delete-selected</attribute>
+          <attribute name="label" translatable="yes">_Remove</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.selected-node-properties</attribute>
+          <attribute name="label" translatable="yes">_Properties</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu id="item_menu">
+      <attribute name="label" translatable="yes">_Item</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.next-unread-item</attribute>
+          <attribute name="label" translatable="yes">_Next Unread Item</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.prev-read-item</attribute>
+          <attribute name="label" translatable="yes">Previous Item</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.next-read-item</attribute>
+          <attribute name="label" translatable="yes">Next Item</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.toggle-selected-item-read-status</attribute>
+          <attribute name="label" translatable="yes">Toggle _Read Status</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.toggle-selected-item-flag</attribute>
+          <attribute name="label" translatable="yes">Toggle Item _Flag</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.remove-selected-item</attribute>
+          <attribute name="label" translatable="yes">R_emove</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.launch-selected-item-in-tab</attribute>
+          <attribute name="label" translatable="yes">Open In _Tab</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.launch-selected-item-in-browser</attribute>
+          <attribute name="label" translatable="yes">_Open In Browser</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.launch-selected-item-in-external-browser</attribute>
+          <attribute name="label" translatable="yes">Open In _External Browser</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu id="view_menu">
+      <attribute name="label" translatable="yes">_View</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.fullscreen</attribute>
+          <attribute name="label" translatable="yes">_Fullscreen</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.zoom-in</attribute>
+          <attribute name="label" translatable="yes">Zoom _In</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.zoom-out</attribute>
+          <attribute name="label" translatable="yes">Zoom _Out</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.zoom-reset</attribute>
+          <attribute name="label" translatable="yes">_Normal size</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.reduced-feed-list</attribute>
+          <attribute name="label" translatable="yes">_Reduced Feed List</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu id="tools_menu">
+      <attribute name="label" translatable="yes">_Tools</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.show-update-monitor</attribute>
+          <attribute name="label" translatable="yes">_Update Monitor</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.show-preferences</attribute>
+          <attribute name="label" translatable="yes">_Preferences</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.manage-plugins</attribute>
+          <attribute name="label" translatable="yes">_Manage Plugins</attribute>
+        </item>
+        <item>
+          <attribute name="action">node-sort-feeds</attribute>
+          <attribute name="label" translatable="yes">_Sort Feeds</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label" translatable="yes">S_earch</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.search-feeds</attribute>
+          <attribute name="label" translatable="yes">Search All Feeds...</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu id="help_menu">
+      <attribute name="label" translatable="yes">_Help</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.show-help-contents</attribute>
+          <attribute name="label" translatable="yes">_Contents</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.show-help-quick-reference</attribute>
+          <attribute name="label" translatable="yes">_Quick Reference</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.show-help-faq</attribute>
+          <attribute name="label" translatable="yes">_FAQ</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.show-about</attribute>
+          <attribute name="label" translatable="yes">_About</attribute>
+        </item>
+      </section>
+    </submenu>
+  </menu>
 </interface>
