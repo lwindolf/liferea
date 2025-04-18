@@ -82,11 +82,11 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
 
         self.scrollable_area = Gtk.ScrolledWindow()
         self.scrollable_area.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-        self.scrollable_area.add(self.vbox)
+        self.scrollable_area.set_child(self.vbox)
 
-        self.window.add(self.scrollable_area)
+        self.window.set_child(self.scrollable_area)
         self.window.set_default_size(640, 400)
-        self.window.connect("delete-event", self.on_window_close)
+        self.window.connect("close-request", self.on_window_close)
 
         # Create action and "Tools" menu bar item
         action = Gio.SimpleAction.new('DownloadManager', None)
@@ -172,7 +172,7 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
         outerVBox.pack_start(separator, False, False, 3)
 
         self.vbox.pack_start(outerVBox, False, False, 0)
-        outerVBox.show_all()
+        outerVBox.set_visible(True)
         
         filename = self.safe_filename(url)
         self.downloads[filename] = download = {
@@ -197,7 +197,6 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
         threading.Thread(target=self.download_file, args=(download,)).start()       
 
     def do_show(self):
-        self.window.show_all()
         self.window.present()
 
     def show_menu_action(self, action, variant, shell):

@@ -16,8 +16,9 @@
             <property name="label">Hi</property>
           </object>
         </child>
-        <child>
+        <child type="end">
           <object class="GtkMenuButton">
+            <property name="icon-name">open-menu-symbolic</property>
             <property name="menu-model">menubar</property>
           </object>
         </child>

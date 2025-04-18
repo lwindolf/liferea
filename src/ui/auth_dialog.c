@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.c  authentication dialog
  *
- * Copyright (C) 2007-2024  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,7 +120,7 @@ static void
 auth_dialog_init (AuthDialog *ad)
 {
 	ad->dialog = liferea_dialog_new ("auth");
-
+	gtk_window_present (GTK_WINDOW (ad->dialog));
 	g_signal_connect (G_OBJECT (ad->dialog), "response", G_CALLBACK (on_authdialog_response), ad);
 }
 
