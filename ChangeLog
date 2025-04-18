@@ -1,3 +1,14 @@
+To be released
+
+	Version 1.16-RC4
+
+	* Migrates the DB schema to use autoincrement for item id to solve
+	  race conditions were item metadata got mixed up. Note that this
+          has a performance impact and table migration on startup might
+	  take some seconds.
+          (Lars Windolf)
+
+
 2025-04-15  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16-RC3
