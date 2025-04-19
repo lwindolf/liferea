@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 #include <jsc/jsc.h>
-#include <webkit/webkit.h>#include <jsc/jsc.h>
+#include <webkit/webkit.h>
 #include <webkit/webkit.h>
 #include "ui/liferea_browser.h"
 
@@ -252,45 +252,6 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 }
 
 static void
-liferea_browser_init (LifereaBrowser *browser)
-{
-	GtkWidget *widget;
-
-	browser->content = NULL;
-	browser->url = NULL;
-	browser->renderWidget = liferea_webkit_new (browser);
-	browser->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-	g_object_ref_sink (browser->container);
-	browser->history = browser_history_new ();
-	browser->toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-
-	widget = gtk_button_new_from_icon_name ("go-previous");
-	gtk_box_append (GTK_BOX (browser->toolbar), widget);
-	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_liferea_browser_history_back), (gpointer)browser);
-	gtk_widget_set_sensitive (widget, FALSE);
-	browser->back = widget;
-
-	widget = gtk_button_new_from_icon_name ("go-next");
-	gtk_box_append (GTK_BOX (browser->toolbar), widget);
-	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_liferea_browser_history_forward), (gpointer)browser);
-	gtk_widget_set_sensitive (widget, FALSE);
-	browser->forward = widget;
-
-	widget = gtk_entry_new ();
-	gtk_widget_set_vexpand (widget, TRUE);
-	gtk_widget_set_hexpand (widget, TRUE);
-	gtk_box_append (GTK_BOX (browser->toolbar), widget);
-	g_signal_connect ((gpointer)widget, "activate", G_CALLBACK (on_liferea_browser_url_entry_activate), (gpointer)browser);
-	browser->urlentry = widget;
-
-	gtk_widget_set_vexpand (browser->renderWidget, TRUE);
-	gtk_widget_set_hexpand (browser->renderWidget, TRUE);
-
-	gtk_box_append (GTK_BOX (browser->container), browser->toolbar);
-	gtk_box_append (GTK_BOX (browser->container), browser->renderWidget);
-}
-
-static void
 liferea_browser_online_status_changed (NetworkMonitor *nm, gboolean online, gpointer userdata)
 {
 	// FIXME: not yet supported
@@ -334,25 +295,6 @@ liferea_browser_new (gboolean forceInternalBrowsing)
 
 	browser = LIFEREA_BROWSER (g_object_new (LIFEREA_BROWSER_TYPE, NULL));
 	browser->forceInternalBrowsing = forceInternalBrowsing;
-
-	//conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
-
-	liferea_browser_clear (browser);
-
-	g_signal_connect (network_monitor_get (), "online-status-changed",
-	                  G_CALLBACK (liferea_browser_online_status_changed),
-	                  browser);
-	g_signal_connect (network_monitor_get (), "proxy-changed",
-	                  G_CALLBACK (liferea_browser_proxy_changed),
-	                  browser);
-
-	g_signal_connect (browser, "statusbar-changed",
-	                  G_CALLBACK (liferea_browser_statusbar_changed), NULL);
-
-	debug (DEBUG_NET, "Setting initial HTML widget proxy...");
-	liferea_browser_proxy_changed (network_monitor_get (), browser);
-
-	liferea_browser_update_stylesheet (browser);
 
 	return browser;
 }
@@ -647,4 +589,61 @@ liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gcha
 	// do not use liferea_browser_write() as we need to write XHTML here
 	// which is produced by intltool
 	liferea_webkit_write_html (browser->renderWidget, tmp->str, strlen (tmp->str), baseURL, "text/html");
+}
+
+static void
+liferea_browser_init (LifereaBrowser *browser)
+{
+	GtkWidget *widget;
+
+	browser->content = NULL;
+	browser->url = NULL;
+	browser->renderWidget = liferea_webkit_new (browser);
+	browser->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+	g_object_ref_sink (browser->container);
+	browser->history = browser_history_new ();
+	browser->toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+
+	widget = gtk_button_new_from_icon_name ("go-previous");
+	gtk_box_append (GTK_BOX (browser->toolbar), widget);
+	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_liferea_browser_history_back), (gpointer)browser);
+	gtk_widget_set_sensitive (widget, FALSE);
+	browser->back = widget;
+
+	widget = gtk_button_new_from_icon_name ("go-next");
+	gtk_box_append (GTK_BOX (browser->toolbar), widget);
+	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_liferea_browser_history_forward), (gpointer)browser);
+	gtk_widget_set_sensitive (widget, FALSE);
+	browser->forward = widget;
+
+	widget = gtk_entry_new ();
+	gtk_widget_set_vexpand (widget, TRUE);
+	gtk_widget_set_hexpand (widget, TRUE);
+	gtk_box_append (GTK_BOX (browser->toolbar), widget);
+	g_signal_connect ((gpointer)widget, "activate", G_CALLBACK (on_liferea_browser_url_entry_activate), (gpointer)browser);
+	browser->urlentry = widget;
+
+	gtk_widget_set_vexpand (browser->renderWidget, TRUE);
+	gtk_widget_set_hexpand (browser->renderWidget, TRUE);
+
+	gtk_box_append (GTK_BOX (browser->container), browser->toolbar);
+	gtk_box_append (GTK_BOX (browser->container), browser->renderWidget);
+
+	liferea_browser_clear (browser);
+
+	g_signal_connect (network_monitor_get (), "online-status-changed",
+	                  G_CALLBACK (liferea_browser_online_status_changed),
+	                  browser);
+	g_signal_connect (network_monitor_get (), "proxy-changed",
+	                  G_CALLBACK (liferea_browser_proxy_changed),
+	                  browser);
+
+	g_signal_connect (browser, "statusbar-changed",
+	                  G_CALLBACK (liferea_browser_statusbar_changed), NULL);
+
+	debug (DEBUG_NET, "Setting initial HTML widget proxy...");
+	liferea_browser_proxy_changed (network_monitor_get (), browser);
+
+	liferea_browser_update_stylesheet (browser);
+
 }
