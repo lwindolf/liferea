@@ -11,15 +11,53 @@
     <property name="title" translatable="yes">Liferea</property>
     <property name="titlebar">
       <object class="GtkHeaderBar">
-        <child>
-          <object class="GtkButton">
-            <property name="label">Hi</property>
-          </object>
-        </child>
         <child type="end">
           <object class="GtkMenuButton">
             <property name="icon-name">open-menu-symbolic</property>
             <property name="menu-model">menubar</property>
+            <property name="tooltip-text">Open Menu</property>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkButton">
+            <property name="action-name">app.search-feeds</property>
+            <property name="icon-name">edit-find-symbolic</property>
+            <property name="tooltip-text">Search All Feeds ...</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <child>
+              <object class="GtkButton">
+                <property name="action-name">app.prev-read-item</property>
+                <property name="icon-name">go-previous-symbolic</property>
+                <property name="tooltip-text">Previous Item</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="action-name">app.next-read-item</property>
+                <property name="icon-name">go-next-symbolic</property>
+                <property name="tooltip-text">Next Item</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="action-name">app.next-unread-item</property>
+                <property name="icon-name">edit-redo-symbolic</property>
+                <property name="tooltip-text">Next Unread Item</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="action-name">app.mark-selected-feed-as-read</property>
+                <property name="icon-name">emblem-ok-symbolic</property>
+                <property name="tooltip-text">Mark Items Read</property>
+              </object>
+            </child>
+            <style>
+              <class name="linked"/>
+            </style>
           </object>
         </child>
       </object>
