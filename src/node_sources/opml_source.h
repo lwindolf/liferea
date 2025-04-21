@@ -23,9 +23,6 @@
 
 #include "node.h"
 #include "subscription_type.h"
-#include "node_source.h"
-
-#define OPML_SOURCE_DEFAULT_TITLE _("New OPML Subscription")
 
 /* General OPML source handling functions */
 
@@ -59,9 +56,6 @@ void opml_source_export(Node *node);
  */
 void opml_source_remove(Node *node);
 
-/**
- * Returns OPML source type implementation info.
- */
-nodeSourceTypePtr opml_source_get_type(void);
+void opml_source_register (void);
 
 #endif

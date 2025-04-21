@@ -76,17 +76,11 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 	return NULL;
 }
 
-gboolean
-node_source_type_register (nodeSourceTypePtr type)
+void
+node_source_type_register (NodeSourceProviderInterface *type)
 {
-	debug (DEBUG_PARSING, "Registering node source type %s", type->name);
-
-	/* allow the plugin to initialize */
-	type->source_type_init ();
-
+	debug (DEBUG_PARSING, "Registering node source provider %s", type->name);
 	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
-
-	return TRUE;
 }
 
 Node *
@@ -98,21 +92,15 @@ node_source_setup_root (void)
 	/* register a generic type for storing feed-id strings of remote services */
 	metadata_type_register ("feed-id", METADATA_TYPE_TEXT);
 
-	/* we need to register all source types once before doing anything... */
-	node_source_type_register (default_source_get_type ());
-	node_source_type_register (dummy_source_get_type ());
-	node_source_type_register (opml_source_get_type ());
-	node_source_type_register (google_source_get_type ());
-	node_source_type_register (reedah_source_get_type ());
-	node_source_type_register (ttrss_source_get_type ());
-	node_source_type_register (theoldreader_source_get_type ());
-
-	/* register all source types that are google like */
-	type = g_new0 (struct nodeSourceType, 1);
-	memcpy (type, google_source_get_type (), sizeof(struct nodeSourceType));
-	type->name = N_("Miniflux");
-	type->id = "fl_miniflux";
-	node_source_type_register (type);
+	/* we need to register all built-in source types once before doing anything
+	   plugin based source need to register themselves on activation... */
+	default_source_register ();
+	dummy_source_register ();
+	opml_source_register ();
+	google_source_register ();
+	reedah_source_register ();
+	ttrss_source_register ();
+	theoldreader_source_register ();
 
 	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
 	if (!type)
@@ -124,7 +112,6 @@ node_source_setup_root (void)
 	rootNode->source->root = rootNode;
 	rootNode->source->type = type;
 	type->source_import (rootNode);
-
 
 	return rootNode;
 }
@@ -158,12 +145,15 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 	if (typeStr) {
 		debug (DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
 
-		node->available = FALSE;
-
 		/* scan for matching node source and create new instance */
 		type = node_source_type_find ((const gchar *)typeStr, 0);
+		if (type) {
+			node->available = TRUE;
+			node->source = NULL;
+			node_source_new (node, (const gchar *)typeStr, NULL);
+		} else { 
+			node->available = FALSE;
 
-		if (!type) {
 			/* Source type is not available for some reason, but
 			   we need a representation to keep the node source
 			   in the feed list. So we load a dummy source type
@@ -171,14 +161,11 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 			   unused node's data field */
 			type = node_source_type_find (NODE_SOURCE_TYPE_DUMMY_ID, 0);
 			g_assert (NULL != type);
+			node_source_new (node, NODE_SOURCE_TYPE_DUMMY_ID, NULL);
 			node->data = g_strdup ((gchar *)typeStr);
 		}
 
-		node->available = TRUE;
-		node->source = NULL;
-		node_source_new (node, type, NULL);
 		node_set_subscription (node, subscription_import (xml, trusted));
-
 		type->source_import (node);
 
 		/* Set subscription type for all child nodes imported */
@@ -214,11 +201,10 @@ node_source_export (Node *node, xmlNodePtr xml, gboolean trusted)
 	subscription_export (node->subscription, xml, trusted);
 
 	NODE_SOURCE_TYPE (node)->source_export (node);
-
 }
 
 void
-node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
+node_source_new (Node *node, const gchar *id, const gchar *url)
 {
 	subscriptionPtr	subscription;
 
@@ -227,7 +213,7 @@ node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
 	node->provider = node_source_get_provider ();
 	node->source = g_new0 (struct nodeSource, 1);
 	node->source->root = node;
-	node->source->type = type;
+	node->source->type = node_source_type_find (id, 0);
 	node->source->loginState = NODE_SOURCE_STATE_NONE;
 	node->source->actionQueue = g_queue_new ();
 
@@ -645,4 +631,12 @@ node_source_get_provider (void)
 	}
 
 	return provider;
+}
+
+G_DEFINE_INTERFACE(NodeSourceProvider, node_source_provider, G_TYPE_OBJECT)
+
+static void
+node_source_provider_default_init(NodeSourceProviderInterface *iface)
+{
+    // Initialize default values for the interface if needed
 }

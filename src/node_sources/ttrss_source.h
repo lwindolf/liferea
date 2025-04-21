@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.h  Tiny Tiny RSS feed list source support
  * 
- * Copyright (C) 2010-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
 #include <glib.h>
 
-#include "node_source.h"
+#include "node.h"
 
 /**
  * A nodeSource specific for tt-rss
@@ -119,10 +119,7 @@ typedef struct ttrssSource {
  */
 #define TTRSS_JSON_UPDATE_ITEM_UNREAD "{\"op\":\"updateArticle\", \"sid\":\"%s\", \"article_ids\":\"%s\", \"mode\":\"%d\", \"field\":\"2\"}"
 
-/**
- * Returns ttss source type implementation info.
- */
-nodeSourceTypePtr ttrss_source_get_type (void);
+void ttrss_source_register (void);
 
 void ttrss_source_login (ttrssSourcePtr source, guint32 flags);
 

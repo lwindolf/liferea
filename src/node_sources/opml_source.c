@@ -29,6 +29,7 @@
 #include "feedlist.h"
 #include "node_providers/folder.h"
 #include "node.h"
+#include "node_source.h"
 #include "xml.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
@@ -36,6 +37,10 @@
 
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24
+
+#define OPML_SOURCE_DEFAULT_TITLE _("New OPML Subscription")
+
+#define SOURCE_ID "fl_opml"
 
 /* OPML subscription list helper functions */
 
@@ -237,7 +242,7 @@ opml_source_import (Node *node)
 	gchar	*filename;
 
 	/* We only ship an icon for opml, not for other sources */
-	if (g_str_equal (NODE_SOURCE_TYPE (node)->id, "fl_opml"))
+	if (g_str_equal (node->source->type->id, SOURCE_ID))
 		node->icon = icon_create_from_file ("fl_opml.png");
 
 	debug (DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
@@ -302,40 +307,42 @@ opml_source_auto_update (Node *node)
 		node_source_update (node);
 }
 
-static void opml_source_init(void) { }
+/* node source provider definition */
 
-static void opml_source_deinit(void) { }
+typedef struct {
+	GObject parent_instance;
+} OpmlSourceProvider;
 
-/* node source type definition */
+typedef struct {
+	GObjectClass parent_class;
+} OpmlSourceProviderClass;
 
-static struct nodeSourceType nst = {
-	.id                  = "fl_opml",
-	.name                = N_("Planet, BlogRoll, OPML"),
-	.sourceSubscriptionType = &opmlSubscriptionType,
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
-	.source_type_init    = opml_source_init,
-	.source_type_deinit  = opml_source_deinit,
-	.source_new          = ui_opml_source_get_source_url,
-	.source_delete       = opml_source_remove,
-	.source_import       = opml_source_import,
-	.source_export       = opml_source_export,
-	.source_get_feedlist = opml_source_get_feedlist,
-	.source_auto_update  = opml_source_auto_update,
-	.free                = NULL,
-	.item_set_flag       = NULL,
-	.item_mark_read      = NULL,
-	.add_folder          = NULL,
-	.add_subscription    = NULL,
-	.remove_node         = NULL,
-	.convert_to_local    = NULL
-};
+static void opml_source_provider_init(OpmlSourceProvider *self) { }
+static void opml_source_provider_class_init(OpmlSourceProviderClass *klass) { }
+static void opml_source_provider_interface_init(NodeSourceProviderInterface *iface) {
+	iface->id			= SOURCE_ID;
+	iface->name			= N_("Planet, BlogRoll, OPML");
+	iface->sourceSubscriptionType	= &opmlSubscriptionType;
+	iface->feedSubscriptionType	= feed_get_subscription_type ();
+	iface->capabilities		= NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION;
+	iface->source_new		= ui_opml_source_get_source_url;
+	iface->source_delete		= opml_source_remove;
+	iface->source_import		= opml_source_import;
+	iface->source_export		= opml_source_export;
+	iface->source_get_feedlist	= opml_source_get_feedlist;
+	iface->source_auto_update	= opml_source_auto_update;
+}
 
-nodeSourceTypePtr
-opml_source_get_type (void)
+#define OPML_TYPE_SOURCE_PROVIDER (opml_source_provider_get_type())
+
+G_DEFINE_TYPE_WITH_CODE(OpmlSourceProvider, opml_source_provider, G_TYPE_OBJECT,
+	G_IMPLEMENT_INTERFACE(NODE_TYPE_SOURCE_PROVIDER, opml_source_provider_interface_init))
+
+void
+opml_source_register (void)
 {
-	nst.feedSubscriptionType = feed_get_subscription_type ();
-
-	return &nst;
+	NodeSourceProviderInterface *iface = NODE_SOURCE_PROVIDER_GET_IFACE (g_object_new (OPML_TYPE_SOURCE_PROVIDER, NULL));
+	node_source_type_register (iface);
 }
 
 /* GUI callbacks */
@@ -348,7 +355,7 @@ on_opml_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		Node *node = node_new ("node_source");
 		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
-		node_source_new (node, opml_source_get_type (), liferea_dialog_entry_get (GTK_WIDGET (dialog), "location_entry"));
+		node_source_new (node, SOURCE_ID, liferea_dialog_entry_get (GTK_WIDGET (dialog), "location_entry"));
 		feedlist_node_added (node);
 		node_source_update (node);
 	}

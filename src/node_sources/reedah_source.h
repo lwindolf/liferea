@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.h  Reedah feed list source support
  * 
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #ifndef _REEDAH_SOURCE_H
 #define _REEDAH_SOURCE_H
 
-#include "node_source.h"
+#include "node.h"
 
 /**
  * A nodeSource specific for Reedah
@@ -63,10 +63,7 @@ typedef struct ReedahSource {
 /** Interval (in micro seconds) for doing a Quick Update: 10min */
 #define REEDAH_SOURCE_QUICK_UPDATE_INTERVAL 600 * G_USEC_PER_SEC
 
-/**
- * @returns Reedah source type implementation info.
- */
-nodeSourceTypePtr reedah_source_get_type (void);
+void reedah_source_register (void);
 
 /**
  * Find a child node with the given feed source URL.

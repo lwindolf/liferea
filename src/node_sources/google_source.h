@@ -1,7 +1,7 @@
 /**
  * @file google_source.h Google Reader feed list source support
  * 
- * Copyright (C) 2007-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2025-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,10 +75,7 @@ enum {
 /** Interval (in seconds) for doing a Quick Update: 10min */
 #define GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL 600
 
-/**
- * @returns Google Reader source type implementation info.
- */
-nodeSourceTypePtr google_source_get_type (void);
+void google_source_register (void);
 
 extern struct subscriptionType googleSourceFeedSubscriptionType;
 extern struct subscriptionType googleSourceOpmlSubscriptionType;
@@ -91,7 +88,7 @@ extern struct subscriptionType googleSourceOpmlSubscriptionType;
  *
  * @returns a node (or NULL)
  */
-Node *google_source_get_node_from_source (GoogleSourcePtr gsource, const gchar* source);
+Node * google_source_get_node_from_source (GoogleSourcePtr gsource, const gchar* source);
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only

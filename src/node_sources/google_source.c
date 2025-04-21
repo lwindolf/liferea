@@ -47,6 +47,8 @@
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
 
+#define SOURCE_ID "fl_google_reader"
+
 /** create a google source with given node as root */ 
 static GoogleSourcePtr
 google_source_new (Node *node) 
@@ -252,9 +254,6 @@ google_source_auto_update (Node *node)
 	subscription_auto_update (node->subscription);
 }
 
-static void google_source_init (void) { }
-static void google_source_deinit (void) { }
-
 static void
 google_source_import (Node *node)
 {
@@ -337,7 +336,7 @@ on_google_source_selected (GtkDialog *dialog,
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new ("node_source");
-		node_source_new (node, google_source_get_type (), gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "serverEntry")))));
+		node_source_new (node, SOURCE_ID, gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "serverEntry")))));
 		node_set_title (node, gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "nameEntry")))));
 		
 		subscription_set_auth_info (node->subscription,
@@ -397,38 +396,58 @@ google_source_convert_to_local (Node *node)
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }
 
-/* node source type definition */
+/* node source provider definition */
 
-static struct nodeSourceType nst = {
-	.id                  = "fl_google_reader",
-	.name                = N_("Google Reader API (FreshRSS, FeedHQ, Miniflux...)"),
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
-	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
-	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
-			       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
-	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
-	.feedSubscriptionType	= &googleSourceFeedSubscriptionType,
-	.sourceSubscriptionType = &googleSourceOpmlSubscriptionType,
-	.source_type_init    = google_source_init,
-	.source_type_deinit  = google_source_deinit,
-	.source_new          = ui_google_source_get_account_info,
-	.source_delete       = google_source_remove,
-	.source_import       = google_source_import,
-	.source_export       = google_source_export,
-	.source_get_feedlist = google_source_get_feedlist,
-	.source_auto_update  = google_source_auto_update,
-	.free                = google_source_cleanup,
-	.item_set_flag       = google_source_item_set_flag,
-	.item_mark_read      = google_source_item_mark_read,
-	.add_folder          = NULL, 
-	.add_subscription    = google_source_add_subscription,
-	.remove_node         = google_source_remove_node,
-	.convert_to_local    = google_source_convert_to_local
-};
+typedef struct {
+	GObject parent_instance;
+} GoogleSourceProvider;
 
-nodeSourceTypePtr
-google_source_get_type (void)
+typedef struct {
+	GObjectClass parent_class;
+} GoogleSourceProviderClass;
+
+static void google_source_provider_init(GoogleSourceProvider *self) { }
+static void google_source_provider_class_init(GoogleSourceProviderClass *klass) { }
+static void google_source_provider_interface_init(NodeSourceProviderInterface *iface) {
+	iface->id                  = SOURCE_ID;
+	iface->name                = N_("Google Reader API (FreshRSS, FeedHQ, Miniflux...)");
+	iface->capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
+				     NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
+				     NODE_SOURCE_CAPABILITY_ADD_FEED |
+				     NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
+				     NODE_SOURCE_CAPABILITY_CAN_LOGIN |
+				     NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL;
+	iface->feedSubscriptionType = &googleSourceFeedSubscriptionType;
+	iface->sourceSubscriptionType = &googleSourceOpmlSubscriptionType;
+	iface->source_new          = ui_google_source_get_account_info;
+	iface->source_delete       = google_source_remove;
+	iface->source_import       = google_source_import;
+	iface->source_export       = google_source_export;
+	iface->source_get_feedlist = google_source_get_feedlist;
+	iface->source_auto_update  = google_source_auto_update;
+	iface->free                = google_source_cleanup;
+	iface->item_set_flag       = google_source_item_set_flag;
+	iface->item_mark_read      = google_source_item_mark_read;
+	iface->add_subscription    = google_source_add_subscription;
+	iface->remove_node         = google_source_remove_node;
+	iface->convert_to_local    = google_source_convert_to_local;
+}
+
+#define GOOGLE_TYPE_SOURCE_PROVIDER (google_source_provider_get_type())
+
+G_DEFINE_TYPE_WITH_CODE(GoogleSourceProvider, google_source_provider, G_TYPE_OBJECT,
+	G_IMPLEMENT_INTERFACE(NODE_TYPE_SOURCE_PROVIDER, google_source_provider_interface_init))
+
+void
+google_source_register (void)
 {
-	return &nst;
+	NodeSourceProviderInterface *iface = NODE_SOURCE_PROVIDER_GET_IFACE (g_object_new (GOOGLE_TYPE_SOURCE_PROVIDER, NULL));
+	node_source_type_register (iface);
+
+	/* register all source types that are google like */
+	/*type = g_new0 (struct nodeSourceType, 1);
+	memcpy (type, google_source_get_type (), sizeof(struct nodeSourceType));
+	type->name = N_("Miniflux");
+	type->id = "fl_miniflux";
+	node_source_type_register (type);*/
 }

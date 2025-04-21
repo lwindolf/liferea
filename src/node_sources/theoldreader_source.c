@@ -47,6 +47,8 @@
 
 #define BASE_URL "https://theoldreader.com/reader/api/0/"
 
+#define SOURCE_ID "fl_theoldreader"
+
 /** create a source with given node as root */
 static TheOldReaderSourcePtr
 theoldreader_source_new (Node *node)
@@ -181,14 +183,6 @@ theoldreader_source_auto_update (Node *node)
 	subscription_auto_update (node->subscription);
 }
 
-static
-void theoldreader_source_init (void)
-{
-	metadata_type_register ("theoldreader-feed-id", METADATA_TYPE_TEXT);
-}
-
-static void theoldreader_source_deinit (void) { }
-
 static void
 theoldreader_source_import (Node *node)
 {
@@ -267,7 +261,7 @@ on_theoldreader_source_selected (GtkDialog *dialog,
 {
 	if (response_id == GTK_RESPONSE_OK) {
 		Node *node = node_new ("node_source");
-		node_source_new (node, theoldreader_source_get_type (), "http://theoldreader.com/reader");
+		node_source_new (node, SOURCE_ID, "http://theoldreader.com/reader");
 		node_set_title (node, node->source->type->name);
 
 		subscription_set_auth_info (node->subscription,
@@ -352,44 +346,59 @@ theoldreader_source_reparent_node (Node *node, Node *oldParent, Node *newParent)
 	}
 }
 
-/* node source type definition */
+/* node source provider definition */
 
 extern struct subscriptionType theOldReaderSourceFeedSubscriptionType;
 extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
 
-static struct nodeSourceType nst = {
-	.id                  = "fl_theoldreader",
-	.name                = N_("TheOldReader"),
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
-	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
-	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
-	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
-	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
-	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API |
-	                       NODE_SOURCE_CAPABILITY_REPARENT_NODE,
-	.feedSubscriptionType = &theOldReaderSourceFeedSubscriptionType,
-	.sourceSubscriptionType = &theOldReaderSourceOpmlSubscriptionType,
-	.source_type_init    = theoldreader_source_init,
-	.source_type_deinit  = theoldreader_source_deinit,
-	.source_new          = ui_theoldreader_source_get_account_info,
-	.source_delete       = opml_source_remove,
-	.source_import       = theoldreader_source_import,
-	.source_export       = opml_source_export,
-	.source_get_feedlist = opml_source_get_feedlist,
-	.source_auto_update  = theoldreader_source_auto_update,
-	.free                = theoldreader_source_cleanup,
-	.item_set_flag       = theoldreader_source_item_set_flag,
-	.item_mark_read      = theoldreader_source_item_mark_read,
-	.add_folder          = NULL,
-	.add_subscription    = theoldreader_source_add_subscription,
-	.remove_node         = theoldreader_source_remove_node,
-	.convert_to_local    = theoldreader_source_convert_to_local,
-	.reparent_node       = theoldreader_source_reparent_node
-};
+typedef struct {
+	GObject parent_instance;
+} TheoldreaderSourceProvider;
 
-nodeSourceTypePtr
-theoldreader_source_get_type (void)
+typedef struct {
+	GObjectClass parent_class;
+} TheoldreaderSourceProviderClass;
+
+static void theoldreader_source_provider_init(TheoldreaderSourceProvider *self) { }
+static void theoldreader_source_provider_class_init(TheoldreaderSourceProviderClass *klass) { }
+static void theoldreader_source_provider_interface_init(NodeSourceProviderInterface *iface) {
+	iface->id                  = SOURCE_ID;
+	iface->name                = N_("TheOldReader");
+	iface->capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
+				     NODE_SOURCE_CAPABILITY_CAN_LOGIN |
+				     NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
+				     NODE_SOURCE_CAPABILITY_ADD_FEED |
+				     NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
+				     NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
+				     NODE_SOURCE_CAPABILITY_GOOGLE_READER_API |
+				     NODE_SOURCE_CAPABILITY_REPARENT_NODE;
+	iface->feedSubscriptionType = &theOldReaderSourceFeedSubscriptionType;
+	iface->sourceSubscriptionType = &theOldReaderSourceOpmlSubscriptionType;
+	iface->source_new          = ui_theoldreader_source_get_account_info;
+	iface->source_delete       = opml_source_remove;
+	iface->source_import       = theoldreader_source_import;
+	iface->source_export       = opml_source_export;
+	iface->source_get_feedlist = opml_source_get_feedlist;
+	iface->source_auto_update  = theoldreader_source_auto_update;
+	iface->free                = theoldreader_source_cleanup;
+	iface->item_set_flag       = theoldreader_source_item_set_flag;
+	iface->item_mark_read      = theoldreader_source_item_mark_read;
+	iface->add_subscription    = theoldreader_source_add_subscription;
+	iface->remove_node         = theoldreader_source_remove_node;
+	iface->convert_to_local    = theoldreader_source_convert_to_local;
+	iface->reparent_node       = theoldreader_source_reparent_node;
+}
+
+#define THEOLDREADER_TYPE_SOURCE_PROVIDER (theoldreader_source_provider_get_type())
+
+G_DEFINE_TYPE_WITH_CODE(TheoldreaderSourceProvider, theoldreader_source_provider, G_TYPE_OBJECT,
+	G_IMPLEMENT_INTERFACE(NODE_TYPE_SOURCE_PROVIDER, theoldreader_source_provider_interface_init))
+
+void
+theoldreader_source_register (void)
 {
-	return &nst;
+	metadata_type_register ("theoldreader-feed-id", METADATA_TYPE_TEXT);
+
+	NodeSourceProviderInterface *iface = NODE_SOURCE_PROVIDER_GET_IFACE (g_object_new (THEOLDREADER_TYPE_SOURCE_PROVIDER, NULL));
+	node_source_type_register (iface);
 }

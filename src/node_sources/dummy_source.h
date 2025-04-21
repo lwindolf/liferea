@@ -1,7 +1,7 @@
 /**
  * @file dummy_source.h dummy feed list source
  * 
- * Copyright (C) 2005-2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2025-2007 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,6 @@
 #ifndef _DUMMY_SOURCE_H
 #define _DUMMY_SOURCE_H
 
-#include "node_source.h"
-
-/**
- * Returns dummy source type implementation info.
- */
-nodeSourceTypePtr dummy_source_get_type(void);
+void dummy_source_register (void);
 
 #endif /* _DUMMY_SOURCE_H */
