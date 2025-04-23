@@ -44,7 +44,11 @@
 #include "xml.h"
 #include "ui/liferea_shell.h"
 
+#if USE_GI_REPOSITORY_VERSION == 1
 #include <girepository.h>
+#else
+#include <girepository/girepository.h>
+#endif
 
 struct _LifereaApplication {
 	GtkApplication	parent;
@@ -308,8 +312,11 @@ liferea_application_init (LifereaApplication *self)
 
 	g_application_add_main_option_entries (G_APPLICATION (self), entries);
 	g_application_add_option_group (G_APPLICATION (self), debug);
+#if USE_GI_REPOSITORY_VERSION == 1
 	g_application_add_option_group (G_APPLICATION (self), g_irepository_get_option_group ());
-
+#else
+	g_application_add_option_group (G_APPLICATION (self), gi_repository_get_option_group ());
+#endif
 
 	g_signal_connect (G_OBJECT (self), "activate", G_CALLBACK (on_app_activate), NULL);
 	g_signal_connect (G_OBJECT (self), "open", G_CALLBACK (on_app_open), NULL);
