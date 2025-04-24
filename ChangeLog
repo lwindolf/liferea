@@ -8,6 +8,15 @@ To be released
 	  take some seconds.
           (Lars Windolf)
 
+	* Make JS vendor libs more reproducible by
+	  - providing a package-lock.json
+	  - providing a 'npm run installDeps' command
+	  - always keeping non-minified versions in the repo
+	  (Lars Windolf)
+
+	* Update JS library DOMPurify to 3.2.5
+        * Update JS library Readability to 0.6.0
+
 
 2025-04-15  Lars Windolf <lars.windolf@gmx.de>
 

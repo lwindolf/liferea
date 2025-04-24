@@ -1,7 +1,5 @@
 // vim: set ts=4 sw=4:
 
-import Handlebars from '../vendor/handlebars.min.js';
-
 // Handlebars convenience helpers
 
 if (Handlebars) {
