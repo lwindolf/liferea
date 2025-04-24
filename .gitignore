@@ -42,6 +42,5 @@ org.gnome.liferea.gschema.valid
 .flatpak-builder
 .vscode
 node_modules
-package-lock.json
 builddir/
 po/.intltool-merge-cache.lock

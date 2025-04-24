@@ -1,8 +1,6 @@
 // vim: set ts=4 sw=4:
 
-import Handlebars from '../vendor/handlebars.min.js';
-
-// Handlebars convenience helpers
+// handlebars.min.js convenience helpers
 
 if (Handlebars) {
 	// FIXME: register only once

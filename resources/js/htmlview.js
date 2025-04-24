@@ -20,7 +20,6 @@
  */
 
 import { render, template } from './helpers/render.js';
-import DOMPurify from './vendor/purify.min.js';
 
 window.debugflags = 0;
 

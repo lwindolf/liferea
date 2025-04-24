@@ -1,11 +1,11 @@
 {
   "scripts": {
     "test": "eslint js/htmlview.js",
-    "installDeps": "ls node_modules"
+    "installDeps": "cd node_modules && cp dompurify/dist/purify.js ../resources/js/vendor && cp dompurify/dist/purify.min.js ../resources/js/vendor && cp handlebars/dist/handlebars.js ../resources/js/vendor && cp handlebars/dist/handlebars.min.js ../resources/js/vendor && cp @mozilla/readability/Readability.js ../resources/js/vendor"
   },
   "dependencies": {
     "dompurify": "^3.2.3",
-    "readability": "^0.1.0",
+    "@mozilla/readability": "^0.6.0",
     "handlebars": "^4.7.8"
   },
   "devDependencies": {
