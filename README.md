@@ -29,4 +29,8 @@ set $XDG_DATA_DIRS before starting Liferea. For example:
 
     env XDG_DATA_DIRS="$my_dir/share:$XDG_DATA_DIRS" $my_dir/bin/liferea
 
+## Update JS Dependencies
 
+    npm i
+    npm audit fix
+    npm run installDeps
