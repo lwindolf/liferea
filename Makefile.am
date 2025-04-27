@@ -51,7 +51,9 @@ plugin_DATA = \
 	plugins/libnotify.py \
 	plugins/libnotify.plugin \
 	plugins/trayicon.py \
-	plugins/trayicon.plugin
+	plugins/trayicon.plugin \
+	plugins/messagingmenu.py \
+	plugins/messagingmenu.plugin
 
 gsettings_SCHEMAS = net.sf.liferea.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
