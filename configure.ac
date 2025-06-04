@@ -41,7 +41,7 @@ pkg_modules="	gtk+-3.0 >= 3.24.0
 		libsoup-3.0 >= 3.0.7
 		webkit2gtk-4.1
 		json-glib-1.0
-		girepository-2.0
+		girepository-1.0
 		gsettings-desktop-schemas
 		libpeas-2
 		fribidi >= 0.19.7"
