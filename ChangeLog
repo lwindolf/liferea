@@ -1,4 +1,4 @@
-To be released
+2025-06-05  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16-RC4
 
@@ -18,6 +18,10 @@ To be released
 	  (Lars Windolf)
 
 	* Added CSP to item view that limits external resources that can load
+	  (Lars Windolf)
+
+	* #1429 Allow compiling against libgirepository 2.0, configure.ac still defaults
+	  to 1.0 but you can change to 2.0 if you need to depending on you pygobject version
 	  (Lars Windolf)
 
 
