@@ -77,7 +77,7 @@ GOBJECT_INTROSPECTION_CHECK([0.9.3])
 # are running against. Please change from 1 to 2 if building against pygobject > 3.52.3
 # (See also https://github.com/lwindolf/liferea/issues/1425)
 #
-AC_DEFINE_UNQUOTED(USE_GI_REPOSITORY_VERSION, 2, [defines the girepository version to use])
+AC_DEFINE_UNQUOTED(USE_GI_REPOSITORY_VERSION, 1, [defines the girepository version to use])
 
 ################################################################################
 
