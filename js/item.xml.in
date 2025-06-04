@@ -2,9 +2,11 @@
 <html>
 <head>
         <script src='/js/vendor/Readability.js'></script>
+        <script src='/js/vendor/handlebars.min.js'></script>
+        <script src='/js/vendor/purify.min.js'></script>
         
-	<!-- FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does -->
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline' 'unsafe-eval' *; img-src *; media-src *; object-src 'none'"/>
 
         <script id="template" type="text/x-handlebars-template">
                 <div class="item" dir="{{direction}}">

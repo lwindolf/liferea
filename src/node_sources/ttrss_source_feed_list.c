@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source_feed_list.c  tt-rss feed list handling routines.
  *
- * Copyright (C) 2010-2024  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2025  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include "json.h"
 #include "metadata.h"
 #include "node.h"
+#include "node_source.h"
 #include "subscription.h"
 #include "subscription_icon.h"
 #include "node_sources/opml_source.h"

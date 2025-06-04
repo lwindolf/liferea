@@ -1,7 +1,7 @@
 /**
  * @file default_source.h default static feedlist provider
  * 
- * Copyright (C) 2005 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,6 @@
 #ifndef _DEFAULT_SOURCE_H
 #define _DEFAULT_SOURCE_H
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include "node_source.h"
-
-/**
- * Returns default source type implementation info.
- */
-nodeSourceTypePtr default_source_get_type (void);
+void default_source_register (void);
 
 #endif /* _DEFAULT_SOURCE_H */

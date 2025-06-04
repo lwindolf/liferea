@@ -67,6 +67,14 @@ set $XDG_DATA_DIRS before starting Liferea. For example:
     sudo make install
     env XDG_DATA_DIRS="$my_dir/share:$XDG_DATA_DIRS" $my_dir/bin/liferea
 
+###### _Update Dependencies_
+
+To update the Javascript dependencies run
+
+    npm i
+    npm audit fix
+    npm run installDeps
+
 
 Contributing
 ------------

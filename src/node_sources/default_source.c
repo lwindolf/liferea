@@ -1,7 +1,7 @@
 /**
  * @file default_source.c  default static feed list source
  * 
- * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@
 static gboolean feedlistImport = TRUE;
 
 static gchar *
-default_source_source_get_feedlist (Node *node)
+default_source_get_feedlist (Node *node)
 {
 	return common_create_config_filename ("feedlist.opml");
 }
@@ -50,10 +50,9 @@ default_source_import (Node *node)
 	gchar		*content;
 	gssize		length;
 
-
 	g_assert (TRUE == feedlistImport);
 
-	filename = default_source_source_get_feedlist (node);
+	filename = default_source_get_feedlist (node);
 	backupFilename = g_strdup_printf("%s.backup", filename);
 	
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
@@ -106,14 +105,13 @@ static void
 default_source_export (Node *node)
 {
 	gchar	*filename;
-	
+
 	if (feedlistImport)
 		return;
-
 	
 	g_assert (node->source->root == feedlist_get_root ());
 
-	filename = default_source_source_get_feedlist (node);
+	filename = default_source_get_feedlist (node);
 	export_OPML_feedlist (filename, node->source->root, TRUE);
 	g_free (filename);
 
@@ -160,40 +158,44 @@ default_source_remove_node (Node *node, Node *child)
 	feedlist_node_removed (child);
 }
 
-static void default_source_init (void) { }
-static void default_source_deinit (void) { }
+/* node source provider definition */
 
-/* node source type definition */
+typedef struct {
+	GObject parent_instance;
+} DefaultSource;
 
-static struct nodeSourceType nst = {
-	.id			= "fl_default",
-	.name			= "Static Feed List",
-	.capabilities		= NODE_SOURCE_CAPABILITY_IS_ROOT |
-				  NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST |
-	                          NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                          NODE_SOURCE_CAPABILITY_ADD_FOLDER |
-				  NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
-	.feedSubscriptionType	= NULL,
-	.sourceSubscriptionType	= NULL,
-	.source_type_init	= default_source_init,
-	.source_type_deinit	= default_source_deinit,
-	.source_new		= NULL,
-	.source_delete		= NULL,
-	.source_import		= default_source_import,
-	.source_export		= default_source_export,
-	.source_get_feedlist	= default_source_source_get_feedlist,
-	.source_auto_update	= default_source_auto_update,
-	.free 			= NULL,
-	.add_subscription	= default_source_add_subscription,
-	.add_folder		= default_source_add_folder,
-	.remove_node		= default_source_remove_node,
-	.convert_to_local	= NULL
-};
+typedef struct {
+	GObjectClass parent_class;
+} DefaultSourceClass;
 
-nodeSourceTypePtr
-default_source_get_type (void)
+static void default_source_init(DefaultSource *self) { }
+static void default_source_class_init(DefaultSourceClass *klass) { }
+static void default_source_interface_init(NodeSourceProviderInterface *iface) {
+	iface->id			= "fl_default";
+	iface->name			= "Static Feed List";
+	iface->capabilities		= NODE_SOURCE_CAPABILITY_IS_ROOT |
+					  NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST |
+					  NODE_SOURCE_CAPABILITY_ADD_FEED |
+					  NODE_SOURCE_CAPABILITY_ADD_FOLDER |
+					  NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
+	iface->feedSubscriptionType	= feed_get_subscription_type ();
+	iface->source_import		= default_source_import;
+	iface->source_export		= default_source_export;
+	iface->source_get_feedlist	= default_source_get_feedlist;
+	iface->source_auto_update	= default_source_auto_update;
+	iface->add_subscription		= default_source_add_subscription;
+	iface->add_folder		= default_source_add_folder;
+	iface->remove_node		= default_source_remove_node;
+}
+
+#define DEFAULT_TYPE_SOURCE (default_source_get_type())
+
+G_DEFINE_TYPE_WITH_CODE(DefaultSource, default_source, G_TYPE_OBJECT,
+	G_IMPLEMENT_INTERFACE(NODE_TYPE_SOURCE_PROVIDER, default_source_interface_init))
+
+void
+default_source_register (void)
 {
-	nst.feedSubscriptionType = feed_get_subscription_type ();
-
-	return &nst;
+	NodeSourceProviderInterface *iface = NODE_SOURCE_PROVIDER_GET_IFACE (g_object_new (DEFAULT_TYPE_SOURCE, NULL));
+	node_source_type_register (iface);
 }

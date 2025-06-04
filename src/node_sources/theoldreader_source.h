@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source.h TheOldReader feed list source support
  * 
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #ifndef _THEOLDREADER_SOURCE_H
 #define _THEOLDREADER_SOURCE_H
 
-#include "node_source.h"
+#include "node.h"
 
 /**
  * A nodeSource specific for TheOldReader
@@ -55,10 +55,7 @@ typedef struct TheOldReaderSource {
 #define THEOLDREADER_READER_LOGIN_URL "https://theoldreader.com/accounts/ClientLogin" 
 #define THEOLDREADER_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://theoldreader.com"
 
-/**
- * @returns TheOldReader source type implementation info.
- */
-nodeSourceTypePtr theoldreader_source_get_type (void);
+void theoldreader_source_register (void);
 
 /**
  * Find a child node with the given feed source URL.

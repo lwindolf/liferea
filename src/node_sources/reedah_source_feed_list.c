@@ -32,6 +32,7 @@
 #include "json.h"
 #include "metadata.h"
 #include "node.h"
+#include "node_source.h"
 #include "subscription.h"
 #include "subscription_icon.h"
 #include "xml.h" // FIXME

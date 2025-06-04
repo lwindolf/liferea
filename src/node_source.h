@@ -94,8 +94,13 @@ typedef enum {
  */
 #define NODE_SOURCE_MAX_AUTH_FAILURES		3
 
+#define NODE_TYPE_SOURCE_PROVIDER	(node_source_provider_get_type ())
+G_DECLARE_INTERFACE(NodeSourceProvider, node_source_provider, NODE, SOURCE_PROVIDER, GObject)
+
 /* feed list node source type */
-typedef struct nodeSourceType {
+typedef struct _NodeSourceProviderInterface {
+	GTypeInterface parent_iface;
+
 	const gchar	*id;		/*<< a unique feed list source type identifier */
 	const gchar	*name;		/*<< a descriptive source name (for preferences and menus) */
 	gulong		capabilities;	/*<< bitmask of feed list source capabilities */
@@ -105,10 +110,6 @@ typedef struct nodeSourceType {
 
 	/* The subscription type for the source itself (can be NULL) */
 	subscriptionTypePtr	sourceSubscriptionType;
-
-	/* source type loading and unloading methods */
-	void		(*source_type_init)(void);
-	void 		(*source_type_deinit)(void);
 
 	/*
 	 * This OPTIONAL callback is used to create an instance
@@ -223,11 +224,11 @@ typedef struct nodeSourceType {
 	 */
 	void		(*reparent_node) (Node *node, Node *oldParent, Node *newParent);
 
-} *nodeSourceTypePtr;
+} NodeSourceProviderInterface;
 
 /* feed list source instance */
 typedef struct nodeSource {
-	nodeSourceTypePtr	type;		/*<< node source type of this source instance */
+	NodeSourceProviderInterface	*type;		/*<< node source type of this source instance */
 	Node			*root;		/*<< insertion node of this node source instance */
 	GQueue			*actionQueue;	/*<< queue for async actions */
 	gint			loginState;	/*<< The current login state */
@@ -238,8 +239,9 @@ typedef struct nodeSource {
 	googleReaderApi		api;		/*<< OPTIONAL endpoint definitions for Google Reader like JSON API, to be set during source_new() */
 } *nodeSourcePtr;
 
-/* Use this to cast the node source type from a node structure. */
-#define NODE_SOURCE_TYPE(node) ((nodeSourcePtr)(node->source))->type
+// Legacy ptr and macro to avoid to many code refactoring
+#define nodeSourceTypePtr NodeSourceProviderInterface *
+#define NODE_SOURCE_TYPE(n) n->source->type
 
 #define NODE_SOURCE_TYPE_DUMMY_ID "fl_dummy"
 
@@ -265,9 +267,9 @@ Node * node_source_setup_root (void);
 
 /**
  * node_source_new: (skip)
- * @node:			a newly created node
- * @nodeSourceType:     	the node source type
- * @url:			subscription URL
+ * @node:	a newly created node
+ * @id:     	the node source provider id
+ * @url:	subscription URL
  *
  * Creates a new source and assigns it to the given new node.
  * To be used to prepare a source node before adding it to the
@@ -275,7 +277,7 @@ Node * node_source_setup_root (void);
  * subscription type and setting up the subscription if url != NULL.
  * The caller needs set additional auth info for the subscription.
  */
-void node_source_new (Node *node, nodeSourceTypePtr nodeSourceType, const gchar *url);
+void node_source_new (Node *node, const gchar *id, const gchar *url);
 
 /**
  * node_source_set_state: (skip)
@@ -412,13 +414,13 @@ void node_source_convert_to_local (Node *node);
 void node_source_to_json (Node *node, JsonBuilder *b);
 
 /**
- * node_source_type_register: (skip)
- * @type:		the type to register
+ * node_source_type_register:
+ * @iface:	the type interface to register
  *
  * Registers a new node source type. Needs to be called before feed list import!
  * To be used only via NodeSourceTypeActivatable
  */
-gboolean node_source_type_register (nodeSourceTypePtr type);
+void node_source_type_register (NodeSourceProviderInterface *iface);
 
 /**
  * node_source_get_provider: (skip) 

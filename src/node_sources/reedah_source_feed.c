@@ -33,6 +33,7 @@
 #include "json_api_mapper.h"
 #include "metadata.h"
 #include "node.h"
+#include "node_source.h"
 #include "reedah_source.h"
 #include "subscription.h"
 #include "xml.h"

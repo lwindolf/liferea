@@ -41,6 +41,8 @@
 #include "node_source.h"
 #include "node_sources/opml_source.h"
 
+#define SOURCE_ID "fl_ttrss"
+
 /** Initialize a TinyTinyRSS source with given node as root */
 static ttrssSourcePtr
 ttrss_source_new (Node *node)
@@ -197,15 +199,6 @@ ttrss_source_auto_update (Node *node)
 }
 
 static void
-ttrss_source_init (void)
-{
-	metadata_type_register ("ttrss-url", METADATA_TYPE_URL);
-	metadata_type_register ("ttrss-feed-id", METADATA_TYPE_TEXT);
-}
-
-static void ttrss_source_deinit (void) { }
-
-static void
 ttrss_source_import (Node *node)
 {
 	opml_source_import (node);
@@ -349,7 +342,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 {
 	if (response_id == GTK_RESPONSE_OK) {
 		Node *node = node_new ("node_source");
-		node_source_new (node, ttrss_source_get_type (), "");
+		node_source_new (node, SOURCE_ID, "");
 		node_set_title (node, node->source->type->name);
 
 		/* This is a bit ugly: we need to prevent the tt-rss base
@@ -460,41 +453,59 @@ ttrss_source_convert_to_local (Node *node)
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }
 
-/* node source type definition */
+/* node source provider definition */
 
 extern struct subscriptionType ttrssSourceFeedSubscriptionType;
 extern struct subscriptionType ttrssSourceSubscriptionType;
 
-static struct nodeSourceType nst = {
-	.id                  = "fl_ttrss",
-	.name                = N_("Tiny Tiny RSS"),
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
-	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
-	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
-	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
-	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
-	.feedSubscriptionType = &ttrssSourceFeedSubscriptionType,
-	.sourceSubscriptionType = &ttrssSourceSubscriptionType,
-	.source_type_init    = ttrss_source_init,
-	.source_type_deinit  = ttrss_source_deinit,
-	.source_new          = ui_ttrss_source_get_account_info,
-	.source_delete       = opml_source_remove,
-	.source_import       = ttrss_source_import,
-	.source_export       = opml_source_export,
-	.source_get_feedlist = opml_source_get_feedlist,
-	.source_auto_update  = ttrss_source_auto_update,
-	.free                = ttrss_source_cleanup,
-	.item_set_flag       = ttrss_source_item_set_flag,
-	.item_mark_read      = ttrss_source_item_mark_read,
-	.add_folder          = NULL,	/* not supported by current tt-rss JSON API (v1.8) */
-	.add_subscription    = ttrss_source_add_subscription,
-	.remove_node         = ttrss_source_remove_node,
-	.convert_to_local    = ttrss_source_convert_to_local
-};
+typedef struct {
+	GObject parent_instance;
+} TtrssSourceProvider;
 
-nodeSourceTypePtr
-ttrss_source_get_type (void)
+typedef struct {
+	GObjectClass parent_class;
+} TtrssSourceProviderClass;
+
+static void ttrss_source_provider_init(TtrssSourceProvider *self) { }
+static void ttrss_source_provider_class_init(TtrssSourceProviderClass *klass) { }
+static void ttrss_source_provider_interface_init(NodeSourceProviderInterface *iface) {
+	iface->id                  = SOURCE_ID;
+	iface->name                = N_("Tiny Tiny RSS");
+	iface->capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
+				     NODE_SOURCE_CAPABILITY_CAN_LOGIN |
+				     NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
+				     NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
+				     NODE_SOURCE_CAPABILITY_ADD_FEED |
+				     NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL;
+	iface->feedSubscriptionType = &ttrssSourceFeedSubscriptionType;
+	iface->sourceSubscriptionType = &ttrssSourceSubscriptionType;
+	iface->source_new          = ui_ttrss_source_get_account_info;
+	iface->source_delete       = opml_source_remove;
+	iface->source_import       = ttrss_source_import;
+	iface->source_export       = opml_source_export;
+	iface->source_get_feedlist = opml_source_get_feedlist;
+	iface->source_auto_update  = ttrss_source_auto_update;
+	iface->free                = ttrss_source_cleanup;
+	iface->item_set_flag       = ttrss_source_item_set_flag;
+	iface->item_mark_read      = ttrss_source_item_mark_read;
+	iface->add_folder          = NULL;	/* not supported by current tt-rss JSON API (v1.8) */
+	iface->add_subscription    = ttrss_source_add_subscription;
+	iface->remove_node         = ttrss_source_remove_node;
+	iface->convert_to_local    = ttrss_source_convert_to_local;
+
+}
+
+#define TTRSS_TYPE_SOURCE_PROVIDER (ttrss_source_provider_get_type())
+
+G_DEFINE_TYPE_WITH_CODE(TtrssSourceProvider, ttrss_source_provider, G_TYPE_OBJECT,
+	G_IMPLEMENT_INTERFACE(NODE_TYPE_SOURCE_PROVIDER, ttrss_source_provider_interface_init))
+
+void
+ttrss_source_register (void)
 {
-	return &nst;
+	metadata_type_register ("ttrss-url", METADATA_TYPE_URL);
+	metadata_type_register ("ttrss-feed-id", METADATA_TYPE_TEXT);
+
+	NodeSourceProviderInterface *iface = NODE_SOURCE_PROVIDER_GET_IFACE (g_object_new (TTRSS_TYPE_SOURCE_PROVIDER, NULL));
+	node_source_type_register (iface);
 }

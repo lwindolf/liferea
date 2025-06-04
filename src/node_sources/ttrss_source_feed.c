@@ -30,6 +30,7 @@
 #include "itemset.h"
 #include "json.h"
 #include "metadata.h"
+#include "node_source.h"
 #include "subscription.h"
 #include "xml.h"
 

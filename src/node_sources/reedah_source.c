@@ -49,6 +49,8 @@
 
 #define BASE_URL "http://www.reedah.com/reader/api/0/"
 
+#define SOURCE_ID "fl_reedah"
+
 /** create a Reedah source with given node as root */
 static ReedahSourcePtr
 reedah_source_new (Node *node)
@@ -104,7 +106,7 @@ reedah_source_login_cb (const UpdateResult * const result, gpointer userdata, up
 		tmp = strchr (tmp, '\n');
 		if (tmp)
 			*tmp = '\0';
-		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
+		node_source_set_auth_token (node, g_strdup_printf ("ReedahLogin auth=%s", ttmp + 5));
 
 		/* now that we are authenticated trigger updating to start data retrieval */
 		if (!(flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
@@ -195,14 +197,6 @@ reedah_source_auto_update (Node *node)
 }
 
 static void
-reedah_source_init (void)
-{
-	metadata_type_register ("reedah-feed-id", METADATA_TYPE_TEXT);
-}
-
-static void reedah_source_deinit (void) { }
-
-static void
 reedah_source_import (Node *node)
 {
 	opml_source_import (node);
@@ -263,7 +257,7 @@ on_reedah_source_selected (GtkDialog *dialog,
 {
 	if (response_id == GTK_RESPONSE_OK) {
 		Node *node = node_new ("node_source");
-		node_source_new (node, reedah_source_get_type (), "http://www.reedah.com/reader");
+		node_source_new (node, SOURCE_ID, "http://www.reedah.com/reader");
 		node_set_title (node, node->source->type->name);
 		
 		subscription_set_auth_info (node->subscription,
@@ -323,42 +317,57 @@ reedah_source_convert_to_local (Node *node)
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }
 
-/* node source type definition */
+/* node source provider definition */
 
 extern struct subscriptionType reedahSourceFeedSubscriptionType;
 extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 
-static struct nodeSourceType nst = {
-	.id                  = "fl_reedah",
-	.name                = N_("Reedah"),
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
-	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
-	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
-	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
-	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
-	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
-	.feedSubscriptionType = &reedahSourceFeedSubscriptionType,
-	.sourceSubscriptionType = &reedahSourceOpmlSubscriptionType,
-	.source_type_init    = reedah_source_init,
-	.source_type_deinit  = reedah_source_deinit,
-	.source_new          = ui_reedah_source_get_account_info,
-	.source_delete       = opml_source_remove,
-	.source_import       = reedah_source_import,
-	.source_export       = opml_source_export,
-	.source_get_feedlist = opml_source_get_feedlist,
-	.source_auto_update  = reedah_source_auto_update,
-	.free                = reedah_source_cleanup,
-	.item_set_flag       = reedah_source_item_set_flag,
-	.item_mark_read      = reedah_source_item_mark_read,
-	.add_folder          = NULL,
-	.add_subscription    = reedah_source_add_subscription,
-	.remove_node         = reedah_source_remove_node,
-	.convert_to_local    = reedah_source_convert_to_local
-};
+typedef struct {
+	GObject parent_instance;
+} ReedahSourceProvider;
 
-nodeSourceTypePtr
-reedah_source_get_type (void)
+typedef struct {
+	GObjectClass parent_class;
+} ReedahSourceProviderClass;
+
+static void reedah_source_provider_init(ReedahSourceProvider *self) { }
+static void reedah_source_provider_class_init(ReedahSourceProviderClass *klass) { }
+static void reedah_source_provider_interface_init(NodeSourceProviderInterface *iface) {
+	iface->id                  = SOURCE_ID;
+	iface->name                = N_("Reedah");
+	iface->capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
+				     NODE_SOURCE_CAPABILITY_CAN_LOGIN |
+				     NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
+				     NODE_SOURCE_CAPABILITY_ADD_FEED |
+				     NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
+				     NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
+				     NODE_SOURCE_CAPABILITY_GOOGLE_READER_API;
+	iface->feedSubscriptionType = &reedahSourceFeedSubscriptionType;
+	iface->sourceSubscriptionType = &reedahSourceOpmlSubscriptionType;
+	iface->source_new          = ui_reedah_source_get_account_info;
+	iface->source_delete       = opml_source_remove;
+	iface->source_import       = reedah_source_import;
+	iface->source_export       = opml_source_export;
+	iface->source_get_feedlist = opml_source_get_feedlist;
+	iface->source_auto_update  = reedah_source_auto_update;
+	iface->free                = reedah_source_cleanup;
+	iface->item_set_flag       = reedah_source_item_set_flag;
+	iface->item_mark_read      = reedah_source_item_mark_read;
+	iface->add_subscription    = reedah_source_add_subscription;
+	iface->remove_node         = reedah_source_remove_node;
+	iface->convert_to_local    = reedah_source_convert_to_local;
+}
+
+#define REEDAH_TYPE_SOURCE_PROVIDER (reedah_source_provider_get_type())
+
+G_DEFINE_TYPE_WITH_CODE(ReedahSourceProvider, reedah_source_provider, G_TYPE_OBJECT,
+	G_IMPLEMENT_INTERFACE(NODE_TYPE_SOURCE_PROVIDER, reedah_source_provider_interface_init))
+
+void
+reedah_source_register (void)
 {
-	return &nst;
+	metadata_type_register ("reedah-feed-id", METADATA_TYPE_TEXT);
+
+	NodeSourceProviderInterface *iface = NODE_SOURCE_PROVIDER_GET_IFACE (g_object_new (REEDAH_TYPE_SOURCE_PROVIDER, NULL));
+	node_source_type_register (iface);
 }
