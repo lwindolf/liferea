@@ -30,6 +30,7 @@ jobs:
        mkdir inst
        mkdir -pv inst/share/glib-2.0/schemas
        mkdir -pv inst/share/icons/hicolor
+       mkdir -pv inst/share/applications
 
     - run: meson setup builddir --prefix=$(pwd)/inst
     - run: meson compile -C builddir
