@@ -32,7 +32,7 @@ jobs:
     - run: meson setup builddir --prefix=$(pwd)/inst
     - run: meson compile -C builddir
     # FIXME - run: make -C po check
-    - run: ninja install
+    - run: cd builddir && ninja install
     - run: cp net.sf.liferea.gschema.xml /usr/share/glib-2.0/schemas
     - run: /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas/
     - run: ls -l /usr/share/glib-2.0/schemas
