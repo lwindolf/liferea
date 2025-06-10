@@ -70,7 +70,7 @@ struct _LifereaShell {
 	GActionGroup	*shellActions;
 	GActionGroup	*feedlistActions;
 	GActionGroup	*itemlistActions;
-	GActionGroup	*htmlviewActions;
+	GActionGroup	*linkActions;
 
 	LifereaPluginsEngine *plugins;
 
@@ -141,7 +141,7 @@ liferea_shell_finalize (GObject *object)
 	g_object_unref (ls->shellActions);
 	g_object_unref (ls->feedlistActions);
 	g_object_unref (ls->itemlistActions);
-	g_object_unref (ls->htmlviewActions);
+	g_object_unref (ls->linkActions);
 
 	g_object_unref (ls->xml);
 }
@@ -709,51 +709,6 @@ g_warning("FIXME: GTK4 restore pane position sanity checks");
 static void
 liferea_shell_restore_state (const gchar *overrideWindowState)
 {
-	gboolean 	last_window_maximized;
-	gint		resultState;
-
-	debug (DEBUG_GUI, "Restoring window position");
-	/* Realize needed so that the window structure can be
-	   accessed... otherwise we get a GTK warning when window is
-	   shown by clicking on notification icon or when theme
-	   colors are fetched. */
-	gtk_widget_realize (GTK_WIDGET (shell->window));
-
-	/* Apply horrible window state parameter logic:
-	   -> overrideWindowState provides optional command line flags passed by
-	      user or the session manager (prio 1)
-	   -> lastState provides last shutdown preference (prio 2)
-	 */
-
-	/* Initialize with last saved state */
-	conf_get_int_value (LAST_WINDOW_STATE, &resultState);
-
-	debug (DEBUG_GUI, "Previous window state indicators: dconf=%d, CLI switch=%s", resultState, overrideWindowState);
-
-	/* Override with command line options */
-	if (!g_strcmp0 (overrideWindowState, "hidden"))
-		resultState = MAINWINDOW_HIDDEN;
-	if (!g_strcmp0 (overrideWindowState, "shown"))
-		resultState = MAINWINDOW_SHOWN;
-
-	/* And set the window to the resulting state */
-	switch (resultState) {
-		case MAINWINDOW_HIDDEN:
-			debug (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
-			gtk_widget_set_visible (GTK_WIDGET (shell->window), FALSE);
-			break;
-		case MAINWINDOW_SHOWN:
-		default:
-			/* Safe default is always to show window */
-			debug (DEBUG_GUI, "Restoring window state 'shown'");
-			gtk_widget_set_visible (GTK_WIDGET (shell->window), TRUE);
-	}
-	
-	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
-	if (!last_window_maximized) {
-		// FIXME: GTK4 do we need the resize=TRUE workaround from 1.16?
-	}
-	
 	/* Need to run asynchronous otherwise pane widget allocation is reported
 	   wrong, maybe it is running to early as we realize only above. Also
 	   only like this window position restore works properly. */
@@ -999,7 +954,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->shellActions = shell_actions_create (shell);
 	shell->feedlistActions = node_actions_create (shell);
 	shell->itemlistActions = item_actions_create (shell);
-	shell->htmlviewActions = link_actions_create (shell);
+	shell->linkActions = link_actions_create (shell);
 
 	/* 9. Setup plugins that all LifereaShell child objects already created */
 	if (!pluginsDisabled)

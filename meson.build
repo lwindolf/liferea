@@ -45,7 +45,7 @@ configure_file(
 
 subdir('resources')
 subdir('src')
-subdir('man')
+subdir('data')
 
 liferea_deps = [
   dependency('glib-2.0', version: '>= 2.74.0'),
@@ -68,29 +68,6 @@ liferea = executable('liferea',
   dependencies: liferea_deps,
   include_directories: include_directories('.', 'src')
 )
-
-icondir = join_paths(datadir, 'icons', 'hicolor')
-foreach size: ['scalable']
-  install_subdir(join_paths('pixmaps', size), install_dir: icondir)
-endforeach
-
-pixmapsdir = join_paths(datadir, 'pixmaps')
-foreach size: ['16x16', '32x32', '22x22', '24x24', '32x32', '48x48']
-  install_subdir(join_paths('pixmaps', size), install_dir: pixmapsdir)
-endforeach
-foreach file: [
-  'default.svg',
-  'emblem-important.svg',
-  'emblem-web.svg',
-  'fl_opml.png',
-  'folder-saved-search.png',
-  'folder.png',
-  'newsbin.png',
-  'unread.png'
-]
-  # FIXME: does this duplicate pixmaps?
-  install_data(join_paths('pixmaps', file), install_dir: pixmapsdir)
-endforeach
 
 install_subdir('plugins', install_dir: libdir)
 install_subdir('css', install_dir: datadir)

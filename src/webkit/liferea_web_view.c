@@ -30,6 +30,7 @@
 #include "social.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
+#include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "web_extension/liferea_web_extension_names.h"
 
@@ -105,16 +106,15 @@ menu_add_separator (WebKitContextMenu *menu) {
 }
 
 static void
-menu_add_item (WebKitContextMenu *menu, const gchar *label, const gchar *actionName, const gchar *format, GVariant *v)
+menu_add_item (WebKitContextMenu *menu, const gchar *label, GActionMap *map, const gchar *actionName, GVariant *v)
 {
-	g_autoptr(GVariantType) type = NULL;
-	g_autoptr(GSimpleAction) action;
-
-	if (format)
-		type = g_variant_type_new (format);
-
-	action = g_simple_action_new (actionName, type);
-	webkit_context_menu_append (menu, webkit_context_menu_item_new_from_gaction (G_ACTION (action), label, v));
+	GAction *action = g_action_map_lookup_action (map, actionName);
+	if (!action) {
+		g_warning ("LifereaWebView: action %s not found", actionName);
+		return;
+	}
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (action), TRUE);
+	webkit_context_menu_append (menu, webkit_context_menu_item_new_from_gaction (action, label, v));
 }
 
 /**
@@ -122,11 +122,9 @@ menu_add_item (WebKitContextMenu *menu, const gchar *label, const gchar *actionN
  *
  * @view: the object on which the signal is emitted
  * @context_menu: the context menu proposed by WebKit
- * @event: the event that triggered the menu
  * @hit_result: result of hit test at that location.
  *
  * When a context menu is about to be displayed this signal is emitted.
- *
  */
 static gboolean
 liferea_web_view_on_menu (WebKitWebView 	*view,
@@ -134,6 +132,9 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 			WebKitHitTestResult 	*hit_result,
 			gpointer             	user_data)
 {
+	LifereaWebView		*self = LIFEREA_WEB_VIEW (view);
+	GActionMap		*actionMap = G_ACTION_MAP (self->menu_action_group);
+	GActionMap		*appActionMap = G_ACTION_MAP (gtk_window_get_application (GTK_WINDOW (liferea_shell_get_window ())));
 	g_autofree gchar	*image_uri = NULL;
 	g_autofree gchar	*link_uri = NULL;
 	g_autofree gchar	*link_title = NULL;
@@ -156,8 +157,6 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	if (!link_uri || g_str_has_prefix (link_uri, "javascript:") || g_str_has_prefix (link_uri, "data:"))
 		link = FALSE;
 
-	liferea_web_view_update_actions_sensitivity (LIFEREA_WEB_VIEW (view));
-
 	g_autoptr(GVariant) vl = NULL;
 	g_autoptr(GVariant) vi = NULL;
 
@@ -168,51 +167,48 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 
 	/* and now add all we want to see */
 	if (link) {	
-		gchar *path;
+		g_autofree gchar *bookmarkLabel = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
+		g_autoptr(GVariant) bookmarkParams = g_variant_new ("(ss)", link_uri, link_title?link_title:"");
 
-		menu_add_item (context_menu, _("Open Link In _Tab"), "app.open-link-in-tab", "(s)", vl);
-		menu_add_item (context_menu, _("Open Link In Browser"), "app.open-link-in-browser", "(s)", vl);
-		menu_add_item (context_menu, _("Open Link In External Browser"), "app.open-link-in-external-browser", "(s)", vl);
+		menu_add_item (context_menu, _("Open Link In _Tab"), appActionMap, "open-link-in-tab", vl);
+		menu_add_item (context_menu, _("Open Link In Browser"), appActionMap, "open-link-in-browser", vl);
+		menu_add_item (context_menu, _("Open Link In External Browser"), appActionMap, "open-link-in-external-browser", vl);
 
 		menu_add_separator (context_menu);
 
-		/*path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
-		menu_item = g_menu_item_new (path, NULL);
-		g_menu_item_set_action_and_target (menu_item, "app.social-bookmark-link", "(ss)", link_uri, link_title?link_title:"");
-		g_menu_append_item (section, menu_item);
-		g_object_unref (menu_item);
-		g_free (path);*/
-
-		menu_add_item (context_menu, _("_Copy Link Location"), "app.copy-link-to-clipboard", "(s)", vl);
+		//menu_add_item (context_menu, bookmarkLabel, appActionMap, "social-bookmark-link", bookmarkParams);
+		menu_add_item (context_menu, _("_Copy Link Location"), appActionMap, "copy-link-to-clipboard", vl);
 	}
 	if (image) {
-		menu_add_item (context_menu, _("_View Image"),           "app.open-link-in-tab", "(s)", vi);
-		menu_add_item (context_menu, _("_Copy Image Location"),  "app.copy-link-to-clipboard", "(s)", vi);
+		menu_add_item (context_menu, _("_View Image"),          appActionMap, "open-link-in-tab", vi);
+		menu_add_item (context_menu, _("_Copy Image Location"), appActionMap, "copy-link-to-clipboard", vi);
 	}
 	if (link) {
-		menu_add_item (context_menu, _("S_ave Link As"), "liferea_web_view.save-link", "(s)", vl);
+		menu_add_item (context_menu, _("S_ave Link As"), actionMap, "save-link", vl);
 	}
 	if (image) {
-		menu_add_item (context_menu, _("S_ave Image As"), "liferea_web_view.save-link", "(s)", vi);
+		menu_add_item (context_menu, _("S_ave Image As"), actionMap, "save-link", vi);
 	}
 	if (link) {
 		menu_add_separator (context_menu);
 
-		menu_add_item (context_menu, _("_Subscribe..."), "liferea_web_view.subscribe-link", "(s)", vl);
+		menu_add_item (context_menu, _("_Subscribe..."), actionMap, "subscribe-link", vl);
 	}
 
 	if(!link && !image) {
-		menu_add_item (context_menu, _("_Copy"), "liferea_web_view.copy-selection", NULL, NULL);
+		menu_add_item (context_menu, _("_Copy"), actionMap, "copy-selection", NULL);
 
 		menu_add_separator (context_menu);
 
-		menu_add_item (context_menu, _("_Increase Text Size"), "liferea_web_view.zoom-in", NULL, NULL);
-		menu_add_item (context_menu, _("_Decrease Text Size"), "liferea_web_view.zoom-out", NULL, NULL);
+		menu_add_item (context_menu, _("_Increase Text Size"), actionMap, "zoom-in", NULL);
+		menu_add_item (context_menu, _("_Decrease Text Size"), actionMap, "zoom-out", NULL);
 	}
 
 	if(debug_get_flags () & DEBUG_HTML) {
-		menu_add_item (context_menu, "Inspect", "liferea_web_view.web-inspector", NULL, NULL);
+		menu_add_item (context_menu, "Inspect", actionMap, "web-inspector", NULL);
 	}
+
+	liferea_web_view_update_actions_sensitivity (LIFEREA_WEB_VIEW (view));
 
 	return FALSE;
 }

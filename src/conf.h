@@ -59,7 +59,6 @@
 
 /* GUI settings and persistency values */
 #define CONFIRM_MARK_ALL_READ 		"confirm-mark-all-read"
-#define LAST_WINDOW_STATE		"last-window-state"
 #define LAST_WINDOW_X			"last-window-x"
 #define LAST_WINDOW_Y			"last-window-y"
 #define LAST_WINDOW_WIDTH		"last-window-width"

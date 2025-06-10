@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <schemalist gettext-domain="liferea">
-  <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea" path="/org/gnome/liferea/">
+  <schema gettext-domain="liferea" id="net.sf.liferea" path="/org/gnome/liferea/">
     <child name="plugins" schema="net.sf.liferea.plugins"/>
     <key name="browse-inside-application" type="b">
       <default>false</default>
@@ -204,7 +204,7 @@
     </key>
   </schema>
 
-  <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea.plugins" path="/org/gnome/liferea/plugins/">
+  <schema gettext-domain="liferea" id="net.sf.liferea.plugins" path="/org/gnome/liferea/plugins/">
     <key name="active-plugins" type="as">
       <default>['gnome-keyring']</default>
       <summary>Active (non-builtin) plugins</summary>
