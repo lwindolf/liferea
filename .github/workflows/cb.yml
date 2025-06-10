@@ -28,10 +28,11 @@ jobs:
        apt-get update -qq
        apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkitgtk-6.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-2-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind libfribidi-dev gla11y appstream desktop-file-utils meson ninja-build
        mkdir inst
+       mkdir -p inst/share/glib-2.0/schemas
 
     - run: meson setup builddir --prefix=$(pwd)/inst
     - run: meson compile -C builddir
-    - run: sudo meson install -C builddir
+    - run: meson install -C builddir
     - run: cp net.sf.liferea.gschema.xml /usr/share/glib-2.0/schemas
     - run: /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas/
     - run: ls -l /usr/share/glib-2.0/schemas
