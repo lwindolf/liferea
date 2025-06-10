@@ -21,7 +21,7 @@ Compile with
 
 To install
 
-    ninja install
+    meson install -C builddir
 
 If you compile with a --prefix directory which does not match $XDG_DATA_DIRS
 you will get a runtime error about the schema not being found. To workaround
