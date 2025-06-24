@@ -1,0 +1,2096 @@
+# Telugu translation for liferea package.
+# Author: Aryan Karamtoth <aryankmmiv@outlook.com> 2025
+# Aryan Karamtoth  <>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: unnamed project\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-03 03:21+0100\n"
+"PO-Revision-Date: 2025-06-24 18:16+0530\n"
+"Last-Translator: Aryan Karamtoth \n"
+"Language-Team: GNOME Telugu Translation Team\n"
+"Language: te\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 46.0\n"
+
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:338
+#: ../resources/mainwindow.ui.h:1
+msgid "Liferea"
+msgstr "లైఫ్రియా"
+
+#: ../net.sourceforge.liferea.desktop.in.h:2
+msgid "Feed Reader"
+msgstr "ఫీడ్ రీడర్"
+
+#: ../net.sourceforge.liferea.desktop.in.h:3
+msgid "Liferea Feed Reader"
+msgstr "లైఫ్రియా ఫీడ్ రీడర్"
+
+#: ../net.sourceforge.liferea.desktop.in.h:4
+msgid "Read news feeds and blogs"
+msgstr "వార్తల ఫీడ్‌లు మరియు బ్లాగులను చదవండి"
+
+#: ../net.sourceforge.liferea.desktop.in.h:5
+msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
+msgstr "news;feed;aggregator;blog;podcast;syndication;rss;atom"
+
+#: ../plugins/getfocus.py:95
+msgid "Opacity:"
+msgstr "అస్పష్టత:"
+
+#: ../plugins/getfocus.py:96
+msgid "Opacity"
+msgstr "అస్పష్టత"
+
+#: ../plugins/getfocus.py:106
+msgid "Min"
+msgstr "కనిష్ట"
+
+#: ../plugins/getfocus.py:111
+msgid "Max"
+msgstr "గరిష్టంగా"
+
+#: ../plugins/getfocus.py:117
+msgid "Save"
+msgstr "సేవ్ చేయండి"
+
+#: ../plugins/headerbar.py:67 ../resources/liferea_menu.ui.h:20
+msgid "Previous Item"
+msgstr "మునుపటి అంశం"
+
+#: ../plugins/headerbar.py:73 ../resources/liferea_menu.ui.h:21
+msgid "Next Item"
+msgstr "తదుపరి అంశం"
+
+#: ../plugins/headerbar.py:81 ../resources/liferea_menu.ui.h:19
+msgid "_Next Unread Item"
+msgstr "తదుపరి చదవని అంశం (_N)"
+
+#: ../plugins/headerbar.py:89 ../resources/liferea_menu.ui.h:14
+msgid "_Mark Items Read"
+msgstr "చదివిన అంశాలను గుర్తించండి (_M)"
+
+#: ../plugins/headerbar.py:113 ../resources/liferea_menu.ui.h:39
+msgid "Search All Feeds..."
+msgstr "అన్ని ఫీడ్‌లను శోధించు..."
+
+#: ../plugins/libnotify.py:41
+msgid "Feed Updates"
+msgstr "ఫీడ్ నవీకరణలు"
+
+#: ../plugins/plugin-installer.py:55
+msgid "Plugins"
+msgstr "ప్లగిన్లు"
+
+#: ../plugins/plugin-installer.py:72
+msgid "Plugin Installer"
+msgstr "ప్లగిన్ ఇన్‌స్టాలర్"
+
+#: ../plugins/plugin-installer.py:86
+msgid "Activate Plugins"
+msgstr "ప్లగిన్‌లను సక్రియం చేయండి"
+
+#: ../plugins/plugin-installer.py:87
+msgid "Download Plugins"
+msgstr "ప్లగిన్‌లను డౌన్‌లోడ్ చేయండి"
+
+#: ../plugins/plugin-installer.py:105
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr "ప్లగిన్ ఎంట్రీ %s కోసం తప్పు ఫీల్డ్‌లు"
+
+#: ../plugins/plugin-installer.py:128
+msgid "All"
+msgstr "అన్నీ"
+
+#: ../plugins/plugin-installer.py:128 ../resources/properties.ui.h:39
+msgid "Advanced"
+msgstr "అధునాతనమైనది"
+
+#: ../plugins/plugin-installer.py:128
+msgid "Menu"
+msgstr "మెనూ"
+
+#: ../plugins/plugin-installer.py:128
+msgid "Notifications"
+msgstr "నోటిఫికేషన్‌లు"
+
+#: ../plugins/plugin-installer.py:136
+msgid "Filter by category"
+msgstr "వర్గం వారీగా ఫిల్టర్ చేయండి"
+
+#: ../plugins/plugin-installer.py:143
+msgid "_Install"
+msgstr "ఇన్‌స్టాల్ చేయండి (_I)"
+
+#: ../plugins/plugin-installer.py:147
+msgid "_Uninstall"
+msgstr "అన్‌ఇన్‌స్టాల్ చేయండి (_U)"
+
+#: ../plugins/plugin-installer.py:252
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr "ప్యాకేజీ మేనేజర్ '%s' లేదు. అవసరమైన డిపెండెన్సీలను తనిఖీ చేయలేరు లేదా ఇన్‌స్టాల్ చేయలేరు!"
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr "'%s' ప్యాకేజీ లేదు. మీరు దీన్ని ఇన్‌స్టాల్ చేయాలనుకుంటున్నారా? ('%s'ని అమలు చేస్తుంది)"
+
+#: ../plugins/plugin-installer.py:275
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr "ప్యాకేజీ ఇన్‌స్టాలేషన్ విఫలమైంది (%s)! మరిన్ని సమస్య వివరాల కోసం కన్సోల్ అవుట్‌పుట్‌ను తనిఖీ చేయండి!"
+
+#: ../plugins/plugin-installer.py:278
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr "ప్లగిన్ డిపెండెన్సీలను (%s) తనిఖీ చేయడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:287
+msgid "Command \"git\" not found, please install it!"
+msgstr "\"git\" కమాండ్ దొరకలేదు, దయచేసి దాన్ని ఇన్‌స్టాల్ చేయండి!"
+
+#: ../plugins/plugin-installer.py:296
+#, python-format
+msgid "Copying %s to %s"
+msgstr "%s నుండి %s కి కాపీ చేస్తోంది"
+
+#: ../plugins/plugin-installer.py:299
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr "ప్లగిన్ డైరెక్టరీ (%s) ను కాపీ చేయడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:308
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr "ప్లగిన్ .py ఫైల్ (%s) ను కాపీ చేయడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:318
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ".plugin ఫైల్ (%s) ను కాపీ చేయడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Creating schema directory %s"
+msgstr "స్కీమా డైరెక్టరీ %s ను సృష్టిస్తోంది"
+
+#: ../plugins/plugin-installer.py:331
+#, python-format
+msgid "Installing schema %s"
+msgstr "స్కీమా %s ని ఇన్‌స్టాల్ చేస్తోంది"
+
+#: ../plugins/plugin-installer.py:335
+msgid "Compiling schemas..."
+msgstr "స్కీమాలను కంపైల్ చేస్తోంది..."
+
+#: ../plugins/plugin-installer.py:340
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr "స్కీమా ఫైళ్ళను (%s) ఇన్‌స్టాల్ చేయడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:350
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr "ప్లగిన్ (%s) ను ఎనేబుల్ చేయడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:356
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr "'%s' ప్లగిన్ ఇప్పుడు ఇన్‌స్టాల్ చేయబడింది. Liferea ని పునఃప్రారంభించాలని నిర్ధారించుకోండి!"
+
+#: ../plugins/plugin-installer.py:370
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr "ప్లగిన్ (%s) ని నిలిపివేయడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:377 ../plugins/plugin-installer.py:397
+#, python-format
+msgid "Deleting '%s'"
+msgstr "'%s' ను తొలగిస్తోంది"
+
+#: ../plugins/plugin-installer.py:380
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr "'%s' (%s) డైరెక్టరీని తొలగించడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:390
+msgid "Failed to remove .py file!"
+msgstr ".py ఫైల్‌ను తొలగించడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:400
+msgid "Failed to remove .plugin file!"
+msgstr ".plugin ఫైల్‌ను తీసివేయడంలో విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:409
+msgid "Sorry! Plugin removal failed!"
+msgstr "క్షమించండి! ప్లగిన్ తొలగింపు విఫలమైంది!"
+
+#: ../plugins/plugin-installer.py:411
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
+msgstr "ప్లగిన్ తీసివేయబడింది. ఇది పూర్తిగా అమలులోకి రావడానికి దయచేసి Lifereaని ఒకసారి పునఃప్రారంభించండి!"
+
+#: ../plugins/trayicon.py:168
+msgid "Liferea unread icon"
+msgstr "లైఫ్రియా చదవని చిహ్నం"
+
+#: ../plugins/trayicon.py:186
+msgid "Show / Hide"
+msgstr "చూపించు / దాచు"
+
+#: ../plugins/trayicon.py:187
+msgid "Minimize to tray on close"
+msgstr "మూసివేసినప్పుడు ట్రేకి కుదించండి"
+
+#: ../plugins/trayicon.py:188
+msgid "Quit"
+msgstr "నిష్క్రమించు"
+
+#: ../src/actions/item_actions.c:120
+msgid "You must select a feed to delete its items!"
+msgstr "మీరు ఒక ఫీడ్‌ను ఎంచుకుని దాని అంశాలను తొలగించాలి!"
+
+#: ../src/actions/item_actions.c:136 ../src/ui/item_list_view.c:991
+#: ../src/ui/item_list_view.c:1006
+msgid "No item has been selected"
+msgstr "ఏ వస్తువును ఎంచుకోలేదు."
+
+#: ../src/actions/item_actions.c:187
+#, c-format
+msgid "Email command failed: %s"
+msgstr "ఈమెయిల్ ఆదేశం విఫలమైంది: %s"
+
+#: ../src/actions/item_actions.c:190 ../src/browser.c:101
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "ప్రారంభం: \"%s\""
+
+#: ../src/actions/node_actions.c:55 ../src/actions/shell_actions.c:60
+msgid "Liferea is in offline mode. No update possible."
+msgstr "లైఫ్రియా ఆఫ్‌లైన్ మోడ్‌లో ఉంది. అప్‌డేట్ చేయడం సాధ్యం కాదు."
+
+#: ../src/actions/node_actions.c:165
+msgid "Save items to file"
+msgstr "ఫైల్‌కి అంశాలను సేవ్ చేయండి"
+
+#: ../src/actions/node_actions.c:168 ../src/ui/feed_list_view.c:776
+#: ../src/ui/feed_list_view.c:820
+msgid "_Cancel"
+msgstr "రద్దు (_C)"
+
+#: ../src/actions/node_actions.c:170
+msgid "_Save"
+msgstr "సేవ్ చేయండి (_S)"
+
+#: ../src/actions/node_actions.c:179
+msgid "RSS 2.0 files"
+msgstr "RSS 2.0 ఫైల్స్"
+
+#: ../src/actions/node_actions.c:185
+msgid "All files"
+msgstr "అన్ని ఫైల్‌లు"
+
+#: ../src/actions/node_actions.c:190 ../src/ui/browser_tabs.c:266
+msgid "Untitled"
+msgstr "శీర్షిక లేని"
+
+#: ../src/actions/shell_actions.c:113
+msgid "all feeds"
+msgstr "అన్ని ఫీడ్‌లు"
+
+#: ../src/actions/shell_actions.c:114
+#, c-format
+msgid "Mark %s as read ?"
+msgstr "%s ని చదివినట్లుగా గుర్తించాలా?"
+
+#: ../src/actions/shell_actions.c:118
+#, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr "మీరు %s లోని అన్ని అంశాలను చదివినట్లుగా గుర్తు పెట్టాలనుకుంటున్నారా?"
+
+#: ../src/actions/shell_actions.c:177
+msgid "Help Topics"
+msgstr "సహాయ అంశాలు"
+
+#: ../src/actions/shell_actions.c:183
+msgid "Quick Reference"
+msgstr "త్వరిత సూచన"
+
+#: ../src/actions/shell_actions.c:189
+msgid "FAQ"
+msgstr "FAQ"
+
+#: ../src/browser.c:81 ../src/browser.c:98
+#, c-format
+msgid "Browser command failed: %s"
+msgstr "బ్రౌజర్ ఆదేశం విఫలమైంది: %s"
+
+#. unauthorized
+#: ../src/comments.c:116
+msgid "Authorization Error"
+msgstr "అధికార లోపం"
+
+#: ../src/common.c:68
+#, c-format
+msgid "Cannot create cache directory \"%s\"!"
+msgstr "\"%s\" కాష్ డైరెక్టరీని సృష్టించలేము!"
+
+#. translation hint: date format for today, reorder format codes as necessary
+#: ../src/date.c:135
+msgid "Today %l:%M %p"
+msgstr "ఈరోజు %l:%M %p"
+
+#. translation hint: date format for yesterday, reorder format codes as necessary
+#: ../src/date.c:144
+msgid "Yesterday %l:%M %p"
+msgstr "నిన్న %l:%M %p"
+
+#. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
+#: ../src/date.c:156
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
+#: ../src/date.c:164
+msgid "%b %d %l:%M %p"
+msgstr "%b %d %l:%M %p"
+
+#. translation hint: date format for dates from the last years, reorder format codes as necessary
+#: ../src/date.c:167
+msgid "%b %d %Y"
+msgstr "%b %d %Y"
+
+#: ../src/export.c:172
+#, c-format
+msgid "Error renaming %s to %s: %s\n"
+msgstr "Error renaming %s to %s: %s\n"
+
+#: ../src/export.c:371 ../src/export.c:373
+#, c-format
+msgid "XML error while reading OPML file! Could not import \"%s\"!"
+msgstr "OPML ఫైల్ చదువుతున్నప్పుడు XML లోపం! \"%s\"ని దిగుమతి చేయలేకపోయాము!"
+
+#: ../src/export.c:379 ../src/export.c:381
+#, c-format
+msgid ""
+"Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr "ఖాళీ పత్రం! దిగుమతి చేస్తున్నప్పుడు OPML పత్రం \"%s\" ఖాళీగా ఉండకూడదు."
+
+#: ../src/export.c:402 ../src/export.c:404
+#, c-format
+msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
+msgstr "\"%s\" చెల్లుబాటు అయ్యే OPML పత్రం కాదు! Liferea ఈ ఫైల్‌ను దిగుమతి చేయలేదు!"
+
+#: ../src/export.c:423
+msgid "Imported feed list"
+msgstr "ఫీడ్ జాబితా దిగుమతి చేయబడింది"
+
+#: ../src/export.c:435
+msgid "Import Feed List"
+msgstr "ఫీడ్ జాబితాను దిగుమతి చేయండి"
+
+#: ../src/export.c:435
+msgid "Import"
+msgstr "దిగుమతి"
+
+#: ../src/export.c:435 ../src/export.c:452
+#: ../src/node_sources/opml_source.c:366
+msgid "OPML Files"
+msgstr "OPML ఫైల్స్"
+
+#: ../src/export.c:443
+msgid "Error while exporting feed list!"
+msgstr "ఫీడ్ జాబితాను ఎగుమతి చేస్తున్నప్పుడు లోపం ఏర్పడింది!"
+
+#: ../src/export.c:445
+msgid "Feed List exported!"
+msgstr "ఫీడ్ జాబితా ఎగుమతి చేయబడింది!"
+
+#: ../src/export.c:452
+msgid "Export Feed List"
+msgstr "ఎగుమతి ఫీడ్ జాబితా"
+
+#: ../src/export.c:452
+msgid "Export"
+msgstr "ఎగుమతి చేయండి"
+
+#: ../src/feed_parser.c:201
+msgid "Empty document!"
+msgstr "పత్రం ఖాళీ!"
+
+#: ../src/feed_parser.c:210
+msgid "Invalid XML!"
+msgstr "చెల్లని XML!"
+
+#: ../src/node_source.c:113
+msgid "Miniflux"
+msgstr "మినీఫ్లక్స్"
+
+#: ../src/node_source.c:342
+msgid "Source Type"
+msgstr "మూల రకం"
+
+#: ../src/node_source.c:393
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr "'%s' లాగిన్ ఇంకా పూర్తి కాలేదు! లాగిన్ పూర్తయ్యే వరకు వేచి ఉండండి."
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/node_source.c:559
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr "'%s' సబ్‌స్క్రిప్షన్ విజయవంతంగా స్థానిక ఫీడ్‌లుగా మార్చబడింది!"
+
+#: ../src/node_sources/default_source.c:135
+#: ../resources/new_subscription.ui.h:1 ../resources/simple_subscription.ui.h:1
+msgid "New Subscription"
+msgstr "కొత్త సబ్‌స్క్రిప్షన్"
+
+#: ../src/node_sources/google_source.c:192
+#: ../src/node_sources/reedah_source.c:120
+#: ../src/node_sources/theoldreader_source.c:122
+msgid "Login failed!"
+msgstr "లాగిన్ విఫలమైంది!"
+
+#: ../src/node_sources/google_source.c:402
+msgid "Google Reader API"
+msgstr "Google Reader API"
+
+#: ../src/node_sources/google_source_feed.c:159
+msgid "Could not parse JSON returned by Google Reader API!"
+msgstr "Google Reader API ద్వారా తిరిగి వచ్చిన JSONను అన్వయించడం సాధ్యం కాలేదు!"
+
+#: ../src/node_sources/opml_source.c:313
+msgid "Planet, BlogRoll, OPML"
+msgstr "ప్లానెట్, బ్లాగ్‌రోల్, OPML"
+
+#: ../src/node_sources/opml_source.c:366
+msgid "Choose OPML File"
+msgstr "OPML ఫైల్‌ను ఎంచుకోండి"
+
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:285
+#: ../src/ui/subscription_dialog.c:292
+msgid "_Open"
+msgstr "తెరువు (_O)"
+
+#: ../src/node_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "కొత్త OPML సబ్‌స్క్రిప్షన్"
+
+#: ../src/node_sources/reedah_source.c:331
+msgid "Reedah"
+msgstr "రీదా"
+
+#: ../src/node_sources/reedah_source_feed.c:154
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr "Reedah API ద్వారా తిరిగి వచ్చిన JSONను అన్వయించడం సాధ్యం కాలేదు!"
+
+#: ../src/node_sources/theoldreader_source.c:360
+msgid "TheOldReader"
+msgstr "ది ఓల్డ్ రీడర్"
+
+#: ../src/node_sources/ttrss_source.c:227
+#: ../src/node_sources/ttrss_source.c:293
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr "TinyTinyRSS HTTP API అందుబాటులో లేదు!"
+
+#: ../src/node_sources/ttrss_source.c:234
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr ""
+"TinyTinyRSS ఫీడ్ కు సబ్‌స్క్రైబ్ చేసుకోవడం విఫలమైంది! మీరు నిజంగా ఫీడ్ URL ను పాస్ చేశారో లేదో తనిఖీ "
+"చేయండి!"
+
+#: ../src/node_sources/ttrss_source.c:300
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr "TinyTinyRSS ఫీడ్ నుండి సభ్యత్వాన్ని తీసివేయడం విఫలమైంది!"
+
+#: ../src/node_sources/ttrss_source.c:318
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr ""
+"ఈ TinyTinyRSS వెర్షన్ ఫీడ్‌లను తీసివేయడానికి మద్దతు ఇవ్వదు. వెర్షన్ %s లేదా తదుపరి దానికి అప్‌గ్రేడ్ "
+"చేయండి!"
+
+#: ../src/node_sources/ttrss_source.c:468
+msgid "Tiny Tiny RSS"
+msgstr "చిన్న చిన్న RSS"
+
+#: ../src/node_sources/ttrss_source_feed.c:150
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr "TinyTinyRSS API ద్వారా తిరిగి వచ్చిన JSONను అన్వయించడం సాధ్యం కాలేదు!"
+
+#: ../src/node_providers/newsbin.c:132
+msgid "News Bin Properties"
+msgstr "న్యూస్ బిన్ ప్రాపర్టీస్"
+
+#: ../src/node_providers/newsbin.c:136 ../resources/new_newsbin.ui.h:1
+msgid "Create News Bin"
+msgstr "న్యూస్ బిన్‌ని సృష్టించండి"
+
+#: ../src/node_providers/vfolder.c:52
+msgid "New Search Folder"
+msgstr "కొత్త శోధన ఫోల్డర్"
+
+#. if we don't find a feed with unread items do nothing
+#: ../src/itemlist.c:409
+msgid "There are no unread items"
+msgstr "చదవని అంశాలు ఏవీ లేవు."
+
+#: ../src/liferea_application.c:271
+msgid ""
+"Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
+msgstr ""
+"Liferea ను దాని ప్రధాన విండో STATE లో ప్రారంభించండి. STATE `చూపబడవచ్చు' లేదా `దాచబడవచ్చు'"
+
+#: ../src/liferea_application.c:271
+msgid "STATE"
+msgstr "STATE"
+
+#: ../src/liferea_application.c:272
+msgid "Show version information and exit"
+msgstr "వెర్షన్ సమాచారాన్ని చూపించి నిష్క్రమించండి"
+
+#: ../src/liferea_application.c:273
+msgid "Add a new subscription"
+msgstr "కొత్త సభ్యత్వాన్ని జోడించండి"
+
+#: ../src/liferea_application.c:273
+msgid "uri"
+msgstr "uri"
+
+#: ../src/liferea_application.c:274
+msgid "Start with all plugins disabled"
+msgstr "అన్ని ప్లగిన్‌లను నిలిపివేయడంతో ప్రారంభించండి"
+
+#: ../src/liferea_application.c:279
+msgid "Print debugging messages of all types"
+msgstr "అన్ని రకాల డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:280
+msgid "Print debugging messages for the cache handling"
+msgstr "కాష్ హ్యాండ్లింగ్ కోసం డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:281
+msgid "Print debugging messages for the configuration handling"
+msgstr "కాన్ఫిగరేషన్ హ్యాండ్లింగ్ కోసం డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:282
+msgid "Print debugging messages of the database handling"
+msgstr "డేటాబేస్ హ్యాండ్లింగ్ యొక్క డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:283
+msgid "Print debugging messages of all GUI functions"
+msgstr "అన్ని GUI ఫంక్షన్ల డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:284
+msgid ""
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
+msgstr ""
+"HTML రెండరింగ్ డీబగ్గింగ్‌ను ప్రారంభిస్తుంది. Liferea HTML అవుట్‌పుట్‌ను రెండర్ చేసిన ప్రతిసారీ అది "
+"జనరేట్ చేయబడిన HTMLను ~/.cache/liferea/output.html లోకి డంప్ చేస్తుంది."
+
+#: ../src/liferea_application.c:285
+msgid "Print debugging messages of all network activity"
+msgstr "అన్ని నెట్‌వర్క్ కార్యాచరణ యొక్క డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:286
+msgid "Print debugging messages of all parsing functions"
+msgstr "అన్ని పార్సింగ్ ఫంక్షన్ల డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:287
+msgid "Print debugging messages of the feed update processing"
+msgstr "ఫీడ్ అప్‌డేట్ ప్రాసెసింగ్ యొక్క డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:288
+msgid "Print debugging messages of the search folder matching"
+msgstr "శోధన ఫోల్డర్ సరిపోలిక యొక్క డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#: ../src/liferea_application.c:293 ../src/liferea_application.c:294
+msgid "Print debugging messages for the given topic"
+msgstr "ఇచ్చిన అంశం కోసం డీబగ్గింగ్ సందేశాలను ముద్రించండి"
+
+#. Some libsoup transport errors
+#: ../src/net.c:431
+msgid "The update request was cancelled"
+msgstr "అప్‌డేట్ అభ్యర్థన రద్దు చేయబడింది."
+
+#. http 3xx redirection
+#: ../src/net.c:434
+msgid "The resource moved permanently to a new location"
+msgstr "వనరు శాశ్వతంగా కొత్త స్థానానికి తరలించబడింది."
+
+#. http 4xx client error
+#: ../src/net.c:437
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box"
+msgstr ""
+"ఈ ఫీడ్‌ను డౌన్‌లోడ్ చేసుకోవడానికి మీకు అధికారం లేదు. దయచేసి ఫీడ్ ప్రాపర్టీస్ డైలాగ్ బాక్స్‌లో మీ యూజర్‌నేమ్ మరియు "
+"పాస్‌వర్డ్‌ను అప్‌డేట్ చేయండి."
+
+#: ../src/net.c:439
+msgid "Payment required"
+msgstr "చెల్లింపు అవసరం"
+
+#: ../src/net.c:440
+msgid "You're not allowed to access this resource"
+msgstr "ఈ వనరును యాక్సెస్ చేయడానికి మీకు అనుమతి లేదు."
+
+#: ../src/net.c:441
+msgid "Resource Not Found"
+msgstr "వనరు కనుగొనబడలేదు"
+
+#: ../src/net.c:442
+msgid "Method Not Allowed"
+msgstr "పద్ధతి అనుమతించబడదు"
+
+#: ../src/net.c:443
+msgid "Not Acceptable"
+msgstr "ఆమోదయోగ్యం కాదు"
+
+#: ../src/net.c:444
+msgid "Proxy authentication required"
+msgstr "ప్రాక్సీ ప్రమాణీకరణ అవసరం"
+
+#: ../src/net.c:445
+msgid "Request timed out"
+msgstr "అభ్యర్థన సమయం ముగిసింది"
+
+#: ../src/net.c:446
+msgid ""
+"The webserver indicates this feed is discontinued. It's no longer available. "
+"Liferea won't update it anymore but you can still access the cached "
+"headlines."
+msgstr ""
+"ఈ ఫీడ్ నిలిపివేయబడిందని వెబ్ సర్వర్ సూచిస్తుంది. ఇది ఇకపై అందుబాటులో లేదు. Liferea దీన్ని ఇకపై "
+"నవీకరించదు కానీ మీరు ఇప్పటికీ కాష్ చేసిన హెడ్‌లైన్‌లను యాక్సెస్ చేయవచ్చు."
+
+#. http 5xx server errors
+#: ../src/net.c:449
+msgid "Internal Server Error"
+msgstr "అంతర్గత సర్వర్ లోపం"
+
+#: ../src/net.c:450
+msgid "Not Implemented"
+msgstr "అమలు చేయలేదు"
+
+#: ../src/net.c:451
+msgid "Bad Gateway"
+msgstr "చెడ్డ గేట్‌వే"
+
+#: ../src/net.c:452
+msgid "Service Unavailable"
+msgstr "సేవ అందుబాటులో లేదు"
+
+#: ../src/net.c:453
+msgid "Gateway Timeout"
+msgstr "గేట్‌వే గడువు ముగిసింది"
+
+#: ../src/net.c:454
+msgid "HTTP Version Not Supported"
+msgstr "HTTP సంస్కరణకు మద్దతు లేదు"
+
+#: ../src/net.c:458
+msgid "An unknown networking error happened!"
+msgstr "తెలియని నెట్‌వర్కింగ్ లోపం సంభవించింది!"
+
+#: ../src/node.c:640
+#, c-format
+msgid "Failed to create feed file: %s"
+msgstr "ఫీడ్ ఫైల్‌ను సృష్టించడంలో విఫలమైంది: %s"
+
+#: ../src/node.c:659
+msgid "Feed file exported from Liferea"
+msgstr "లైఫ్రియా నుండి ఫీడ్ ఫైల్ ఎగుమతి చేయబడింది."
+
+#: ../src/node.c:674
+#, c-format
+msgid "Error while saving feed file"
+msgstr "ఫీడ్ ఫైల్‌ను సేవ్ చేస్తున్నప్పుడు లోపం ఏర్పడింది."
+
+#: ../src/parsers/atom10.c:240
+msgid "Website"
+msgstr "వెబ్సైట్"
+
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr "%b %d %H:%M"
+
+#. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
+#. ========================================================================================================================================================================================
+#: ../src/rule.c:272
+msgid "Item"
+msgstr "అంశం"
+
+#: ../src/rule.c:272 ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275
+#: ../src/rule.c:281 ../src/rule.c:282 ../src/rule.c:283
+msgid "does contain"
+msgstr "కలిగి ఉంటుంది"
+
+#: ../src/rule.c:272 ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275
+#: ../src/rule.c:281 ../src/rule.c:282 ../src/rule.c:283
+msgid "does not contain"
+msgstr "కలిగి ఉండదు"
+
+#: ../src/rule.c:273
+msgid "Item title"
+msgstr "అంశం శీర్షిక"
+
+#: ../src/rule.c:274
+msgid "Item body"
+msgstr "అంశం శరీరం"
+
+#: ../src/rule.c:275
+msgid "Item author"
+msgstr "అంశం రచయిత"
+
+#: ../src/rule.c:276
+msgid "Read status"
+msgstr "స్థితిని చదవండి"
+
+#: ../src/rule.c:276
+msgid "is unread"
+msgstr "చదవలేదు"
+
+#: ../src/rule.c:276
+msgid "is read"
+msgstr "చదవబడుతుంది"
+
+#: ../src/rule.c:277
+msgid "Flag status"
+msgstr "జెండా స్థితి"
+
+#: ../src/rule.c:277
+msgid "is flagged"
+msgstr "అని ధ్వజమెత్తారు"
+
+#: ../src/rule.c:277
+msgid "is unflagged"
+msgstr "ఫ్లాగ్ చేయబడలేదు"
+
+#: ../src/rule.c:278
+msgid "Enclosure"
+msgstr "ఎన్ క్లోజర్"
+
+#: ../src/rule.c:278 ../src/rule.c:279
+msgid "included"
+msgstr "చేర్చబడింది"
+
+#: ../src/rule.c:278 ../src/rule.c:279
+msgid "not included"
+msgstr "చేర్చబడలేదు"
+
+#: ../src/rule.c:279
+msgid "Podcast"
+msgstr "పోడ్‌కాస్ట్"
+
+#: ../src/rule.c:280
+msgid "Category"
+msgstr "వర్గం"
+
+#: ../src/rule.c:280
+msgid "is set"
+msgstr "సెట్ చేయబడింది"
+
+#: ../src/rule.c:280
+msgid "is not set"
+msgstr "సెట్ కాలేదు"
+
+#: ../src/rule.c:281
+msgid "Feed title"
+msgstr "ఫీడ్ శీర్షిక"
+
+#: ../src/rule.c:282
+msgid "Feed source"
+msgstr "ఫీడ్ మూలం"
+
+#: ../src/rule.c:283
+msgid "Parent folder title"
+msgstr "పేరెంట్ ఫోల్డర్ శీర్షిక"
+
+#: ../src/subscription.c:108
+#, c-format
+msgid "Subscription \"%s\" is already being updated!"
+msgstr "\"%s\" సబ్‌స్క్రిప్షన్ ఇప్పటికే అప్‌డేట్ చేయబడుతోంది!"
+
+#: ../src/subscription.c:113
+#, c-format
+msgid ""
+"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgstr "\"%s\" సబ్‌స్క్రిప్షన్ నిలిపివేయబడింది. లైఫ్‌రియా ఇకపై దాన్ని అప్‌డేట్ చేయదు!"
+
+#: ../src/subscription.c:188
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "\"%s\" యొక్క URL శాశ్వతంగా మార్చబడింది మరియు నవీకరించబడింది."
+
+#: ../src/subscription.c:194
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "చివరి నవీకరణ నుండి \"%s\" మారలేదు."
+
+#: ../src/subscription.c:207
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" నిలిపివేయబడింది. లైఫ్రియా దానిని ఇకపై నవీకరించదు!"
+
+#: ../src/subscription.c:221 ../src/subscription.c:297
+#, c-format
+msgid "Updating (%d / %d) ..."
+msgstr "(%d / %d) ను నవీకరిస్తోంది ..."
+
+#: ../src/subscription.c:299
+#, c-format
+msgid "Updating '%s'..."
+msgstr "'%s' ను నవీకరిస్తోంది..."
+
+#: ../src/ui/auth_dialog.c:110
+#, c-format
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "\"%s\" (%s) కోసం యూజర్‌నేమ్ మరియు పాస్‌వర్డ్‌ను నమోదు చేయండి:"
+
+#: ../src/ui/auth_dialog.c:112
+msgid "Unknown source"
+msgstr "తెలియని మూలం"
+
+#: ../src/ui/feed_list_view.c:495
+msgid "(Empty)"
+msgstr "(Empty)"
+
+#: ../src/ui/feed_list_view.c:704
+#, c-format
+msgid ""
+"%s\n"
+"<i>Rebuilding</i>"
+msgstr ""
+"%s\n"
+"<i>పునర్నిర్మాణం</i>"
+
+#: ../src/ui/feed_list_view.c:766
+msgid "Deleting entry"
+msgstr "ఎంట్రీని తొలగిస్తోంది"
+
+#: ../src/ui/feed_list_view.c:767
+#, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "మీరు \"%s\" మరియు దాని కంటెంట్‌లను ఖచ్చితంగా తొలగించాలనుకుంటున్నారా?"
+
+#: ../src/ui/feed_list_view.c:767
+#, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
+msgstr "మీరు \"%s\" ను తొలగించాలనుకుంటున్నారా?"
+
+#: ../src/ui/feed_list_view.c:777
+msgid "_Delete"
+msgstr "తొలగించు (_D)"
+
+#: ../src/ui/feed_list_view.c:779
+msgid "Deletion Confirmation"
+msgstr "తొలగింపు నిర్ధారణ"
+
+#: ../src/ui/feed_list_view.c:808
+#, c-format
+msgid ""
+"Are you sure that you want to add a new subscription with URL \"%s\"? "
+"Another subscription with the same URL already exists (\"%s\")."
+msgstr ""
+"\"%s\" URL తో కొత్త సబ్‌స్క్రిప్షన్‌ను జోడించాలనుకుంటున్నారా? అదే URL తో మరొక సబ్‌స్క్రిప్షన్ ఇప్పటికే ఉంది "
+"(\"%s\")."
+
+#: ../src/ui/feed_list_view.c:821
+msgid "_Add"
+msgstr "జోడించు (_A)"
+
+#: ../src/ui/feed_list_view.c:823
+msgid "Adding Duplicate Subscription Confirmation"
+msgstr "నకిలీ సభ్యత్వ నిర్ధారణను జోడిస్తోంది"
+
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "pixmap ఫైల్ కనుగొనబడలేదు: %s"
+
+#: ../src/ui/item_list_view.c:456
+msgid " <span background='red' color='black'> important </span> "
+msgstr "<span background='red' color='black'> ముఖ్యమైనది </span>"
+
+#: ../src/ui/item_list_view.c:819
+msgid "Headline"
+msgstr "శీర్షిక"
+
+#: ../src/ui/item_list_view.c:837
+msgid "Date"
+msgstr "తేదీ"
+
+#: ../src/ui/itemview.c:511
+msgid "This item has no link specified!"
+msgstr "ఈ అంశానికి లింక్ పేర్కొనబడలేదు!"
+
+#: ../src/ui/liferea_browser.c:482
+msgid "Content download failed! Try disabling reader mode."
+msgstr "కంటెంట్ డౌన్‌లోడ్ విఫలమైంది! రీడర్ మోడ్‌ను నిలిపివేయడానికి ప్రయత్నించండి."
+
+#: ../src/ui/liferea_browser.c:495
+msgid "Content extraction failed! Try disabling reader mode."
+msgstr "కంటెంట్ సంగ్రహణ విఫలమైంది! రీడర్ మోడ్‌ను నిలిపివేయడానికి ప్రయత్నించండి."
+
+#: ../src/ui/liferea_shell.c:328
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] " (%d new)"
+msgstr[1] " (%d new)"
+
+#: ../src/ui/liferea_shell.c:333
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d unread%s"
+msgstr[1] "%d unread%s"
+
+#: ../src/ui/preferences_dialog.c:67 ../src/ui/subscription_dialog.c:43
+msgid "minutes"
+msgstr "నిమిషాలు"
+
+#: ../src/ui/preferences_dialog.c:68 ../src/ui/subscription_dialog.c:44
+msgid "hours"
+msgstr "గంటలు"
+
+#: ../src/ui/preferences_dialog.c:69 ../src/ui/subscription_dialog.c:45
+msgid "days"
+msgstr "రోజులు"
+
+#: ../src/ui/preferences_dialog.c:74
+msgid "Space"
+msgstr "Space"
+
+#: ../src/ui/preferences_dialog.c:75
+msgid "<Ctrl> Space"
+msgstr "<Ctrl> Space"
+
+#: ../src/ui/preferences_dialog.c:76
+msgid "<Alt> Space"
+msgstr "<Alt> Space"
+
+#: ../src/ui/preferences_dialog.c:81
+msgid "Normal View"
+msgstr "సాధారణ వీక్షణ"
+
+#: ../src/ui/preferences_dialog.c:82
+msgid "Wide View"
+msgstr "విస్తృత వీక్షణ"
+
+#: ../src/ui/preferences_dialog.c:83
+msgid "Automatic"
+msgstr "ఆటోమేటిక్"
+
+#: ../src/ui/preferences_dialog.c:374
+msgid "Default Browser"
+msgstr "డిఫాల్ట్ బ్రౌజర్"
+
+#: ../src/ui/preferences_dialog.c:376
+msgid "Manual"
+msgstr "మాన్యువల్"
+
+#: ../src/ui/rule_editor.c:261
+msgid "Remove"
+msgstr "తొలగించు"
+
+#: ../src/ui/search_dialog.c:120
+msgid "Saved Search"
+msgstr "సేవ్ చేసిన శోధన"
+
+#: ../src/ui/subscription_dialog.c:285 ../src/ui/subscription_dialog.c:292
+msgid "Choose File"
+msgstr "ఫైల్‌ని ఎంచుకోండి"
+
+#: ../src/ui/subscription_dialog.c:357
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minute."
+msgid_plural ""
+"The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] "ఈ ఫీడ్ ప్రొవైడర్ %d నిమిషం నవీకరణ విరామాన్ని సూచిస్తున్నారు."
+msgstr[1] "ఈ ఫీడ్ ప్రొవైడర్ %d నిమిషాల నవీకరణ విరామాన్ని సూచిస్తుంది."
+
+#: ../src/ui/subscription_dialog.c:361
+msgid "This feed specifies no default update interval."
+msgstr "ఈ ఫీడ్ ఎటువంటి డిఫాల్ట్ నవీకరణ విరామాన్ని పేర్కొనలేదు."
+
+#: ../src/ui/ui_common.c:204
+msgid "All Files"
+msgstr "అన్ని ఫైల్‌లు"
+
+#: ../src/update_job.c:67
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr "ఫిల్టరింగ్ కోసం ఉపయోగించడానికి తాత్కాలిక ఫైల్ %s ను తెరవడంలో లోపం ఏర్పడింది!"
+
+#: ../src/update_job.c:89
+#, c-format
+msgid "%s exited with status %d"
+msgstr "%s స్థితి %d తో నిష్క్రమించారు"
+
+#: ../src/update_job.c:95 ../src/update_job.c:318
+#, c-format
+msgid "Error: Could not open pipe \"%s\""
+msgstr "లోపం: \"%s\" పైప్ తెరవలేకపోయింది."
+
+#: ../src/update_job.c:99
+msgid "Error: Could not write temporary file!"
+msgstr "దోషం: తాత్కాలిక ఫైల్‌ను వ్రాయలేకపోయింది!"
+
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update_job.c:349
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "లోపం: \"%s\" ఫైల్‌ను తెరవలేకపోయింది."
+
+#: ../src/update_job.c:355
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "లోపం: \"%s\" ఫైల్ లేదు."
+
+#: ../src/webkit/liferea_web_view.c:165
+msgid "Open Link In _Tab"
+msgstr "ట్యాబ్‌లో లింక్‌ని తెరవండి (_T)"
+
+#: ../src/webkit/liferea_web_view.c:166
+msgid "Open Link In Browser"
+msgstr "బ్రౌజర్‌లో లింక్‌ని తెరవండి"
+
+#: ../src/webkit/liferea_web_view.c:167
+msgid "Open Link In External Browser"
+msgstr "బాహ్య బ్రౌజర్‌లో లింక్‌ను తెరవండి"
+
+#: ../src/webkit/liferea_web_view.c:173
+#, c-format
+msgid "_Bookmark Link at %s"
+msgstr "%s వద్ద లింక్‌ను బుక్‌మార్క్ చేయండి (_B)"
+
+#: ../src/webkit/liferea_web_view.c:180
+msgid "_Copy Link Location"
+msgstr "లింక్ స్థానాన్ని కాపీ చేయండి (_C)"
+
+#: ../src/webkit/liferea_web_view.c:183
+msgid "_View Image"
+msgstr "చిత్రాన్ని వీక్షించండి (_V)"
+
+#: ../src/webkit/liferea_web_view.c:184
+msgid "_Copy Image Location"
+msgstr "చిత్ర స్థానాన్ని కాపీ చేయండి (_C)"
+
+#: ../src/webkit/liferea_web_view.c:187
+msgid "S_ave Link As"
+msgstr "లింక్‌ను ఇలా సేవ్ చేయండి (_A)"
+
+#: ../src/webkit/liferea_web_view.c:190
+msgid "S_ave Image As"
+msgstr "చిత్రాన్ని ఇలా సేవ్ చేయండి (_A)"
+
+#: ../src/webkit/liferea_web_view.c:197
+msgid "_Subscribe..."
+msgstr "సబ్స్క్రైబ్ చేయండి... (_S)"
+
+#: ../src/webkit/liferea_web_view.c:201
+msgid "_Copy"
+msgstr "కాపీ (_C)"
+
+#: ../src/webkit/liferea_web_view.c:207
+msgid "_Increase Text Size"
+msgstr "టెక్స్ట్ సైజు పెంచండి (_I)"
+
+#: ../src/webkit/liferea_web_view.c:208
+msgid "_Decrease Text Size"
+msgstr "టెక్స్ట్ సైజు తగ్గించండి (_D)"
+
+#: ../src/webkit/liferea_web_view.c:215
+msgid "_Reader Mode"
+msgstr "రీడర్ మోడ్ (_R)"
+
+#: ../src/xml.c:427
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[మరిన్ని లోపాలు ఉన్నాయి. అవుట్‌పుట్ కుదించబడింది!]"
+
+#: ../src/xml.c:595
+msgid "XML Parser: Could not parse document:\n"
+msgstr "XML Parser: పత్రాన్ని పార్స్ చేయడం సాధ్యం కాలేదు:\n"
+
+#: ../resources/about.ui.h:1
+msgid "About"
+msgstr "గురించి"
+
+#: ../resources/about.ui.h:2
+msgid "Liferea is a news aggregator for GTK+"
+msgstr "లైఫ్రియా అనేది GTK+ కోసం ఒక వార్తల సంకలనం."
+
+#: ../resources/about.ui.h:3
+msgid "Liferea Homepage"
+msgstr "లైఫ్రియా హోమ్‌పేజీ"
+
+#: ../resources/auth.ui.h:1
+msgid "Authentication"
+msgstr "ప్రమాణీకరణ"
+
+#: ../resources/auth.ui.h:3
+#, no-c-format
+msgid "Enter the username and password for \"%s\" (%s)"
+msgstr "\"%s\" (%s) కోసం యూజర్‌నేమ్ మరియు పాస్‌వర్డ్‌ను నమోదు చేయండి."
+
+#: ../resources/auth.ui.h:4 ../resources/properties.ui.h:31
+msgid "User_name:"
+msgstr "వాడుకరి_పేరు: (_N)"
+
+#: ../resources/auth.ui.h:5 ../resources/properties.ui.h:32
+msgid "_Password:"
+msgstr "పాస్‌వర్డ్: (_P)"
+
+#: ../resources/google_source.ui.h:1
+msgid "Add Google Reader API Account"
+msgstr "Google Reader API ఖాతాను జోడించండి"
+
+#: ../resources/google_source.ui.h:2
+msgid ""
+"Please enter the details of the new Google Reader API compatible "
+"subscription."
+msgstr "దయచేసి కొత్త Google Reader API అనుకూల సభ్యత్వ వివరాలను నమోదు చేయండి."
+
+#: ../resources/google_source.ui.h:3 ../resources/reedah_source.ui.h:3
+#: ../resources/theoldreader_source.ui.h:3 ../resources/ttrss_source.ui.h:4
+msgid "_Password"
+msgstr "పాస్‌వర్డ్: (_P)"
+
+#: ../resources/google_source.ui.h:4 ../resources/reedah_source.ui.h:4
+#: ../resources/theoldreader_source.ui.h:4
+msgid "_Username (Email)"
+msgstr "యూజర్ పేరు (ఇమెయిల్) (_U)"
+
+#: ../resources/google_source.ui.h:5
+msgid "_Server"
+msgstr "సర్వర్ (_U)"
+
+#: ../resources/google_source.ui.h:6
+msgid "_Name"
+msgstr "పేరు (_U)"
+
+#: ../resources/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "సబ్‌స్క్రిప్షన్‌లు (_U)"
+
+#: ../resources/liferea_menu.ui.h:2
+msgid "Update _All"
+msgstr "అన్నీ నవీకరించండి (_A)"
+
+#: ../resources/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "అన్నీ చదివినట్లుగా గుర్తించండి (_R)"
+
+#: ../resources/liferea_menu.ui.h:4
+msgid "_New Subscription..."
+msgstr "కొత్త సభ్యత్వం... (_N)"
+
+#: ../resources/liferea_menu.ui.h:5
+msgid "New _Folder..."
+msgstr "కొత్త ఫోల్డర్... (_F)"
+
+#: ../resources/liferea_menu.ui.h:6
+msgid "New S_earch Folder..."
+msgstr "కొత్త శోధన ఫోల్డర్... (_E)"
+
+#: ../resources/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "కొత్త మూలం... (_S)"
+
+#: ../resources/liferea_menu.ui.h:8
+msgid "New _News Bin..."
+msgstr "కొత్త వార్తల బిన్... (_N)"
+
+#: ../resources/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "ఫీడ్ జాబితాను దిగుమతి చేయి... (_I)"
+
+#: ../resources/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "ఫీడ్ జాబితాను ఎగుమతి చేయి... (_E)"
+
+#: ../resources/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "నిష్క్రమించు (_Q)"
+
+#: ../resources/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "ఫీడ్ (_F)"
+
+#: ../resources/liferea_menu.ui.h:13
+msgid "_Update"
+msgstr "నవీకరించు (_U)"
+
+#: ../resources/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "అన్ని అంశాలను తీసివేయండి (_A)"
+
+#: ../resources/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "తొలగించు (_R)"
+
+#: ../resources/liferea_menu.ui.h:17
+msgid "_Properties"
+msgstr "గుణాలు (_P)"
+
+#: ../resources/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "అంశం (_I)"
+
+#: ../resources/liferea_menu.ui.h:22
+msgid "Toggle _Read Status"
+msgstr "పఠన స్థితిని టోగుల్ చేయండి (_R)"
+
+#: ../resources/liferea_menu.ui.h:23
+msgid "Toggle Item _Flag"
+msgstr "అంశం ఫ్లాగ్‌ని టోగుల్ చేయండి (_F)"
+
+#: ../resources/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "తొలగించు (_R)"
+
+#: ../resources/liferea_menu.ui.h:25
+msgid "Open In _Tab"
+msgstr "ట్యాబ్‌లో తెరవండి (_T)"
+
+#: ../resources/liferea_menu.ui.h:26
+msgid "_Open In Browser"
+msgstr "బ్రౌజర్‌లో తెరవండి (_O)"
+
+#: ../resources/liferea_menu.ui.h:27
+msgid "Open In _External Browser"
+msgstr "బాహ్య బ్రౌజర్‌లో తెరవండి (_E)"
+
+#: ../resources/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "చూడండి (_V)"
+
+#: ../resources/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "పూర్తి స్క్రీన్ (_F)"
+
+#: ../resources/liferea_menu.ui.h:30
+msgid "Zoom _In"
+msgstr "జూమ్ ఇన్ (_I)"
+
+#: ../resources/liferea_menu.ui.h:31
+msgid "Zoom _Out"
+msgstr "జూమ్ అవుట్ చేయండి (_O)"
+
+#: ../resources/liferea_menu.ui.h:32
+msgid "_Normal size"
+msgstr "సాధారణ పరిమాణం (_N)"
+
+#: ../resources/liferea_menu.ui.h:33
+msgid "_Reduced Feed List"
+msgstr "తగ్గించిన ఫీడ్ జాబితా (_R)"
+
+#: ../resources/liferea_menu.ui.h:34
+msgid "_Tools"
+msgstr "ఉపకరణాలు (_T)"
+
+#: ../resources/liferea_menu.ui.h:35
+msgid "_Update Monitor"
+msgstr "అప్‌డేట్ మానిటర్ (_U)"
+
+#: ../resources/liferea_menu.ui.h:36
+msgid "_Preferences"
+msgstr "ప్రాధాన్యతలు (_P)"
+
+#: ../resources/liferea_menu.ui.h:37
+msgid "_Sort Feeds"
+msgstr "సోర్ట్ ఫీడ్‌లు (_S)"
+
+#: ../resources/liferea_menu.ui.h:38
+msgid "S_earch"
+msgstr "శోధించండి (_E)"
+
+#: ../resources/liferea_menu.ui.h:40
+msgid "_Help"
+msgstr "సహాయం (_H)"
+
+#: ../resources/liferea_menu.ui.h:41
+msgid "_Contents"
+msgstr "కంటెంట్‌లు (_C)"
+
+#: ../resources/liferea_menu.ui.h:42
+msgid "_Quick Reference"
+msgstr "త్వరిత సూచన (_Q)"
+
+#: ../resources/liferea_menu.ui.h:43
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: ../resources/liferea_menu.ui.h:44
+msgid "_About"
+msgstr "గురించి (_A)"
+
+#: ../resources/mainwindow.ui.h:2
+msgid "page 1"
+msgstr "పేజీ 1"
+
+#: ../resources/mainwindow.ui.h:3
+msgid "page 2"
+msgstr "పేజీ 2"
+
+#: ../resources/mainwindow.ui.h:4 ../resources/prefs.ui.h:25
+msgid "Headlines"
+msgstr "ముఖ్యాంశాలు"
+
+#: ../resources/mark_read_dialog.ui.h:1
+msgid "Mark all as read ?"
+msgstr "అన్నీ చదివినట్లు గుర్తు పెట్టాలా?"
+
+#: ../resources/mark_read_dialog.ui.h:2
+msgid "Mark all as read"
+msgstr "అన్నింటినీ చదివినట్లుగా గుర్తించండి"
+
+#: ../resources/mark_read_dialog.ui.h:3
+msgid "Do not ask again"
+msgstr "మళ్ళీ అడగవద్దు"
+
+#: ../resources/new_folder.ui.h:1
+msgid "New Folder"
+msgstr "కొత్త ఫోల్డర్"
+
+#: ../resources/new_folder.ui.h:2
+msgid "_Folder name:"
+msgstr "ఫోల్డర్ పేరు: (_F)"
+
+#: ../resources/new_newsbin.ui.h:2
+msgid "_News Bin Name:"
+msgstr "న్యూస్ బిన్ పేరు: (_N)"
+
+#: ../resources/new_newsbin.ui.h:3
+msgid "_Always show in Reduced Feed List"
+msgstr "ఎల్లప్పుడూ తగ్గించబడిన ఫీడ్ జాబితాలో చూపించు (_A)"
+
+#: ../resources/new_subscription.ui.h:2 ../resources/properties.ui.h:11
+msgid "Feed Source"
+msgstr "ఫీడ్ మూలం"
+
+#: ../resources/new_subscription.ui.h:3 ../resources/properties.ui.h:12
+msgid "Source Type:"
+msgstr "మూలం రకం:"
+
+#: ../resources/new_subscription.ui.h:4 ../resources/properties.ui.h:13
+msgid "_URL"
+msgstr "URL"
+
+#: ../resources/new_subscription.ui.h:5 ../resources/properties.ui.h:14
+msgid "_Command"
+msgstr "ఆదేశం (_C)"
+
+#: ../resources/new_subscription.ui.h:6 ../resources/properties.ui.h:15
+msgid "_Local File"
+msgstr "స్థానిక ఫైల్ (_L)"
+
+#: ../resources/new_subscription.ui.h:7 ../resources/properties.ui.h:16
+msgid "Select File..."
+msgstr "ఫైల్‌ని ఎంచుకోండి..."
+
+#: ../resources/new_subscription.ui.h:8 ../resources/properties.ui.h:17
+msgid "_Source:"
+msgstr "మూలం: (_S)"
+
+#: ../resources/new_subscription.ui.h:9
+msgid "Download / Postprocessing"
+msgstr "డౌన్‌లోడ్ / పోస్ట్ ప్రాసెసింగ్"
+
+#: ../resources/new_subscription.ui.h:10 ../resources/properties.ui.h:30
+msgid "_Don't use proxy for download"
+msgstr "డౌన్‌లోడ్ కోసం ప్రాక్సీని ఉపయోగించవద్దు. (_D)"
+
+#: ../resources/new_subscription.ui.h:11 ../resources/properties.ui.h:18
+msgid "Use conversion _filter"
+msgstr "మార్పిడి ఫిల్టర్‌ను ఉపయోగించండి (_F)"
+
+#: ../resources/new_subscription.ui.h:12
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and "
+"directories in non-supported formats.  See the documentation for more "
+"information."
+msgstr ""
+"మద్దతు లేని ఫార్మాట్లలో ఫీడ్‌లు మరియు డైరెక్టరీలను యాక్సెస్ చేయడానికి లైఫ్రియా బాహ్య ఫిల్టర్ ప్లగిన్‌లను "
+"ఉపయోగించవచ్చు. మరిన్ని వివరాల కోసం డాక్యుమెంటేషన్ చూడండి."
+
+#: ../resources/new_subscription.ui.h:13 ../resources/properties.ui.h:20
+msgid "Convert _using:"
+msgstr "ఉపయోగించి మార్చండి: (_U)"
+
+#: ../resources/node_source.ui.h:1
+msgid "Source Selection"
+msgstr "మూలం ఎంపిక"
+
+#: ../resources/node_source.ui.h:2
+msgid "_Select the source type you want to add..."
+msgstr "మీరు జోడించాలనుకుంటున్న మూల రకాన్ని ఎంచుకోండి... (_S)"
+
+#: ../resources/opml_source.ui.h:1
+msgid "Add OPML/Planet"
+msgstr "OPML/గ్రహాన్ని జోడించండి"
+
+#: ../resources/opml_source.ui.h:2
+msgid ""
+"Please specify a local file or an URL pointing to a valid OPML feed list."
+msgstr "దయచేసి చెల్లుబాటు అయ్యే OPML ఫీడ్ జాబితాకు సూచించే స్థానిక ఫైల్ లేదా URLను పేర్కొనండి."
+
+#: ../resources/opml_source.ui.h:3
+msgid "_Location"
+msgstr "స్థానం (_L)"
+
+#: ../resources/opml_source.ui.h:4
+msgid "_Select File"
+msgstr "ఫైల్‌ని ఎంచుకోండి (_S)"
+
+#: ../resources/prefs.ui.h:1
+msgid "Liferea Preferences"
+msgstr "లైఫ్రియా ప్రాధాన్యతలు"
+
+#: ../resources/prefs.ui.h:2
+msgid "Feed Cache Handling"
+msgstr "ఫీడ్ కాష్ హ్యాండ్లింగ్"
+
+#: ../resources/prefs.ui.h:3
+msgid "Default _number of items per feed to save:"
+msgstr "సేవ్ చేయాల్సిన ఫీడ్‌కు డిఫాల్ట్ అంశాల సంఖ్య: (_N)"
+
+#: ../resources/prefs.ui.h:4 ../resources/properties.ui.h:27
+msgid "0"
+msgstr "0"
+
+#: ../resources/prefs.ui.h:5
+msgid "Feed Update Settings"
+msgstr "ఫీడ్ అప్‌డేట్ సెట్టింగ్‌లు"
+
+#. Feed update interval hint in preference dialog.
+#: ../resources/prefs.ui.h:7
+msgid ""
+"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
+"waste of bandwidth to poll feeds more often than each hour.</i>"
+msgstr ""
+"గమనిక: <i>దయచేసి సహేతుకమైన రిఫ్రెష్ సమయాన్ని సెట్ చేయడం గుర్తుంచుకోండి. సాధారణంగా ప్రతి గంట కంటే "
+"ఎక్కువసార్లు ఫీడ్‌లను పోల్ చేయడం బ్యాండ్‌విడ్త్‌ను వృధా చేస్తుంది.</i>"
+
+#: ../resources/prefs.ui.h:8
+msgid "_Update all subscriptions at startup."
+msgstr "ప్రారంభంలో అన్ని సభ్యత్వాలను నవీకరించండి. (_U)"
+
+#: ../resources/prefs.ui.h:9
+msgid "Default Feed Refresh _Interval:"
+msgstr "డిఫాల్ట్ ఫీడ్ రిఫ్రెష్ విరామం: (_I)"
+
+#: ../resources/prefs.ui.h:10 ../resources/properties.ui.h:6
+msgid "1"
+msgstr "1"
+
+#: ../resources/prefs.ui.h:11
+msgid "Feeds"
+msgstr "ఫీడ్స్"
+
+#: ../resources/prefs.ui.h:12
+msgid "Folder Display Settings"
+msgstr "ఫోల్డర్ ప్రదర్శన సెట్టింగ్‌లు"
+
+#: ../resources/prefs.ui.h:13
+msgid "_Show the items of all child feeds when a folder is selected."
+msgstr "Show the items of all child feeds when a folder is selected. (_S)"
+
+#: ../resources/prefs.ui.h:14
+msgid "_Hide read items."
+msgstr "చదివిన అంశాలను దాచండి. (_H)"
+
+#: ../resources/prefs.ui.h:15
+msgid "Feed Icons (Favicons)"
+msgstr "ఫీడ్ చిహ్నాలు (ఫేవికాన్లు)"
+
+#: ../resources/prefs.ui.h:16
+msgid "_Update all favicons now"
+msgstr "అన్ని ఫేవికాన్‌లను ఇప్పుడే నవీకరించు (_U)"
+
+#: ../resources/prefs.ui.h:17
+msgid "Folders"
+msgstr "ఫోల్డర్లు"
+
+#: ../resources/prefs.ui.h:18
+msgid "Reading Headlines"
+msgstr "హెడ్‌లైన్స్ చదవడం"
+
+#: ../resources/prefs.ui.h:19
+msgid "_Skim through articles with:"
+msgstr "వీటితో కథనాలను పరిశీలించండి: (_S)"
+
+#: ../resources/prefs.ui.h:20
+msgid "_Default View Mode:"
+msgstr "డిఫాల్ట్ వీక్షణ మోడ్: (_D)"
+
+#: ../resources/prefs.ui.h:21
+msgid "_Defer removing read items from folders and search folders."
+msgstr "ఫోల్డర్‌లు మరియు శోధన ఫోల్డర్‌ల నుండి చదివిన అంశాలను తీసివేయడాన్ని వాయిదా వేయండి. (_D)"
+
+#: ../resources/prefs.ui.h:22
+msgid "Ask for confirmation when marking all items as read."
+msgstr "అన్ని అంశాలను చదివినట్లుగా గుర్తు పెట్టేటప్పుడు నిర్ధారణ కోసం అడగండి."
+
+#: ../resources/prefs.ui.h:23
+msgid "Web Integration"
+msgstr "వెబ్ ఇంటిగ్రేషన్"
+
+#: ../resources/prefs.ui.h:24
+msgid "_Post Bookmarks to"
+msgstr "బుక్‌మార్క్‌లను పోస్ట్ చేయండి (_P)"
+
+#: ../resources/prefs.ui.h:26
+msgid "Internal Browser Settings"
+msgstr "అంతర్గత బ్రౌజర్ సెట్టింగ్‌లు"
+
+#: ../resources/prefs.ui.h:27
+msgid "Open links in Liferea's _window."
+msgstr "లైఫ్రియా విండోలో లింక్‌లను తెరవండి. (_W)"
+
+#: ../resources/prefs.ui.h:28
+msgid "_Never run external Javascript."
+msgstr "బాహ్య జావాస్క్రిప్ట్‌ను ఎప్పుడూ అమలు చేయవద్దు. (_N)"
+
+#: ../resources/prefs.ui.h:29
+msgid "_Enable browser plugins."
+msgstr "బ్రౌజర్ ప్లగిన్‌లను ప్రారంభించండి. (_E)"
+
+#: ../resources/prefs.ui.h:30
+msgid "External Browser Settings"
+msgstr "బాహ్య బ్రౌజర్ సెట్టింగ్‌లు"
+
+#: ../resources/prefs.ui.h:31
+msgid "_Browser:"
+msgstr "బ్రౌజర్: (_B)"
+
+#: ../resources/prefs.ui.h:32
+msgid "_Manual:"
+msgstr "మాన్యువల్: (_M)"
+
+#: ../resources/prefs.ui.h:34
+#, no-c-format
+msgid "<small>(%s for URL)</small>"
+msgstr "<small>(URL కోసం %s)</small>"
+
+#: ../resources/prefs.ui.h:35
+msgid "Browser"
+msgstr "బ్రౌజర్"
+
+#: ../resources/prefs.ui.h:36
+msgid "Toolbar Settings"
+msgstr "టూల్‌బార్ సెట్టింగ్‌లు"
+
+#: ../resources/prefs.ui.h:37
+msgid "_Hide toolbar."
+msgstr "టూల్‌బార్‌ను దాచండి. (_H)"
+
+#: ../resources/prefs.ui.h:38
+msgid "Toolbar _button labels:"
+msgstr "టూల్‌బార్ బటన్ లేబుల్‌లు: (_B)"
+
+#: ../resources/prefs.ui.h:39
+msgid "Desktop"
+msgstr "డెస్క్‌టాప్"
+
+#: ../resources/prefs.ui.h:40
+msgid "HTTP Proxy Server"
+msgstr "HTTP ప్రాక్సీ సర్వర్"
+
+#: ../resources/prefs.ui.h:41
+msgid "_Auto Detect (GNOME or environment)"
+msgstr "ఆటో డిటెక్ట్ (గ్నోమ్ లేదా ఎన్విరాన్మెంట్) (_A)"
+
+#: ../resources/prefs.ui.h:42
+msgid "_No Proxy"
+msgstr "ప్రాక్సీ లేదు (_N)"
+
+#: ../resources/prefs.ui.h:43
+msgid "_Manual Setting:"
+msgstr "మాన్యువల్ సెట్టింగ్: (_M)"
+
+#: ../resources/prefs.ui.h:44
+msgid "Proxy _Host:"
+msgstr "ప్రాక్సీ హోస్ట్: (_H)"
+
+#: ../resources/prefs.ui.h:45
+msgid "Proxy _Port:"
+msgstr "ప్రాక్సీ పోర్ట్: (_P)"
+
+#: ../resources/prefs.ui.h:46
+msgid "Use Proxy Au_thentication"
+msgstr "ప్రాక్సీ ప్రమాణీకరణను ఉపయోగించండి (_T)"
+
+#: ../resources/prefs.ui.h:47
+msgid "Proxy _Username:"
+msgstr "ప్రాక్సీ వినియోగదారు పేరు: (_U)"
+
+#: ../resources/prefs.ui.h:48
+msgid "Proxy Pass_word:"
+msgstr "ప్రాక్సీ పాస్‌వర్డ్: (_W)"
+
+#: ../resources/prefs.ui.h:49
+msgid "Proxy"
+msgstr "ప్రాక్సీ"
+
+#: ../resources/prefs.ui.h:50
+msgid "Privacy Settings"
+msgstr "గోప్యతా సెట్టింగ్‌లు"
+
+#: ../resources/prefs.ui.h:51
+msgid "Tell websites that I do _not want to be tracked."
+msgstr "నన్ను ట్రాక్ చేయకూడదని వెబ్‌సైట్‌లకు చెప్పండి. (_N)"
+
+#: ../resources/prefs.ui.h:52
+msgid "Tell websites not to _sell or share my data."
+msgstr "నా డేటాను అమ్మవద్దని లేదా పంచుకోవద్దని వెబ్‌సైట్‌లకు చెప్పండి. (_S)"
+
+#: ../resources/prefs.ui.h:53
+msgid "_Intelligent Tracking Prevention. "
+msgstr "ఇంటెలిజెంట్ ట్రాకింగ్ నివారణ. (_I)"
+
+#: ../resources/prefs.ui.h:54
+msgid ""
+"This enables the WebKit feature described <a href=\"https://webkit.org/"
+"tracking-prevention/\">here</a>."
+msgstr ""
+"ఇది <a href=\"https://webkit.org/tracking-prevention/\">ఇక్కడ</a> వివరించిన వెబ్‌కిట్ "
+"ఫీచర్‌ను ప్రారంభిస్తుంది."
+
+#: ../resources/prefs.ui.h:55
+msgid "Use _Reader mode."
+msgstr "రీడర్ మోడ్‌ని ఉపయోగించండి. (_R)"
+
+#: ../resources/prefs.ui.h:56
+msgid ""
+"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
+"a> all non-content elements (like scripts, fonts, tracking)"
+msgstr ""
+"ఇది కంటెంట్ కాని అన్ని అంశాలను (స్క్రిప్ట్‌లు, ఫాంట్‌లు, ట్రాకింగ్ వంటివి) <a href=\"https://github."
+"com/mozilla/readability\">స్ట్రిప్పింగ్</a> చేయడానికి వీలు కల్పిస్తుంది."
+
+#: ../resources/prefs.ui.h:57
+msgid "Privacy"
+msgstr "గోప్యత"
+
+#: ../resources/properties.ui.h:1
+msgid "Subscription Properties"
+msgstr "సబ్‌స్క్రిప్షన్ ప్రాపర్టీస్"
+
+#: ../resources/properties.ui.h:2
+msgid "Feed _Name"
+msgstr "ఫీడ్ పేరు (_N)"
+
+#: ../resources/properties.ui.h:3
+msgid "Update _Interval"
+msgstr "విరామం అప్‌డేట్ చేయండి (_I)"
+
+#: ../resources/properties.ui.h:4
+msgid "_Use global default update interval."
+msgstr "గ్లోబల్ డిఫాల్ట్ నవీకరణ విరామాన్ని ఉపయోగించండి. (_U)"
+
+#: ../resources/properties.ui.h:5
+msgid "_Feed specific update interval of"
+msgstr "ఫీడ్ నిర్దిష్ట నవీకరణ విరామం (_F)"
+
+#: ../resources/properties.ui.h:7
+msgid "_Don't update this feed automatically."
+msgstr "ఈ ఫీడ్‌ను స్వయంచాలకంగా నవీకరించవద్దు. (_D)"
+
+#: ../resources/properties.ui.h:9
+#, no-c-format
+msgid "This feed provider suggests an update interval of %d minutes."
+msgstr "ఈ ఫీడ్ ప్రొవైడర్ %d నిమిషాల నవీకరణ విరామాన్ని సూచిస్తుంది."
+
+#: ../resources/properties.ui.h:10
+msgid "General"
+msgstr "జనరల్"
+
+#: ../resources/properties.ui.h:19
+msgid ""
+"Liferea can use external filter scripts in order to access feeds and "
+"directories in non-supported formats."
+msgstr ""
+"మద్దతు లేని ఫార్మాట్లలో ఫీడ్‌లు మరియు డైరెక్టరీలను యాక్సెస్ చేయడానికి లైఫ్రియా బాహ్య ఫిల్టర్ స్క్రిప్ట్‌లను "
+"ఉపయోగించవచ్చు."
+
+#: ../resources/properties.ui.h:21 ../xslt/item.xml.in.h:1
+msgid "Source"
+msgstr "మూలం"
+
+#: ../resources/properties.ui.h:22
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea "
+"exits. Marked items are always saved to the cache."
+msgstr ""
+"Liferea నిష్క్రమించినప్పుడు ఫీడ్‌ల కంటెంట్‌లు సేవ్ చేయబడ్డాయో లేదో కాష్ సెట్టింగ్ నియంత్రిస్తుంది. "
+"గుర్తించబడిన అంశాలు ఎల్లప్పుడూ కాష్‌లో సేవ్ చేయబడతాయి."
+
+#: ../resources/properties.ui.h:23
+msgid "_Default cache settings"
+msgstr "డిఫాల్ట్ కాష్ సెట్టింగ్‌లు (_D)"
+
+#: ../resources/properties.ui.h:24
+msgid "Di_sable cache"
+msgstr "కాష్‌ని నిలిపివేయండి (_S)"
+
+#: ../resources/properties.ui.h:25
+msgid "_Unlimited cache"
+msgstr "అపరిమిత కాష్ (_U)"
+
+#: ../resources/properties.ui.h:26
+msgid "_Number of items to save:"
+msgstr "సేవ్ చేయాల్సిన వస్తువుల సంఖ్య: (_N)"
+
+#: ../resources/properties.ui.h:28
+msgid "Archive"
+msgstr "ఆర్కైవ్"
+
+#: ../resources/properties.ui.h:29
+msgid "Use HTTP _authentication"
+msgstr "HTTP ప్రమాణీకరణను ఉపయోగించండి (_A)"
+
+#: ../resources/properties.ui.h:33
+msgid "Download"
+msgstr "డౌన్‌లోడ్ చేయండి"
+
+#: ../resources/properties.ui.h:34
+msgid "_Automatically download all enclosures of this feed."
+msgstr "ఈ ఫీడ్ యొక్క అన్ని ఎన్‌క్లోజర్‌లను స్వయంచాలకంగా డౌన్‌లోడ్ చేయండి. (_A)"
+
+#: ../resources/properties.ui.h:35
+msgid "Auto-_load item link in configured browser when selecting articles."
+msgstr "కథనాలను ఎంచుకునేటప్పుడు కాన్ఫిగర్ చేయబడిన బ్రౌజర్‌లో ఆటో-లోడ్ ఐటెమ్ లింక్. (_L)"
+
+#: ../resources/properties.ui.h:36
+msgid "Ignore _comment feeds for this subscription."
+msgstr "ఈ సబ్‌స్క్రిప్షన్ కోసం వ్యాఖ్య ఫీడ్‌లను విస్మరించండి. (_C)"
+
+#: ../resources/properties.ui.h:37
+msgid "_Mark downloaded items as read."
+msgstr "డౌన్‌లోడ్ చేసిన అంశాలను చదివినట్లుగా గుర్తించండి. (_M)"
+
+#: ../resources/properties.ui.h:38
+msgid "Extract full content from HTML5 and Google AMP"
+msgstr "HTML5 మరియు Google AMP నుండి పూర్తి కంటెంట్‌ను సంగ్రహించండి."
+
+#: ../resources/reedah_source.ui.h:1
+msgid "Add Reedah Account"
+msgstr "రీడా ఖాతాను జోడించండి"
+
+#: ../resources/reedah_source.ui.h:2
+msgid "Please enter your Reedah account settings."
+msgstr "దయచేసి మీ రీడా ఖాతా సెట్టింగ్‌లను నమోదు చేయండి."
+
+#: ../resources/rename_node.ui.h:1
+msgid "Rename"
+msgstr "పేరు మార్చండి"
+
+#: ../resources/rename_node.ui.h:2
+msgid "_New Name:"
+msgstr "కొత్త పేరు: (_N)"
+
+#: ../resources/search_folder.ui.h:1
+msgid "Search Folder Properties"
+msgstr "ఫోల్డర్ లక్షణాలను శోధించండి"
+
+#: ../resources/search_folder.ui.h:2
+msgid "Search _Name:"
+msgstr "శోధన పేరు: (_N)"
+
+#: ../resources/search_folder.ui.h:3
+msgid "Search Rules"
+msgstr "శోధన నియమాలు"
+
+#: ../resources/search_folder.ui.h:4
+msgid "Rules"
+msgstr "నియమాలు"
+
+#: ../resources/search_folder.ui.h:5
+msgid "All rules for this search folder"
+msgstr "ఈ శోధన ఫోల్డర్ కోసం అన్ని నియమాలు"
+
+#: ../resources/search_folder.ui.h:6
+msgid "Rule Matching"
+msgstr "నియమం సరిపోలిక"
+
+#: ../resources/search_folder.ui.h:7 ../resources/search.ui.h:4
+msgid "A_ny Rule Matches"
+msgstr "ఏదైనా రూల్ మ్యాచ్‌లు (_A)"
+
+#: ../resources/search_folder.ui.h:8 ../resources/search.ui.h:5
+msgid "_All Rules Must Match"
+msgstr "అన్ని నియమాలు తప్పనిసరిగా సరిపోలాలి (_A)"
+
+#: ../resources/search_folder.ui.h:9
+msgid "Hide read items"
+msgstr "చదివిన అంశాలను దాచండి"
+
+#: ../resources/search.ui.h:1
+msgid "Advanced Search"
+msgstr "అధునాతన శోధన"
+
+#: ../resources/search.ui.h:2
+msgid "_Search Folder..."
+msgstr "శోధన ఫోల్డర్... (_S)"
+
+#: ../resources/search.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr "కింది ప్రమాణాలకు అనుగుణంగా ఉన్న వస్తువులను కనుగొనండి."
+
+#: ../resources/simple_search.ui.h:1
+msgid "Search All Feeds"
+msgstr "అన్ని ఫీడ్‌లను శోధించండి"
+
+#: ../resources/simple_search.ui.h:2
+msgid "_Advanced..."
+msgstr "అధునాతన... (_A)"
+
+#: ../resources/simple_search.ui.h:3
+msgid ""
+"Starts searching for the specified text in all feeds. The search result will "
+"appear in the item list."
+msgstr ""
+"అన్ని ఫీడ్‌లలో పేర్కొన్న టెక్స్ట్ కోసం శోధించడం ప్రారంభిస్తుంది. శోధన ఫలితం అంశాల జాబితాలో కనిపిస్తుంది."
+
+#: ../resources/simple_search.ui.h:4
+msgid "_Search for:"
+msgstr "దీని కోసం శోధించండి: (_S)"
+
+#: ../resources/simple_search.ui.h:5
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr "లైఫ్రియా ఒక ఐటెమ్ టైటిల్‌లో లేదా దాని కంటెంట్‌లో కనుగొనవలసిన శోధన స్ట్రింగ్‌ను నమోదు చేయండి."
+
+#: ../resources/simple_subscription.ui.h:2
+msgid "Advanced..."
+msgstr "అధునాతన..."
+
+#: ../resources/simple_subscription.ui.h:3
+msgid "Feed _Source"
+msgstr "ఫీడ్ మూలం (_S)"
+
+#: ../resources/simple_subscription.ui.h:4
+msgid ""
+"Enter a website location to use feed autodiscovery or in case you know it "
+"the exact feed location."
+msgstr "ఫీడ్ ఆటోడిస్కవరీని ఉపయోగించడానికి లేదా మీకు ఖచ్చితమైన ఫీడ్ స్థానం తెలిస్తే వెబ్‌సైట్ స్థానాన్ని నమోదు చేయండి."
+
+#: ../resources/theoldreader_source.ui.h:1
+msgid "Add TheOldReader Account"
+msgstr "TheOldReader ఖాతాను జోడించండి"
+
+#: ../resources/theoldreader_source.ui.h:2
+msgid "Please enter your TheOldReader account settings."
+msgstr "దయచేసి మీ TheOldReader ఖాతా సెట్టింగ్‌లను నమోదు చేయండి."
+
+#: ../resources/ttrss_source.ui.h:1
+msgid "Add Tiny Tiny RSS Account"
+msgstr "టైనీ టైనీ RSS ఖాతాను జోడించండి"
+
+#: ../resources/ttrss_source.ui.h:2
+msgid "Please enter your TinyTinyRSS account settings."
+msgstr "దయచేసి మీ TinyTinyRSS ఖాతా సెట్టింగ్‌లను నమోదు చేయండి."
+
+#: ../resources/ttrss_source.ui.h:3
+msgid "_Server URL"
+msgstr "సర్వర్ URL (_S)"
+
+#: ../resources/ttrss_source.ui.h:5
+msgid "_Username"
+msgstr "వినియోగదారు పేరు (_U)"
+
+#: ../resources/update_monitor.ui.h:1
+msgid "Update Monitor"
+msgstr "అప్‌డేట్ మానిటర్"
+
+#: ../resources/update_monitor.ui.h:2
+msgid "Stop All"
+msgstr "అన్నీ ఆపు"
+
+#: ../resources/update_monitor.ui.h:3
+msgid "_Pending Requests"
+msgstr "పెండింగ్‌లో ఉన్న అభ్యర్థనలు (_P)"
+
+#: ../resources/update_monitor.ui.h:4
+msgid "_Downloading Now"
+msgstr "ఇప్పుడు డౌన్‌లోడ్ చేస్తోంది (_D)"
+
+#: ../xslt/feed.xml.in.h:1
+msgid "Feed:"
+msgstr "ఫీడ్:"
+
+#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
+msgid "Source:"
+msgstr "మూలం:"
+
+#: ../xslt/feed.xml.in.h:3
+msgid "Publisher"
+msgstr "ప్రచురణకర్త"
+
+#: ../xslt/feed.xml.in.h:4
+msgid "Copyright"
+msgstr "కాపీరైట్"
+
+#: ../xslt/feed.xml.in.h:5
+msgid "There was a problem when fetching this subscription!"
+msgstr "ఈ సభ్యత్వాన్ని పొందుతున్నప్పుడు ఒక సమస్య ఏర్పడింది!"
+
+#: ../xslt/feed.xml.in.h:6
+msgid "1. Authentication"
+msgstr "1. ప్రామాణీకరణ"
+
+#: ../xslt/feed.xml.in.h:7
+msgid "2. Download"
+msgstr "2. డౌన్‌లోడ్ చేయండి"
+
+#: ../xslt/feed.xml.in.h:8
+msgid "3. Feed Discovery"
+msgstr "3. ఫీడ్ డిస్కవరీ"
+
+#: ../xslt/feed.xml.in.h:9
+msgid "4. Parsing"
+msgstr "4. పార్సింగ్"
+
+#: ../xslt/feed.xml.in.h:10
+msgid "Details:"
+msgstr "వివరాలు:"
+
+#: ../xslt/feed.xml.in.h:11
+msgid "Authentication failed. Please check the credentials and try again!"
+msgstr "ప్రామాణీకరణ విఫలమైంది. దయచేసి ఆధారాలను తనిఖీ చేసి, మళ్ళీ ప్రయత్నించండి!"
+
+#: ../xslt/feed.xml.in.h:12
+msgid "There was an error when downloading the feed source:"
+msgstr "ఫీడ్ సోర్స్‌ను డౌన్‌లోడ్ చేస్తున్నప్పుడు ఒక లోపం ఏర్పడింది:"
+
+#: ../xslt/feed.xml.in.h:13
+msgid "There was an error when running the feed filter command:"
+msgstr "ఫీడ్ ఫిల్టర్ ఆదేశాన్ని అమలు చేస్తున్నప్పుడు లోపం ఉంది:"
+
+#: ../xslt/feed.xml.in.h:14
+msgid ""
+"The source does not point directly to a feed or a webpage with a link to a "
+"feed!"
+msgstr "మూలం నేరుగా ఫీడ్ లేదా ఫీడ్ లింక్ ఉన్న వెబ్‌పేజీని సూచించదు!"
+
+#: ../xslt/feed.xml.in.h:15
+msgid "Sorry, the feed could not be parsed!"
+msgstr "క్షమించండి, ఫీడ్‌ను అన్వయించడం సాధ్యం కాలేదు!"
+
+#: ../xslt/feed.xml.in.h:16
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr "దీని గురించి మీరు ఫీడ్ రచయిత/వెబ్‌మాస్టర్‌ను సంప్రదించవచ్చు!"
+
+#: ../xslt/folder.xml.in.h:1
+msgid "Folder:"
+msgstr "ఫోల్డర్:"
+
+#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
+msgid "children with"
+msgstr "తో పిల్లలు"
+
+#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
+msgstr "చదవని ముఖ్యాంశాలు"
+
+#: ../xslt/item.xml.in.h:2
+msgid "Feed"
+msgstr "ఫీడ్"
+
+#: ../xslt/item.xml.in.h:3
+msgid "Filed under"
+msgstr "కింద దాఖలు చేశారు"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Author"
+msgstr "రచయిత"
+
+#: ../xslt/item.xml.in.h:5
+msgid "Shared by"
+msgstr "ద్వారా భాగస్వామ్యం చేయబడింది"
+
+#: ../xslt/item.xml.in.h:6
+msgid "Via"
+msgstr "ద్వారా"
+
+#: ../xslt/item.xml.in.h:7
+msgid "Related"
+msgstr "సంబంధిత"
+
+#: ../xslt/item.xml.in.h:8
+msgid "Also posted in"
+msgstr "లో కూడా పోస్ట్ చేయబడింది"
+
+#: ../xslt/item.xml.in.h:9
+msgid "Creator"
+msgstr "సృష్టికర్త"
+
+#: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr "కోఆర్డినేట్లు"
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr "మ్యాప్"
+
+#: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr "వీక్షణ గణన"
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr "రేటింగ్"
+
+#: ../xslt/item.xml.in.h:14
+msgid "Comments"
+msgstr "వ్యాఖ్యలు"
+
+#: ../xslt/item.xml.in.h:15
+msgid "Updating..."
+msgstr "నవీకరిస్తోంది..."
+
+#: ../xslt/item.xml.in.h:16
+msgid "Section"
+msgstr "విభాగం"
+
+#: ../xslt/item.xml.in.h:17
+msgid "Department"
+msgstr "శాఖ"
+
+#: ../xslt/newsbin.xml.in.h:1
+msgid "News Bin:"
+msgstr "న్యూస్ బిన్:"
+
+#: ../xslt/newsbin.xml.in.h:2
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+"ఐటెమ్ లిస్ట్ కాంటెక్స్ట్ మెనూ నుండి \"న్యూస్ బిన్ కు కాపీ చేయి\" ఎంచుకోవడం ద్వారా ఈ న్యూస్ బిన్ కు ఐటెమ్ "
+"లను జోడించండి."
+
+#: ../xslt/vfolder.xml.in.h:1
+msgid "Search Folder:"
+msgstr "శోధన ఫోల్డర్:"
