@@ -81,6 +81,8 @@ struct _ItemListView {
 	GtkEventController *keypress;
 	GtkGesture	*gesture;
 	GtkGesture	*popup_gesture;
+	GtkGesture	*middle_gesture;
+
 	GtkTreeView	*treeview;
 	GtkWidget 	*ilscrolledwindow;	/*<< The complete ItemListView widget */
 	GSList		*item_ids;		/*<< list of all currently known item ids */
@@ -120,6 +122,7 @@ item_list_view_finalize (GObject *object)
 
 	g_object_unref (ilv->gesture);
 	g_object_unref (ilv->popup_gesture);
+	g_object_unref (ilv->middle_gesture);
 	g_object_unref (ilv->treeview);
 }
 
@@ -745,6 +748,7 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 					result = TRUE;
 					break;
 				case GDK_BUTTON_SECONDARY:
+					/* Create a context menu */
 					GMenu *menu = item_list_view_popup_menu (ilv, item);
 					GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL(menu));
 					gtk_widget_set_parent (popover, GTK_WIDGET (ilv->treeview));
@@ -753,9 +757,8 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 					rect.y = (int)y;
 					rect.width = 1;
 					rect.height = 1;
-					gtk_popover_set_pointing_to(GTK_POPOVER(popover), &rect);
-					gtk_popover_popup(GTK_POPOVER(popover));
-
+					gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
+					gtk_popover_popup (GTK_POPOVER (popover));
 					g_object_unref(menu);
 					result = TRUE;
 					break;
@@ -892,6 +895,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	ilv->keypress = gtk_event_controller_key_new ();
 	ilv->gesture = gtk_gesture_click_new ();
 	ilv->popup_gesture = gtk_gesture_click_new ();
+	ilv->middle_gesture = gtk_gesture_click_new ();
 
 	ilv->ilscrolledwindow = gtk_scrolled_window_new ();
 	g_object_ref_sink (ilv->ilscrolledwindow);
@@ -968,12 +972,14 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	g_signal_connect (G_OBJECT (ilv->treeview), "columns_changed", G_CALLBACK (on_item_list_view_columns_changed), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "row_activated", G_CALLBACK (on_item_list_row_activated), ilv);
 
-	// FIXME: add middle click handler to toggle read status
+	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (ilv->middle_gesture), GDK_BUTTON_MIDDLE);
+	g_signal_connect (ilv->middle_gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
 	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (ilv->popup_gesture), GDK_BUTTON_SECONDARY);
 	g_signal_connect (ilv->popup_gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
 	g_signal_connect (ilv->gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
 	g_signal_connect (ilv->keypress, "key-pressed", G_CALLBACK (on_item_list_view_key_pressed_event), ilv);
 	
+	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), GTK_EVENT_CONTROLLER (ilv->middle_gesture));
 	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), GTK_EVENT_CONTROLLER (ilv->popup_gesture));
 	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), GTK_EVENT_CONTROLLER(ilv->gesture));
 	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), ilv->keypress);
