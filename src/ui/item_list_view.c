@@ -80,6 +80,7 @@ struct _ItemListView {
 
 	GtkEventController *keypress;
 	GtkGesture	*gesture;
+	GtkGesture	*popup_gesture;
 	GtkTreeView	*treeview;
 	GtkWidget 	*ilscrolledwindow;	/*<< The complete ItemListView widget */
 	GSList		*item_ids;		/*<< list of all currently known item ids */
@@ -116,6 +117,10 @@ item_list_view_finalize (GObject *object)
 		g_object_unref (ilv->batch_itemstore);
 	if (ilv->ilscrolledwindow)
 		g_object_unref (ilv->ilscrolledwindow);
+
+	g_object_unref (ilv->gesture);
+	g_object_unref (ilv->popup_gesture);
+	g_object_unref (ilv->treeview);
 }
 
 static void
@@ -666,6 +671,43 @@ on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean key
 	return ret;
 }
 
+static GMenu *
+item_list_view_popup_menu (ItemListView *ilv, itemPtr item)
+{
+	GMenu *menu = g_menu_new();
+	GMenuItem *menu_item;
+
+	// Copy URL to clipboard
+	menu_item = g_menu_item_new(_("Copy _URL to Clipboard"), "app.copy-url-clipboard");
+	g_menu_append_item(menu, menu_item);
+	g_object_unref(menu_item);
+
+	// Toggle read status
+	if (item->readStatus) {
+		menu_item = g_menu_item_new(_("Mark as _Unread"), "app.toggle-read-status");
+	} else {
+		menu_item = g_menu_item_new(_("Mark as _Read"), "app.toggle-read-status");
+	}
+	g_menu_append_item(menu, menu_item);
+	g_object_unref(menu_item);
+
+	// Toggle flag status
+	if (item->flagStatus) {
+		menu_item = g_menu_item_new(_("Remove _Flag"), "app.toggle-flag");
+	} else {
+		menu_item = g_menu_item_new(_("Toggle _Flag"), "app.toggle-flag");
+	}
+	g_menu_append_item(menu, menu_item);
+	g_object_unref(menu_item);
+
+	// Social bookmark
+	menu_item = g_menu_item_new(_("_Bookmark Item"), "app.social-bookmark");
+	g_menu_append_item(menu, menu_item);
+	g_object_unref(menu_item);
+
+	return menu;
+}
+
 static gboolean
 on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdouble x, gdouble y, gpointer user_data)
 {
@@ -703,8 +745,18 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 					result = TRUE;
 					break;
 				case GDK_BUTTON_SECONDARY:
-					//ui_popup_item_menu (item, NULL);
-					g_warning("FIXME: GTK4 port: ui_popup_item_menu (item, NULL);");
+					GMenu *menu = item_list_view_popup_menu (ilv, item);
+					GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL(menu));
+					gtk_widget_set_parent (popover, GTK_WIDGET (ilv->treeview));
+					GdkRectangle rect;
+					rect.x = (int)x;
+					rect.y = (int)y;
+					rect.width = 1;
+					rect.height = 1;
+					gtk_popover_set_pointing_to(GTK_POPOVER(popover), &rect);
+					gtk_popover_popup(GTK_POPOVER(popover));
+
+					g_object_unref(menu);
 					result = TRUE;
 					break;
 			}
@@ -714,24 +766,6 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 
 	return result;
 } 
-
-static gboolean
-on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
-{
-	GtkTreeView	*treeview = GTK_TREE_VIEW (widget);
-	GtkTreeModel	*model;
-	GtkTreeIter	iter;
-
-	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
-		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-		g_warning("FIXME: GTK4 port: ui_popup_item_menu (item, NULL);");
-		//ui_popup_item_menu (item, NULL);
-		item_unload (item);
-		return TRUE;
-	}
-
-	return FALSE;
-}
 
 static void
 on_item_list_row_activated (GtkTreeView *treeview,
@@ -857,6 +891,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 
 	ilv->keypress = gtk_event_controller_key_new ();
 	ilv->gesture = gtk_gesture_click_new ();
+	ilv->popup_gesture = gtk_gesture_click_new ();
 
 	ilv->ilscrolledwindow = gtk_scrolled_window_new ();
 	g_object_ref_sink (ilv->ilscrolledwindow);
@@ -932,11 +967,16 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->treeview), "columns_changed", G_CALLBACK (on_item_list_view_columns_changed), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "row_activated", G_CALLBACK (on_item_list_row_activated), ilv);
-	//g_signal_connect (G_OBJECT (ilv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
-	g_signal_connect (ilv->keypress, "key-pressed", G_CALLBACK (on_item_list_view_key_pressed_event), ilv);
+
+	// FIXME: add middle click handler to toggle read status
+	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (ilv->popup_gesture), GDK_BUTTON_SECONDARY);
+	g_signal_connect (ilv->popup_gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
 	g_signal_connect (ilv->gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
+	g_signal_connect (ilv->keypress, "key-pressed", G_CALLBACK (on_item_list_view_key_pressed_event), ilv);
+	
+	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), GTK_EVENT_CONTROLLER (ilv->popup_gesture));
+	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), GTK_EVENT_CONTROLLER(ilv->gesture));
 	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), ilv->keypress);
-	gtk_widget_add_controller(GTK_WIDGET(ilv->treeview), GTK_EVENT_CONTROLLER(ilv->gesture));
 
 	if (!wide) {
 		gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->treeview), TRUE);
