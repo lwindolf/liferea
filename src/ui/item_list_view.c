@@ -1,7 +1,7 @@
 /*
  * @file item_list_view.c  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -123,7 +123,6 @@ item_list_view_finalize (GObject *object)
 	g_object_unref (ilv->gesture);
 	g_object_unref (ilv->popup_gesture);
 	g_object_unref (ilv->middle_gesture);
-	g_object_unref (ilv->treeview);
 }
 
 static void
@@ -369,7 +368,6 @@ static void
 item_list_view_item_removed (GObject *obj, gint itemId, gpointer user_data)
 {
 	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
-	GtkTreeIter	iter;
 	itemPtr		item = item_load (itemId);
 
 	g_assert (NULL != item);

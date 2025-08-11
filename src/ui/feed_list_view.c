@@ -46,6 +46,8 @@ struct _FeedListView {
 	GObject			parentInstance;
 
 	GtkEventController	*controller;
+	GtkGesture		*popup_gesture;
+	GtkGesture		*middle_gesture;
 	GtkTreeView		*treeview;
 	GtkTreeModel		*filter;
 	GtkTreeStore		*feedstore;
@@ -75,6 +77,8 @@ feed_list_view_finalize (GObject *object)
 	FeedListView *flv = FEED_LIST_VIEW (object);
 
 	g_object_unref (flv->controller);
+	g_object_unref (flv->popup_gesture);
+	g_object_unref (flv->middle_gesture);
 }
 
 static void
@@ -246,6 +250,155 @@ feed_list_view_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeView
 			gtk_tree_view_expand_row (tv, path, FALSE);
 	}
 
+}
+
+static GMenu *
+feed_list_view_popup_menu (Node *node)
+{
+	GMenu		*menu_model = g_menu_new ();
+	GMenu		*section = g_menu_new ();
+	GMenuItem 	*menu_item;
+	gboolean	writeableFeedlist, isRoot, addChildren, validSelection;
+
+	if (node->parent) {
+		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
+		isRoot = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
+		addChildren = NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
+	} else {
+		/* if we have no parent then we have the root node... */
+		writeableFeedlist = TRUE;
+		isRoot = TRUE;
+		addChildren = TRUE;
+	}
+	validSelection = (node != NULL);
+
+	if (validSelection) {
+		if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE)
+			g_menu_append (section, _("_Update"), "app.node-update");
+		else if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
+			g_menu_append (section, _("_Update Folder"), "app.node-update");
+	}
+
+	if (writeableFeedlist) {
+		if (addChildren) {
+			GMenu *submenu;
+
+			submenu = g_menu_new ();
+
+			if (node_can_add_child_feed (node))
+				g_menu_append (submenu, _("New _Subscription..."), "app.new-subscription");
+
+			if (node_can_add_child_folder (node))
+				g_menu_append (submenu, _("New _Folder..."), "app.new-folder");
+
+			if (isRoot) {
+				g_menu_append (submenu, _("New S_earch Folder..."), "app.new-vfolder");
+				g_menu_append (submenu, _("New S_ource..."), "app.new-source");
+				g_menu_append (submenu, _("New _News Bin..."), "app.new-newsbin");
+			}
+
+			g_menu_append_submenu (section, _("_New"), G_MENU_MODEL (submenu));
+			g_object_unref (submenu);
+		}
+
+		if (isRoot && node->children) {
+			/* Ending section and starting a new one to get a separator : */
+			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+			g_object_unref (section);
+			section = g_menu_new ();
+			g_menu_append (section, _("Sort Feeds"), "app.node-sort-feeds");
+		}
+	}
+
+	if (validSelection) {
+		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+		g_object_unref (section);
+		section = g_menu_new ();
+		g_menu_append (section, _("_Mark All As Read"), "app.node-mark-all-read");
+		if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_EXPORT_ITEMS) {
+			g_menu_append (section, _("_Export Items To File"), "app.node-export-items-to-file");
+		}
+	}
+
+	if (IS_VFOLDER (node)) {
+		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+		g_object_unref (section);
+		section = g_menu_new ();
+		g_menu_append (section, _("_Rebuild"), "app.node-rebuild-vfolder");
+	}
+
+	if (validSelection) {
+		if (writeableFeedlist) {
+			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+			g_object_unref (section);
+			section = g_menu_new ();
+			g_menu_append (section, _("_Delete"), "app.node-delete");
+			g_menu_append (section, _("_Properties"), "app.node-properties");
+		}
+
+		if (IS_NODE_SOURCE (node) && NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL) {
+			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+			g_object_unref (section);
+			section = g_menu_new ();
+			g_menu_append (section, _("Convert To Local Subscriptions..."), "app.node-convert-to-local");
+		}
+	}
+
+	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+	g_object_unref (section);
+
+	return menu_model;
+}
+
+static gboolean
+feed_list_view_pressed_cb (GtkGestureClick *gesture, gdouble x, gdouble y, guint n_press, gpointer data)
+{
+	GtkTreeView *treeview = GTK_TREE_VIEW (flv->treeview);
+	GtkTreePath *path;
+	GtkTreeIter iter;
+	Node *node;
+g_print("Pressed at %f, %f with %d presses\n", x, y, n_press);
+	if (n_press != 1)
+		return FALSE;
+
+	if (!gtk_tree_view_get_path_at_pos (treeview, (int)x, (int)y, &path, NULL, NULL, NULL))
+		return FALSE;
+
+	if (!gtk_tree_model_get_iter (gtk_tree_view_get_model (treeview), &iter, path)) {
+		gtk_tree_path_free (path);
+		return FALSE;
+	}
+
+	gtk_tree_model_get (gtk_tree_view_get_model (treeview), &iter, FS_PTR, &node, -1);
+	gtk_tree_path_free (path);
+g_print("Pressed on node %s\n", node ? node_get_title(node) : "NULL");
+	if (!node)
+		return FALSE;
+
+	if (n_press == 1) {
+		switch (gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture))) {
+			case GDK_BUTTON_SECONDARY:
+				/* Create a context menu */
+				GMenu *menu = feed_list_view_popup_menu (node);
+				GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL(menu));
+				gtk_widget_set_parent (popover, GTK_WIDGET (treeview));
+				GdkRectangle rect;
+				rect.x = (int)x;
+				rect.y = (int)y;
+				rect.width = 1;
+				rect.height = 1;
+				gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
+				gtk_popover_popup (GTK_POPOVER (popover));
+				g_object_unref(menu);
+				return TRUE;
+			case GDK_BUTTON_MIDDLE:
+				/* Middle mouse click toggles read status... */
+				feedlist_mark_all_read (node);
+				return TRUE;
+		}
+	}
+
+	return FALSE;
 }
 
 static gboolean
@@ -583,6 +736,8 @@ feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 	flv = FEED_LIST_VIEW (g_object_new (FEED_LIST_VIEW_TYPE, NULL));
 
 	flv->controller = gtk_event_controller_key_new ();
+	flv->popup_gesture = gtk_gesture_click_new ();
+	flv->middle_gesture = gtk_gesture_click_new ();
 	flv->treeview = treeview;
 	flv->feedstore = gtk_tree_store_new (FS_LEN,
 	                                     G_TYPE_STRING,
@@ -631,7 +786,14 @@ feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 
 	g_signal_connect (G_OBJECT (flv->treeview), "row-activated",   G_CALLBACK (feed_list_view_row_activated_cb), flv);
 	g_signal_connect (flv->controller, "key-pressed", G_CALLBACK (feed_list_view_key_pressed_cb), flv);
+	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (flv->middle_gesture), GDK_BUTTON_MIDDLE);
+	g_signal_connect (flv->middle_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
+	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (flv->popup_gesture), GDK_BUTTON_SECONDARY);
+	g_signal_connect (flv->popup_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
+
 	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), flv->controller);
+	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), GTK_EVENT_CONTROLLER (flv->middle_gesture));
+	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), GTK_EVENT_CONTROLLER (flv->popup_gesture));
 
 	select = gtk_tree_view_get_selection (flv->treeview);
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
