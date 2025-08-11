@@ -576,17 +576,18 @@ liferea_web_view_init(LifereaWebView *self)
 {
 	self->dbus_connection = NULL;
 
+	/* Context menu actions */
+	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
+	g_action_map_add_action_entries (G_ACTION_MAP (self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
+	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
+
+	/* Register context menu signal */
 	g_signal_connect (
 		self,
 		"context-menu",
 		G_CALLBACK (liferea_web_view_on_menu),
 		NULL
 	);
-
-	/* Context menu actions */
-	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP (self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
-	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
 
 	g_signal_connect (
 		self,
