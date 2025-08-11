@@ -70,7 +70,6 @@ struct _LifereaShell {
 	GActionGroup	*shellActions;
 	GActionGroup	*feedlistActions;
 	GActionGroup	*itemlistActions;
-	GActionGroup	*linkActions;
 
 	LifereaPluginsEngine *plugins;
 
@@ -141,7 +140,6 @@ liferea_shell_finalize (GObject *object)
 	g_object_unref (ls->shellActions);
 	g_object_unref (ls->feedlistActions);
 	g_object_unref (ls->itemlistActions);
-	g_object_unref (ls->linkActions);
 
 	g_object_unref (ls->xml);
 }
@@ -954,7 +952,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->shellActions = shell_actions_create (shell);
 	shell->feedlistActions = node_actions_create (shell);
 	shell->itemlistActions = item_actions_create (shell);
-	shell->linkActions = link_actions_create (shell);
 
 	/* 9. Setup plugins that all LifereaShell child objects already created */
 	if (!pluginsDisabled)

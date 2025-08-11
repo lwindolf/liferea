@@ -24,17 +24,13 @@
 
 #include <gtk/gtk.h>
 
-#include "ui/liferea_shell.h"
-
 /**
- * link_actions_create:
+ * link_actions_get_group:
  * 
- * @shell: the Liferea shell
+ * Returns a static link action group
  * 
- * Create a new action group for link actions.
- * 
- * Returns: a new action group, to be freed by caller
+ * Returns: a new action group
  */
-GActionGroup * link_actions_create (LifereaShell *shell);
+GActionGroup * link_actions_get_group (void);
 
 #endif /* LINK_ACTIONS_H */

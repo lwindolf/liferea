@@ -2,7 +2,7 @@
  * @file liferea_web_view.c  Webkit2 widget for Liferea
  *
  * Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2021-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "social.h"
+#include "actions/link_actions.h"
+#include "ui/ui_common.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
 #include "ui/liferea_shell.h"
@@ -38,6 +40,7 @@ struct _LifereaWebView {
 	WebKitWebView		parent;
 
 	GActionGroup            *menu_action_group;
+	GActionGroup            *link_action_group;
 	GDBusConnection 	*dbus_connection;
 };
 
@@ -113,7 +116,6 @@ menu_add_item (WebKitContextMenu *menu, const gchar *label, GActionMap *map, con
 		g_warning ("LifereaWebView: action %s not found", actionName);
 		return;
 	}
-	g_simple_action_set_enabled (G_SIMPLE_ACTION (action), TRUE);
 	webkit_context_menu_append (menu, webkit_context_menu_item_new_from_gaction (action, label, v));
 }
 
@@ -127,69 +129,71 @@ menu_add_item (WebKitContextMenu *menu, const gchar *label, GActionMap *map, con
  * When a context menu is about to be displayed this signal is emitted.
  */
 static gboolean
-liferea_web_view_on_menu (WebKitWebView 	*view,
-			WebKitContextMenu   	*context_menu,
-			WebKitHitTestResult 	*hit_result,
-			gpointer             	user_data)
+liferea_web_view_on_menu (WebKitWebView *view,
+                          WebKitContextMenu *context_menu,
+                          WebKitHitTestResult *hit_result,
+                          gpointer user_data)
 {
-	LifereaWebView		*self = LIFEREA_WEB_VIEW (view);
-	GActionMap		*actionMap = G_ACTION_MAP (self->menu_action_group);
-	GActionMap		*appActionMap = G_ACTION_MAP (gtk_window_get_application (GTK_WINDOW (liferea_shell_get_window ())));
-	g_autofree gchar	*image_uri = NULL;
-	g_autofree gchar	*link_uri = NULL;
-	g_autofree gchar	*link_title = NULL;
-	gboolean 		link, image;
+    LifereaWebView *self = LIFEREA_WEB_VIEW(view);
+    GActionMap *actionMap = G_ACTION_MAP(self->menu_action_group);
+    GActionMap *linkActionMap = G_ACTION_MAP(self->link_action_group);
+    g_autofree gchar	*image_uri = NULL;
+    g_autofree gchar	*link_uri = NULL;
+    g_autofree gchar	*link_title = NULL;
+    gboolean 		link, image;
 
-	webkit_context_menu_remove_all (context_menu);
+    webkit_context_menu_remove_all (context_menu);
 
-	if (webkit_hit_test_result_context_is_link (hit_result))
+    if (webkit_hit_test_result_context_is_link (hit_result))
 		g_object_get (hit_result, "link-uri", &link_uri, "link-title", &link_title, NULL);
-	if (webkit_hit_test_result_context_is_image (hit_result))
+    if (webkit_hit_test_result_context_is_image (hit_result))
 		g_object_get (hit_result, "image-uri", &image_uri, NULL);
-	if (webkit_hit_test_result_context_is_media (hit_result))
+    if (webkit_hit_test_result_context_is_media (hit_result))
 		g_object_get (hit_result, "media-uri", &link_uri, NULL);		/* treat media as normal link */
 
-	/* Making the menu */
-	link = (link_uri != NULL);
-	image = (image_uri != NULL);
+    /* Making the menu */
+    link = (link_uri != NULL);
+    image = (image_uri != NULL);
 
-	/* do not expose internal links */
-	if (!link_uri || g_str_has_prefix (link_uri, "javascript:") || g_str_has_prefix (link_uri, "data:"))
+    /* do not expose internal links */
+    if (!link_uri || g_str_has_prefix (link_uri, "javascript:") || g_str_has_prefix (link_uri, "data:"))
 		link = FALSE;
 
-	g_autoptr(GVariant) vl = NULL;
-	g_autoptr(GVariant) vi = NULL;
+    liferea_web_view_update_actions_sensitivity (LIFEREA_WEB_VIEW (view));
 
-	if (link_uri)
-		g_variant_new ("(s)", link_uri);
-	if (image_uri)
-		g_variant_new ("(s)", image_uri);
+    g_autoptr(GVariant) vl = NULL;
+    g_autoptr(GVariant) vi = NULL;
 
-	/* and now add all we want to see */
-	if (link) {	
+    if (link_uri)
+		vl = g_variant_new ("s", link_uri);
+    if (image_uri)
+		vi = g_variant_new ("s", image_uri);
+
+    /* and now add all we want to see */
+    if (link) {	
 		g_autofree gchar *bookmarkLabel = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
 		g_autoptr(GVariant) bookmarkParams = g_variant_new ("(ss)", link_uri, link_title?link_title:"");
 
-		menu_add_item (context_menu, _("Open Link In _Tab"), appActionMap, "open-link-in-tab", vl);
-		menu_add_item (context_menu, _("Open Link In Browser"), appActionMap, "open-link-in-browser", vl);
-		menu_add_item (context_menu, _("Open Link In External Browser"), appActionMap, "open-link-in-external-browser", vl);
+		menu_add_item(context_menu, _("Open Link In _Tab"), linkActionMap, "open-link-in-tab", vl);
+		menu_add_item(context_menu, _("Open Link In Browser"), linkActionMap, "open-link-in-browser", vl);
+		menu_add_item(context_menu, _("Open Link In External Browser"), linkActionMap, "open-link-in-external-browser", vl);
 
-		menu_add_separator (context_menu);
+		menu_add_separator(context_menu);
 
-		//menu_add_item (context_menu, bookmarkLabel, appActionMap, "social-bookmark-link", bookmarkParams);
-		menu_add_item (context_menu, _("_Copy Link Location"), appActionMap, "copy-link-to-clipboard", vl);
+		//menu_add_item(context_menu, bookmarkLabel, linkActionMap, "social-bookmark-link", bookmarkParams);
+		menu_add_item(context_menu, _("_Copy Link Location"), linkActionMap, "copy-link-to-clipboard", vl);
 	}
-	if (image) {
-		menu_add_item (context_menu, _("_View Image"),          appActionMap, "open-link-in-tab", vi);
-		menu_add_item (context_menu, _("_Copy Image Location"), appActionMap, "copy-link-to-clipboard", vi);
+    if (image) {
+		menu_add_item(context_menu, _("_View Image"), linkActionMap, "open-link-in-tab", vi);
+		menu_add_item(context_menu, _("_Copy Image Location"), linkActionMap, "copy-link-to-clipboard", vi);
 	}
-	if (link) {
+    if (link) {
 		menu_add_item (context_menu, _("S_ave Link As"), actionMap, "save-link", vl);
 	}
-	if (image) {
+    if (image) {
 		menu_add_item (context_menu, _("S_ave Image As"), actionMap, "save-link", vi);
 	}
-	if (link) {
+    if (link) {
 		menu_add_separator (context_menu);
 
 		menu_add_item (context_menu, _("_Subscribe..."), actionMap, "subscribe-link", vl);
@@ -207,8 +211,6 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	if(debug_get_flags () & DEBUG_HTML) {
 		menu_add_item (context_menu, "Inspect", actionMap, "web-inspector", NULL);
 	}
-
-	liferea_web_view_update_actions_sensitivity (LIFEREA_WEB_VIEW (view));
 
 	return FALSE;
 }
@@ -578,8 +580,11 @@ liferea_web_view_init(LifereaWebView *self)
 
 	/* Context menu actions */
 	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
+	self->link_action_group = link_actions_get_group ();
+
 	g_action_map_add_action_entries (G_ACTION_MAP (self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
 	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
+	gtk_widget_insert_action_group (GTK_WIDGET (self), "link_actions", self->link_action_group);
 
 	/* Register context menu signal */
 	g_signal_connect (
