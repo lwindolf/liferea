@@ -205,9 +205,8 @@ static void
 item_actions_item_updated (gpointer obj, gint unused, gpointer user_data)
 {
         GActionGroup *ag = G_ACTION_GROUP (user_data);
-	g_print("action group enable %p: %d\n", ag, itemlist_get_selected () != NULL);
 
-	ui_common_action_group_enable (ag, itemlist_get_selected () != NULL);
+        ui_common_action_group_enable (ag, itemlist_get_selected () != NULL);
 }
 
 static void
