@@ -677,36 +677,95 @@ on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean key
 static GMenu *
 item_list_view_popup_menu (ItemListView *ilv, itemPtr item)
 {
-	GMenu *menu = g_menu_new();
-	GMenuItem *menu_item;
+	GMenu		*menu = g_menu_new();
+	GMenuItem	*menu_item;
+	gchar		*text, *item_link;
+	const		gchar *author;
 
-	// Copy URL to clipboard
-	menu_item = g_menu_item_new(_("Copy _URL to Clipboard"), "app.copy-url-clipboard");
-	g_menu_append_item(menu, menu_item);
-	g_object_unref(menu_item);
+	item_link = item_make_link (item);
+	author = item_get_author (item);
 
-	// Toggle read status
-	if (item->readStatus) {
-		menu_item = g_menu_item_new(_("Mark as _Unread"), "app.toggle-read-status");
-	} else {
-		menu_item = g_menu_item_new(_("Mark as _Read"), "app.toggle-read-status");
+	GMenu *section = g_menu_new ();
+	menu_item = g_menu_item_new (NULL, NULL);
+
+	g_menu_item_set_label(menu_item, _("Open In _Tab"));
+	g_menu_item_set_action_and_target(menu_item, "app.open-item-in-tab", "t", (guint64) item->id);
+	g_menu_append_item(section, menu_item);
+
+	g_menu_item_set_label(menu_item, _("_Open In Browser"));
+	g_menu_item_set_action_and_target(menu_item, "app.open-item-in-browser", "t", (guint64) item->id);
+	g_menu_append_item(section, menu_item);
+
+	g_menu_item_set_label(menu_item, _("Open In _External Browser"));
+	g_menu_item_set_action_and_target(menu_item, "app.open-item-in-external-browser", "t", (guint64) item->id);
+	g_menu_append_item(section, menu_item);
+
+	if(author){
+		g_menu_item_set_label(menu_item, _("Email The Author"));
+		g_menu_item_set_action_and_target(menu_item, "app.email-the-author", "t", (guint64) item->id);
+		g_menu_append_item(section, menu_item);
 	}
-	g_menu_append_item(menu, menu_item);
-	g_object_unref(menu_item);
 
-	// Toggle flag status
-	if (item->flagStatus) {
-		menu_item = g_menu_item_new(_("Remove _Flag"), "app.toggle-flag");
-	} else {
-		menu_item = g_menu_item_new(_("Toggle _Flag"), "app.toggle-flag");
+	g_menu_append_section(menu, NULL, G_MENU_MODEL(section));
+	g_object_unref(section);
+
+	GSList *iter = newsbin_get_list();
+	if (iter) {
+		GMenu *submenu;
+		guint32 i = 0;
+
+		section = g_menu_new();
+		submenu = g_menu_new();
+
+		while (iter) {
+			Node *node = (Node *)iter->data;
+			g_menu_item_set_label(menu_item, node_get_title(node));
+			g_menu_item_set_action_and_target(menu_item, "app.copy-item-to-newsbin", "(umt)", i, TRUE, (guint64) item->id);
+			g_menu_append_item(submenu, menu_item);
+			iter = g_slist_next(iter);
+			i++;
+		}
+
+		g_menu_append_submenu(section, _("Copy to News Bin"), G_MENU_MODEL(submenu));
+		g_object_unref(submenu);
+		g_menu_append_section(menu, NULL, G_MENU_MODEL(section));
+		g_object_unref(section);
 	}
-	g_menu_append_item(menu, menu_item);
-	g_object_unref(menu_item);
 
-	// Social bookmark
-	menu_item = g_menu_item_new(_("_Bookmark Item"), "app.social-bookmark");
-	g_menu_append_item(menu, menu_item);
+	section = g_menu_new();
+
+	text = g_strdup_printf(_("_Bookmark at %s"), social_get_bookmark_site());
+	g_menu_item_set_label(menu_item, text);
+	g_menu_item_set_action_and_target(menu_item, "app.social-bookmark-link", "(ss)", item_link, item_get_title(item));
+	g_menu_append_item(section, menu_item);
+	g_free(text);
+
+	g_menu_item_set_label(menu_item, _("Copy Item _Location"));
+	g_menu_item_set_action_and_target(menu_item, "app.copy-link-to-clipboard", "s", item_link);
+	g_menu_append_item(section, menu_item);
+
+	g_menu_append_section(menu, NULL, G_MENU_MODEL(section));
+	g_object_unref(section);
+
+	section = g_menu_new();
+
+	g_menu_item_set_label(menu_item, _("Toggle _Read Status"));
+	g_menu_item_set_action_and_target(menu_item, "app.toggle-item-read-status", "t", (guint64) item->id);
+	g_menu_append_item(section, menu_item);
+
+	g_menu_item_set_label(menu_item, _("Toggle Item _Flag"));
+	g_menu_item_set_action_and_target(menu_item, "app.toggle-item-flag", "t", (guint64) item->id);
+	g_menu_append_item(section, menu_item);
+
+	g_menu_item_set_label(menu_item, _("R_emove Item"));
+	g_menu_item_set_action_and_target(menu_item, "app.remove-item", "t", (guint64) item->id);
+	g_menu_append_item(section, menu_item);
+
+	g_menu_append_section(menu, NULL, G_MENU_MODEL(section));
+	g_object_unref(section);
+
 	g_object_unref(menu_item);
+	g_free(item_link);
 
 	return menu;
 }
