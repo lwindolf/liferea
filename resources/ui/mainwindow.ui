@@ -110,14 +110,7 @@
                                 <property name="position-set">1</property>
                                 <property name="resize-start-child">0</property>
                                 <property name="start-child">
-                                    <object class="GtkFrame">
-                                    <property name="child">
-                                      <object class="GtkViewport" id="normalViewItems"/>
-                                    </property>
-                                    <style>
-                                      <class name="sunken"/>
-                                    </style>
-                                    </object>
+                                  <object class="GtkViewport" id="normalViewItems"/>
                                 </property>
                               </object>
                             </property>
@@ -151,14 +144,7 @@
                                 <property name="position-set">1</property>
                                 <property name="resize-start-child">0</property>
                                 <property name="start-child">
-                                    <object class="GtkFrame">
-                                    <property name="child">
-                                      <object class="GtkViewport" id="wideViewItems"/>
-                                    </property>
-                                    <style>
-                                      <class name="sunken"/>
-                                    </style>
-                                    </object>
+                                  <object class="GtkViewport" id="wideViewItems"/>
                                 </property>
                               </object>
                             </property>
@@ -186,26 +172,19 @@
             <property name="position">170</property>
             <property name="resize-start-child">0</property>
             <property name="start-child">
-              <object class="GtkFrame">
+              <object class="GtkScrolledWindow" id="scrolledwindow3">
                 <property name="child">
-                  <object class="GtkScrolledWindow" id="scrolledwindow3">
-                    <property name="child">
-                      <object class="GtkTreeView" id="feedlist">
-                        <property name="focusable">1</property>
-                        <property name="headers-visible">0</property>
-                        <property name="reorderable">1</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection"/>
-                        </child>
-                      </object>
-                    </property>
+                  <object class="GtkTreeView" id="feedlist">
                     <property name="focusable">1</property>
-                    <property name="hscrollbar-policy">never</property>
+                    <property name="headers-visible">0</property>
+                    <property name="reorderable">1</property>
+                    <child internal-child="selection">
+                      <object class="GtkTreeSelection"/>
+                    </child>
                   </object>
                 </property>
-                <style>
-                  <class name="sunken"/>
-                </style>
+                <property name="focusable">1</property>
+                <property name="hscrollbar-policy">never</property>
               </object>
             </property>
             <property name="vexpand">1</property>

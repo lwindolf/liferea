@@ -144,7 +144,7 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 {
 	const gchar	*searchString = liferea_dialog_entry_get (GTK_WIDGET (dialog), "searchentry");
 
-	if (1 == responseId) {	/* Search */
+	if (GTK_RESPONSE_OK == responseId) {	/* Search */
 		search_clean_results (vfolder);
 
 		/* Create new search... */
@@ -161,9 +161,11 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 	/* Do not close the dialog when "just" searching. The user
 	   should click "Close" to close the dialog to be able to
 	   do subsequent searches... */
-	if (1 != responseId) {
+	if (GTK_RESPONSE_CANCEL != responseId) {
 		search_clean_results (vfolder);
 		simple_dialog = NULL;
+	} else {
+		gtk_window_close (GTK_WINDOW (simple_dialog));
 	}
 }
 
@@ -193,6 +195,7 @@ simple_search_dialog_open (void)
 		return;
 
 	simple_dialog = dialog = liferea_dialog_new ("simple_search");
+	gtk_window_present (GTK_WINDOW (simple_dialog));
 
 	gtk_window_set_focus (GTK_WINDOW (dialog), liferea_dialog_lookup (dialog, "searchentry"));
 
