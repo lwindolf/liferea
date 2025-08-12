@@ -365,12 +365,36 @@ item_list_view_set_tree_store (ItemListView *ilv, GtkTreeStore *itemstore)
 }
 
 static void
+item_list_view_all_items_removed (GObject *obj, gpointer user_data)
+{
+	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
+	GtkTreeModel	*model;
+	GtkTreeSelection *select;
+
+	debug (DEBUG_CACHE, "item_list_view_all_items_removed()");
+
+	/* Unselect all items */
+	select = gtk_tree_view_get_selection (ilv->treeview);
+	gtk_tree_selection_unselect_all (select);
+
+	/* Clear the item ids */
+	if (ilv->item_ids)
+		g_slist_free (ilv->item_ids);
+	ilv->item_ids = NULL;
+
+	/* Clear the tree store */
+	model = gtk_tree_view_get_model (ilv->treeview);
+	gtk_tree_store_clear (GTK_TREE_STORE (model));
+}
+
+static void
 item_list_view_item_removed (GObject *obj, gint itemId, gpointer user_data)
 {
 	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
 	itemPtr		item = item_load (itemId);
 
 	g_assert (NULL != item);
+	g_warning("FIXME: reenable selection check item_list_view_item_removed");
 	//if (item_list_view_id_to_iter (ilv, item->id, &iter)) {
 		/* Using the GtkTreeIter check if it is currently selected. If yes,
 		   scroll down by one in the sorted GtkTreeView to ensure something
@@ -1050,6 +1074,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	g_signal_connect (itemlist, "item-batch-start", G_CALLBACK (item_list_view_item_batch_started), ilv);
 	g_signal_connect (itemlist, "item-batch-end", G_CALLBACK (item_list_view_item_batch_ended), ilv);
 	g_signal_connect (itemlist, "item-added", G_CALLBACK (item_list_view_item_added), ilv);
+	g_signal_connect (itemlist, "all-items-removed", G_CALLBACK (item_list_view_all_items_removed), ilv);
 	g_signal_connect (itemlist, "item-removed", G_CALLBACK (item_list_view_item_removed), ilv);
 	g_signal_connect (itemlist, "item-updated", G_CALLBACK (item_list_view_item_updated), ilv);
 	

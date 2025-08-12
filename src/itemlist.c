@@ -69,10 +69,11 @@ struct ItemListPrivate
 };
 
 enum {
-	ITEM_ADDED,	/*<< a new item has been added to the list */
-	ITEM_UPDATED,	/*<< state of a currently visible item has changed */
-	ITEM_REMOVED,	/*<< an item has been removed from the list */
-	ITEM_SELECTED,	/*<< the currently selected item has changed */
+	ITEM_ADDED,		/*<< a new item has been added to the list */
+	ITEM_UPDATED,		/*<< state of a currently visible item has changed */
+	ITEM_REMOVED,		/*<< an item has been removed from the list */
+	ALL_ITEMS_REMOVED,	/*<< all items have been removed from the list */
+	ITEM_SELECTED,		/*<< the currently selected item has changed */
 	ITEM_BATCH_START,	/*<< item list has been reset and new batch load starts */
 	ITEM_BATCH_END,		/*<< batch load finised */
 	LAST_SIGNAL
@@ -175,6 +176,18 @@ itemlist_class_init (ItemListClass *klass)
 		G_TYPE_NONE,
 		1,
 		G_TYPE_INT);
+
+	itemlist_signals[ALL_ITEMS_REMOVED] =
+		g_signal_new ("all-items-removed",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE,
+		0,
+		NULL);
 
 	itemlist_signals[ITEM_SELECTED] =
 		g_signal_new ("item-selected",
@@ -539,7 +552,6 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node_from_id (itemSet->nodeId));
-	g_warning ("FIXME: emit items-updated signal in feedlist");
 }
 
 void
@@ -555,7 +567,8 @@ itemlist_remove_all_items (Node *node)
 
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node);
-	g_warning("FIXME: emit items-updated signal in feedlist");
+
+	g_signal_emit_by_name (itemlist, "all-items-removed");
 }
 
 void
@@ -586,7 +599,7 @@ itemlist_node_changed (ItemList *ilv, gchar *nodeId, gpointer unused)
 }
 
 void
-itemlist_selection_changed (ItemList *ilv, gint itemId, gpointer unused)
+itemlist_selection_changed (ItemList *ilv, gulong itemId, gpointer unused)
 {
 	itemPtr item = item_load (itemId);
 

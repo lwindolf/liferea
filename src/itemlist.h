@@ -173,7 +173,7 @@ void itemlist_remove_all_items (Node *node);
  *
  * Only to be used as a signal handler for the item list view.
  */
-void itemlist_selection_changed (ItemList *itemlist, gint itemId, gpointer unused);
+void itemlist_selection_changed (ItemList *itemlist, gulong itemId, gpointer unused);
 
 /**
  * itemlist_node_changed: (skip)
