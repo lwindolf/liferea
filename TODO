@@ -16,31 +16,10 @@ To be fixed:
 
 ../src/itemlist.c:      g_warning ("FIXME: emit items-updated signal in feedlist");
 ../src/itemlist.c:      g_warning("FIXME: emit items-updated signal in feedlist");
-../src/node_source.h: * FIXME: maybe drop this in favour of node metadata
-../src/plugins/node_source_activatable.h:       // FIXME: Add methods here
-../src/net.c:   body = soup_session_send_and_read_finish (session, res, NULL);// FIXME: handle errors!
-../src/net.c:           // FIXME: allow passing user/password from above?
-../src/update_job.h:// FIXME: naming should not be JOB_STATE_... but JOB_STATE_...
-../src/feed_parser.c:           source = links->data;   // FIXME: let user choose feed!
-../src/feed_parser.c:   /* FIXME: we only need the !g_str_equal as a workaround after a 404 */
-../src/feed_parser.c:   // FIXME: this is bad, doesn't belong here at all
-../src/node_source.c:   /* FIXME: something is not perfect, because if you immediately
-../src/export.c:        // FIXME: Prevent news bins outside root source
-../src/export.c:        // FIXME: Prevent search folders outside root source
-../src/export.c:        // FIXME: this should not be done here!!!
-../src/item_state.c:    // FIXME: why not call itemset_free (itemSet); here? Crashes!
-../src/subscription.c:  subscription->updateError = NULL;       // FIXME: this might not be very useful!
-../src/subscription.c:          // FIXME: use new-items signal in itemview class
-../src/subscription.c:                  /* FIXME: Display warning dialog asking if the command
-../src/subscription.c:                          /* FIXME: Display warning dialog asking if the command
-../src/node.c:  // FIXME: don't use constant size, but size corresponding to GTK icon
 ../src/webkit/liferea_web_view.c:       // FIXME: GTK4 check if we need some type of shadow handling as with in GTK3
 ../src/webkit/liferea_webkit.c:         // FIXME: what about freeing b?
 ../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit initialize-web-extensions");
 ../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit download-started");
-../src/webkit/liferea_webkit.c: // FIXME Avoid doing a copy ?
-../src/webkit/liferea_webkit.c: // FIXME: hack to make URIs like "gnome.org" work
-../src/item.c:                                                  // FIXME: maybe support author too
 ../src/ui/subscription_dialog.c:        // FIXME: very weird logic
 ../src/ui/rule_editor.c:        // FIXME: GTK4 hbox fill
 ../src/ui/item_list_view.c:                     g_warning("FIXME: GTK4 port: itemlist_remove_selected ();");

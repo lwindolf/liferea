@@ -444,7 +444,7 @@ node_load_icon (Node *node)
 	if (node->icon)
 		node->iconFile = common_create_cache_filename ("favicons", node->id, "png");
 	else
-		node->iconFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "pixmaps", "default.svg", NULL);
+		node->iconFile = g_build_filename (PACKAGE_DATA_DIR, "pixmaps", "default.svg", NULL);
 }
 
 /* determines the nodes favicon or default icon */
