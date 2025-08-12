@@ -4,7 +4,7 @@ To be fixed next:
 
 1. feedlist: restore folder collapse state
 2. tab location bar is sometimes to large (auto grow to 50%, layout issue)
-3.
+3. src/itemlist.c:      g_warning ("FIXME: emit items-updated signal in feedlist");
 
 To be fixed:
 
@@ -12,10 +12,9 @@ To be fixed:
 - DnD reimplementation
 - browser zoom
 - select next unread
+- auth dialog layout not proper large empty space around vbox
 - remaining GTK4 FIXMES:
 
-../src/itemlist.c:      g_warning ("FIXME: emit items-updated signal in feedlist");
-../src/itemlist.c:      g_warning("FIXME: emit items-updated signal in feedlist");
 ../src/webkit/liferea_web_view.c:       // FIXME: GTK4 check if we need some type of shadow handling as with in GTK3
 ../src/webkit/liferea_webkit.c:         // FIXME: what about freeing b?
 ../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit initialize-web-extensions");
