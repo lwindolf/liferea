@@ -8,6 +8,7 @@ To be fixed next:
 
 To be fixed:
 
+- crash on browser launch in item list
 - gedit-close-button replacement
 - make notebook tab closing work
 - itemlist: Newsbin context menu does not work

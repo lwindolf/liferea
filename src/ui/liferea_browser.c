@@ -183,19 +183,6 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 	object_class->set_property = liferea_browser_set_property;
 	object_class->finalize = liferea_browser_finalize;
 
-	/* Some custom CSS */
-	const gchar *css = 
-		"frame.webframe {"
-		"  border-radius: 0;"
-		"}";
-
-	GtkCssProvider *css_provider = gtk_css_provider_new();
-	gtk_css_provider_load_from_string(css_provider, css);
-	gtk_style_context_add_provider_for_display(gdk_display_get_default(),
-		GTK_STYLE_PROVIDER(css_provider),
-		GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	g_object_unref(css_provider);
-
 	/* Load preferences */
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
 	if (zoom == 0) {
@@ -656,7 +643,7 @@ liferea_browser_init (LifereaBrowser *browser)
 		"        <property name='vexpand'>1</property>"
 		"        <property name='hexpand'>1</property>"
 		"        <style>"
-		"          <class name='webframe'/>"
+		"          <class name='sunken'/>"
 		"        </style>"
 		"      </object>"
 		"    </child>"
