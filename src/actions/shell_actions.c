@@ -178,7 +178,7 @@ on_about_activate (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 static void
 liferea_shell_add_html_tab (const gchar *file, const gchar *name)
 {
-	gchar *filepattern = g_strdup_printf (PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", file);
+	gchar *filepattern = g_strdup_printf (PACKAGE_DATA_DIR "/doc/html/%s", file);
 	gchar *filename = common_get_localized_filename (filepattern);
 	gchar *fileuri = g_strdup_printf ("file://%s", filename);
 

@@ -2,8 +2,8 @@ Tracking broken stuff in the GTK4 port
 
 To be fixed next:
 
-1. icons: restore default icon
-2. feedlist: restore folder collapse state
+1. feedlist: restore folder collapse state
+2. tab location bar is sometimes to large (auto grow to 50%, layout issue)
 3.
 
 To be fixed:

@@ -31,7 +31,7 @@ static GIcon *icons[MAX_ICONS];	/*<< list of icon assignments */
 gchar *
 icon_find_pixmap_file (const gchar *filename)
 {
-	gchar *pathname = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", filename, NULL);
+	gchar *pathname = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S "pixmaps", filename, NULL);
 	if (g_file_test (pathname, G_FILE_TEST_EXISTS))
 		return pathname;
 	g_free (pathname);
@@ -74,7 +74,7 @@ icon_get (lifereaIcon icon)
 		gint		i;
 		gchar 		*path;
 
-		path = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", NULL);
+		path = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S "pixmaps", NULL);
 		icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
 		gtk_icon_theme_add_search_path (icon_theme, path);
 

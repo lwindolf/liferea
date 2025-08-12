@@ -440,7 +440,7 @@ xml_process_entities (void *ctxt, const xmlChar *name)
 		if(!entities) {
 			/* loading HTML entities from external DTD file */
 			entities = xmlNewDoc (BAD_CAST "1.0");
-			xmlCreateIntSubset (entities, BAD_CAST "HTML entities", NULL, BAD_CAST PACKAGE_DATA_DIR "/" PACKAGE "/dtd/html.ent");
+			xmlCreateIntSubset (entities, BAD_CAST "HTML entities", NULL, BAD_CAST PACKAGE_DATA_DIR "/dtd/html.ent");
 			entities->extSubset = xmlParseDTD (entities->intSubset->ExternalID, entities->intSubset->SystemID);
 		}
 

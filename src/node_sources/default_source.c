@@ -81,7 +81,7 @@ default_source_import (Node *node)
 		} else if (g_file_test (filename14, G_FILE_TEST_EXISTS)) {
 			migration_execute (MIGRATION_FROM_14, node);
 		} else {
-			gchar *filename = common_get_localized_filename (PACKAGE_DATA_DIR "/" PACKAGE "/opml/feedlist_%s.opml");
+			gchar *filename = common_get_localized_filename (PACKAGE_DATA_DIR "/opml/feedlist_%s.opml");
 			if (!filename)
 				g_error ("Fatal: No migration possible and no default feedlist found!");
 	
