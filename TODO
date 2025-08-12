@@ -2,13 +2,14 @@ Tracking broken stuff in the GTK4 port
 
 To be fixed next:
 
-1. tab location bar is sometimes to large (auto grow to 50%, layout issue)
-2. src/itemlist.c:      g_warning ("FIXME: emit items-updated signal in feedlist");
-3. crash on search dialog
+1. src/itemlist.c:      g_warning ("FIXME: emit items-updated signal in feedlist");
+2. crash on search dialog
+3. crash on search folder rebuild
 
 To be fixed:
 
-- crash on search folder rebuild
+- gedit-close-button replacement
+- make notebook tab closing work
 - itemlist: Newsbin context menu does not work
 - DnD reimplementation
 - browser zoom

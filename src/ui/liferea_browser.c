@@ -48,8 +48,8 @@
 #include "ui/liferea_shell.h"
 #include "webkit/liferea_webkit.h"
 
-/* The LifereaBrowser is a complex widget used to present both internally
-   rendered content as well as serving as a browser widget. It automatically
+/* LifereaBrowser is a bit complex widget used to present both internally
+   rendered feed content as well as serving as a browser widget. It automatically
    switches on a toolbar for history and URL navigation when browsing
    external content.
 
@@ -57,7 +57,6 @@
 
    Use Case           Intern Rendering    Pre-Download       URL bar
    ---------------------------------------------------------------------
-   item/node view     yes                 yes (feed-cache)   off
    item/node view     yes                 yes (feed-cache)   off
    local help files   no                  no                 on
    internet URL       no                  no                 on
@@ -183,6 +182,19 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 	object_class->get_property = liferea_browser_get_property;
 	object_class->set_property = liferea_browser_set_property;
 	object_class->finalize = liferea_browser_finalize;
+
+	/* Some custom CSS */
+	const gchar *css = 
+		"frame.webframe {"
+		"  border-radius: 0;"
+		"}";
+
+	GtkCssProvider *css_provider = gtk_css_provider_new();
+	gtk_css_provider_load_from_string(css_provider, css);
+	gtk_style_context_add_provider_for_display(gdk_display_get_default(),
+		GTK_STYLE_PROVIDER(css_provider),
+		GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref(css_provider);
 
 	/* Load preferences */
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
@@ -421,8 +433,8 @@ liferea_browser_launch_URL_internal (LifereaBrowser *browser, const gchar *url)
 	gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
 	gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
 
-		g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (url, -1);
-		gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
+	g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (url, -1);
+	gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 
 	liferea_webkit_launch_url (browser->renderWidget, url);
 }
@@ -594,40 +606,83 @@ liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gcha
 static void
 liferea_browser_init (LifereaBrowser *browser)
 {
-	GtkWidget *widget;
-
 	browser->content = NULL;
 	browser->url = NULL;
 	browser->renderWidget = liferea_webkit_new (browser);
-	browser->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
-	g_object_ref_sink (browser->container);
 	browser->history = browser_history_new ();
-	browser->toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
-	widget = gtk_button_new_from_icon_name ("go-previous");
-	gtk_box_append (GTK_BOX (browser->toolbar), widget);
-	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_liferea_browser_history_back), (gpointer)browser);
-	gtk_widget_set_sensitive (widget, FALSE);
-	browser->back = widget;
+	const gchar *ui_xml = 
+		"<interface>"
+		"  <object class='GtkBox' id='container'>"
+		"    <property name='orientation'>vertical</property>"
+		"    <child>"
+		"      <object class='GtkBox' id='toolbar'>"
+		"        <property name='orientation'>horizontal</property>"
+		"        <property name='margin-top'>3</property>"
+		"        <property name='margin-bottom'>3</property>"
+		"        <property name='margin-start'>3</property>"
+		"        <property name='margin-end'>3</property>"
+		"        <property name='spacing'>3</property>"
+		"        <property name='vexpand'>0</property>"
+		"        <property name='hexpand'>0</property>"
+		"        <child>"
+		"          <object class='GtkButton' id='back'>"
+		"            <property name='icon-name'>go-previous</property>"
+		"            <property name='sensitive'>0</property>"
+		"            <style>"
+		"              <class name='flat'/>"
+		"            </style>"
+		"          </object>"
+		"        </child>"
+		"        <child>"
+		"          <object class='GtkButton' id='forward'>"
+		"            <property name='icon-name'>go-next</property>"
+		"            <property name='sensitive'>0</property>"
+		"            <style>"
+		"              <class name='flat'/>"
+		"            </style>"
+		"          </object>"
+		"        </child>"
+		"        <child>"
+		"          <object class='GtkEntry' id='urlentry'>"
+		"            <property name='vexpand'>1</property>"
+		"            <property name='hexpand'>1</property>"
+		"          </object>"
+		"        </child>"
+		"      </object>"
+		"    </child>"
+		"    <child>"
+		"      <object class='GtkFrame' id='webframe'>"
+		"        <property name='vexpand'>1</property>"
+		"        <property name='hexpand'>1</property>"
+		"        <style>"
+		"          <class name='webframe'/>"
+		"        </style>"
+		"      </object>"
+		"    </child>"
+		"  </object>"
+		"</interface>";
 
-	widget = gtk_button_new_from_icon_name ("go-next");
-	gtk_box_append (GTK_BOX (browser->toolbar), widget);
-	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_liferea_browser_history_forward), (gpointer)browser);
-	gtk_widget_set_sensitive (widget, FALSE);
-	browser->forward = widget;
+	GtkBuilder *builder = gtk_builder_new_from_string (ui_xml, -1);
+	browser->container = GTK_WIDGET (gtk_builder_get_object (builder, "container"));
+	browser->toolbar = GTK_WIDGET (gtk_builder_get_object (builder, "toolbar"));
+	browser->back = GTK_WIDGET (gtk_builder_get_object (builder, "back"));
+	browser->forward = GTK_WIDGET (gtk_builder_get_object (builder, "forward"));
+	browser->urlentry = GTK_WIDGET (gtk_builder_get_object (builder, "urlentry"));
 
-	widget = gtk_entry_new ();
-	gtk_widget_set_vexpand (widget, TRUE);
-	gtk_widget_set_hexpand (widget, TRUE);
-	gtk_box_append (GTK_BOX (browser->toolbar), widget);
-	g_signal_connect ((gpointer)widget, "activate", G_CALLBACK (on_liferea_browser_url_entry_activate), (gpointer)browser);
-	browser->urlentry = widget;
+	g_object_ref_sink (browser->container);
 
+	// Connect signals
+	g_signal_connect (browser->back, "clicked", G_CALLBACK (on_liferea_browser_history_back), browser);
+	g_signal_connect (browser->forward, "clicked", G_CALLBACK (on_liferea_browser_history_forward), browser);
+	g_signal_connect (browser->urlentry, "activate", G_CALLBACK (on_liferea_browser_url_entry_activate), browser);
+
+	// Add the render widget
 	gtk_widget_set_vexpand (browser->renderWidget, TRUE);
 	gtk_widget_set_hexpand (browser->renderWidget, TRUE);
+	gtk_frame_set_child (GTK_FRAME (gtk_builder_get_object (builder, "webframe")), browser->renderWidget);
 
-	gtk_box_append (GTK_BOX (browser->container), browser->toolbar);
-	gtk_box_append (GTK_BOX (browser->container), browser->renderWidget);
+	g_object_unref (builder);
 
 	liferea_browser_clear (browser);
 
