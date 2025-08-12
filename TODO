@@ -2,12 +2,13 @@ Tracking broken stuff in the GTK4 port
 
 To be fixed next:
 
-1. feedlist: restore folder collapse state
-2. tab location bar is sometimes to large (auto grow to 50%, layout issue)
-3. src/itemlist.c:      g_warning ("FIXME: emit items-updated signal in feedlist");
+1. tab location bar is sometimes to large (auto grow to 50%, layout issue)
+2. src/itemlist.c:      g_warning ("FIXME: emit items-updated signal in feedlist");
+3. crash on search dialog
 
 To be fixed:
 
+- crash on search folder rebuild
 - itemlist: Newsbin context menu does not work
 - DnD reimplementation
 - browser zoom
@@ -19,7 +20,6 @@ To be fixed:
 ../src/webkit/liferea_webkit.c:         // FIXME: what about freeing b?
 ../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit initialize-web-extensions");
 ../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit download-started");
-../src/ui/subscription_dialog.c:        // FIXME: very weird logic
 ../src/ui/rule_editor.c:        // FIXME: GTK4 hbox fill
 ../src/ui/item_list_view.c:                     g_warning("FIXME: GTK4 port: itemlist_remove_selected ();");
 ../src/ui/item_list_view.c:     // FIXME: port this to GTK4!
@@ -46,8 +46,6 @@ To be fixed:
 ../src/ui/liferea_browser.c:                            g_warning("FIXME: setting zoom level not implemented");
 ../src/ui/liferea_browser.c:    g_warning ("FIXME: LifereaBrowser:zoom property is not implemented");
 ../src/ui/liferea_browser.c:    // FIXME: not yet supported
-../src/comments.c:              // FIXME: restore update state from DB?
-../src/comments.c:                      NULL    // FIXME: use copy of parent subscription options
 ../src/actions/shell_actions.c: // FIXME: use node type capability check
 ../src/actions/shell_actions.c:// FIXME replace this with a bind!
 ../src/actions/shell_actions.c: // FIXME GTK4 g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_set_visible), NULL);

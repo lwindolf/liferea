@@ -357,7 +357,7 @@ feed_list_view_pressed_cb (GtkGestureClick *gesture, gdouble x, gdouble y, guint
 	GtkTreePath *path;
 	GtkTreeIter iter;
 	Node *node;
-g_print("Pressed at %f, %f with %d presses\n", x, y, n_press);
+
 	if (n_press != 1)
 		return FALSE;
 
@@ -371,7 +371,7 @@ g_print("Pressed at %f, %f with %d presses\n", x, y, n_press);
 
 	gtk_tree_model_get (gtk_tree_view_get_model (treeview), &iter, FS_PTR, &node, -1);
 	gtk_tree_path_free (path);
-g_print("Pressed on node %s\n", node ? node_get_title(node) : "NULL");
+
 	if (!node)
 		return FALSE;
 
@@ -459,7 +459,7 @@ static void
 feed_list_view_expand (Node *node)
 {
 	if (node->parent)
-		feed_list_view_expand (LIFEREA_NODE (node->parent));
+		feed_list_view_expand (node->parent);
 
 	feed_list_view_set_expansion (node, TRUE);
 }
@@ -709,6 +709,9 @@ feed_list_view_node_add (FeedListView *flv, Node *node)
 
 	if (IS_FOLDER (node))
 		feed_list_view_check_if_folder_is_empty (node->id);
+
+	if (node->children)
+		feed_list_view_set_expansion (node, node->expanded);
 }
 
 static void

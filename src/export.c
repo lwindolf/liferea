@@ -91,19 +91,15 @@ export_append_node_tag (Node *node, gpointer userdata)
 
 		if (FALSE == node->sortReversed)
 			xmlNewProp (childNode, BAD_CAST"sortReversed", BAD_CAST"false");
+
+		if (node->children)
+			xmlNewProp (childNode, BAD_CAST"expanded", BAD_CAST(feed_list_view_is_expanded (node->id)?"true":"false"));
 	}
 
 	/* 2. add node type specific stuff */
 	NODE_PROVIDER (node)->export (node, childNode, internal);
 
 	/* 3. add children */
-	if (internal) {
-		if (feed_list_view_is_expanded (node->id))
-			xmlNewProp (childNode, BAD_CAST"expanded", BAD_CAST"true");
-		else
-			xmlNewProp (childNode, BAD_CAST"collapsed", BAD_CAST"true");
-	}
-
 	if (IS_FOLDER (node))
 		export_node_children (node, childNode, internal);
 }
@@ -284,12 +280,13 @@ import_parse_outline (xmlNodePtr cur, Node *parentNode, gboolean trusted)
 	}
 
 	/* expansion state */
-	if (xmlHasProp (cur, BAD_CAST"expanded"))
+	tmp = (gchar *)xmlGetProp (cur, BAD_CAST"expanded");
+	if (tmp && g_str_equal (tmp, "true")) {
 		node->expanded = TRUE;
-	else if (xmlHasProp (cur, BAD_CAST"collapsed"))
+	} else {
 		node->expanded = FALSE;
-	else
-		node->expanded = TRUE;
+	}
+	g_free (tmp);
 
 	/* 3. Try to load the favicon (needs to be done before adding to the feed list) */
 	node_load_icon (node);
