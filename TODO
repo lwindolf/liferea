@@ -1,0 +1,85 @@
+Tracking broken stuff in the GTK4 port
+
+To be fixed next:
+
+1. icons: restore default icon
+2. feedlist: restore folder collapse state
+3.
+
+To be fixed:
+
+- itemlist: Newsbin context menu does not work
+- DnD reimplementation
+- browser zoom
+- select next unread
+- remaining GTK4 FIXMES:
+
+../src/itemlist.c:      g_warning ("FIXME: emit items-updated signal in feedlist");
+../src/itemlist.c:      g_warning("FIXME: emit items-updated signal in feedlist");
+../src/node_source.h: * FIXME: maybe drop this in favour of node metadata
+../src/plugins/node_source_activatable.h:       // FIXME: Add methods here
+../src/net.c:   body = soup_session_send_and_read_finish (session, res, NULL);// FIXME: handle errors!
+../src/net.c:           // FIXME: allow passing user/password from above?
+../src/update_job.h:// FIXME: naming should not be JOB_STATE_... but JOB_STATE_...
+../src/feed_parser.c:           source = links->data;   // FIXME: let user choose feed!
+../src/feed_parser.c:   /* FIXME: we only need the !g_str_equal as a workaround after a 404 */
+../src/feed_parser.c:   // FIXME: this is bad, doesn't belong here at all
+../src/node_source.c:   /* FIXME: something is not perfect, because if you immediately
+../src/export.c:        // FIXME: Prevent news bins outside root source
+../src/export.c:        // FIXME: Prevent search folders outside root source
+../src/export.c:        // FIXME: this should not be done here!!!
+../src/item_state.c:    // FIXME: why not call itemset_free (itemSet); here? Crashes!
+../src/subscription.c:  subscription->updateError = NULL;       // FIXME: this might not be very useful!
+../src/subscription.c:          // FIXME: use new-items signal in itemview class
+../src/subscription.c:                  /* FIXME: Display warning dialog asking if the command
+../src/subscription.c:                          /* FIXME: Display warning dialog asking if the command
+../src/node.c:  // FIXME: don't use constant size, but size corresponding to GTK icon
+../src/webkit/liferea_web_view.c:       // FIXME: GTK4 check if we need some type of shadow handling as with in GTK3
+../src/webkit/liferea_webkit.c:         // FIXME: what about freeing b?
+../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit initialize-web-extensions");
+../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit download-started");
+../src/webkit/liferea_webkit.c: // FIXME Avoid doing a copy ?
+../src/webkit/liferea_webkit.c: // FIXME: hack to make URIs like "gnome.org" work
+../src/item.c:                                                  // FIXME: maybe support author too
+../src/ui/subscription_dialog.c:        // FIXME: very weird logic
+../src/ui/rule_editor.c:        // FIXME: GTK4 hbox fill
+../src/ui/item_list_view.c:                     g_warning("FIXME: GTK4 port: itemlist_remove_selected ();");
+../src/ui/item_list_view.c:     // FIXME: port this to GTK4!
+../src/ui/search_dialog.c:      /* FIXME: Don't simply free the result search folder
+../src/ui/ui_dnd.c:    (FIXME: implement the last part)
+../src/ui/ui_dnd.c:     g_warning ("FIXME GTK4: drag and drop not yet implemented");
+../src/ui/liferea_shell.c:      // FIXME: GTK4 https://developer.gnome.org/documentation/tutorials/save-state.html
+../src/ui/liferea_shell.c:              g_warning ("FIXME GTK4 restore window dimensions");
+../src/ui/liferea_shell.c:      // FIXME: GTK4
+../src/ui/liferea_shell.c:/* FIXME: GTK4
+../src/ui/liferea_shell.c:// FIXME: GTK4
+../src/ui/liferea_shell.c:                      // FIXME: GTK4 migration
+../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
+../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate next unread");
+../src/ui/liferea_shell.c:      // FIXME: GTK4
+../src/ui/liferea_shell.c:g_warning("FIXME: GTK4 restore pane position sanity checks");
+../src/ui/liferea_shell.c:      // FIXME: GTK4 eventbox replacement
+../src/ui/liferea_shell.c:      // FIXME: GTK4 5px statusbar padding
+../src/ui/liferea_shell.c:      // 6.) Restore selection (FIXME: Move to feed list code?)
+../src/ui/liferea_shell.c:      g_warning ("FIXME GTK4 on_window_resize_cb");
+../src/ui/liferea_shell.c:      // FIXME GTK4
+../src/ui/liferea_shell.c:      feed_list_view_set_reduce_mode (FALSE); // FIXME: this would be better triggered by a GAction init somewhere
+../src/ui/liferea_shell.c:      // FIXME: how to do deiconify in GTK4?
+../src/ui/liferea_browser.c:                            g_warning("FIXME: setting zoom level not implemented");
+../src/ui/liferea_browser.c:    g_warning ("FIXME: LifereaBrowser:zoom property is not implemented");
+../src/ui/liferea_browser.c:    // FIXME: not yet supported
+../src/comments.c:              // FIXME: restore update state from DB?
+../src/comments.c:                      NULL    // FIXME: use copy of parent subscription options
+../src/actions/shell_actions.c: // FIXME: use node type capability check
+../src/actions/shell_actions.c:// FIXME replace this with a bind!
+../src/actions/shell_actions.c: // FIXME GTK4 g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_set_visible), NULL);
+../src/actions/shell_actions.c: // FIXME: this looks wrong here
+../src/actions/shell_actions.c: // FIXME: action group state init
+../src/actions/item_actions.c:  // FIXME: Maybe type causes exception in GApplication {"copy-item-to-newsbin", on_copy_to_newsbin, "(umt)", NULL, NULL},
+../src/actions/item_actions.c:  // FIXME: duplicate?
+../src/actions/node_actions.c:  // FIXME
+../src/actions/node_actions.c:        ui_common_action_enable (ag, "node-rebuild-vfolder", TRUE);     // FIXME
+../src/actions/node_actions.c:        ui_common_action_enable (ag, "node-convert-to-local", TRUE);    // FIXME
+../src/actions/node_actions.c:        // FIXME: those look like duplicates
+../src/actions/node_actions.c:  // FIXME: initialization with disabled actions!
+../src/actions/node_actions.c:  // FIXME: g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
