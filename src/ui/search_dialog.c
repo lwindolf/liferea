@@ -23,7 +23,6 @@
 #include <string.h>
 
 #include "common.h"
-#include "node_providers/feed.h"
 #include "feedlist.h"
 #include "itemlist.h"
 #include "node.h"
@@ -153,19 +152,26 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 		itemset_add_rule (vfolder->itemset, "exact", searchString, TRUE);
 
 		search_load_results (vfolder);
+
+		/* Do not close the dialog when "just" searching. The user
+		should click "Close" to close the dialog to be able to
+		do subsequent searches... */
+		return;
 	}
 
-	if (2 == responseId)	/* Advanced... */
+	if (2 == responseId) {	/* Advanced... */
 		search_dialog_open (searchString);
-
-	/* Do not close the dialog when "just" searching. The user
-	   should click "Close" to close the dialog to be able to
-	   do subsequent searches... */
-	if (GTK_RESPONSE_CANCEL != responseId) {
 		search_clean_results (vfolder);
-		simple_dialog = NULL;
-	} else {
 		gtk_window_close (GTK_WINDOW (simple_dialog));
+		simple_dialog = NULL;
+		return;
+	}
+
+	if (GTK_RESPONSE_CLOSE == responseId) {
+		search_clean_results (vfolder);
+		gtk_window_close (GTK_WINDOW (simple_dialog));
+		simple_dialog = NULL;
+		return;
 	}
 }
 

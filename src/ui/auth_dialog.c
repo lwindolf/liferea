@@ -24,77 +24,53 @@
 
 #include "common.h"
 #include "debug.h"
+#include "update.h"
 #include "ui/liferea_dialog.h"
-
-struct _AuthDialog {
-	GObject parentInstance;
-
-	subscriptionPtr subscription;
-
-	GtkWidget *dialog;
-
-	gint flags;
-};
-
-G_DEFINE_TYPE (AuthDialog, auth_dialog, G_TYPE_OBJECT);
-
-static void
-auth_dialog_finalize (GObject *object)
-{
-	AuthDialog *ad = AUTH_DIALOG (object);
-
-	if (ad->subscription != NULL)
-		ad->subscription->activeAuth = FALSE;
-}
-
-static void
-auth_dialog_class_init (AuthDialogClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->finalize = auth_dialog_finalize;
-}
 
 static void
 on_authdialog_response (GtkDialog *dialog,
                         gint response_id,
-			gpointer user_data)
+			gpointer userdata)
 {
-	AuthDialog *ad = AUTH_DIALOG (user_data);
+
+	subscriptionPtr subscription = (subscriptionPtr)userdata;
+	subscription->activeAuth = FALSE;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		subscription_set_auth_info (ad->subscription,
-		                            liferea_dialog_entry_get (ad->dialog, "usernameEntry"),
-		                            liferea_dialog_entry_get (ad->dialog, "passwordEntry"));
-		subscription_update (ad->subscription, ad->flags);
+		subscription_set_auth_info (subscription,
+		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "usernameEntry"),
+		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "passwordEntry"));
+		subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
-	g_object_unref (ad);
+	gtk_window_close (GTK_WINDOW (dialog));
 }
 
-static gboolean
-auth_dialog_load (AuthDialog *ad)
+void
+auth_dialog_new (subscriptionPtr subscription, gint unused)
 {
+	GtkWidget		*dialog;
 	gchar			*promptStr;
 	gchar			*source = NULL;
 	xmlURIPtr		uri;
 
-	ad->dialog = liferea_dialog_new ("auth");
-	gtk_window_present (GTK_WINDOW (ad->dialog));
-	g_signal_connect (G_OBJECT (ad->dialog), "response", G_CALLBACK (on_authdialog_response), ad);
+	if (subscription->activeAuth)
+		debug (DEBUG_UPDATE, "Missing/wrong authentication. Skipping, as a dialog is already active.");
+	subscription->activeAuth = TRUE;
 
-	uri = xmlParseURI (subscription_get_source (ad->subscription));
+	dialog = liferea_dialog_new ("auth");
+	gtk_window_present (GTK_WINDOW (dialog));
+	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_authdialog_response), subscription);
 
+	uri = xmlParseURI (subscription_get_source (subscription));
 	if (uri) {
 		if (uri->user) {
 			gchar *user = uri->user;
 			gchar *pass = strstr (user, ":");
-			if(pass) {
+			if(pass)
 				pass[0] = '\0';
-				pass++;
-				liferea_dialog_entry_set (ad->dialog, "passwordEntry", pass);
-			}
-			liferea_dialog_entry_set (ad->dialog, "usernameEntry", user);
+				
+			liferea_dialog_entry_set (dialog, "usernameEntry", user);
 			xmlFree (uri->user);
 			uri->user = NULL;
 		}
@@ -105,33 +81,10 @@ auth_dialog_load (AuthDialog *ad)
 	}
 
 	promptStr = g_strdup_printf ( _("Enter the username and password for \"%s\" (%s):"),
-	                             node_get_title (ad->subscription->node),
+	                             node_get_title (subscription->node),
 	                             source?source:_("Unknown source"));
-	gtk_label_set_text (GTK_LABEL (liferea_dialog_lookup (ad->dialog, "prompt")), promptStr);
+	gtk_label_set_text (GTK_LABEL (liferea_dialog_lookup (dialog, "prompt")), promptStr);
 	g_free (promptStr);
 	if (source)
 		xmlFree (source);
-
-	return FALSE;
-}
-
-static void
-auth_dialog_init (AuthDialog *ad)
-{
-}
-
-void
-auth_dialog_new (subscriptionPtr subscription, gint flags)
-{
-	AuthDialog *ad;
-
-	if (subscription->activeAuth)
-		debug (DEBUG_UPDATE, "Missing/wrong authentication. Skipping, as a dialog is already active.");
-
-	ad = AUTH_DIALOG (g_object_new (AUTH_DIALOG_TYPE, NULL));
-	ad->subscription = subscription;
-	ad->flags = flags;
-	subscription->activeAuth = TRUE;
-
-	g_idle_add ((GSourceFunc)auth_dialog_load, ad);
 }
