@@ -99,7 +99,9 @@ liferea_dialog_new (const gchar *name)
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 	ld->priv->xml = gtk_builder_new_from_resource (path);
 	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
-	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window ()));
+
+	// When enabling the following line dialogs freeze up :-(
+	//gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window ()));
 	g_return_val_if_fail (ld->priv->dialog != NULL, NULL);
 
 	g_object_set_data (G_OBJECT (ld->priv->dialog), "LifereaDialog", ld);

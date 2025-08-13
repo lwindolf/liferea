@@ -179,7 +179,7 @@ on_searchentry_activated (GtkEntry *entry, gpointer user_data)
 static void
 on_searchentry_changed (GtkEditable *editable, gpointer user_data)
 {
-	gchar 		*searchString;
+	g_autofree gchar *searchString;
 
 	/* just to disable the start search button when search string is empty... */
 	searchString = gtk_editable_get_chars (editable, 0, -1);

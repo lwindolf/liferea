@@ -493,6 +493,7 @@
 	(13,13,"GtkButton","label","Stop All",1,None,None,None,None,None,None,None,None),
 	(13,14,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
 	(13,14,"GtkButton","label","Close",0,None,None,None,None,None,None,None,None),
+	(14,1,"GtkWidget","width-request","500",None,None,None,None,None,None,None,None,None),
 	(14,1,"GtkWindow","resizable","0",0,None,None,None,None,None,None,None,None),
 	(14,1,"GtkWindow","title","Search All Feeds",1,None,None,None,None,None,None,None,None),
 	(14,2,"GtkBox","spacing","2",0,None,None,None,None,None,None,None,None),

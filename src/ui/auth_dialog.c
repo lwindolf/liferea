@@ -72,19 +72,16 @@ on_authdialog_response (GtkDialog *dialog,
 	g_object_unref (ad);
 }
 
-static void
-auth_dialog_load (AuthDialog *ad,
-                  subscriptionPtr subscription,
-                  gint flags)
+static gboolean
+auth_dialog_load (AuthDialog *ad)
 {
 	gchar			*promptStr;
 	gchar			*source = NULL;
 	xmlURIPtr		uri;
 
-	subscription->activeAuth = TRUE;
-
-	ad->subscription = subscription;
-	ad->flags = flags;
+	ad->dialog = liferea_dialog_new ("auth");
+	gtk_window_present (GTK_WINDOW (ad->dialog));
+	g_signal_connect (G_OBJECT (ad->dialog), "response", G_CALLBACK (on_authdialog_response), ad);
 
 	uri = xmlParseURI (subscription_get_source (ad->subscription));
 
@@ -114,28 +111,27 @@ auth_dialog_load (AuthDialog *ad,
 	g_free (promptStr);
 	if (source)
 		xmlFree (source);
+
+	return FALSE;
 }
 
 static void
 auth_dialog_init (AuthDialog *ad)
 {
-	ad->dialog = liferea_dialog_new ("auth");
-	gtk_window_present (GTK_WINDOW (ad->dialog));
-	g_signal_connect (G_OBJECT (ad->dialog), "response", G_CALLBACK (on_authdialog_response), ad);
 }
 
-
-AuthDialog *
+void
 auth_dialog_new (subscriptionPtr subscription, gint flags)
 {
 	AuthDialog *ad;
 
-	if (subscription->activeAuth) {
+	if (subscription->activeAuth)
 		debug (DEBUG_UPDATE, "Missing/wrong authentication. Skipping, as a dialog is already active.");
-		return NULL;
-	}
 
 	ad = AUTH_DIALOG (g_object_new (AUTH_DIALOG_TYPE, NULL));
-	auth_dialog_load(ad, subscription, flags);
-	return ad;
+	ad->subscription = subscription;
+	ad->flags = flags;
+	subscription->activeAuth = TRUE;
+
+	g_idle_add ((GSourceFunc)auth_dialog_load, ad);
 }
