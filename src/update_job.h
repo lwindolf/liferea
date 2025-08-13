@@ -58,7 +58,7 @@ struct _UpdateJob {
  * update_job_new:
  * @owner: (nullable):		request owner (allows cancelling)
  * @request:			the request to execute
- * @callback:			result processing callback
+ * @callback: (scope forever)	result processing callback
  * @user_data: (nullable):	result processing callback parameters
  * @flags:			request/result processing flags
  * 

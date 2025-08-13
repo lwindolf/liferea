@@ -169,7 +169,8 @@ void itemlist_remove_all_items (Node *node);
 /**
  * itemlist_selection_changed: (skip)
  * @itemlist:	the item list
- * @userdata:	new selected item id nr
+ * @itemId:	the item id of the selected item
+ * @unused:	unused
  *
  * Only to be used as a signal handler for the item list view.
  */
@@ -178,7 +179,8 @@ void itemlist_selection_changed (ItemList *itemlist, gulong itemId, gpointer unu
 /**
  * itemlist_node_changed: (skip)
  * @itemlist:	the item list
- * @userdata:	the node id string
+ * @nodeId:	the node id of the node that has changed
+ * @unused:	unused
  *
 * Only to be used as a signal handler for the feed list view.
  */

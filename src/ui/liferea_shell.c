@@ -179,21 +179,6 @@ liferea_shell_class_init (LifereaShellClass *klass)
 	object_class->get_property = liferea_shell_get_property;
 	object_class->finalize = liferea_shell_finalize;
 
-	/* Some custom CSS */
-	const gchar *css = 
-		// frame.sunken is used for a GtkFrame around itemlist, feedlist and browser
-		"frame.sunken {"
-		"  border-radius: 0;"
-		"  border-top: 0;"
-		"}";
-
-	GtkCssProvider *css_provider = gtk_css_provider_new();
-	gtk_css_provider_load_from_string(css_provider, css);
-	gtk_style_context_add_provider_for_display(gdk_display_get_default(),
-		GTK_STYLE_PROVIDER(css_provider),
-		GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	g_object_unref(css_provider);
-
 	/* LifereaShell:feed-list: */
 	g_object_class_install_property (object_class,
 		                         PROP_FEED_LIST,
@@ -893,6 +878,21 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
 	g_assert (shell);
+
+	/* Some custom CSS */
+	const gchar *css = 
+		// frame.sunken is used for a GtkFrame around itemlist, feedlist and browser
+		"frame.sunken {"
+		"  border-radius: 0;"
+		"  border-top: 0;"
+		"}";
+
+	GtkCssProvider *css_provider = gtk_css_provider_new();
+	gtk_css_provider_load_from_string(css_provider, css);
+	gtk_style_context_add_provider_for_display(gdk_display_get_default(),
+		GTK_STYLE_PROVIDER(css_provider),
+		GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref(css_provider);
 
 	/* 1.) stuff where order does not matter */
 	shell->currentLayoutMode = 10000;	// something invalid

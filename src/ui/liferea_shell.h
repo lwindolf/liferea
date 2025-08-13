@@ -47,20 +47,9 @@ G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
  *
  * Get the LifereaShell instance
  *
- * Returns: the LifereaShell instance
+ * Returns: (transfer none) the LifereaShell instance
  */
 LifereaShell * liferea_shell_get_instance (void);
-
-/**
- * liferea_shell_lookup_action:
- * @name: the action name
- *
- * Searches the links action map for the given action
- * name and returns the found action.
- *
- * Returns: (transfer none) (nullable): the action found or NULL
- */
-GAction * liferea_shell_lookup_link_action (const gchar *name);
 
 /**
  * liferea_shell_lookup:

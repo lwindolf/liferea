@@ -45,7 +45,7 @@ gint liferea_application_new (int argc, char *argv[]);
  *
  * Get the LifereaApplication instance
  *
- * Returns: the LifereaApplication instance
+ * Returns: (transfer none) the LifereaApplication instance
  */
 LifereaApplication *liferea_application_get_instance (void);
 
