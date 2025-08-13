@@ -177,6 +177,7 @@
 	(14,9,"GtkButton","searchstartbtn",6,None,None,None,2,None,None)
   </object>
   <object_property>
+	(2,1,"GtkWidget","width-request","500",None,None,None,None,None,None,None,None,None),
 	(2,1,"GtkWindow","default-height","100",None,None,None,None,None,None,None,None,None),
 	(2,1,"GtkWindow","default-width","400",0,None,None,None,None,None,None,None,None),
 	(2,1,"GtkWindow","focus-widget","7",0,None,None,None,None,None,None,None,None),
@@ -189,7 +190,6 @@
 	(2,2,"GtkWidget","margin-end","12",0,None,None,None,None,None,None,None,None),
 	(2,2,"GtkWidget","margin-start","12",0,None,None,None,None,None,None,None,None),
 	(2,2,"GtkWidget","margin-top","12",0,None,None,None,None,None,None,None,None),
-	(2,2,"GtkWidget","vexpand","True",None,None,None,None,None,None,None,None,None),
 	(2,3,"GtkGrid","row-spacing","12",0,None,None,None,None,None,None,None,None),
 	(2,3,"GtkOrientable","orientation","vertical",0,None,None,None,None,None,None,None,None),
 	(2,3,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
@@ -637,6 +637,7 @@
 	(12,96,"GtkWidget",2,2,"name","linked"),
 	(14,1,"GtkDialog",2,2,"response","cancel"),
 	(14,1,"GtkDialog",2,3,"response","2"),
-	(14,1,"GtkDialog",2,4,"response","ok")
+	(14,1,"GtkDialog",2,4,"response","ok"),
+	(2,1,"GtkDialog",2,4,"response","-2")
   </object_data_arg>
 </cambalache-project>

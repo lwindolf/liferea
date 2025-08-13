@@ -8,6 +8,7 @@
     <property name="default-width">400</property>
     <property name="focus-widget">usernameEntry</property>
     <property name="title" translatable="yes">Authentication</property>
+    <property name="width-request">500</property>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox14">
         <property name="hexpand">True</property>
@@ -18,7 +19,6 @@
         <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
-        <property name="vexpand">True</property>
         <child>
           <object class="GtkGrid">
             <property name="hexpand">True</property>
