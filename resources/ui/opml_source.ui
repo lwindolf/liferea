@@ -4,7 +4,6 @@
   <object class="GtkDialog" id="opml_source">
     <property name="visible">1</property>
     <property name="title" translatable="1">Add OPML/Planet</property>
-    <property name="type_hint">dialog</property>
     <child>
       <placeholder/>
     </child>
@@ -15,14 +14,12 @@
           <object class="GtkBox" id="vbox1">
             <property name="orientation">vertical</property>
             <property name="can_focus">0</property>
-            <property name="border_width">12</property>
             <property name="spacing">12</property>
             <child>
               <object class="GtkLabel" id="label1">
                 <property name="valign">center</property>
                 <property name="label" translatable="1">Please specify a local file or an URL pointing to a valid OPML feed list.</property>
                 <property name="wrap">1</property>
-                <property name="xalign">0</property>
               </object>
             </child>
             <child>
@@ -71,8 +68,6 @@
           <object class="GtkButton" id="cancelbutton1">
             <property name="label">gtk-cancel</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -84,8 +79,6 @@
           <object class="GtkButton" id="okbutton1">
             <property name="label">gtk-ok</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>

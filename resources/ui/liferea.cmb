@@ -7,7 +7,8 @@
 	(9,None,"plugins.ui","plugins.ui",None,None,None,None,None,None,None),
 	(12,None,"mainwindow.ui","mainwindow.ui",None,None,None,None,None,None,None),
 	(13,None,"update_monitor.ui","update_monitor.ui",None,None,None,None,None,None,None),
-	(14,None,"simple_search.ui","simple_search.ui",None,None,None,None,None,None,None)
+	(14,None,"simple_search.ui","simple_search.ui",None,None,None,None,None,None,None),
+	(15,None,"search.ui","search.ui",None,None,None,None,None,None,None)
   </ui>
   <ui_library>
 	(2,"gtk","4.0",None),
@@ -16,7 +17,8 @@
 	(12,"gio","2.0",None),
 	(12,"gtk","4.0",None),
 	(13,"gtk","4.0",None),
-	(14,"gtk","4.0",None)
+	(14,"gtk","4.0",None),
+	(15,"gtk","4.0",None)
   </ui_library>
   <object>
 	(2,1,"GtkDialog","auth",None,None,None,None,0,None,None),
@@ -174,7 +176,25 @@
 	(14,6,"GtkBox","dialog-action_area17",1,"action_area",None,None,1,None,None),
 	(14,7,"GtkButton","closebutton2",6,None,None,None,0,None,None),
 	(14,8,"GtkButton","advancedbtn",6,None,None,None,1,None,None),
-	(14,9,"GtkButton","searchstartbtn",6,None,None,None,2,None,None)
+	(14,9,"GtkButton","searchstartbtn",6,None,None,None,2,None,None),
+	(15,1,"GtkDialog","search",None,None,None,None,0,None,None),
+	(15,2,"GtkBox","dialog-vbox14",1,"content_area",None,None,0,None,None),
+	(15,3,"GtkBox","vbox17",2,None,None,None,0,None,None),
+	(15,4,"GtkLabel","label15",3,None,None,None,0,None,None),
+	(15,5,"GtkBox","vbox19",3,None,None,None,1,None,None),
+	(15,6,"GtkBox","hbox4",5,None,None,None,0,None,None),
+	(15,7,"GtkButton","addrulebtn2",6,None,None,None,0,None,None),
+	(15,8,"GtkCheckButton","anyRuleRadioBtn2",6,None,None,None,1,None,None),
+	(15,9,"GtkCheckButton","allRuleRadioBtn2",6,None,None,None,2,None,None),
+	(15,10,"GtkScrolledWindow","scrolledwindow4",5,None,None,None,1,None,None),
+	(15,11,"GtkViewport","ruleview_search",10,None,None,None,0,None,None),
+	(15,12,"GtkBox","dialog-action_area14",1,"action_area",None,None,1,None,None),
+	(15,13,"GtkButton","cancelbutton8",12,None,None,None,0,None,None),
+	(15,14,"GtkButton","savesearchbtn",12,None,None,None,1,None,None),
+	(15,15,"GtkBox","hbox3",14,None,None,None,0,None,None),
+	(15,16,"GtkImage","image1",15,None,None,None,0,None,None),
+	(15,17,"GtkLabel","label11",15,None,None,None,1,None,None),
+	(15,18,"GtkButton","okbutton5",12,None,None,None,2,None,None)
   </object>
   <object_property>
 	(2,1,"GtkWidget","width-request","500",None,None,None,None,None,None,None,None,None),
@@ -531,7 +551,58 @@
 	(14,9,"GtkButton","label","_Search",0,None,None,None,None,None,None,None,None),
 	(14,9,"GtkButton","use-underline","1",0,None,None,None,None,None,None,None,None),
 	(14,9,"GtkWidget","sensitive","0",0,None,None,None,None,None,None,None,None),
-	(14,9,"GtkWidget","tooltip-text","Starts searching for the specified text in all feeds. The search result will appear in the item list.",1,None,None,None,None,None,None,None,None)
+	(14,9,"GtkWidget","tooltip-text","Starts searching for the specified text in all feeds. The search result will appear in the item list.",1,None,None,None,None,None,None,None,None),
+	(15,1,"GtkWindow","default-height","250",0,None,None,None,None,None,None,None,None),
+	(15,1,"GtkWindow","default-width","600",0,None,None,None,None,None,None,None,None),
+	(15,1,"GtkWindow","title","Advanced Search",1,None,None,None,None,None,None,None,None),
+	(15,1,"GtkWindow","visible","1",0,None,None,None,None,None,None,None,None),
+	(15,2,"GtkBox","spacing","2",0,None,None,None,None,None,None,None,None),
+	(15,2,"GtkOrientable","orientation","vertical",0,None,None,None,None,None,None,None,None),
+	(15,2,"GtkWidget","margin-bottom","12",None,None,None,None,None,None,None,None,None),
+	(15,2,"GtkWidget","margin-end","12",None,None,None,None,None,None,None,None,None),
+	(15,2,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None),
+	(15,2,"GtkWidget","margin-top","12",None,None,None,None,None,None,None,None,None),
+	(15,3,"GtkBox","spacing","6",None,None,None,None,None,None,None,None,None),
+	(15,3,"GtkOrientable","orientation","vertical",0,None,None,None,None,None,None,None,None),
+	(15,3,"GtkWidget","vexpand","1",0,None,None,None,None,None,None,None,None),
+	(15,4,"GtkLabel","label","Find Items that meet the following criteria",1,None,None,None,None,None,None,None,None),
+	(15,4,"GtkLabel","xalign","0.0",None,None,None,None,None,None,None,None,None),
+	(15,4,"GtkWidget","valign","center",0,None,None,None,None,None,None,None,None),
+	(15,5,"GtkBox","spacing","12",0,None,None,None,None,None,None,None,None),
+	(15,5,"GtkOrientable","orientation","vertical",0,None,None,None,None,None,None,None,None),
+	(15,6,"GtkBox","spacing","6",0,None,None,None,None,None,None,None,None),
+	(15,7,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(15,7,"GtkButton","label","Add",0,None,None,None,None,None,None,None,None),
+	(15,7,"GtkWidget","halign","center",0,None,None,None,None,None,None,None,None),
+	(15,8,"GtkCheckButton","group","9",0,None,None,None,None,None,None,None,None),
+	(15,8,"GtkCheckButton","label","A_ny Rule Matches",1,None,None,None,None,None,None,None,None),
+	(15,8,"GtkCheckButton","use-underline","1",0,None,None,None,None,None,None,None,None),
+	(15,9,"GtkCheckButton","active","1",0,None,None,None,None,None,None,None,None),
+	(15,9,"GtkCheckButton","label","_All Rules Must Match",1,None,None,None,None,None,None,None,None),
+	(15,9,"GtkCheckButton","use-underline","1",0,None,None,None,None,None,None,None,None),
+	(15,9,"GtkWidget","hexpand","1",0,None,None,None,None,None,None,None,None),
+	(15,10,"GtkScrolledWindow","child",None,0,None,None,None,11,None,None,None,None),
+	(15,10,"GtkScrolledWindow","focusable","1",0,None,None,None,None,None,None,None,None),
+	(15,10,"GtkWidget","vexpand","1",0,None,None,None,None,None,None,None,None),
+	(15,12,"GtkBox","homogeneous","false",0,None,None,None,None,None,None,None,None),
+	(15,12,"GtkBox","spacing","6",0,None,None,None,None,None,None,None,None),
+	(15,12,"GtkOrientable","orientation","horizontal",0,None,None,None,None,None,None,None,None),
+	(15,12,"GtkWidget","margin-bottom","5",0,None,None,None,None,None,None,None,None),
+	(15,12,"GtkWidget","margin-end","5",0,None,None,None,None,None,None,None,None),
+	(15,12,"GtkWidget","margin-start","5",0,None,None,None,None,None,None,None,None),
+	(15,12,"GtkWidget","margin-top","5",0,None,None,None,None,None,None,None,None),
+	(15,12,"GtkWidget","valign","center",0,None,None,None,None,None,None,None,None),
+	(15,13,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(15,13,"GtkButton","label","Close",0,None,None,None,None,None,None,None,None),
+	(15,14,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(15,14,"GtkButton","receives-default","1",0,None,None,None,None,None,None,None,None),
+	(15,16,"GtkWidget","hexpand","1",0,None,None,None,None,None,None,None,None),
+	(15,17,"GtkLabel","label","Add _Search Folder...",1,None,None,None,None,None,None,None,None),
+	(15,17,"GtkLabel","mnemonic-widget","14",0,None,None,None,None,None,None,None,None),
+	(15,17,"GtkLabel","use-underline","1",0,None,None,None,None,None,None,None,None),
+	(15,17,"GtkWidget","hexpand","1",0,None,None,None,None,None,None,None,None),
+	(15,18,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(15,18,"GtkButton","label","Find",0,None,None,None,None,None,None,None,None)
   </object_property>
   <object_layout_property>
 	(2,3,4,"GtkGridLayoutChild","column","0",0,None,None,None),
@@ -619,7 +690,13 @@
 	(14,1,"GtkDialog",1,1,None,None,None,None,None,None),
 	(14,1,"GtkDialog",2,2,"7",1,None,None,None,None),
 	(14,1,"GtkDialog",2,3,"8",1,None,None,None,None),
-	(14,1,"GtkDialog",2,4,"9",1,None,None,None,None)
+	(14,1,"GtkDialog",2,4,"9",1,None,None,None,None),
+	(15,4,"GtkLabel",1,1,None,None,None,None,None,None),
+	(15,4,"GtkLabel",2,2,None,1,None,None,None,None),
+	(15,1,"GtkDialog",1,1,None,None,None,None,None,None),
+	(15,1,"GtkDialog",2,2,"13",1,None,None,None,None),
+	(15,1,"GtkDialog",2,3,"14",1,None,None,None,None),
+	(15,1,"GtkDialog",2,4,"18",1,None,None,None,None)
   </object_data>
   <object_data_arg>
 	(2,1,"GtkDialog",2,2,"response","cancel"),
@@ -638,6 +715,13 @@
 	(14,1,"GtkDialog",2,2,"response","cancel"),
 	(14,1,"GtkDialog",2,3,"response","2"),
 	(14,1,"GtkDialog",2,4,"response","ok"),
-	(2,1,"GtkDialog",2,4,"response","-2")
+	(2,1,"GtkDialog",2,4,"response","-2"),
+	(15,4,"GtkLabel",2,2,"end",None),
+	(15,4,"GtkLabel",2,2,"name","weight"),
+	(15,4,"GtkLabel",2,2,"start",None),
+	(15,4,"GtkLabel",2,2,"value","bold"),
+	(15,1,"GtkDialog",2,2,"response","-6"),
+	(15,1,"GtkDialog",2,3,"response","2"),
+	(15,1,"GtkDialog",2,4,"response","1")
   </object_data_arg>
 </cambalache-project>

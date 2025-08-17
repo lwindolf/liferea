@@ -2,11 +2,9 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="new_newsbin">
-    <property name="border_width">5</property>
     <property name="title" translatable="1">Create News Bin</property>
     <property name="modal">1</property>
     <property name="window_position">center-on-parent</property>
-    <property name="type_hint">dialog</property>
     <child>
       <placeholder/>
     </child>
@@ -16,7 +14,6 @@
         <property name="spacing">2</property>
         <child>
           <object class="GtkGrid">
-            <property name="border_width">5</property>
             <property name="row_spacing">6</property>
             <property name="column_spacing">12</property>
             <child>
@@ -70,8 +67,6 @@
           <object class="GtkButton" id="cancelbutton6">
             <property name="label">gtk-cancel</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
             <signal name="clicked" handler="gtk_widget_destroy" object="new_newsbin" swapped="yes"/>
           </object>
           <packing>
@@ -84,9 +79,7 @@
           <object class="GtkButton" id="newnewsbinbtn">
             <property name="label">gtk-ok</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
             <property name="has_default">1</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>

@@ -40,7 +40,6 @@
                 <property name="label">gtk-cancel</property>
                 <property name="focusable">1</property>
                 <property name="receives_default">1</property>
-                <property name="use_stock">True</property>
               </object>
               <packing>
                 <property name="expand">True</property>

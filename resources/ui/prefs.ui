@@ -43,7 +43,6 @@
                         <child>
                           <object class="GtkLabel" id="feedCacheHandlingLabel">
                             <property name="label" translatable="1">Feed Cache Handling</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -64,7 +63,6 @@
                             <property name="use-underline">1</property>
                             <property name="wrap">1</property>
                             <property name="mnemonic-widget">itemCountBtn</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -117,7 +115,6 @@
                         <child>
                           <object class="GtkLabel" id="feedUpdateSettingsLabel">
                             <property name="label" translatable="1">Feed Update Settings</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -157,7 +154,6 @@
                                     <property name="use-underline">1</property>
                                     <property name="wrap">1</property>
                                     <property name="mnemonic-widget">globalRefreshIntervalUnitComboBox</property>
-                                    <property name="xalign">0</property>
                                   </object>
                                 </child>
                               </object>
@@ -200,7 +196,6 @@
                             <property name="label" translatable="1">Default Feed Refresh _Interval:</property>
                             <property name="use-underline">1</property>
                             <property name="mnemonic-widget">globalRefreshIntervalSpinButton</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
@@ -298,7 +293,6 @@
                         <child>
                           <object class="GtkLabel" id="folderDisplaySettingsLabel">
                             <property name="label" translatable="1">Folder Display Settings</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -372,7 +366,6 @@
                         <child>
                           <object class="GtkLabel" id="feedIconsLabel">
                             <property name="label" translatable="1">Feed Icons (Favicons)</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -473,7 +466,6 @@
                         <child>
                           <object class="GtkLabel" id="readingHeadlinesLabel">
                             <property name="label" translatable="1">Reading Headlines</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -493,7 +485,6 @@
                             <property name="label" translatable="1">_Skim through articles with:</property>
                             <property name="use-underline">1</property>
                             <property name="mnemonic-widget">skimKeyCombo</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -506,7 +497,6 @@
                             <property name="label" translatable="1">_Default View Mode:</property>
                             <property name="use-underline">1</property>
                             <property name="mnemonic-widget">defaultViewModeCombo</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
@@ -605,7 +595,6 @@
                         <child>
                           <object class="GtkLabel" id="webIntegrationLabel">
                             <property name="label" translatable="1">Web Integration</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -625,7 +614,6 @@
                             <property name="label" translatable="1">_Post Bookmarks to</property>
                             <property name="use-underline">1</property>
                             <property name="mnemonic-widget">socialpopup</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -709,7 +697,6 @@
                         <child>
                           <object class="GtkLabel" id="internalBrowserLabel">
                             <property name="label" translatable="1">Internal Browser Settings</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -791,7 +778,6 @@
                         <child>
                           <object class="GtkLabel" id="externalBrowserLabel">
                             <property name="label" translatable="1">External Browser Settings</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -811,7 +797,6 @@
                             <property name="label" translatable="1">_Browser:</property>
                             <property name="use-underline">1</property>
                             <property name="mnemonic-widget">browserpopup</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -824,7 +809,6 @@
                             <property name="label" translatable="1">_Manual:</property>
                             <property name="use-underline">1</property>
                             <property name="mnemonic-widget">browsercmd</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
@@ -849,7 +833,6 @@
                           <object class="GtkLabel" id="urlhintlabel">
                             <property name="label" translatable="1">&lt;small&gt;(%s for URL)&lt;/small&gt;</property>
                             <property name="use-markup">1</property>
-                            <property name="xalign">0</property>
                             <accessibility>
                               <relation type="label-for" target="browsercmd"/>
                             </accessibility>
@@ -933,7 +916,6 @@
                     <child>
                       <object class="GtkLabel" id="toolbarSettingsLabel">
                         <property name="label" translatable="1">Toolbar Settings</property>
-                        <property name="xalign">0</property>
                         <attributes>
                           <attribute name="weight" value="bold"></attribute>
                         </attributes>
@@ -965,7 +947,6 @@
                         <property name="label" translatable="1">Toolbar _button labels:</property>
                         <property name="use-underline">1</property>
                         <property name="mnemonic-widget">toolbarCombo</property>
-                        <property name="xalign">0</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">2</property>
@@ -1032,7 +1013,6 @@
                     <child>
                       <object class="GtkLabel" id="proxyServerLabel">
                         <property name="label" translatable="1">HTTP Proxy Server</property>
-                        <property name="xalign">0</property>
                         <attributes>
                           <attribute name="weight" value="bold"></attribute>
                         </attributes>
@@ -1045,7 +1025,6 @@
                     <child>
                       <object class="GtkCheckButton" id="proxyAutoDetectRadio">
                         <property name="label" translatable="1">_Auto Detect (GNOME or environment)</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="halign">start</property>
                         <property name="margin-start">12</property>
                         <property name="use-underline">1</property>
@@ -1059,7 +1038,6 @@
                     <child>
                       <object class="GtkCheckButton" id="noProxyRadio">
                         <property name="label" translatable="1">_No Proxy</property>
-                        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                         <property name="halign">start</property>
                         <property name="margin-start">12</property>
                         <property name="use-underline">1</property>
@@ -1133,7 +1111,6 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="label" translatable="1">Privacy Settings</property>
-                        <property name="xalign">0</property>
                         <attributes>
                           <attribute name="weight" value="bold"></attribute>
                         </attributes>

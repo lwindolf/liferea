@@ -18,11 +18,9 @@
   </object>
   <object class="GtkDialog" id="properties">
     <property name="visible">1</property>
-    <property name="border_width">5</property>
     <property name="title" translatable="1">Subscription Properties</property>
     <property name="window_position">center</property>
     <property name="default_width">300</property>
-    <property name="type_hint">dialog</property>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -33,12 +31,10 @@
         <child>
           <object class="GtkNotebook" id="subscriptionPropNotebook">
             <property name="focusable">1</property>
-            <property name="border_width">5</property>
             <child>
               <object class="GtkNotebookPage">
                 <property name="child">
                   <object class="GtkGrid">
-                    <property name="border_width">12</property>
                     <property name="orientation">vertical</property>
                     <property name="row_spacing">18</property>
                     <child>
@@ -50,7 +46,6 @@
                             <property name="label" translatable="1">Feed _Name</property>
                             <property name="use_underline">1</property>
                             <property name="mnemonic_widget">feedNameEntry</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -86,7 +81,6 @@
                             <property name="label" translatable="1">Update _Interval</property>
                             <property name="use_underline">1</property>
                             <property name="mnemonic_widget">updateIntervalDefault</property>
-                            <property name="xalign">0</property>
                             <attributes>
                               <attribute name="weight" value="bold"></attribute>
                             </attributes>
@@ -102,7 +96,6 @@
                             <property name="label" translatable="1">_Use global default update interval.</property>
                             <property name="margin_start">12</property>
                             <property name="use_underline">1</property>
-                            <property name="xalign">0</property>
                             <property name="active">1</property>
                             <layout>
                               <property name="column">0</property>
@@ -166,7 +159,6 @@
                             <property name="label" translatable="1">_Don&apos;t update this feed automatically.</property>
                             <property name="margin_start">12</property>
                             <property name="use_underline">1</property>
-                            <property name="xalign">0</property>
                             <property name="group">updateIntervalDefault</property>
                             <layout>
                               <property name="column">0</property>
@@ -190,7 +182,6 @@
                             <property name="margin_start">12</property>
                             <property name="label" translatable="1">This feed provider suggests an update interval of %d minutes.</property>
                             <property name="wrap">1</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">5</property>
@@ -218,13 +209,11 @@
                 <property name="position">1</property>
                 <property name="child">
                   <object class="GtkGrid">
-                    <property name="border_width">12</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
                       <object class="GtkLabel">
                         <property name="label" translatable="1">Feed Source</property>
-                        <property name="xalign">0</property>
                         <attributes>
                           <attribute name="weight" value="bold"></attribute>
                         </attributes>
@@ -239,7 +228,6 @@
                       <object class="GtkLabel">
                         <property name="margin_start">12</property>
                         <property name="label" translatable="1">Source Type:</property>
-                        <property name="xalign">0</property>
                         <property name="yalign">0</property>
                         <layout>
                           <property name="column">0</property>
@@ -252,7 +240,6 @@
                       <object class="GtkCheckButton" id="feed_loc_url">
                         <property name="label" translatable="1">_URL</property>
                         <property name="use_underline">1</property>
-                        <property name="xalign">0</property>
                         <property name="active">1</property>
                         <layout>
                           <property name="column">1</property>
@@ -265,7 +252,6 @@
                       <object class="GtkCheckButton" id="feed_loc_command">
                         <property name="label" translatable="1">_Command</property>
                         <property name="use_underline">1</property>
-                        <property name="xalign">0</property>
                         <property name="group">feed_loc_url</property>
                         <layout>
                           <property name="column">1</property>
@@ -278,7 +264,6 @@
                       <object class="GtkCheckButton" id="feed_loc_file">
                         <property name="label" translatable="1">_Local File</property>
                         <property name="use_underline">1</property>
-                        <property name="xalign">0</property>
                         <property name="group">feed_loc_url</property>
                         <layout>
                           <property name="column">1</property>
@@ -303,7 +288,6 @@
                         <property name="label" translatable="1">_Source:</property>
                         <property name="use_underline">1</property>
                         <property name="mnemonic_widget">sourceEntry</property>
-                        <property name="xalign">0</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">4</property>
@@ -326,7 +310,6 @@
                         <property name="focusable">1</property>
                         <property name="margin_start">12</property>
                         <property name="use_underline">1</property>
-                        <property name="xalign">0</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">5</property>
@@ -339,7 +322,6 @@
                         <property name="margin_start">24</property>
                         <property name="label" translatable="1">Liferea can use external filter scripts in order to access feeds and directories in non-supported formats.</property>
                         <property name="wrap">1</property>
-                        <property name="xalign">0</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">6</property>
@@ -405,7 +387,6 @@
                 <property name="position">2</property>
                 <property name="child">
                   <object class="GtkGrid">
-                    <property name="border_width">12</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
@@ -413,7 +394,6 @@
                         <property name="width_request">347</property>
                         <property name="label" translatable="1">The cache setting controls if the contents of feeds are saved when Liferea exits. Marked items are always saved to the cache.</property>
                         <property name="wrap">1</property>
-                        <property name="xalign">0</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">0</property>
@@ -502,7 +482,6 @@
                 <property name="position">3</property>
                 <property name="child">
                   <object class="GtkGrid">
-                    <property name="border_width">12</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
@@ -538,7 +517,6 @@
                             <property name="label" translatable="1">User_name:</property>
                             <property name="use_underline">1</property>
                             <property name="mnemonic_widget">usernameEntry</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">0</property>
@@ -560,7 +538,6 @@
                             <property name="label" translatable="1">_Password:</property>
                             <property name="use_underline">1</property>
                             <property name="mnemonic_widget">passwordEntry</property>
-                            <property name="xalign">0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -598,7 +575,6 @@
                 <property name="position">4</property>
                 <property name="child">
                   <object class="GtkGrid">
-                    <property name="border_width">12</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
@@ -683,8 +659,6 @@
           <object class="GtkButton" id="prop_cancel">
             <property name="label">gtk-cancel</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -696,9 +670,7 @@
           <object class="GtkButton" id="prop_ok">
             <property name="label">gtk-ok</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
             <property name="has_default">1</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>

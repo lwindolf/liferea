@@ -100,7 +100,7 @@ liferea_dialog_new (const gchar *name)
 	ld->priv->xml = gtk_builder_new_from_resource (path);
 	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
 
-	// When enabling the following line dialogs freeze up :-(
+	// When enabling the following line dialogs freeze up on Wayland :-(
 	//gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window ()));
 	g_return_val_if_fail (ld->priv->dialog != NULL, NULL);
 

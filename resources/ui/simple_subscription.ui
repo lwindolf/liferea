@@ -4,7 +4,6 @@
   <object class="GtkDialog" id="simple_subscription">
     <property name="visible">1</property>
     <property name="title" translatable="1">New Subscription</property>
-    <property name="type_hint">dialog</property>
     <child>
       <placeholder/>
     </child>
@@ -14,14 +13,12 @@
         <child>
           <object class="GtkGrid">
             <property name="vexpand">1</property>
-            <property name="border_width">12</property>
             <property name="row_spacing">12</property>
             <child>
               <object class="GtkLabel">
                 <property name="label" translatable="1">Feed _Source</property>
                 <property name="use_underline">1</property>
                 <property name="mnemonic_widget">sourceEntry</property>
-                <property name="xalign">0</property>
                 <attributes>
                   <attribute name="weight" value="bold"></attribute>
                 </attributes>
@@ -36,7 +33,6 @@
                 <property name="margin_start">12</property>
                 <property name="label" translatable="1">Enter a website location to use feed autodiscovery or in case you know it the exact feed location.</property>
                 <property name="wrap">1</property>
-                <property name="xalign">0</property>
                 <property name="yalign">0</property>
                 <layout>
                   <property name="column">0</property>
@@ -74,8 +70,6 @@
             <property name="label">gtk-cancel</property>
             <property name="use_action_appearance">False</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -88,7 +82,6 @@
             <property name="label" translatable="1">Advanced...</property>
             <property name="use_action_appearance">False</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
             <property name="use_underline">1</property>
           </object>
           <packing>
@@ -102,9 +95,7 @@
             <property name="label">gtk-ok</property>
             <property name="use_action_appearance">False</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
             <property name="has_default">1</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>

@@ -84,7 +84,7 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="close">closebutton2</action-widget>
+      <action-widget response="cancel">closebutton2</action-widget>
       <action-widget response="2">advancedbtn</action-widget>
       <action-widget response="ok">searchstartbtn</action-widget>
     </action-widgets>

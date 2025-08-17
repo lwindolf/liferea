@@ -4,19 +4,16 @@
   <object class="GtkDialog" id="ttrss_source">
     <property name="visible">1</property>
     <property name="title" translatable="1">Add Tiny Tiny RSS Account</property>
-    <property name="type_hint">dialog</property>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox1">
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox" id="vbox1">
             <property name="orientation">vertical</property>
-            <property name="border_width">12</property>
             <property name="spacing">12</property>
             <child>
               <object class="GtkLabel" id="label1">
                 <property name="valign">center</property>
-                <property name="xalign">0</property>
                 <property name="label" translatable="1">Please enter your TinyTinyRSS account settings.</property>
                 <property name="wrap">1</property>
               </object>
@@ -65,7 +62,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="label4">
-                    <property name="xalign">0</property>
                     <property name="label" translatable="1">_Server URL</property>
                     <property name="use_underline">1</property>
                     <property name="mnemonic_widget">serverUrlEntry</property>
@@ -79,7 +75,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="label3">
-                    <property name="xalign">0</property>
                     <property name="label" translatable="1">_Password</property>
                     <property name="use_underline">1</property>
                     <property name="mnemonic_widget">passwordEntry</property>
@@ -93,7 +88,6 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="label2">
-                    <property name="xalign">0</property>
                     <property name="label" translatable="1">_Username</property>
                     <property name="use_underline">1</property>
                     <property name="mnemonic_widget">userEntry</property>
@@ -121,8 +115,6 @@
           <object class="GtkButton" id="cancelbutton1">
             <property name="label">gtk-cancel</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -134,8 +126,6 @@
           <object class="GtkButton" id="okbutton1">
             <property name="label">gtk-ok</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>

@@ -3,12 +3,10 @@
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="new_subscription">
     <property name="visible">1</property>
-    <property name="border_width">5</property>
     <property name="title" translatable="1">New Subscription</property>
     <property name="modal">1</property>
     <property name="window_position">center</property>
     <property name="default_width">400</property>
-    <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="gtk_widget_hide" swapped="no"/>
     <child internal-child="content_area">
       <object class="GtkBox">
@@ -27,7 +25,6 @@
                 <child>
                   <object class="GtkLabel">
                     <property name="label" translatable="1">Feed Source</property>
-                    <property name="xalign">0</property>
                     <attributes>
                       <attribute name="weight" value="bold"></attribute>
                     </attributes>
@@ -42,7 +39,6 @@
                   <object class="GtkLabel">
                     <property name="margin_start">12</property>
                     <property name="label" translatable="1">Source Type:</property>
-                    <property name="xalign">0</property>
                     <property name="yalign">0</property>
                     <layout>
                       <property name="column">0</property>
@@ -103,7 +99,6 @@
                     <property name="label" translatable="1">_Source:</property>
                     <property name="use_underline">1</property>
                     <property name="mnemonic_widget">sourceEntry</property>
-                    <property name="xalign">0</property>
                     <layout>
                       <property name="column">0</property>
                       <property name="row">4</property>
@@ -134,7 +129,6 @@
                 <child>
                   <object class="GtkLabel">
                     <property name="label" translatable="1">Download / Postprocessing</property>
-                    <property name="xalign">0</property>
                     <attributes>
                       <attribute name="weight" value="bold"></attribute>
                     </attributes>
@@ -177,7 +171,6 @@
                       <object class="GtkLabel">
                         <property name="label" translatable="1">Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information.</property>
                         <property name="wrap">1</property>
-                        <property name="xalign">0</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">0</property>
@@ -190,7 +183,6 @@
                         <property name="label" translatable="1">Convert _using:</property>
                         <property name="use_underline">1</property>
                         <property name="mnemonic_widget">filterEntry</property>
-                        <property name="xalign">0</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">1</property>
@@ -250,8 +242,6 @@
           <object class="GtkButton" id="cancelbtn">
             <property name="label">gtk-cancel</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -263,8 +253,6 @@
           <object class="GtkButton" id="newfeedbtn">
             <property name="label">gtk-ok</property>
             <property name="focusable">1</property>
-            <property name="can_default">True</property>
-            <property name="use_stock">True</property>
           </object>
           <packing>
             <property name="expand">False</property>

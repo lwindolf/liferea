@@ -40,7 +40,6 @@
               <object class="GtkLabel" id="label2">
                 <property name="valign">center</property>
                 <property name="label" translatable="1">Search Rules</property>
-                <property name="xalign">0</property>
                 <attributes>
                   <attribute name="weight" value="bold"></attribute>
                 </attributes>
@@ -101,7 +100,6 @@
               <object class="GtkLabel" id="label1">
                 <property name="valign">center</property>
                 <property name="label" translatable="1">Rule Matching</property>
-                <property name="xalign">0</property>
                 <attributes>
                   <attribute name="weight" value="bold"></attribute>
                 </attributes>
@@ -114,7 +112,6 @@
                 <child>
                   <object class="GtkCheckButton" id="anyRuleRadioBtn">
                     <property name="label" translatable="1">A_ny Rule Matches</property>
-                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="use-underline">1</property>
                     <property name="group">allRuleRadioBtn</property>
                   </object>
@@ -123,7 +120,6 @@
                   <object class="GtkCheckButton" id="allRuleRadioBtn">
                     <property name="hexpand">1</property>
                     <property name="label" translatable="1">_All Rules Must Match</property>
-                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
                     <property name="use-underline">1</property>
                     <property name="active">1</property>
                   </object>
