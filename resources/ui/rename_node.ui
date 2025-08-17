@@ -1,28 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name rename_node.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="rename_node">
-    <property name="title" translatable="1">Rename</property>
-    <property name="resizable">0</property>
     <property name="modal">1</property>
-    <property name="window_position">center-on-parent</property>
-    <signal name="delete-event" handler="gtk_widget_hide_on_delete" swapped="no"/>
-    <child>
-      <placeholder/>
-    </child>
+    <property name="resizable">0</property>
+    <property name="title" translatable="yes">Rename</property>
+    <property name="width-request">400</property>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox7">
+        <property name="margin-bottom">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkGrid">
-            <property name="row_spacing">6</property>
-            <property name="column_spacing">12</property>
+            <property name="column-spacing">12</property>
+            <property name="row-spacing">6</property>
             <child>
               <object class="GtkLabel" id="label23">
-                <property name="label" translatable="1">_New Name:</property>
-                <property name="use_underline">1</property>
-                <property name="mnemonic_widget">nameentry</property>
+                <property name="label" translatable="yes">_New Name:</property>
+                <property name="mnemonic-widget">nameentry</property>
+                <property name="use-underline">1</property>
                 <layout>
                   <property name="column">0</property>
                   <property name="row">0</property>
@@ -31,8 +33,9 @@
             </child>
             <child>
               <object class="GtkEntry" id="nameentry">
+                <property name="activates-default">1</property>
                 <property name="focusable">1</property>
-                <property name="activates_default">1</property>
+                <property name="hexpand">True</property>
                 <layout>
                   <property name="column">1</property>
                   <property name="row">0</property>
@@ -43,40 +46,36 @@
         </child>
       </object>
     </child>
+    <child internal-child="action_area">
+      <object class="GtkBox" id="dialog-action_area7">
+        <property name="homogeneous">false</property>
+        <property name="margin-bottom">5</property>
+        <property name="margin-end">5</property>
+        <property name="margin-start">5</property>
+        <property name="margin-top">5</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkButton" id="cancelbutton1">
+            <property name="focusable">1</property>
+            <property name="label">_Cancel</property>
+            <property name="use-underline">True</property>
+            <signal name="clicked" handler="gtk_widget_hide" object="rename_node" swapped="yes"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="namechangebtn">
+            <property name="focusable">1</property>
+            <property name="label">_OK</property>
+            <property name="use-underline">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
     <action-widgets>
       <action-widget response="0">cancelbutton1</action-widget>
       <action-widget response="-5">namechangebtn</action-widget>
     </action-widgets>
-    <child internal-child="action_area">
-      <object class="GtkButtonBox" id="dialog-action_area7">
-        <property name="valign">center</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="layout_style">end</property>
-        <child>
-          <object class="GtkButton" id="cancelbutton1">
-            <property name="label">gtk-cancel</property>
-            <property name="focusable">1</property>
-            <signal name="clicked" handler="gtk_widget_hide" object="rename_node" swapped="yes"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="namechangebtn">
-            <property name="label">gtk-ok</property>
-            <property name="focusable">1</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>
