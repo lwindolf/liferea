@@ -1264,8 +1264,6 @@
           <object class="GtkButton" id="prefclosebtn">
             <property name="label">gtk-close</property>
             <property name="focusable">1</property>
-            <property name="can-default">True</property>
-            <property name="use-stock">True</property>
             <signal name="clicked" handler="gtk_widget_hide" object="prefs" swapped="yes"/>
           </object>
           <packing>

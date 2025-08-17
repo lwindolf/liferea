@@ -15,6 +15,7 @@ To be fixed:
 - itemlist: Newsbin context menu does not work
 - DnD reimplementation
 - browser zoom
+- restore ATK taggings
 - select next unread
 - auth dialog layout not proper large empty space around vbox
 - remaining GTK4 FIXMES:

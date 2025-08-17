@@ -1,47 +1,52 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name search_folder.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="search_folder">
-    <property name="visible">1</property>
-    <property name="border-width">5</property>
-    <property name="title" translatable="1">Search Folder Properties</property>
-    <property name="default-width">800</property>
     <property name="default-height">600</property>
-    <property name="type-hint">dialog</property>
+    <property name="default-width">800</property>
+    <property name="title" translatable="yes">Search Folder Properties</property>
+    <property name="visible">1</property>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox15">
+        <property name="margin-bottom">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkBox" id="box1">
-            <property name="vexpand">1</property>
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
+            <property name="vexpand">1</property>
             <child>
               <object class="GtkBox" id="box2">
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label152">
                     <property name="halign">center</property>
-                    <property name="label" translatable="1">Search _Name:</property>
-                    <property name="use-underline">1</property>
+                    <property name="label" translatable="yes">Search _Name:</property>
                     <property name="mnemonic-widget">searchNameEntry</property>
+                    <property name="use-underline">1</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkEntry" id="searchNameEntry">
-                    <property name="hexpand">1</property>
                     <property name="focusable">1</property>
+                    <property name="hexpand">1</property>
                   </object>
                 </child>
               </object>
             </child>
             <child>
               <object class="GtkLabel" id="label2">
+                <property name="label" translatable="yes">Search Rules</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="1">Search Rules</property>
+                <property name="xalign">0.0</property>
                 <attributes>
-                  <attribute name="weight" value="bold"></attribute>
+                  <attribute name="weight" value="bold"/>
                 </attributes>
               </object>
             </child>
@@ -49,15 +54,11 @@
               <object class="GtkBox">
                 <child>
                   <object class="GtkButton" id="addrulebtn">
-                    <property name="halign">center</property>
-                    <property name="label">gtk-add</property>
                     <property name="focusable">1</property>
-                    <property name="use-stock">True</property>
-                    <property name="always-show-image">True</property>
+                    <property name="halign">center</property>
+                    <property name="label">_Add</property>
+                    <property name="use-underline">True</property>
                   </object>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
               </object>
             </child>
@@ -65,43 +66,25 @@
               <object class="GtkFrame">
                 <property name="vexpand">1</property>
                 <child>
-                  <object class="GtkAlignment">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <child>
-                      <object class="GtkScrolledWindow" id="ruleview_scrolled_window">
-                        <property name="focusable">1</property>
-                        <property name="child">
-                          <object class="GtkViewport" id="ruleview_vfolder_dialog">
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <accessibility>
-                              <relation type="controlled-by" target="addrulebtn"/>
-                            </accessibility>
-                          </object>
-                        </property>
-                      </object>
-                    </child>
+                  <object class="GtkScrolledWindow" id="ruleview_scrolled_window">
+                    <property name="child">
+                      <object class="GtkViewport" id="ruleview_vfolder_dialog"/>
+                    </property>
+                    <property name="focusable">1</property>
                   </object>
                 </child>
                 <child type="label">
                   <object class="GtkLabel"/>
                 </child>
-                <child internal-child="accessible">
-                  <object class="AtkObject">
-                    <property name="AtkObject::accessible-name" translatable="1">Rules</property>
-                    <property name="AtkObject::accessible-description" translatable="1">All rules for this search folder</property>
-                  </object>
-                </child>
               </object>
             </child>
             <child>
               <object class="GtkLabel" id="label1">
+                <property name="label" translatable="yes">Rule Matching</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="1">Rule Matching</property>
+                <property name="xalign">0.0</property>
                 <attributes>
-                  <attribute name="weight" value="bold"></attribute>
+                  <attribute name="weight" value="bold"/>
                 </attributes>
               </object>
             </child>
@@ -111,30 +94,56 @@
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkCheckButton" id="anyRuleRadioBtn">
-                    <property name="label" translatable="1">A_ny Rule Matches</property>
-                    <property name="use-underline">1</property>
                     <property name="group">allRuleRadioBtn</property>
+                    <property name="label" translatable="yes">A_ny Rule Matches</property>
+                    <property name="use-underline">1</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="allRuleRadioBtn">
-                    <property name="hexpand">1</property>
-                    <property name="label" translatable="1">_All Rules Must Match</property>
-                    <property name="use-underline">1</property>
                     <property name="active">1</property>
+                    <property name="hexpand">1</property>
+                    <property name="label" translatable="yes">_All Rules Must Match</property>
+                    <property name="use-underline">1</property>
                   </object>
                 </child>
               </object>
             </child>
             <child>
               <object class="GtkCheckButton" id="hideReadItemsBtn">
-                <property name="valign">center</property>
-                <property name="label" translatable="1">Hide read items</property>
                 <property name="focusable">1</property>
                 <property name="halign">start</property>
+                <property name="label" translatable="yes">Hide read items</property>
                 <property name="use-underline">1</property>
+                <property name="valign">center</property>
               </object>
             </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child internal-child="action_area">
+      <object class="GtkBox" id="dialog-action_area15">
+        <property name="homogeneous">false</property>
+        <property name="margin-bottom">5</property>
+        <property name="margin-end">5</property>
+        <property name="margin-start">5</property>
+        <property name="margin-top">5</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkButton" id="cancelbutton3">
+            <property name="focusable">1</property>
+            <property name="label">_Cancel</property>
+            <property name="use-underline">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="okbutton2">
+            <property name="focusable">1</property>
+            <property name="label">_OK</property>
+            <property name="use-underline">True</property>
           </object>
         </child>
       </object>
@@ -143,38 +152,5 @@
       <action-widget response="-6">cancelbutton3</action-widget>
       <action-widget response="-5">okbutton2</action-widget>
     </action-widgets>
-    <child internal-child="action_area">
-      <object class="GtkButtonBox" id="dialog-action_area15">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="layout-style">end</property>
-        <child>
-          <object class="GtkButton" id="cancelbutton3">
-            <property name="label">gtk-cancel</property>
-            <property name="focusable">1</property>
-            <property name="can-default">True</property>
-            <property name="use-stock">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="okbutton2">
-            <property name="label">gtk-ok</property>
-            <property name="focusable">1</property>
-            <property name="can-default">True</property>
-            <property name="use-stock">True</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>
