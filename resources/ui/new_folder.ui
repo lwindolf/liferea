@@ -69,7 +69,6 @@
           <object class="GtkButton" id="button2">
             <property name="label">gtk-ok</property>
             <property name="focusable">1</property>
-            <property name="has_default">1</property>
             <signal name="clicked" handler="gtk_widget_hide" object="new_folder" after="yes" swapped="yes"/>
             <signal name="clicked" handler="on_newfolderbtn_clicked" swapped="no"/>
           </object>

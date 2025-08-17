@@ -9,7 +9,8 @@
 	(13,None,"update_monitor.ui","update_monitor.ui",None,None,None,None,None,None,None),
 	(14,None,"simple_search.ui","simple_search.ui",None,None,None,None,None,None,None),
 	(15,None,"search.ui","search.ui",None,None,None,None,None,None,None),
-	(17,None,"reedah_source.ui","reedah_source.ui",None,None,None,None,None,None,None)
+	(17,None,"reedah_source.ui","reedah_source.ui",None,None,None,None,None,None,None),
+	(19,None,"simple_subscription.ui","simple_subscription.ui",None,None,None,None,None,None,None)
   </ui>
   <ui_library>
 	(2,"gtk","4.0",None),
@@ -20,7 +21,8 @@
 	(13,"gtk","4.0",None),
 	(14,"gtk","4.0",None),
 	(15,"gtk","4.0",None),
-	(17,"gtk","4.0",None)
+	(17,"gtk","4.0",None),
+	(19,"gtk","4.0",None)
   </ui_library>
   <object>
 	(2,1,"GtkDialog","auth",None,None,None,None,0,None,None),
@@ -208,7 +210,17 @@
 	(17,9,"GtkLabel","label2",5,None,None,None,3,None,None),
 	(17,10,"GtkBox","dialog-action_area1",1,"action_area",None,None,1,None,None),
 	(17,11,"GtkButton","cancelbutton1",10,None,None,None,0,None,None),
-	(17,12,"GtkButton","okbutton1",10,None,None,None,1,None,None)
+	(17,12,"GtkButton","okbutton1",10,None,None,None,1,None,None),
+	(19,1,"GtkDialog","simple_subscription",None,None,None,None,0,None,None),
+	(19,2,"GtkBox","dialog-vbox19",1,"content_area",None,None,0,None,None),
+	(19,3,"GtkGrid",None,2,None,None,None,0,None,None),
+	(19,4,"GtkLabel",None,3,None,None,None,0,None,None),
+	(19,5,"GtkLabel",None,3,None,None,None,1,None,None),
+	(19,6,"GtkEntry","sourceEntry",3,None,None,None,2,None,None),
+	(19,7,"GtkBox","dialog-action_area19",1,"action_area",None,None,1,None,None),
+	(19,8,"GtkButton","cancelbutton5",7,None,None,None,0,None,None),
+	(19,9,"GtkButton","advancedbtn1",7,None,None,None,1,None,None),
+	(19,10,"GtkButton","button6",7,None,None,None,2,None,None)
   </object>
   <object_property>
 	(2,1,"GtkWidget","width-request","500",None,None,None,None,None,None,None,None,None),
@@ -660,7 +672,42 @@
 	(17,11,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
 	(17,11,"GtkButton","label","Cancel",None,None,None,None,None,None,None,None,None),
 	(17,12,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
-	(17,12,"GtkButton","label","OK",0,None,None,None,None,None,None,None,None)
+	(17,12,"GtkButton","label","OK",0,None,None,None,None,None,None,None,None),
+	(19,1,"GtkWindow","title","New Subscription",1,None,None,None,None,None,None,None,None),
+	(19,1,"GtkWindow","visible","1",0,None,None,None,None,None,None,None,None),
+	(19,2,"GtkOrientable","orientation","vertical",0,None,None,None,None,None,None,None,None),
+	(19,2,"GtkWidget","margin-bottom","12",None,None,None,None,None,None,None,None,None),
+	(19,2,"GtkWidget","margin-end","12",None,None,None,None,None,None,None,None,None),
+	(19,2,"GtkWidget","margin-start","12",None,None,None,None,None,None,None,None,None),
+	(19,2,"GtkWidget","margin-top","12",None,None,None,None,None,None,None,None,None),
+	(19,3,"GtkGrid","row-spacing","12",0,None,None,None,None,None,None,None,None),
+	(19,4,"GtkLabel","label","Feed _Source",1,None,None,None,None,None,None,None,None),
+	(19,4,"GtkLabel","mnemonic-widget","6",0,None,None,None,None,None,None,None,None),
+	(19,4,"GtkLabel","use-underline","1",0,None,None,None,None,None,None,None,None),
+	(19,5,"GtkLabel","ellipsize","end",None,None,None,None,None,None,None,None,None),
+	(19,5,"GtkLabel","label","Enter a website location to use feed autodiscovery or in case you know it the exact feed location.",1,None,None,None,None,None,None,None,None),
+	(19,5,"GtkLabel","wrap","1",0,None,None,None,None,None,None,None,None),
+	(19,5,"GtkLabel","xalign","0",0,None,None,None,None,None,None,None,None),
+	(19,6,"GtkEntry","invisible-char","•",0,None,None,None,None,None,None,None,None),
+	(19,6,"GtkWidget","focusable","1",0,None,None,None,None,None,None,None,None),
+	(19,6,"GtkWidget","margin-start","12",0,None,None,None,None,None,None,None,None),
+	(19,7,"GtkBox","homogeneous","false",0,None,None,None,None,None,None,None,None),
+	(19,7,"GtkBox","spacing","6",0,None,None,None,None,None,None,None,None),
+	(19,7,"GtkOrientable","orientation","horizontal",0,None,None,None,None,None,None,None,None),
+	(19,7,"GtkWidget","margin-bottom","5",0,None,None,None,None,None,None,None,None),
+	(19,7,"GtkWidget","margin-end","5",0,None,None,None,None,None,None,None,None),
+	(19,7,"GtkWidget","margin-start","5",0,None,None,None,None,None,None,None,None),
+	(19,7,"GtkWidget","margin-top","5",0,None,None,None,None,None,None,None,None),
+	(19,7,"GtkWidget","valign","center",0,None,None,None,None,None,None,None,None),
+	(19,8,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(19,8,"GtkButton","label","_Cancel",0,None,None,None,None,None,None,None,None),
+	(19,8,"GtkButton","use-underline","True",None,None,None,None,None,None,None,None,None),
+	(19,9,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(19,9,"GtkButton","label","_Advanced...",1,None,None,None,None,None,None,None,None),
+	(19,9,"GtkButton","use-underline","1",0,None,None,None,None,None,None,None,None),
+	(19,10,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
+	(19,10,"GtkButton","label","_OK",0,None,None,None,None,None,None,None,None),
+	(19,10,"GtkButton","use-underline","True",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_layout_property>
 	(2,3,4,"GtkGridLayoutChild","column","0",0,None,None,None),
@@ -734,7 +781,14 @@
 	(17,5,8,"GtkGridLayoutChild","column","0",0,None,None,None),
 	(17,5,8,"GtkGridLayoutChild","row","1",0,None,None,None),
 	(17,5,9,"GtkGridLayoutChild","column","0",0,None,None,None),
-	(17,5,9,"GtkGridLayoutChild","row","0",0,None,None,None)
+	(17,5,9,"GtkGridLayoutChild","row","0",0,None,None,None),
+	(19,3,4,"GtkGridLayoutChild","column","0",0,None,None,None),
+	(19,3,4,"GtkGridLayoutChild","row","1",0,None,None,None),
+	(19,3,5,"GtkGridLayoutChild","column","0",0,None,None,None),
+	(19,3,5,"GtkGridLayoutChild","column-span","2",None,None,None,None),
+	(19,3,5,"GtkGridLayoutChild","row","0",0,None,None,None),
+	(19,3,6,"GtkGridLayoutChild","column","1",0,None,None,None),
+	(19,3,6,"GtkGridLayoutChild","row","1",0,None,None,None)
   </object_layout_property>
   <object_signal>
 	(1,13,13,"GtkButton","clicked","on_cancel_all_requests_clicked",None,None,0,0,None),
@@ -765,7 +819,13 @@
 	(15,1,"GtkDialog",2,4,"18",1,None,None,None,None),
 	(17,1,"GtkDialog",1,1,None,None,None,None,None,None),
 	(17,1,"GtkDialog",2,2,"11",1,None,None,None,None),
-	(17,1,"GtkDialog",2,3,"12",1,None,None,None,None)
+	(17,1,"GtkDialog",2,3,"12",1,None,None,None,None),
+	(19,4,"GtkLabel",1,1,None,None,None,None,None,None),
+	(19,4,"GtkLabel",2,2,None,1,None,None,None,None),
+	(19,1,"GtkDialog",1,1,None,None,None,None,None,None),
+	(19,1,"GtkDialog",2,2,"8",1,None,None,None,None),
+	(19,1,"GtkDialog",2,3,"9",1,None,None,None,None),
+	(19,1,"GtkDialog",2,4,"10",1,None,None,None,None)
   </object_data>
   <object_data_arg>
 	(2,1,"GtkDialog",2,2,"response","cancel"),
@@ -793,6 +853,13 @@
 	(15,1,"GtkDialog",2,3,"response","2"),
 	(15,1,"GtkDialog",2,4,"response","1"),
 	(17,1,"GtkDialog",2,2,"response","-6"),
-	(17,1,"GtkDialog",2,3,"response","-5")
+	(17,1,"GtkDialog",2,3,"response","-5"),
+	(19,4,"GtkLabel",2,2,"end",None),
+	(19,4,"GtkLabel",2,2,"name","weight"),
+	(19,4,"GtkLabel",2,2,"start",None),
+	(19,4,"GtkLabel",2,2,"value","bold"),
+	(19,1,"GtkDialog",2,2,"response","-6"),
+	(19,1,"GtkDialog",2,3,"response","-10"),
+	(19,1,"GtkDialog",2,4,"response","-5")
   </object_data_arg>
 </cambalache-project>
