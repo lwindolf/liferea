@@ -1,25 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name prefs.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkAdjustment" id="adjustment2">
     <property name="lower">1</property>
+    <property name="step-increment">1</property>
     <property name="upper">10000</property>
     <property name="value">1</property>
-    <property name="step-increment">1</property>
   </object>
   <object class="GtkAdjustment" id="adjustment3">
+    <property name="step-increment">1</property>
     <property name="upper">1000000</property>
     <property name="value">1</property>
-    <property name="step-increment">1</property>
   </object>
   <object class="GtkDialog" id="prefs">
-    <property name="visible">1</property>
-    <property name="border-width">5</property>
-    <property name="title" translatable="1">Liferea Preferences</property>
-    <property name="window-position">center</property>
     <property name="default-width">300</property>
-    <property name="type-hint">dialog</property>
-    <signal name="delete-event" handler="gtk_widget_destroy" object="prefs" swapped="yes"/>
+    <property name="title" translatable="yes">Liferea Preferences</property>
+    <property name="visible">1</property>
     <child internal-child="content_area">
       <object class="GtkBox">
         <property name="orientation">vertical</property>
@@ -27,42 +25,42 @@
         <child>
           <object class="GtkNotebook" id="notebook1">
             <property name="focusable">1</property>
-            <property name="border-width">5</property>
             <property name="tab-pos">left</property>
             <child>
               <object class="GtkNotebookPage">
                 <property name="child">
                   <object class="GtkGrid" id="feedsPage">
-                    <property name="border-width">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-top">12</property>
                     <property name="orientation">vertical</property>
                     <property name="row-spacing">18</property>
                     <child>
                       <object class="GtkGrid" id="feedCacheGrid">
-                        <property name="row-spacing">6</property>
                         <property name="column-spacing">12</property>
+                        <property name="row-spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="feedCacheHandlingLabel">
-                            <property name="label" translatable="1">Feed Cache Handling</property>
+                            <property name="label" translatable="yes">Feed Cache Handling</property>
+                            <property name="xalign">0.0</property>
                             <attributes>
-                              <attribute name="weight" value="bold"></attribute>
+                              <attribute name="weight" value="bold"/>
                             </attributes>
-                            <accessibility>
-                              <relation type="label-for" target="feedCacheGrid"/>
-                            </accessibility>
                             <layout>
                               <property name="column">0</property>
-                              <property name="row">0</property>
                               <property name="column-span">2</property>
+                              <property name="row">0</property>
                             </layout>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel">
+                            <property name="label" translatable="yes">Default _number of items per feed to save:</property>
                             <property name="margin-start">12</property>
-                            <property name="label" translatable="1">Default _number of items per feed to save:</property>
+                            <property name="mnemonic-widget">itemCountBtn</property>
                             <property name="use-underline">1</property>
                             <property name="wrap">1</property>
-                            <property name="mnemonic-widget">itemCountBtn</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -71,37 +69,19 @@
                         </child>
                         <child>
                           <object class="GtkSpinButton" id="itemCountBtn">
-                            <property name="width-request">60</property>
-                            <property name="focusable">1</property>
-                            <property name="text" translatable="1">0</property>
                             <property name="adjustment">adjustment3</property>
                             <property name="climb-rate">1</property>
+                            <property name="focusable">1</property>
                             <property name="numeric">1</property>
-                            <signal name="value-changed" handler="on_itemCountBtn_value_changed" swapped="no"/>
+                            <property name="text" translatable="yes">0</property>
+                            <property name="width-request">60</property>
+                            <signal name="value-changed" handler="on_itemCountBtn_value_changed"/>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">1</property>
                             </layout>
                           </object>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <accessibility>
-                          <relation type="labelled-by" target="feedCacheHandlingLabel"/>
-                        </accessibility>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">0</property>
@@ -110,92 +90,43 @@
                     </child>
                     <child>
                       <object class="GtkGrid" id="feedUpdateGrid">
-                        <property name="row-spacing">6</property>
                         <property name="column-spacing">12</property>
+                        <property name="row-spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="feedUpdateSettingsLabel">
-                            <property name="label" translatable="1">Feed Update Settings</property>
+                            <property name="label" translatable="yes">Feed Update Settings</property>
+                            <property name="xalign">0.0</property>
                             <attributes>
-                              <attribute name="weight" value="bold"></attribute>
+                              <attribute name="weight" value="bold"/>
                             </attributes>
-                            <accessibility>
-                              <relation type="label-for" target="feedUpdateGrid"/>
-                            </accessibility>
                             <layout>
                               <property name="column">0</property>
+                              <property name="column-span">3</property>
                               <property name="row">0</property>
-                              <property name="column-span">3</property>
-                            </layout>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkInfoBar" id="infobar1">
-                            <property name="margin-start">12</property>
-                            <child internal-child="action_area">
-                              <object class="GtkButtonBox">
-                                <property name="can-focus">False</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child internal-child="content_area">
-                              <object class="GtkBox">
-                                <property name="visible">0</property>
-                                <child>
-                                  <object class="GtkLabel" id="label135">
-                                    <property name="label" translatable="1" comments="Feed update interval hint in preference dialog.">Note: &lt;i&gt;Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.&lt;/i&gt;</property>
-                                    <property name="use-markup">1</property>
-                                    <property name="use-underline">1</property>
-                                    <property name="wrap">1</property>
-                                    <property name="mnemonic-widget">globalRefreshIntervalUnitComboBox</property>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <layout>
-                              <property name="column">0</property>
-                              <property name="row">4</property>
-                              <property name="column-span">3</property>
                             </layout>
                           </object>
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="startupactionbtn">
-                            <property name="label" translatable="1">_Update all subscriptions at startup.</property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
-                            <property name="margin-start">12</property>
+                            <property name="label" translatable="yes">_Update all subscriptions at startup.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_startupactionbtn_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_startupactionbtn_toggled"/>
                             <layout>
                               <property name="column">0</property>
-                              <property name="row">1</property>
                               <property name="column-span">3</property>
+                              <property name="row">1</property>
                             </layout>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel">
+                            <property name="label" translatable="yes">Default Feed Refresh _Interval:</property>
                             <property name="margin-start">12</property>
-                            <property name="margin-start">12</property>
-                            <property name="label" translatable="1">Default Feed Refresh _Interval:</property>
-                            <property name="use-underline">1</property>
                             <property name="mnemonic-widget">globalRefreshIntervalSpinButton</property>
+                            <property name="use-underline">1</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
@@ -204,13 +135,13 @@
                         </child>
                         <child>
                           <object class="GtkSpinButton" id="globalRefreshIntervalSpinButton">
-                            <property name="width-request">60</property>
-                            <property name="focusable">1</property>
-                            <property name="text" translatable="1">1</property>
                             <property name="adjustment">adjustment2</property>
                             <property name="climb-rate">1</property>
+                            <property name="focusable">1</property>
+                            <property name="text" translatable="yes">1</property>
                             <property name="value">1</property>
-                            <signal name="value-changed" handler="on_default_update_interval_value_changed" swapped="no"/>
+                            <property name="width-request">60</property>
+                            <signal name="value-changed" handler="on_default_update_interval_value_changed"/>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">2</property>
@@ -221,6 +152,7 @@
                           <object class="GtkComboBox" id="globalRefreshIntervalUnitComboBox">
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                              <!-- Custom child fragments -->
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -231,60 +163,29 @@
                             </layout>
                           </object>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <accessibility>
-                          <relation type="labelled-by" target="feedUpdateSettingsLabel"/>
-                        </accessibility>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">1</property>
                         </layout>
                       </object>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </property>
                 <property name="tab">
                   <object class="GtkLabel">
-                    <property name="label" translatable="1">Feeds</property>
+                    <property name="label" translatable="yes">Feeds</property>
                   </object>
                 </property>
               </object>
             </child>
             <child>
               <object class="GtkNotebookPage">
-                <property name="position">1</property>
                 <property name="child">
                   <object class="GtkGrid" id="foldersPage">
-                    <property name="border-width">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-top">12</property>
                     <property name="orientation">vertical</property>
                     <property name="row-spacing">18</property>
                     <child>
@@ -292,13 +193,11 @@
                         <property name="row-spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="folderDisplaySettingsLabel">
-                            <property name="label" translatable="1">Folder Display Settings</property>
+                            <property name="label" translatable="yes">Folder Display Settings</property>
+                            <property name="xalign">0.0</property>
                             <attributes>
-                              <attribute name="weight" value="bold"></attribute>
+                              <attribute name="weight" value="bold"/>
                             </attributes>
-                            <accessibility>
-                              <relation type="label-for" target="folderDisplayGrid"/>
-                            </accessibility>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">0</property>
@@ -307,12 +206,12 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="folderdisplaybtn">
-                            <property name="label" translatable="1">_Show the items of all child feeds when a folder is selected.</property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
+                            <property name="label" translatable="yes">_Show the items of all child feeds when a folder is selected.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_folderdisplaybtn_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_folderdisplaybtn_toggled"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -321,39 +220,18 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="hidereadbtn">
-                            <property name="label" translatable="1">_Hide read items.</property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
+                            <property name="label" translatable="yes">_Hide read items.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_folderhidereadbtn_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_folderhidereadbtn_toggled"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
                             </layout>
                           </object>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <accessibility>
-                          <relation type="labelled-by" target="folderDisplaySettingsLabel"/>
-                        </accessibility>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">0</property>
@@ -362,16 +240,14 @@
                     </child>
                     <child>
                       <object class="GtkGrid" id="feedIconsGrid">
-                        <property name="row-spacing">6</property>
+                        <property name="row-spacing">12</property>
                         <child>
                           <object class="GtkLabel" id="feedIconsLabel">
-                            <property name="label" translatable="1">Feed Icons (Favicons)</property>
+                            <property name="label" translatable="yes">Feed Icons (Favicons)</property>
+                            <property name="xalign">0.0</property>
                             <attributes>
-                              <attribute name="weight" value="bold"></attribute>
+                              <attribute name="weight" value="bold"/>
                             </attributes>
-                            <accessibility>
-                              <relation type="label-for" target="feedIconsGrid"/>
-                            </accessibility>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">0</property>
@@ -380,8 +256,8 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="updateAllFavicons">
-                            <property name="label" translatable="1">_Update all favicons now</property>
                             <property name="focusable">1</property>
+                            <property name="label" translatable="yes">_Update all favicons now</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
                             <layout>
@@ -390,101 +266,58 @@
                             </layout>
                           </object>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <accessibility>
-                          <relation type="labelled-by" target="feedIconsLabel"/>
-                        </accessibility>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">1</property>
                         </layout>
                       </object>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </property>
+                <property name="position">1</property>
                 <property name="tab">
                   <object class="GtkLabel">
-                    <property name="label" translatable="1">Folders</property>
+                    <property name="label" translatable="yes">Folders</property>
                   </object>
                 </property>
               </object>
             </child>
             <child>
               <object class="GtkNotebookPage">
-                <property name="position">2</property>
                 <property name="child">
                   <object class="GtkGrid" id="headlinesPage">
-                    <property name="border-width">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-top">12</property>
                     <property name="orientation">vertical</property>
                     <property name="row-spacing">18</property>
                     <child>
                       <object class="GtkGrid" id="readingHeadlinesGrid">
+                        <property name="column-spacing">12</property>
                         <property name="orientation">vertical</property>
                         <property name="row-spacing">6</property>
-                        <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkLabel" id="readingHeadlinesLabel">
-                            <property name="label" translatable="1">Reading Headlines</property>
+                            <property name="label" translatable="yes">Reading Headlines</property>
+                            <property name="xalign">0.0</property>
                             <attributes>
-                              <attribute name="weight" value="bold"></attribute>
+                              <attribute name="weight" value="bold"/>
                             </attributes>
-                            <accessibility>
-                              <relation type="label-for" target="readingHeadlinesGrid"/>
-                            </accessibility>
                             <layout>
                               <property name="column">0</property>
-                              <property name="row">0</property>
                               <property name="column-span">2</property>
+                              <property name="row">0</property>
                             </layout>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel">
+                            <property name="label" translatable="yes">_Skim through articles with:</property>
                             <property name="margin-start">12</property>
-                            <property name="label" translatable="1">_Skim through articles with:</property>
-                            <property name="use-underline">1</property>
                             <property name="mnemonic-widget">skimKeyCombo</property>
+                            <property name="use-underline">1</property>
+                            <property name="xalign">0.0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -493,10 +326,11 @@
                         </child>
                         <child>
                           <object class="GtkLabel">
+                            <property name="label" translatable="yes">_Default View Mode:</property>
                             <property name="margin-start">12</property>
-                            <property name="label" translatable="1">_Default View Mode:</property>
-                            <property name="use-underline">1</property>
                             <property name="mnemonic-widget">defaultViewModeCombo</property>
+                            <property name="use-underline">1</property>
+                            <property name="xalign">0.0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
@@ -507,6 +341,7 @@
                           <object class="GtkComboBox" id="skimKeyCombo">
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext3"/>
+                              <!-- Custom child fragments -->
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -521,6 +356,7 @@
                           <object class="GtkComboBox" id="defaultViewModeCombo">
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext4"/>
+                              <!-- Custom child fragments -->
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -533,54 +369,32 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="deferdeletebtn">
-                            <property name="label" translatable="1">_Defer removing read items from folders and search folders.</property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
+                            <property name="label" translatable="yes">_Defer removing read items from folders and search folders.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_deferdeletemode_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_deferdeletemode_toggled"/>
                             <layout>
                               <property name="column">0</property>
+                              <property name="column-span">2</property>
                               <property name="row">3</property>
                             </layout>
                           </object>
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="confirmMarkAllReadButton">
-                            <property name="label" translatable="1">Ask for confirmation when marking all items as read.</property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
+                            <property name="label" translatable="yes">Ask for confirmation when marking all items as read.</property>
                             <property name="margin-start">12</property>
                             <layout>
                               <property name="column">0</property>
+                              <property name="column-span">2</property>
                               <property name="row">4</property>
                             </layout>
                           </object>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <accessibility>
-                          <relation type="labelled-by" target="readingHeadlinesLabel"/>
-                        </accessibility>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">0</property>
@@ -589,31 +403,29 @@
                     </child>
                     <child>
                       <object class="GtkGrid" id="webIntegrationGrid">
+                        <property name="column-spacing">12</property>
                         <property name="orientation">vertical</property>
                         <property name="row-spacing">6</property>
-                        <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkLabel" id="webIntegrationLabel">
-                            <property name="label" translatable="1">Web Integration</property>
+                            <property name="label" translatable="yes">Web Integration</property>
+                            <property name="xalign">0.0</property>
                             <attributes>
-                              <attribute name="weight" value="bold"></attribute>
+                              <attribute name="weight" value="bold"/>
                             </attributes>
-                            <accessibility>
-                              <relation type="label-for" target="webIntegrationGrid"/>
-                            </accessibility>
                             <layout>
                               <property name="column">0</property>
-                              <property name="row">0</property>
                               <property name="column-span">2</property>
+                              <property name="row">0</property>
                             </layout>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel">
+                            <property name="label" translatable="yes">_Post Bookmarks to</property>
                             <property name="margin-start">12</property>
-                            <property name="label" translatable="1">_Post Bookmarks to</property>
-                            <property name="use-underline">1</property>
                             <property name="mnemonic-widget">socialpopup</property>
+                            <property name="use-underline">1</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -628,66 +440,30 @@
                             </layout>
                           </object>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <accessibility>
-                          <relation type="labelled-by" target="webIntegrationLabel"/>
-                        </accessibility>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">1</property>
                         </layout>
                       </object>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </property>
+                <property name="position">2</property>
                 <property name="tab">
                   <object class="GtkLabel">
-                    <property name="label" translatable="1">Headlines</property>
+                    <property name="label" translatable="yes">Headlines</property>
                   </object>
                 </property>
               </object>
             </child>
             <child>
               <object class="GtkNotebookPage">
-                <property name="position">3</property>
                 <property name="child">
                   <object class="GtkGrid" id="browserPage">
-                    <property name="border-width">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-top">12</property>
                     <property name="orientation">vertical</property>
                     <property name="row-spacing">18</property>
                     <child>
@@ -696,13 +472,11 @@
                         <property name="row-spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="internalBrowserLabel">
-                            <property name="label" translatable="1">Internal Browser Settings</property>
+                            <property name="label" translatable="yes">Internal Browser Settings</property>
+                            <property name="xalign">0.0</property>
                             <attributes>
-                              <attribute name="weight" value="bold"></attribute>
+                              <attribute name="weight" value="bold"/>
                             </attributes>
-                            <accessibility>
-                              <relation type="label-for" target="internalBrowserGrid"/>
-                            </accessibility>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">0</property>
@@ -711,12 +485,12 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="browseinwindow">
-                            <property name="label" translatable="1">Open links in Liferea&apos;s _window.</property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
+                            <property name="label" translatable="yes">Open links in Liferea's _window.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_openlinksinsidebtn_clicked" swapped="no"/>
+                            <signal name="toggled" handler="on_openlinksinsidebtn_clicked"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -725,45 +499,18 @@
                         </child>
                         <child>
                           <object class="GtkCheckButton" id="disablejavascript">
-                            <property name="label" translatable="1">_Never run external Javascript.</property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
+                            <property name="label" translatable="yes">_Never run external Javascript.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_disablejavascript_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_disablejavascript_toggled"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
                             </layout>
                           </object>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <accessibility>
-                          <relation type="labelled-by" target="internalBrowserLabel"/>
-                        </accessibility>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">0</property>
@@ -772,31 +519,30 @@
                     </child>
                     <child>
                       <object class="GtkGrid" id="externalBrowserGrid">
+                        <property name="column-spacing">12</property>
                         <property name="orientation">vertical</property>
                         <property name="row-spacing">6</property>
-                        <property name="column-spacing">12</property>
                         <child>
                           <object class="GtkLabel" id="externalBrowserLabel">
-                            <property name="label" translatable="1">External Browser Settings</property>
+                            <property name="label" translatable="yes">External Browser Settings</property>
+                            <property name="xalign">0.0</property>
                             <attributes>
-                              <attribute name="weight" value="bold"></attribute>
+                              <attribute name="weight" value="bold"/>
                             </attributes>
-                            <accessibility>
-                              <relation type="label-for" target="externalBrowserGrid"/>
-                            </accessibility>
                             <layout>
                               <property name="column">0</property>
-                              <property name="row">0</property>
                               <property name="column-span">2</property>
+                              <property name="row">0</property>
                             </layout>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel">
+                            <property name="label" translatable="yes">_Browser:</property>
                             <property name="margin-start">12</property>
-                            <property name="label" translatable="1">_Browser:</property>
-                            <property name="use-underline">1</property>
                             <property name="mnemonic-widget">browserpopup</property>
+                            <property name="use-underline">1</property>
+                            <property name="xalign">0.0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -805,10 +551,11 @@
                         </child>
                         <child>
                           <object class="GtkLabel" id="manuallabel">
+                            <property name="label" translatable="yes">_Manual:</property>
                             <property name="margin-start">12</property>
-                            <property name="label" translatable="1">_Manual:</property>
-                            <property name="use-underline">1</property>
                             <property name="mnemonic-widget">browsercmd</property>
+                            <property name="use-underline">1</property>
+                            <property name="xalign">0.0</property>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
@@ -817,12 +564,11 @@
                         </child>
                         <child>
                           <object class="GtkEntry" id="browsercmd">
-                            <property name="focusable">1</property>
                             <property name="activates-default">1</property>
-                            <signal name="changed" handler="on_browsercmd_changed" swapped="no"/>
-                            <accessibility>
-                              <relation type="labelled-by" target="urlhintlabel"/>
-                            </accessibility>
+                            <property name="focusable">1</property>
+                            <property name="hexpand">True</property>
+                            <property name="placeholder-text">(%s for URL)</property>
+                            <signal name="changed" handler="on_browsercmd_changed"/>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">2</property>
@@ -830,191 +576,45 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="urlhintlabel">
-                            <property name="label" translatable="1">&lt;small&gt;(%s for URL)&lt;/small&gt;</property>
-                            <property name="use-markup">1</property>
-                            <accessibility>
-                              <relation type="label-for" target="browsercmd"/>
-                            </accessibility>
-                            <layout>
-                              <property name="column">1</property>
-                              <property name="row">3</property>
-                            </layout>
-                          </object>
-                        </child>
-                        <child>
                           <object class="GtkComboBox" id="browserpopup">
+                            <property name="hexpand">True</property>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">1</property>
                             </layout>
                           </object>
                         </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <accessibility>
-                          <relation type="labelled-by" target="externalBrowserLabel"/>
-                        </accessibility>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">1</property>
                         </layout>
                       </object>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </property>
+                <property name="position">3</property>
                 <property name="tab">
                   <object class="GtkLabel">
-                    <property name="label" translatable="1">Browser</property>
+                    <property name="label" translatable="yes">Browser</property>
                   </object>
                 </property>
               </object>
             </child>
             <child>
               <object class="GtkNotebookPage">
-                <property name="position">4</property>
-                <property name="child">
-                  <object class="GtkGrid" id="guiPage">
-                    <property name="border-width">12</property>
-                    <property name="orientation">vertical</property>
-                    <property name="row-spacing">6</property>
-                    <property name="column-spacing">12</property>
-                    <child>
-                      <object class="GtkLabel" id="toolbarSettingsLabel">
-                        <property name="label" translatable="1">Toolbar Settings</property>
-                        <attributes>
-                          <attribute name="weight" value="bold"></attribute>
-                        </attributes>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="row">0</property>
-                          <property name="column-span">2</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckButton" id="hidetoolbarbtn">
-                        <property name="label" translatable="1">_Hide toolbar.</property>
-                        <property name="focusable">1</property>
-                        <property name="halign">start</property>
-                        <property name="margin-start">12</property>
-                        <property name="use-underline">1</property>
-                        <signal name="toggled" handler="on_hidetoolbar_toggled" swapped="no"/>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="row">1</property>
-                          <property name="column-span">2</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="margin-start">12</property>
-                        <property name="label" translatable="1">Toolbar _button labels:</property>
-                        <property name="use-underline">1</property>
-                        <property name="mnemonic-widget">toolbarCombo</property>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="row">2</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkComboBox" id="toolbarCombo">
-                        <child>
-                          <object class="GtkCellRendererText" id="cellrenderertext2"/>
-                          <attributes>
-                            <attribute name="text">0</attribute>
-                          </attributes>
-                        </child>
-                        <layout>
-                          <property name="column">1</property>
-                          <property name="row">2</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                  </object>
-                </property>
-                <property name="tab">
-                  <object class="GtkLabel">
-                    <property name="label" translatable="1">Desktop</property>
-                  </object>
-                </property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkNotebookPage">
-                <property name="position">5</property>
                 <property name="child">
                   <object class="GtkGrid" id="proxyPage">
-                    <property name="border-width">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-top">12</property>
                     <property name="row-spacing">6</property>
                     <child>
                       <object class="GtkLabel" id="proxyServerLabel">
-                        <property name="label" translatable="1">HTTP Proxy Server</property>
+                        <property name="label" translatable="yes">HTTP Proxy Server</property>
+                        <property name="xalign">0.0</property>
                         <attributes>
-                          <attribute name="weight" value="bold"></attribute>
+                          <attribute name="weight" value="bold"/>
                         </attributes>
                         <layout>
                           <property name="column">0</property>
@@ -1024,11 +624,11 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="proxyAutoDetectRadio">
-                        <property name="label" translatable="1">_Auto Detect (GNOME or environment)</property>
+                        <property name="active">1</property>
                         <property name="halign">start</property>
+                        <property name="label" translatable="yes">_Auto Detect (GNOME or environment)</property>
                         <property name="margin-start">12</property>
                         <property name="use-underline">1</property>
-                        <property name="active">1</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">2</property>
@@ -1037,82 +637,44 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="noProxyRadio">
-                        <property name="label" translatable="1">_No Proxy</property>
+                        <property name="group">proxyAutoDetectRadio</property>
                         <property name="halign">start</property>
+                        <property name="label" translatable="yes">_No Proxy</property>
                         <property name="margin-start">12</property>
                         <property name="use-underline">1</property>
-                        <property name="group">proxyAutoDetectRadio</property>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">3</property>
                         </layout>
                       </object>
                     </child>
-                    <child>
-		      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </property>
+                <property name="position">5</property>
                 <property name="tab">
                   <object class="GtkLabel">
-                    <property name="label" translatable="1">Proxy</property>
+                    <property name="label" translatable="yes">Proxy</property>
                   </object>
                 </property>
               </object>
             </child>
             <child>
               <object class="GtkNotebookPage">
-                <property name="position">6</property>
                 <property name="child">
                   <object class="GtkGrid" id="privacyPage">
-                    <property name="border-width">12</property>
+                    <property name="column-spacing">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-top">12</property>
                     <property name="orientation">vertical</property>
                     <property name="row-spacing">6</property>
-                    <property name="column-spacing">12</property>
                     <child>
                       <object class="GtkLabel">
-                        <property name="label" translatable="1">Privacy Settings</property>
+                        <property name="label" translatable="yes">Privacy Settings</property>
+                        <property name="xalign">0.0</property>
                         <attributes>
-                          <attribute name="weight" value="bold"></attribute>
+                          <attribute name="weight" value="bold"/>
                         </attributes>
                         <layout>
                           <property name="column">0</property>
@@ -1122,12 +684,12 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="donottrackbtn">
-                        <property name="label" translatable="1">Tell websites that I do _not want to be tracked.</property>
                         <property name="focusable">1</property>
                         <property name="halign">start</property>
+                        <property name="label" translatable="yes">Tell websites that I do _not want to be tracked.</property>
                         <property name="margin-start">12</property>
                         <property name="use-underline">1</property>
-                        <signal name="toggled" handler="on_donottrackbtn_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_donottrackbtn_toggled"/>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">2</property>
@@ -1136,12 +698,12 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="donotsellbtn">
-                        <property name="label" translatable="1">Tell websites not to _sell or share my data.</property>
                         <property name="focusable">1</property>
                         <property name="halign">start</property>
+                        <property name="label" translatable="yes">Tell websites not to _sell or share my data.</property>
                         <property name="margin-start">12</property>
                         <property name="use-underline">1</property>
-                        <signal name="toggled" handler="on_donotsellbtn_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_donotsellbtn_toggled"/>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">3</property>
@@ -1152,25 +714,20 @@
                       <object class="GtkBox" id="itpbox">
                         <child>
                           <object class="GtkCheckButton" id="itpbtn">
-                            <property name="label" translatable="1">_Intelligent Tracking Prevention. </property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
+                            <property name="label" translatable="yes">_Intelligent Tracking Prevention. </property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_itpbtn_toggled" swapped="no"/>
-                            <accessibility>
-                              <relation type="labelled-by" target="itpbtn_label"/>
-                            </accessibility>
+                            <signal name="toggled" handler="on_itpbtn_toggled"/>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel" id="itpbtn_label">
-                            <property name="label" translatable="1">This enables the WebKit feature described &lt;a href=&quot;https://webkit.org/tracking-prevention/&quot;&gt;here&lt;/a&gt;.</property>
+                            <property name="ellipsize">end</property>
+                            <property name="label" translatable="yes">This enables the WebKit feature described &lt;a href="https://webkit.org/tracking-prevention/"&gt;here&lt;/a&gt;.</property>
                             <property name="use-markup">1</property>
                             <property name="wrap">1</property>
-                            <accessibility>
-                              <relation type="label-for" target="itpbtn"/>
-                            </accessibility>
                           </object>
                         </child>
                         <layout>
@@ -1183,17 +740,18 @@
                       <object class="GtkBox">
                         <child>
                           <object class="GtkCheckButton" id="readermodebtn">
-                            <property name="label" translatable="1">Use _Reader mode.</property>
                             <property name="focusable">1</property>
                             <property name="halign">start</property>
+                            <property name="label" translatable="yes">Use _Reader mode.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_readermodebtn_toggled" swapped="no"/>
+                            <signal name="toggled" handler="on_readermodebtn_toggled"/>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel">
-                            <property name="label" translatable="1">This enables &lt;a href=&quot;https://github.com/mozilla/readability&quot;&gt;stripping&lt;/a&gt; all non-content elements (like scripts, fonts, tracking)</property>
+                            <property name="ellipsize">end</property>
+                            <property name="label" translatable="yes">This enables &lt;a href="https://github.com/mozilla/readability"&gt;stripping&lt;/a&gt; all non-content elements (like scripts, fonts, tracking)</property>
                             <property name="use-markup">1</property>
                           </object>
                         </child>
@@ -1203,47 +761,12 @@
                         </layout>
                       </object>
                     </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
                   </object>
                 </property>
+                <property name="position">6</property>
                 <property name="tab">
                   <object class="GtkLabel">
-                    <property name="label" translatable="1">Privacy</property>
+                    <property name="label" translatable="yes">Privacy</property>
                   </object>
                 </property>
               </object>
@@ -1252,27 +775,21 @@
         </child>
       </object>
     </child>
-    <action-widgets>
-      <action-widget response="-7">prefclosebtn</action-widget>
-    </action-widgets>
     <child internal-child="action_area">
-      <object class="GtkButtonBox">
+      <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="layout-style">end</property>
         <child>
           <object class="GtkButton" id="prefclosebtn">
-            <property name="label">gtk-close</property>
             <property name="focusable">1</property>
+            <property name="label">_Close</property>
+            <property name="use-underline">True</property>
             <signal name="clicked" handler="gtk_widget_hide" object="prefs" swapped="yes"/>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
         </child>
       </object>
     </child>
+    <action-widgets>
+      <action-widget response="-7">prefclosebtn</action-widget>
+    </action-widgets>
   </object>
 </interface>
