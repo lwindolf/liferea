@@ -5,7 +5,6 @@
     <property name="title" translatable="1">New Folder</property>
     <property name="resizable">0</property>
     <property name="modal">1</property>
-    <property name="window_position">center-on-parent</property>
     <signal name="delete-event" handler="gtk_widget_hide_on_delete" swapped="no"/>
     <child>
       <placeholder/>

@@ -4,7 +4,6 @@
   <object class="GtkDialog" id="new_newsbin">
     <property name="title" translatable="1">Create News Bin</property>
     <property name="modal">1</property>
-    <property name="window_position">center-on-parent</property>
     <child>
       <placeholder/>
     </child>
