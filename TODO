@@ -3,7 +3,7 @@ Tracking broken stuff in the GTK4 port
 To be fixed next:
 
 1. Make search dialog work
-2. crash on advanced search dialog
+2. sunken relief in rule reditor dialogs
 3. crash on search folder rebuild
 4. crash on browser launch in item list
 
