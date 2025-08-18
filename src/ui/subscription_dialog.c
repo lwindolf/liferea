@@ -497,6 +497,8 @@ on_complex_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 
 		feedlist_add_subscription_check_duplicate (source, filter, options, UPDATE_REQUEST_PRIORITY_HIGH);
 	}
+
+	gtk_window_close (GTK_WINDOW (dialog));
 }
 
 static gboolean
@@ -544,6 +546,8 @@ on_simple_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_da
 	/* APPLY code misused for "Advanced" */
 	if (response_id == GTK_RESPONSE_APPLY)
 		g_idle_add (subscription_dialog_complex_new, NULL);
+
+	gtk_window_close (GTK_WINDOW (dialog));
 }
 
 void

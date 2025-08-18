@@ -923,6 +923,8 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 		feed_list_view_node_update (flv, node);
 		feedlist_schedule_save ();
 	}
+
+	gtk_window_close (GTK_WINDOW (dialog));
 }
 
 void

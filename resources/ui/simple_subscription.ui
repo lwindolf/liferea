@@ -4,6 +4,10 @@
   <!-- interface-name simple_subscription.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="simple_subscription">
+    <property name="default-height">-1</property>
+    <property name="default-width">-1</property>
+    <property name="focus-widget">sourceEntry</property>
+    <property name="height-request">100</property>
     <property name="title" translatable="yes">New Subscription</property>
     <property name="visible">1</property>
     <property name="width-request">400</property>
@@ -35,6 +39,7 @@
             <child>
               <object class="GtkLabel">
                 <property name="label" translatable="yes">Enter a website location to use feed autodiscovery or in case you know it the exact feed location.</property>
+                <property name="valign">start</property>
                 <property name="wrap">1</property>
                 <property name="xalign">0</property>
                 <layout>
