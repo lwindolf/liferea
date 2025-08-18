@@ -306,7 +306,6 @@ feedlist_set_selected (Node *node)
 			itemlist_load (SELECTED);
 
 		g_signal_emit_by_name (feedlist, "node-selected", SELECTED?SELECTED->id:NULL);
-
 	} else {
 		debug (DEBUG_GUI, "selected node stayed: %s", node?node_get_title (node):"none");
 	}
@@ -594,17 +593,6 @@ static void
 feedlist_unselect (void)
 {
 	SELECTED = NULL;
-}
-
-void
-feedlist_selection_changed (FeedList *feedlist, gpointer nodeId)
-{
-	Node *node = node_from_id ((gchar *)nodeId);
-	if (node) {
-		feedlist_set_selected (node);
-	} else {
-		debug (DEBUG_GUI, "failed to resolve node id: %s", nodeId);
-	}
 }
 
 static gboolean

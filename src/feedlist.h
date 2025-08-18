@@ -58,16 +58,6 @@ void feedlist_set_selected (Node *node);
 Node * feedlist_get_selected (void);
 
 /**
- * feedlist_selection_changed: (skip)
- *
- * @param feedlist: the feed list
- * @param nodeId: the node id string
- * 
- * To be used by LifereaShell as a signal handler for the feed list view.
- */
-void feedlist_selection_changed (FeedList *feedlist, gpointer nodeId);
-
-/**
  * feedlist_get_unread_item_count:
  *
  * Query overall number of unread items.

@@ -371,7 +371,7 @@ itemlist_load (Node *node)
 	debug (DEBUG_GUI, "loading item list with node \"%s\"", node_get_title (node));
 
 	g_assert (!itemlist->priv->filter);
-
+g_print("itemlist_load called %s\n",node->title);
 	g_signal_emit_by_name (itemlist, "item-batch-start", 0);
 
 	/* 1. Filter check. Don't continue if folder is selected and
@@ -413,6 +413,7 @@ itemlist_load (Node *node)
 void
 itemlist_unload (void)
 {
+	g_print("itemlist_unload called\n");
 	if (itemlist->priv->currentNode)
 		itemlist_check_for_deferred_action ();
 
@@ -585,18 +586,6 @@ itemlist_update_item (itemPtr item)
 }
 
 /* mouse/keyboard interaction callbacks */
-
-void
-itemlist_node_changed (ItemList *ilv, gchar *nodeId, gpointer unused)
-{
-	Node *node = node_from_id (nodeId);
-
-	if (!node || (node == itemlist->priv->currentNode))
-		return;
-
-	itemlist_unload ();
-	itemlist_load (node);
-}
 
 void
 itemlist_selection_changed (ItemList *ilv, gulong itemId, gpointer unused)

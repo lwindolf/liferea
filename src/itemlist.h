@@ -177,16 +177,6 @@ void itemlist_remove_all_items (Node *node);
 void itemlist_selection_changed (ItemList *itemlist, gulong itemId, gpointer unused);
 
 /**
- * itemlist_node_changed: (skip)
- * @itemlist:	the item list
- * @nodeId:	the node id of the node that has changed
- * @unused:	unused
- *
-* Only to be used as a signal handler for the feed list view.
- */
-void itemlist_node_changed (ItemList *itemlist, gchar *nodeId, gpointer unused);
-
-/**
  * itemlist_select_next_unread:
  *
  * Tries to select the next unread item that is currently in the

@@ -210,7 +210,7 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		debug (DEBUG_GUI, "feed list selection changed to \"%s\"", node?node_get_title (node):"Empty node");
 
 		if (!node) {
-			/* The selected iter is an "empty" node added to an empty folder. We get the parent's node
+			/* 1.a) The selected iter is an "empty" node added to an empty folder. We get the parent's node
 			 * to set it as the selected node. This is useful if the user adds a feed, the folder will
 			 * be used as location for the new node. */
 			GtkTreeIter parent;
@@ -220,10 +220,10 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 				debug (DEBUG_GUI, "A selected null node has no parent. This should not happen.");
 				return;
 			}
+		} else {
+			/* 1.b) update feed list and item list states */
+			feedlist_set_selected (node);
 		}
-
-		/* 1.) update feed list and item list states */
-		g_signal_emit_by_name (FEED_LIST_VIEW (flv), "selection-changed", node->id);
 
 		/* 2.) Refilter the GtkTreeView to get rid of nodes with 0 unread
 		   messages when in reduced mode. */
@@ -819,8 +819,6 @@ feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 	g_signal_connect (feedlist, "node-removed", G_CALLBACK (feed_list_view_node_removed), flv);
 	g_signal_connect (feedlist, "node-selected", G_CALLBACK (feed_list_view_node_selected), flv);
 	g_signal_connect (feedlist, "node-updated", G_CALLBACK (feed_list_view_node_updated), flv);
-
-	g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), feedlist);
 
 	return flv;
 }
