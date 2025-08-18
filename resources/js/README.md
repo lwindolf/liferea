@@ -17,7 +17,7 @@ Type 2. and 3. are rendered with Javascript. Entrypoint is `htmlview.js`.
 - Stripping (with the goal of UX) is done with Readability.js
 - CSP is applied to limit 3rd party resource loading
 - Templating happens with Handlebars.js
-- Handlebar templates (`item.xml.in` and `node.xml.in`) are runtime 
-  preprocessed with XSLT to inject translations using `i18n-filter.xslt`
+- Handlebar templates (`item.xml.in` and `node.xml.in`) are C-runtime 
+  preprocessed with XSLT to inject gettext translations using `i18n-filter.xslt`
 - All ressources (handlebar templates as well as JS files) are 
   compiled as gresources
