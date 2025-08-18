@@ -1,27 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name new_folder.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="new_folder">
-    <property name="title" translatable="1">New Folder</property>
-    <property name="resizable">0</property>
     <property name="modal">1</property>
-    <signal name="delete-event" handler="gtk_widget_hide_on_delete" swapped="no"/>
-    <child>
-      <placeholder/>
-    </child>
+    <property name="title" translatable="yes">New Folder</property>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox6">
+        <property name="margin-bottom">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkGrid">
-            <property name="row_spacing">6</property>
-            <property name="column_spacing">12</property>
+            <property name="column-spacing">12</property>
+            <property name="row-spacing">6</property>
             <child>
               <object class="GtkLabel" id="label20">
-                <property name="label" translatable="1">_Folder name:</property>
-                <property name="use_underline">1</property>
-                <property name="mnemonic_widget">foldertitleentry</property>
+                <property name="label" translatable="yes">_Folder name:</property>
+                <property name="mnemonic-widget">foldertitleentry</property>
+                <property name="use-underline">1</property>
+                <property name="xalign">0.0</property>
                 <layout>
                   <property name="column">0</property>
                   <property name="row">0</property>
@@ -30,8 +32,9 @@
             </child>
             <child>
               <object class="GtkEntry" id="foldertitleentry">
+                <property name="activates-default">1</property>
                 <property name="focusable">1</property>
-                <property name="activates_default">1</property>
+                <property name="hexpand">True</property>
                 <layout>
                   <property name="column">1</property>
                   <property name="row">0</property>
@@ -42,42 +45,38 @@
         </child>
       </object>
     </child>
+    <child internal-child="action_area">
+      <object class="GtkBox" id="dialog-action_area6">
+        <property name="homogeneous">false</property>
+        <property name="margin-bottom">5</property>
+        <property name="margin-end">5</property>
+        <property name="margin-start">5</property>
+        <property name="margin-top">5</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkButton" id="button3">
+            <property name="focusable">1</property>
+            <property name="label" translatable="yes">_Cancel</property>
+            <property name="use-underline">True</property>
+            <signal name="clicked" handler="gtk_widget_hide" object="new_folder" swapped="yes"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="button2">
+            <property name="focusable">1</property>
+            <property name="label" translatable="yes">_OK</property>
+            <property name="use-underline">True</property>
+            <signal name="clicked" handler="gtk_widget_hide" object="new_folder" swapped="yes" after="yes"/>
+            <signal name="clicked" handler="on_newfolderbtn_clicked"/>
+          </object>
+        </child>
+      </object>
+    </child>
     <action-widgets>
       <action-widget response="-6">button3</action-widget>
       <action-widget response="-5">button2</action-widget>
     </action-widgets>
-    <child internal-child="action_area">
-      <object class="GtkButtonBox" id="dialog-action_area6">
-        <property name="valign">center</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="layout_style">end</property>
-        <child>
-          <object class="GtkButton" id="button3">
-            <property name="label">gtk-cancel</property>
-            <property name="focusable">1</property>
-            <signal name="clicked" handler="gtk_widget_hide" object="new_folder" swapped="yes"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="button2">
-            <property name="label">gtk-ok</property>
-            <property name="focusable">1</property>
-            <signal name="clicked" handler="gtk_widget_hide" object="new_folder" after="yes" swapped="yes"/>
-            <signal name="clicked" handler="on_newfolderbtn_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>

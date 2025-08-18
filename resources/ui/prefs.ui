@@ -781,7 +781,7 @@
         <child>
           <object class="GtkButton" id="prefclosebtn">
             <property name="focusable">1</property>
-            <property name="label">_Close</property>
+            <property name="label" translatable="yes">_Close</property>
             <property name="use-underline">True</property>
             <signal name="clicked" handler="gtk_widget_hide" object="prefs" swapped="yes"/>
           </object>

@@ -42,7 +42,8 @@
                       <object class="GtkButton" id="addrulebtn2">
                         <property name="focusable">1</property>
                         <property name="halign">center</property>
-                        <property name="label">Add</property>
+                        <property name="label" translatable="yes">_Add</property>
+                        <property name="use-underline">True</property>
                       </object>
                     </child>
                     <child>
@@ -90,7 +91,7 @@
         <child>
           <object class="GtkButton" id="cancelbutton8">
             <property name="focusable">1</property>
-            <property name="label">Close</property>
+            <property name="label" translatable="yes">Close</property>
           </object>
         </child>
         <child>
@@ -99,9 +100,11 @@
             <property name="receives-default">1</property>
             <child>
               <object class="GtkBox" id="hbox3">
+                <property name="spacing">6</property>
                 <child>
                   <object class="GtkImage" id="image1">
                     <property name="hexpand">1</property>
+                    <property name="icon-name">edit-find</property>
                   </object>
                 </child>
                 <child>
@@ -119,7 +122,7 @@
         <child>
           <object class="GtkButton" id="okbutton5">
             <property name="focusable">1</property>
-            <property name="label">Find</property>
+            <property name="label" translatable="yes">Find</property>
           </object>
         </child>
       </object>

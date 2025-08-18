@@ -108,7 +108,7 @@
             <child>
               <object class="GtkButton" id="button5">
                 <property name="focusable">1</property>
-                <property name="label">Close</property>
+                <property name="label" translatable="yes">Close</property>
                 <signal name="clicked" handler="on_close_update_monitor_clicked"/>
               </object>
             </child>

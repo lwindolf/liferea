@@ -661,14 +661,14 @@
         <child>
           <object class="GtkButton" id="prop_cancel">
             <property name="focusable">1</property>
-            <property name="label">_Cancel</property>
+            <property name="label" translatable="yes">_Cancel</property>
             <property name="use-underline">True</property>
           </object>
         </child>
         <child>
           <object class="GtkButton" id="prop_ok">
             <property name="focusable">1</property>
-            <property name="label">_OK</property>
+            <property name="label" translatable="yes">_OK</property>
             <property name="use-underline">True</property>
           </object>
         </child>

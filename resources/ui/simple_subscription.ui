@@ -6,6 +6,7 @@
   <object class="GtkDialog" id="simple_subscription">
     <property name="title" translatable="yes">New Subscription</property>
     <property name="visible">1</property>
+    <property name="width-request">400</property>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox19">
         <property name="margin-bottom">12</property>
@@ -21,6 +22,7 @@
                 <property name="label" translatable="yes">Feed _Source</property>
                 <property name="mnemonic-widget">sourceEntry</property>
                 <property name="use-underline">1</property>
+                <property name="xalign">0.0</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                 </attributes>
@@ -32,7 +34,6 @@
             </child>
             <child>
               <object class="GtkLabel">
-                <property name="ellipsize">end</property>
                 <property name="label" translatable="yes">Enter a website location to use feed autodiscovery or in case you know it the exact feed location.</property>
                 <property name="wrap">1</property>
                 <property name="xalign">0</property>
@@ -46,6 +47,7 @@
             <child>
               <object class="GtkEntry" id="sourceEntry">
                 <property name="focusable">1</property>
+                <property name="hexpand">True</property>
                 <property name="invisible-char">•</property>
                 <property name="margin-start">12</property>
                 <layout>
@@ -71,7 +73,7 @@
         <child>
           <object class="GtkButton" id="cancelbutton5">
             <property name="focusable">1</property>
-            <property name="label">_Cancel</property>
+            <property name="label" translatable="yes">_Cancel</property>
             <property name="use-underline">True</property>
           </object>
         </child>
@@ -85,7 +87,7 @@
         <child>
           <object class="GtkButton" id="button6">
             <property name="focusable">1</property>
-            <property name="label">_OK</property>
+            <property name="label" translatable="yes">_OK</property>
             <property name="use-underline">True</property>
           </object>
         </child>

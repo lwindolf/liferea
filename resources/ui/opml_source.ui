@@ -1,55 +1,84 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name opml_source.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="opml_source">
+    <property name="title" translatable="yes">Add OPML</property>
     <property name="visible">1</property>
-    <property name="title" translatable="1">Add OPML/Planet</property>
-    <child>
-      <placeholder/>
-    </child>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox1">
+        <property name="margin-bottom">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox" id="vbox1">
+            <property name="can-focus">0</property>
             <property name="orientation">vertical</property>
-            <property name="can_focus">0</property>
             <property name="spacing">12</property>
             <child>
               <object class="GtkLabel" id="label1">
+                <property name="label" translatable="yes">Please specify a local file or an URL pointing to a valid OPML feed list.</property>
                 <property name="valign">center</property>
-                <property name="label" translatable="1">Please specify a local file or an URL pointing to a valid OPML feed list.</property>
                 <property name="wrap">1</property>
               </object>
             </child>
             <child>
               <object class="GtkBox" id="hbox1">
-                <property name="can_focus">0</property>
+                <property name="can-focus">0</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkLabel" id="label2">
                     <property name="halign">center</property>
-                    <property name="label" translatable="1">_Location</property>
-                    <property name="use_underline">1</property>
-                    <property name="mnemonic_widget">location_entry</property>
+                    <property name="label" translatable="yes">_Location</property>
+                    <property name="mnemonic-widget">location_entry</property>
+                    <property name="use-underline">1</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkEntry" id="location_entry">
-                    <property name="hexpand">1</property>
                     <property name="focusable">1</property>
+                    <property name="hexpand">1</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkButton" id="select_button">
-                    <property name="halign">center</property>
-                    <property name="label" translatable="1">_Select File</property>
                     <property name="focusable">1</property>
-                    <property name="use_underline">1</property>
+                    <property name="halign">center</property>
+                    <property name="label" translatable="yes">_Select File</property>
+                    <property name="use-underline">1</property>
                   </object>
                 </child>
               </object>
             </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child internal-child="action_area">
+      <object class="GtkBox" id="dialog-action_area1">
+        <property name="homogeneous">false</property>
+        <property name="margin-bottom">5</property>
+        <property name="margin-end">5</property>
+        <property name="margin-start">5</property>
+        <property name="margin-top">5</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkButton" id="cancelbutton1">
+            <property name="focusable">1</property>
+            <property name="label" translatable="yes">_Cancel</property>
+            <property name="use-underline">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="okbutton1">
+            <property name="focusable">1</property>
+            <property name="label" translatable="yes">_OK</property>
+            <property name="use-underline">True</property>
           </object>
         </child>
       </object>
@@ -58,35 +87,5 @@
       <action-widget response="-6">cancelbutton1</action-widget>
       <action-widget response="-5">okbutton1</action-widget>
     </action-widgets>
-    <child internal-child="action_area">
-      <object class="GtkButtonBox" id="dialog-action_area1">
-        <property name="valign">center</property>
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="layout_style">end</property>
-        <child>
-          <object class="GtkButton" id="cancelbutton1">
-            <property name="label">gtk-cancel</property>
-            <property name="focusable">1</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="okbutton1">
-            <property name="label">gtk-ok</property>
-            <property name="focusable">1</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-    </child>
   </object>
 </interface>

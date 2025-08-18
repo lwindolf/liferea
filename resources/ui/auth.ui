@@ -108,13 +108,13 @@
             <child type="action">
               <object class="GtkButton" id="cancelbutton">
                 <property name="focusable">1</property>
-                <property name="label">Cancel</property>
+                <property name="label" translatable="yes">Cancel</property>
               </object>
             </child>
             <child type="action">
               <object class="GtkButton" id="okbutton">
                 <property name="focusable">1</property>
-                <property name="label">OK</property>
+                <property name="label" translatable="yes">OK</property>
               </object>
             </child>
           </object>

@@ -1,13 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.94.1 -->
 <interface>
+  <!-- interface-name about.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkAboutDialog" id="about">
-    <property name="title" translatable="1">About</property>
-    <property name="resizable">0</property>
-    <property name="program_name">Liferea</property>
-    <property name="comments" translatable="1">Liferea is a news aggregator for GTK+</property>
-    <property name="website">https://lzone.de/liferea/</property>
-    <property name="website_label" translatable="1">Liferea Homepage</property>
     <property name="authors">
 Developers:
 
@@ -63,8 +59,14 @@ Peter Oliver
 Sergey Snitsaruk
 Lorenzo L. Ancora
 and many more...</property>
+    <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
     <property name="documenters">Lars Windolf</property>
-    <property name="translator_credits">Bart Kreska
+    <property name="license-type">gpl-2-0</property>
+    <property name="logo-icon-name">net.sourceforge.liferea</property>
+    <property name="program-name">Liferea</property>
+    <property name="resizable">0</property>
+    <property name="title" translatable="yes">About</property>
+    <property name="translator-credits">Bart Kreska
 Wojciech Myrda
 Piotr Sokół
 Dario Conigliaro
@@ -119,10 +121,7 @@ Jorma Karvonen
 Guillaume Bernard
 Lorenzo L. Ancora
 </property>
-    <property name="logo_icon_name">net.sourceforge.liferea</property>
-    <property name="license_type">gpl-2-0</property>
-    <child>
-      <placeholder/>
-    </child>
+    <property name="website">https://lzone.de/liferea/</property>
+    <property name="website-label" translatable="yes">Liferea Homepage</property>
   </object>
 </interface>

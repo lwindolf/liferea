@@ -40,14 +40,16 @@
                 <child>
                   <object class="GtkButton" id="cancelbutton">
                     <property name="focusable">1</property>
-                    <property name="label">Configure</property>
+                    <property name="label" translatable="yes">Con_figure</property>
                     <property name="sensitive">False</property>
+                    <property name="use-underline">True</property>
                   </object>
                 </child>
                 <child>
                   <object class="GtkButton" id="okbutton">
                     <property name="focusable">1</property>
-                    <property name="label">Close</property>
+                    <property name="label" translatable="yes">_Close</property>
+                    <property name="use-underline">True</property>
                   </object>
                 </child>
               </object>

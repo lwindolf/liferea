@@ -59,7 +59,7 @@
         <child>
           <object class="GtkButton" id="cancelbutton1">
             <property name="focusable">1</property>
-            <property name="label">_Cancel</property>
+            <property name="label" translatable="yes">_Cancel</property>
             <property name="use-underline">True</property>
             <signal name="clicked" handler="gtk_widget_hide" object="rename_node" swapped="yes"/>
           </object>
@@ -67,7 +67,7 @@
         <child>
           <object class="GtkButton" id="namechangebtn">
             <property name="focusable">1</property>
-            <property name="label">_OK</property>
+            <property name="label" translatable="yes">_OK</property>
             <property name="use-underline">True</property>
           </object>
         </child>
