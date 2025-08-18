@@ -1,5 +1,5 @@
 /**
- * @file search_dialog.c  Search engine subscription dialog
+ * @file search_dialog.c  Searching all feeds
  *
  * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
@@ -32,6 +32,7 @@
 #include "vfolder_loader.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
+#include "ui/liferea_shell.h"
 #include "ui/rule_editor.h"
 
 /* a single static search folder representing the active search dialog result */
@@ -134,78 +135,55 @@ search_dialog_open (const gchar *query)
 	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_search_dialog_response), re);
 }
 
-/* simple search dialog */
+/* simple search box */
 
-static GtkWidget *simple_dialog = NULL;
-
-static void
-on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_data)
+void
+on_advancedsearch_activated (GtkButton *button, gpointer user_data)
 {
-	const gchar	*searchString = liferea_dialog_entry_get (GTK_WIDGET (dialog), "searchentry");
+	GtkWidget *box = liferea_shell_lookup ("searchbox");
+	GtkWidget *entry = liferea_shell_lookup ("searchentry");
+	g_autofree gchar *searchString = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 
-	if (GTK_RESPONSE_OK == responseId) {	/* Search */
-		search_clean_results (vfolder);
-
-		/* Create new search... */
-		vfolder = vfolder_new (node_new ("vfolder"));
-		node_set_title (vfolder->node, searchString);
-		itemset_add_rule (vfolder->itemset, "exact", searchString, TRUE);
-
-		search_load_results (vfolder);
-
-		/* Do not close the dialog when "just" searching. The user
-		should click "Close" to close the dialog to be able to
-		do subsequent searches... */
-		return;
-	}
-
-	if (2 == responseId) {	/* Advanced... */
-		search_dialog_open (searchString);
-		search_clean_results (vfolder);
-		gtk_window_close (GTK_WINDOW (simple_dialog));
-		simple_dialog = NULL;
-		return;
-	}
-
-	if (GTK_RESPONSE_CLOSE == responseId) {
-		search_clean_results (vfolder);
-		gtk_window_close (GTK_WINDOW (simple_dialog));
-		simple_dialog = NULL;
-		return;
-	}
+	gtk_widget_set_visible (box, FALSE);
+	
+	search_dialog_open (searchString);
+	search_clean_results (vfolder);
 }
 
-static void
-on_searchentry_activated (GtkEntry *entry, gpointer user_data)
+void
+on_searchentry_activated (GtkSearchEntry *entry, gpointer user_data)
 {
-	/* simulate search response */
-	on_simple_search_dialog_response (GTK_DIALOG (user_data), 1, NULL);
+	g_autofree gchar *searchString = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
+
+	// FIXME: cleanup item list first, does not work yet
+	feedlist_set_selected (NULL);
+	search_clean_results (vfolder);
+
+	/* Create new search... */
+	vfolder = vfolder_new (node_new ("vfolder"));
+	node_set_title (vfolder->node, searchString);
+	itemset_add_rule (vfolder->itemset, "exact", searchString, TRUE);
+
+	search_load_results (vfolder);
 }
 
-static void
-on_searchentry_changed (GtkEditable *editable, gpointer user_data)
+void
+on_toggle_searchbox (GtkButton *button, gpointer user_data)
 {
-	g_autofree gchar *searchString;
+	GtkWidget *box = liferea_shell_lookup ("searchbox");
 
-	/* just to disable the start search button when search string is empty... */
-	searchString = gtk_editable_get_chars (editable, 0, -1);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (simple_dialog, "searchstartbtn"), searchString && (0 < strlen (searchString)));
+	if (gtk_widget_get_visible (box)) {
+		gtk_widget_set_visible (box, FALSE);
+		search_clean_results (vfolder);
+	} else {
+		gtk_widget_set_visible (box, TRUE);
+		gtk_window_set_focus (GTK_WINDOW (liferea_shell_get_window ()), box);
+	}
 }
 
 void 
 simple_search_dialog_open (void)
 {
-	GtkWidget *dialog;
-
-	if (simple_dialog)
-		return;
-
-	simple_dialog = dialog = liferea_dialog_new ("simple_search");
-	gtk_window_present (GTK_WINDOW (simple_dialog));
-
-	gtk_window_set_focus (GTK_WINDOW (dialog), liferea_dialog_lookup (dialog, "searchentry"));
-
-	g_signal_connect (dialog, "response", G_CALLBACK (on_simple_search_dialog_response), NULL);
-	g_signal_connect (liferea_dialog_lookup (dialog, "searchentry"), "changed", G_CALLBACK (on_searchentry_changed), dialog);
-	g_signal_connect (liferea_dialog_lookup (dialog, "searchentry"), "activate", G_CALLBACK (on_searchentry_activated), dialog);
+	on_toggle_searchbox (NULL, NULL);
 }
+

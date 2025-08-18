@@ -30,7 +30,6 @@
     <file compressed="true">ui/rename_node.ui</file>
     <file compressed="true">ui/search_folder.ui</file>
     <file compressed="true">ui/search.ui</file>
-    <file compressed="true">ui/simple_search.ui</file>
     <file compressed="true">ui/simple_subscription.ui</file>
     <file compressed="true">ui/theoldreader_source.ui</file>
     <file compressed="true">ui/ttrss_source.ui</file>
