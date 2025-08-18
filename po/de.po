@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 09:18+0100\n"
-"PO-Revision-Date: 2025-02-26 09:22+0100\n"
+"PO-Revision-Date: 2025-08-13 23:17+0200\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:347
 #: ../glade/mainwindow.ui.h:1
@@ -172,7 +172,7 @@ msgstr "Analyse der Plugin-Abhängigkeiten schlug fehl (%s)!"
 
 #: ../plugins/plugin-installer.py:287
 msgid "Command \"git\" not found, please install it!"
-msgstr "\"git\" Kommando nicht gefunden! Bitte \"git\" installieren."
+msgstr "\"git\" Kommando nicht gefunden! Bitte \"git\" installieren!"
 
 #: ../plugins/plugin-installer.py:296
 #, python-format
@@ -1022,7 +1022,7 @@ msgstr "_Speichern"
 
 #: ../src/ui/popup_menu.c:235
 msgid "RSS 2.0 files"
-msgstr "RSS 2.0 Datein"
+msgstr "RSS 2.0 Dateien"
 
 #: ../src/ui/popup_menu.c:241
 msgid "All files"
@@ -1927,7 +1927,7 @@ msgstr "Neues Reedah-Konto"
 
 #: ../glade/reedah_source.ui.h:2
 msgid "Please enter your Reedah account settings."
-msgstr "Bitte geben Sie Ihre Reedah-Kontodaten ein."
+msgstr "Bitte geben Sie Ihre Reedah-Zugangsdaten ein."
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2035,19 +2035,19 @@ msgstr "Neues TheOldReader-Konto"
 
 #: ../glade/theoldreader_source.ui.h:2
 msgid "Please enter your TheOldReader account settings."
-msgstr "Bitte geben Sie Ihre TheOldReader-Kontodaten ein."
+msgstr "Bitte geben Sie Ihre TheOldReader-Zugangsdaten ein."
 
 #: ../glade/ttrss_source.ui.h:1
 msgid "Add Tiny Tiny RSS Account"
-msgstr "Neuer Tiny Tiny RSS-Konto"
+msgstr "Neues Tiny Tiny RSS-Konto"
 
 #: ../glade/ttrss_source.ui.h:2
 msgid "Please enter your TinyTinyRSS account settings."
-msgstr "Bitte geben Sie Ihre TinyTinyRSS-Kontodaten ein."
+msgstr "Bitte geben Sie Ihre TinyTinyRSS-Zugangsdaten ein."
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
-msgstr "Server-URL"
+msgstr "_Server-URL"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
@@ -2067,7 +2067,7 @@ msgstr "_Warteschlange"
 
 #: ../glade/update_monitor.ui.h:4
 msgid "_Downloading Now"
-msgstr "_In Bearbeitung"
+msgstr "_Im Download"
 
 #: ../js/item.xml.in.h:1 ../js/node.xml.in.h:2
 msgid "Author"
