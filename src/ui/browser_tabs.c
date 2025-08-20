@@ -204,5 +204,11 @@ browser_tabs_get_active_htmlview (void)
 {
 	gint current = gtk_notebook_get_current_page (tabs->notebook);
 	GtkWidget *child = gtk_notebook_get_nth_page (tabs->notebook, current);
-	return LIFEREA_BROWSER (g_object_get_data (G_OBJECT (child), "htmlview"));
+	
+	if (0 != current)
+		return LIFEREA_BROWSER (g_object_get_data (G_OBJECT (child), "htmlview"));
+	
+	gpointer htmlview;
+	g_object_get (G_OBJECT (liferea_shell_get_instance()), "htmlview", &htmlview, NULL);
+	return LIFEREA_BROWSER (htmlview);
 }

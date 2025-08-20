@@ -135,10 +135,9 @@ browser_launch_URL_external (const gchar *uri)
 void
 browser_launch_URL (const gchar *url, gboolean forceInternal)
 {
-	if (forceInternal) {
-		
+	if (forceInternal)
 		liferea_browser_launch_URL_internal (g_object_get_data (G_OBJECT (liferea_shell_get_instance()), "htmlview"), url);
-	} else
+	else
 		liferea_browser_handle_URL (browser_tabs_get_active_htmlview (), url);
 }
 

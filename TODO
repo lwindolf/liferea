@@ -4,12 +4,11 @@ To be fixed next:
 
 1. Make search dialog work
 2. crash on search folder rebuild
-3. crash on browser launch in item list
+3. fix search folder remove rule crash
 
 To be fixed:
 
 - get tests building+running in Meson
-- fix search folder remove rule crash
 - fix advanced search add rule 
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
 - itemlist: Newsbin context menu does not work
