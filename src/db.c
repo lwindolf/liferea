@@ -486,8 +486,7 @@ db_init (void)
         	 "   description	TEXT,"
         	 "   date		INTEGER,"
         	 "   comment_feed_id	TEXT,"
-		 "   comment            INTEGER,"
-		 "   PRIMARY KEY (item_id)"
+		 "   comment            INTEGER"
         	 ");");
 
 	db_exec ("CREATE INDEX items_idx ON items (source_id);");
