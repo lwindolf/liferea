@@ -64,6 +64,7 @@
             </child>
             <child>
               <object class="GtkFrame">
+                <property name="css-classes">ruleEditor</property>
                 <property name="vexpand">1</property>
                 <child>
                   <object class="GtkScrolledWindow" id="ruleview_scrolled_window">
@@ -72,9 +73,6 @@
                     </property>
                     <property name="focusable">1</property>
                   </object>
-                </child>
-                <child type="label">
-                  <object class="GtkLabel"/>
                 </child>
               </object>
             </child>

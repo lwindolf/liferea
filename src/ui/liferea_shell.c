@@ -881,10 +881,14 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* Some custom CSS */
 	const gchar *css = 
-		// frame.sunken is used for a GtkFrame around itemlist, feedlist and browser
+		// frame.sunken is used for a GtkFrame around itemlist, feedlist, rule editor and browser
 		"frame.sunken {"
 		"  border-radius: 0;"
 		"  border-top: 0;"
+		"}"
+		"frame.ruleEditor {"
+		"  border-radius: 0;"
+		"  padding: 12px;"
 		"}";
 
 	GtkCssProvider *css_provider = gtk_css_provider_new();

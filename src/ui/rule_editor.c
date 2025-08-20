@@ -106,7 +106,7 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 	ruleInfo = g_slist_nth_data (rule_get_available_rules (), changeRequest->rule);
 	g_object_set_data (G_OBJECT (changeRequest->paramHBox), "rule", rule);
 
-	/* remove of old widgets */
+	/* remove old widgets */
 	for (GtkWidget *child = gtk_widget_get_first_child (changeRequest->paramHBox);
 	     child != NULL;
 	     child = gtk_widget_get_next_sibling (child))

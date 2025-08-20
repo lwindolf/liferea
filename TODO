@@ -3,14 +3,13 @@ Tracking broken stuff in the GTK4 port
 To be fixed next:
 
 1. Make search dialog work
-2. sunken relief in rule reditor dialogs
-3. crash on search folder rebuild
-4. crash on browser launch in item list
+2. crash on search folder rebuild
+3. crash on browser launch in item list
+4. gedit-close-button replacement
 
 To be fixed:
 
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
-- gedit-close-button replacement
 - make notebook tab closing work
 - itemlist: Newsbin context menu does not work
 - DnD reimplementation
