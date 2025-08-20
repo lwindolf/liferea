@@ -36,6 +36,7 @@
 #include "node_providers/newsbin.h"
 #include "node_providers/vfolder.h"
 #include "node_source.h"
+#include "ui/browser_tabs.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -223,6 +224,7 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		} else {
 			/* 1.b) update feed list and item list states */
 			feedlist_set_selected (node);
+			browser_tabs_show_headlines ();
 		}
 
 		/* 2.) Refilter the GtkTreeView to get rid of nodes with 0 unread
