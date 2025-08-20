@@ -9,6 +9,8 @@ To be fixed next:
 
 To be fixed:
 
+- fix search folder remove rule crash
+- fix advanced search add rule 
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
 - make notebook tab closing work
 - itemlist: Newsbin context menu does not work

@@ -64,12 +64,17 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkScrolledWindow" id="scrolledwindow4">
-                    <property name="child">
-                      <object class="GtkViewport" id="ruleview_search"/>
-                    </property>
-                    <property name="focusable">1</property>
-                    <property name="vexpand">1</property>
+                  <object class="GtkFrame">
+                    <property name="css-classes">ruleEditor</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow4">
+                        <property name="child">
+                          <object class="GtkViewport" id="ruleview_search"/>
+                        </property>
+                        <property name="focusable">1</property>
+                        <property name="vexpand">1</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

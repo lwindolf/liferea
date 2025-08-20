@@ -51,6 +51,10 @@
   <css>
 	(1,"gtk-liferea.css",None,1)
   </css>
+  <css_ui>
+	(1,15),
+	(1,21)
+  </css_ui>
   <object>
 	(2,1,"GtkDialog","auth",None,None,None,None,0,None,None),
 	(2,2,"GtkBox","dialog-vbox14",1,"content_area",None,None,0,None,None),
@@ -112,7 +116,7 @@
 	(15,7,"GtkButton","addrulebtn2",6,None,None,None,0,None,None),
 	(15,8,"GtkCheckButton","anyRuleRadioBtn2",6,None,None,None,1,None,None),
 	(15,9,"GtkCheckButton","allRuleRadioBtn2",6,None,None,None,2,None,None),
-	(15,10,"GtkScrolledWindow","scrolledwindow4",5,None,None,None,1,None,None),
+	(15,10,"GtkScrolledWindow","scrolledwindow4",19,None,None,None,0,None,None),
 	(15,11,"GtkViewport","ruleview_search",10,None,None,None,0,None,None),
 	(15,12,"GtkBox","dialog-action_area14",1,"action_area",None,None,1,None,None),
 	(15,13,"GtkButton","cancelbutton8",12,None,None,None,0,None,None),
@@ -121,6 +125,7 @@
 	(15,16,"GtkImage","image1",15,None,None,None,0,None,None),
 	(15,17,"GtkLabel","label11",15,None,None,None,1,None,None),
 	(15,18,"GtkButton","okbutton5",12,None,None,None,2,None,None),
+	(15,19,"GtkFrame",None,5,None,None,None,1,None,None),
 	(17,1,"GtkDialog","reedah_source",None,None,None,None,0,None,None),
 	(17,2,"GtkBox","dialog-vbox1",1,"content_area",None,None,0,None,None),
 	(17,3,"GtkBox","vbox1",2,None,None,None,0,None,None),
@@ -730,6 +735,7 @@
 	(15,17,"GtkWidget","hexpand","1",0,None,None,None,None,None,None,None,None),
 	(15,18,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
 	(15,18,"GtkButton","label","Find",1,None,None,None,None,None,None,None,None),
+	(15,19,"GtkWidget","css-classes","ruleEditor",None,None,None,None,None,None,None,None,None),
 	(17,1,"GtkWindow","title","Add Reedah Account",1,None,None,None,None,None,None,None,None),
 	(17,1,"GtkWindow","visible","1",0,None,None,None,None,None,None,None,None),
 	(17,2,"GtkOrientable","orientation","vertical",0,None,None,None,None,None,None,None,None),
