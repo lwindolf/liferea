@@ -348,9 +348,9 @@ db_init (void)
 			         "DROP TABLE items; "
 		                 "CREATE TABLE items ("
 		        	 "   item_id		INTEGER,"
-				 "   parent_item_id     INTEGER,"
+			         "   parent_item_id     INTEGER,"
 		        	 "   node_id		TEXT,"
-				 "   parent_node_id     TEXT,"
+			         "   parent_node_id     TEXT,"
 		        	 "   title		TEXT,"
 		        	 "   read		INTEGER,"
 		        	 "   updated		INTEGER,"
@@ -362,8 +362,8 @@ db_init (void)
 		        	 "   description	TEXT,"
 		        	 "   date		INTEGER,"
 		        	 "   comment_feed_id	INTEGER,"
-				 "   comment            INTEGER,"
-				 "   PRIMARY KEY (item_id)"
+			         "   comment            INTEGER,"
+			         "   PRIMARY KEY (item_id)"
 		        	 ");"
 			         "INSERT INTO items SELECT itemsets.item_id, parent_item_id, node_id, parent_node_id, title, itemsets.read, updated, popup, marked, source, source_id, valid_guid, description, date, comment_feed_id, itemsets.comment FROM items_backup JOIN itemsets ON itemsets.item_id = items_backup.item_id; "
 			         "DROP TABLE items_backup; "
@@ -382,11 +382,11 @@ db_init (void)
 			db_exec ("BEGIN; "
 			         "DROP TABLE view_state; "
 			         "DROP TABLE update_state; "
-				 "CREATE TABLE search_folder_items ("
-				 "   node_id            STRING,"
+			         "CREATE TABLE search_folder_items ("
+			         "   node_id            STRING,"
 	         		 "   item_id		INTEGER,"
-				 "   PRIMARY KEY (node_id, item_id)"
-				 ");"
+			         "   PRIMARY KEY (node_id, item_id)"
+			         ");"
 			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',9); "
 			         "END;" );
 
@@ -417,12 +417,12 @@ db_init (void)
 			/* A parent node id to search folder relation to allow cleanups */
 			db_exec ("BEGIN; "
 			         "DROP TABLE search_folder_items; "
-				 "CREATE TABLE search_folder_items ("
-				 "   node_id            STRING,"
-				 "   parent_node_id     STRING,"
+			         "CREATE TABLE search_folder_items ("
+			         "   node_id            STRING,"
+			         "   parent_node_id     STRING,"
 	         		 "   item_id		INTEGER,"
-				 "   PRIMARY KEY (node_id, item_id)"
-				 ");"
+			         "   PRIMARY KEY (node_id, item_id)"
+			         ");"
 			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',10); "
 			         "END;" );
 
@@ -472,9 +472,9 @@ db_init (void)
 	/* 1. Create tables if they do not exist yet */
 	db_exec ("CREATE TABLE items ("
         	 "   item_id		INTEGER PRIMARY KEY AUTOINCREMENT,"
-		 "   parent_item_id     INTEGER,"
+			 "   parent_item_id     INTEGER,"
         	 "   node_id		TEXT," /* FIXME: migrate node ids to real integers */
-		 "   parent_node_id     TEXT," /* FIXME: migrate node ids to real integers */
+			 "   parent_node_id     TEXT," /* FIXME: migrate node ids to real integers */
         	 "   title		TEXT,"
         	 "   read		INTEGER,"
         	 "   updated		INTEGER,"
@@ -486,8 +486,7 @@ db_init (void)
         	 "   description	TEXT,"
         	 "   date		INTEGER,"
         	 "   comment_feed_id	TEXT,"
-		 "   comment            INTEGER,"
-		 "   PRIMARY KEY (item_id)"
+			 "   comment            INTEGER"
         	 ");");
 
 	db_exec ("CREATE INDEX items_idx ON items (source_id);");

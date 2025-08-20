@@ -1,3 +1,11 @@
+2025-08-20  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16.1
+
+	* Fix #1442: Fails to start on empty database
+	  (reported by bbhtt)
+
+
 2025-08-13  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.0
