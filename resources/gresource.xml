@@ -12,6 +12,7 @@
     <file compressed="true">js/vendor/purify.min.js</file>
     <file compressed="true">js/vendor/handlebars.min.js</file>
 
+    <file compressed="true">ui/gtk-liferea.css</file>
     <file compressed="true">ui/about.ui</file>
     <file compressed="true">ui/auth.ui</file>
     <file compressed="true">ui/google_source.ui</file>

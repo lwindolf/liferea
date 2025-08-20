@@ -48,6 +48,9 @@
 	(34,"gio","2.0",None),
 	(34,"gtk","4.0",None)
   </ui_library>
+  <css>
+	(1,"gtk-liferea.css",None,1)
+  </css>
   <object>
 	(2,1,"GtkDialog","auth",None,None,None,None,0,None,None),
 	(2,2,"GtkBox","dialog-vbox14",1,"content_area",None,None,0,None,None),
