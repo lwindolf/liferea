@@ -263,7 +263,6 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	g_signal_connect (G_OBJECT (widget), "clicked", G_CALLBACK (on_ruleremove_clicked), changeRequest);
 
 	gtk_box_append (GTK_BOX (re->root), hbox);
-	// FIXME: GTK4 hbox fill
 }
 
 RuleEditor *

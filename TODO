@@ -9,6 +9,7 @@ To be fixed next:
 
 To be fixed later:
 
+../src/webkit/liferea_web_view.c:       // FIXME: GTK4 check if we need some type of shadow handling as with in GTK3 -> needs top border to look good
 - get tests building+running in Meson
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
 - itemlist: Newsbin context menu does not work
@@ -18,11 +19,9 @@ To be fixed later:
 - select next unread
 - remaining GTK4 FIXMES:
 
-../src/webkit/liferea_web_view.c:       // FIXME: GTK4 check if we need some type of shadow handling as with in GTK3
 ../src/webkit/liferea_webkit.c:         // FIXME: what about freeing b?
 ../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit initialize-web-extensions");
 ../src/webkit/liferea_webkit.c: g_warning("FIXME: Webkit download-started");
-../src/ui/rule_editor.c:        // FIXME: GTK4 hbox fill
 ../src/ui/item_list_view.c:                     g_warning("FIXME: GTK4 port: itemlist_remove_selected ();");
 ../src/ui/item_list_view.c:     // FIXME: port this to GTK4!
 ../src/ui/search_dialog.c:      /* FIXME: Don't simply free the result search folder
