@@ -30,6 +30,7 @@
 #include "rule.h"
 #include "node_providers/vfolder.h"
 #include "vfolder_loader.h"
+#include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -60,12 +61,17 @@ search_clean_results (vfolderPtr vfolder)
 static void
 search_load_results (vfolderPtr searchResult)
 {
-	feedlist_set_selected (NULL);
+	LifereaBrowser *htmlview;
 
+	feedlist_set_selected (NULL);
+	itemlist_unload ();
 	itemlist_add_search_result (vfolder_loader_new (searchResult->node));
+
+	g_object_get (liferea_shell_get_instance (), "htmlview", &htmlview, NULL);
+	liferea_browser_clear (htmlview);
 }
 
-/* complex search dialog */
+/* full search dialog */
 
 static GtkWidget *search_dialog = NULL;
 
@@ -77,14 +83,14 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 
 		vfolder = vfolder_new (node_new ("vfolder"));
 		rule_editor_save (RULE_EDITOR (user_data), vfolder->itemset);
-		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn2")));
+		vfolder->itemset->anyMatch = gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn2")));
 
 		search_load_results (vfolder);
 	}
 
 	if (2 == responseId) { /* Create Search Folder */
 		rule_editor_save (RULE_EDITOR (user_data), vfolder->itemset);
-		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn2")));
+		vfolder->itemset->anyMatch = gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn2")));
 
 		Node *node = vfolder->node;
 		vfolder = NULL;
@@ -125,10 +131,10 @@ search_dialog_open (const gchar *query)
 	/* Note: the following code is somewhat duplicated from search_folder_dialog.c */
 
 	/* Setting default rule match type */
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "anyRuleRadioBtn2")), TRUE);
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (dialog, "anyRuleRadioBtn2")), TRUE);
 
 	/* Set up rule list vbox */
-	gtk_viewport_set_child (GTK_VIEWPORT (liferea_dialog_lookup (dialog, "ruleview_search_dialog")), rule_editor_get_widget (re));
+	gtk_viewport_set_child (GTK_VIEWPORT (liferea_dialog_lookup (dialog, "ruleview_search")), rule_editor_get_widget (re));
 
 	/* bind buttons */
 	g_signal_connect (liferea_dialog_lookup (dialog, "addrulebtn2"), "clicked", G_CALLBACK (on_addrulebtn_clicked), re);
@@ -155,7 +161,6 @@ on_searchentry_activated (GtkSearchEntry *entry, gpointer user_data)
 {
 	g_autofree gchar *searchString = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 
-	// FIXME: cleanup item list first, does not work yet
 	feedlist_set_selected (NULL);
 	search_clean_results (vfolder);
 
@@ -171,13 +176,15 @@ void
 on_toggle_searchbox (GtkButton *button, gpointer user_data)
 {
 	GtkWidget *box = liferea_shell_lookup ("searchbox");
+	GtkWidget *entry = liferea_shell_lookup ("searchentry");
 
 	if (gtk_widget_get_visible (box)) {
 		gtk_widget_set_visible (box, FALSE);
 		search_clean_results (vfolder);
 	} else {
 		gtk_widget_set_visible (box, TRUE);
-		gtk_window_set_focus (GTK_WINDOW (liferea_shell_get_window ()), box);
+		gtk_window_set_focus (GTK_WINDOW (liferea_shell_get_window ()), entry);
+		browser_tabs_show_headlines ();
 	}
 }
 

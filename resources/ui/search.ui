@@ -23,7 +23,7 @@
             <property name="vexpand">1</property>
             <child>
               <object class="GtkLabel" id="label15">
-                <property name="label" translatable="yes">Find Items that meet the following criteria</property>
+                <property name="label" translatable="yes">Find items that meet the following criteria</property>
                 <property name="valign">center</property>
                 <property name="xalign">0.0</property>
                 <attributes>
@@ -38,14 +38,6 @@
                 <child>
                   <object class="GtkBox" id="hbox4">
                     <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkButton" id="addrulebtn2">
-                        <property name="focusable">1</property>
-                        <property name="halign">center</property>
-                        <property name="label" translatable="yes">_Add</property>
-                        <property name="use-underline">True</property>
-                      </object>
-                    </child>
                     <child>
                       <object class="GtkCheckButton" id="anyRuleRadioBtn2">
                         <property name="group">allRuleRadioBtn2</property>

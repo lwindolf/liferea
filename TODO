@@ -3,9 +3,9 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 
 To be fixed next:
 
-1. Make search dialog work
-2. fix search folder remove rule crash
-3. fix advanced search add rule 
+1. fix search folder remove rule crash
+2. fix advanced search rule change crash
+3. ESC key should work in search bar
 
 To be fixed later:
 
@@ -35,10 +35,7 @@ To be fixed later:
 ../src/ui/liferea_shell.c:                      // FIXME: GTK4 migration
 ../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
 ../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate next unread");
-../src/ui/liferea_shell.c:      // FIXME: GTK4
 ../src/ui/liferea_shell.c:g_warning("FIXME: GTK4 restore pane position sanity checks");
-../src/ui/liferea_shell.c:      // FIXME: GTK4 eventbox replacement
-../src/ui/liferea_shell.c:      // FIXME: GTK4 5px statusbar padding
 ../src/ui/liferea_shell.c:      // 6.) Restore selection (FIXME: Move to feed list code?)
 ../src/ui/liferea_shell.c:      g_warning ("FIXME GTK4 on_window_resize_cb");
 ../src/ui/liferea_shell.c:      // FIXME GTK4

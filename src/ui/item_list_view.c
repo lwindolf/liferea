@@ -432,6 +432,7 @@ item_list_view_item_batch_started (GObject *obj, gpointer user_data)
 	GtkTreeStore		*itemstore;
 	GtkTreeSelection	*select;
 
+	g_print("item_list_view_item_batch_started()\n");
         itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (ilv->treeview));
 
 	/* unselecting all items is important to remove items

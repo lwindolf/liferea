@@ -47,7 +47,7 @@ G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
  *
  * Get the LifereaShell instance
  *
- * Returns: (transfer none) the LifereaShell instance
+ * Returns: (transfer none): the LifereaShell instance
  */
 LifereaShell * liferea_shell_get_instance (void);
 

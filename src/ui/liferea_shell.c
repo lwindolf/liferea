@@ -462,27 +462,6 @@ on_key_pressed_event_null_cb (GtkEventControllerKey *controller, guint keyval, g
 {
 	return FALSE;
 }
-/* FIXME: GTK4
-static gboolean
-on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event)
-{
-	GtkNotebook *notebook = GTK_NOTEBOOK (widget);
-
-	GtkWidget* child;
-	GtkWidget* originator;
-
-	if (!gtk_notebook_get_current_page (notebook))
-		return FALSE;
-
-	child = gtk_notebook_get_nth_page (notebook, gtk_notebook_get_current_page (notebook));
-	originator = gtk_get_event_widget ((GdkEvent *)event);
-*/
-	/* ignore scroll events from the content of the page */
-/*	if (!originator || gtk_widget_is_ancestor (originator, child))
-		return FALSE;
-
-	return TRUE;
-}*/
 
 static gboolean
 on_window_resize_cb (gpointer user_data)
@@ -490,7 +469,7 @@ on_window_resize_cb (gpointer user_data)
 	gint 		vpane_pos = 0, hpane_pos = 0, wpane_pos = 0;
 	GtkWidget	*pane;
 //	GdkWindow	*gdk_window;
-	GtkAllocation	allocation;
+//	GtkAllocation	allocation;
 
 	shell->resizeTimer = 0;
 
@@ -538,9 +517,18 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 	gint		browse_key_setting;
 
 	default_modifiers = gtk_accelerator_get_default_mod_mask ();
+	focusw = gtk_window_get_focus (shell->window);
 
 	/* handle [<modifier>+]<Space> headline skimming hotkey */
 	switch (keyval) {
+		case GDK_KEY_Escape:
+		g_print("ESC pressed!\n");
+			if (liferea_shell_lookup ("searchentry") != focusw)
+				break;
+
+			gtk_widget_set_visible (liferea_shell_lookup ("searchbox"), FALSE);
+			return TRUE;
+			break;
 		case GDK_KEY_space:
 			conf_get_int_value (BROWSE_KEY_SETTING, &browse_key_setting);
 			switch (browse_key_setting) {
@@ -556,7 +544,7 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 						any input field currently focussed. */
 
 					/* pass through space keys only if HTML widget has the focus */
-					focusw = gtk_window_get_focus (shell->window);
+					
 					if (focusw)
 						type = g_type_name (G_OBJECT_TYPE (focusw));
 					if (type && (g_str_equal (type, "LifereaWebView")))
@@ -577,8 +565,7 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 			break;
 	}
 
-	/* prevent usage of navigation keys in entries */
-	focusw = gtk_window_get_focus (shell->window);
+	/* prevent usage of navigation keys in GtkEntrys */
 	if (!focusw || GTK_IS_ENTRY (focusw))
 		return FALSE;
 
@@ -668,7 +655,7 @@ static gboolean
 liferea_shell_restore_layout (gpointer user_data)
 {
 //	GdkWindow	*gdk_window;
-	GtkAllocation	allocation;
+//	GtkAllocation	allocation;
 	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
 
 	liferea_shell_restore_position ();
@@ -872,7 +859,6 @@ liferea_shell_set_layout (nodeViewType newMode)
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
-	GMenuModel	*menubar_model;
 	gchar		*id;
 	gint		mode;
 
@@ -918,14 +904,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
 	gtk_application_set_accels_for_action (app, "app.launch-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
 
-	// FIXME: GTK4 eventbox replacement
-	//shell->statusbar_feedsinfo_evbox = gtk_event_box_new ();
-	//shell->statusbar_feedsinfo = gtk_label_new("");
-	//gtk_container_add (GTK_CONTAINER (shell->statusbar_feedsinfo_evbox), shell->statusbar_feedsinfo);
-	// FIXME: GTK4 5px statusbar padding
-	//gtk_box_append (GTK_BOX (shell->statusbar), shell->statusbar_feedsinfo_evbox);
-	//g_signal_connect (G_OBJECT (shell->statusbar_feedsinfo_evbox), "button_release_event", G_CALLBACK (on_next_unread_item_activate), NULL);
-
 	/* 4.) setup feed and item list widgets */
 	debug (DEBUG_GUI, "Setting up feed list");
 	shell->feedListView = feed_list_view_create (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist")), shell->feedlist);
@@ -945,15 +923,10 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 7. Setup shell window signals, only after all widgets are ready */
 	g_signal_connect (shell->feedlist, "new-items", G_CALLBACK (liferea_shell_update_unread_stats), NULL);
-	g_signal_connect (shell->keypress, "key_pressed", G_CALLBACK (on_key_pressed_event_null_cb), NULL);
-	g_signal_connect (shell->keypress, "key_released", G_CALLBACK (on_key_pressed_event_null_cb), NULL);
 
 	g_warning ("FIXME GTK4 on_window_resize_cb");
 
-	// FIXME GTK4
-	//g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "scroll_event", G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
-
-	g_signal_connect (shell->keypress, "key_pressed", G_CALLBACK(on_key_pressed_event), shell);
+	g_signal_connect (shell->keypress, "key-pressed", G_CALLBACK(on_key_pressed_event), shell);
 	gtk_widget_add_controller (GTK_WIDGET (shell->window), shell->keypress);
 
 	/* 8. setup actions */

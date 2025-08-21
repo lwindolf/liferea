@@ -413,7 +413,6 @@ g_print("itemlist_load called %s\n",node->title);
 void
 itemlist_unload (void)
 {
-	g_print("itemlist_unload called\n");
 	if (itemlist->priv->currentNode)
 		itemlist_check_for_deferred_action ();
 
@@ -698,12 +697,6 @@ itemlist_add_loader (ItemLoader *loader)
 void
 itemlist_add_search_result (ItemLoader *loader)
 {
-	itemlist_unload ();
-
-	/* Set current node to search result dummy node so that
-	   we except only items from the respective loader for
-	   the item view. */
-	itemlist->priv->currentNode = item_loader_get_node (loader);
-
+	itemlist_load (item_loader_get_node (loader));
 	itemlist_add_loader (loader);
 }
