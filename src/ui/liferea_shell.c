@@ -74,7 +74,6 @@ struct _LifereaShell {
 	LifereaPluginsEngine *plugins;
 
 	GtkWindow	*window;		/*<< Liferea main window */
-	GtkEventController *keypress;
 	GtkWidget	*headerbar;
 
 	gboolean	autoLayout;		/*<< TRUE if automatic layout switching is active */
@@ -134,7 +133,6 @@ liferea_shell_finalize (GObject *object)
 	gtk_window_destroy (ls->window);
 
 	g_object_unref (ls->settings);
-	g_object_unref (ls->keypress);
 	g_object_unref (ls->xml);
 
 	g_object_unref (ls->shellActions);
@@ -458,12 +456,6 @@ liferea_shell_set_important_status_bar (const char *format, ...)
 }
 
 static gboolean
-on_key_pressed_event_null_cb (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
-{
-	return FALSE;
-}
-
-static gboolean
 on_window_resize_cb (gpointer user_data)
 {
 	gint 		vpane_pos = 0, hpane_pos = 0, wpane_pos = 0;
@@ -508,7 +500,20 @@ on_window_resize_cb (gpointer user_data)
 }
 
 static gboolean
-on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
+on_searchentry_key_pressed (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
+{
+	switch (keyval) {
+		case GDK_KEY_Escape:
+			gtk_widget_set_visible (liferea_shell_lookup ("searchbox"), FALSE);
+			return TRUE;
+			break;
+	}
+
+	return FALSE;
+}
+
+static gboolean
+on_shell_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
 {
 	gboolean	modifier_matches = FALSE;
 	guint		default_modifiers;
@@ -521,14 +526,6 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 
 	/* handle [<modifier>+]<Space> headline skimming hotkey */
 	switch (keyval) {
-		case GDK_KEY_Escape:
-		g_print("ESC pressed!\n");
-			if (liferea_shell_lookup ("searchentry") != focusw)
-				break;
-
-			gtk_widget_set_visible (liferea_shell_lookup ("searchbox"), FALSE);
-			return TRUE;
-			break;
 		case GDK_KEY_space:
 			conf_get_int_value (BROWSE_KEY_SETTING, &browse_key_setting);
 			switch (browse_key_setting) {
@@ -859,6 +856,7 @@ liferea_shell_set_layout (nodeViewType newMode)
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
+	GtkEventController *keypress;
 	gchar		*id;
 	gint		mode;
 
@@ -876,7 +874,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* 1.) stuff where order does not matter */
 	shell->currentLayoutMode = 10000;	// something invalid
 	shell->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
-	shell->keypress = gtk_event_controller_key_new ();
 	shell->plugins = liferea_plugins_engine_get ();
 	shell->itemlist = ITEMLIST (g_object_new (ITEMLIST_TYPE, NULL));
 	shell->feedlist = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
@@ -926,8 +923,13 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	g_warning ("FIXME GTK4 on_window_resize_cb");
 
-	g_signal_connect (shell->keypress, "key-pressed", G_CALLBACK(on_key_pressed_event), shell);
-	gtk_widget_add_controller (GTK_WIDGET (shell->window), shell->keypress);
+	keypress = gtk_event_controller_key_new ();
+	gtk_widget_add_controller (GTK_WIDGET (shell->window), keypress);
+	g_signal_connect (keypress, "key-pressed", G_CALLBACK(on_shell_key_pressed_event), shell);
+		
+	keypress = gtk_event_controller_key_new ();
+	gtk_widget_add_controller (liferea_shell_lookup("searchentry"), keypress);
+	g_signal_connect (keypress, "key-pressed", G_CALLBACK (on_searchentry_key_pressed), shell);
 
 	/* 8. setup actions */
 	shell->shellActions = shell_actions_create (shell);

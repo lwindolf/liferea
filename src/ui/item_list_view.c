@@ -986,6 +986,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	ilv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
+	gtk_tree_view_set_enable_search (ilv->treeview, FALSE);
 	gtk_tree_view_set_show_expanders (ilv->treeview, FALSE);
 	if (wide) {
 		gtk_tree_view_set_fixed_height_mode (ilv->treeview, FALSE);

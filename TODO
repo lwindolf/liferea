@@ -5,7 +5,8 @@ To be fixed next:
 
 1. fix search folder remove rule crash
 2. fix advanced search rule change crash
-3. ESC key should work in search bar
+3. Crash on feedlist key press 'd' / 'u'
+4. Crash on itemlist key press 'f'
 
 To be fixed later:
 

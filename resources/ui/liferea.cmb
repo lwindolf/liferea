@@ -1792,6 +1792,7 @@
 	(34,31,"GtkScrolledWindow","child",None,0,None,None,None,32,None,None,None,None),
 	(34,31,"GtkScrolledWindow","focusable","1",0,None,None,None,None,None,None,None,None),
 	(34,31,"GtkScrolledWindow","hscrollbar-policy","never",0,None,None,None,None,None,None,None,None),
+	(34,32,"GtkTreeView","enable-search","False",None,None,None,None,None,None,None,None,None),
 	(34,32,"GtkTreeView","focusable","1",0,None,None,None,None,None,None,None,None),
 	(34,32,"GtkTreeView","headers-visible","0",0,None,None,None,None,None,None,None,None),
 	(34,32,"GtkTreeView","reorderable","1",0,None,None,None,None,None,None,None,None),

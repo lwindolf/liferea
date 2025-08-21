@@ -210,6 +210,7 @@
               <object class="GtkScrolledWindow" id="scrolledwindow3">
                 <property name="child">
                   <object class="GtkTreeView" id="feedlist">
+                    <property name="enable-search">False</property>
                     <property name="focusable">1</property>
                     <property name="headers-visible">0</property>
                     <property name="reorderable">1</property>
