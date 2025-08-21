@@ -972,6 +972,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* 11. Load feedlist and enable signals for feedListView */
 	feed_list_view_set_reduce_mode (FALSE);	// FIXME: this would be better triggered by a GAction init somewhere
 	gtk_widget_set_sensitive (liferea_shell_lookup ("feedlist"), TRUE);
+
+	/* 12. Unstable branch only: show current work in progress */
+	browser_tabs_add_new ("https://raw.githubusercontent.com/lwindolf/liferea/refs/heads/main/TODO", "Current TODOs", TRUE);
 }
 
 void liferea_shell_show_window (void)

@@ -1,4 +1,5 @@
-Tracking broken stuff in the GTK4 port
+Thanks for testing the unstable branch of Liferea. This will become Liferea v2.0.
+Right now a lot of stuff is broken due to the GTK4 porting.
 
 To be fixed next:
 
@@ -6,7 +7,7 @@ To be fixed next:
 2. fix search folder remove rule crash
 3. fix advanced search add rule 
 
-To be fixed:
+To be fixed later:
 
 - get tests building+running in Meson
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
