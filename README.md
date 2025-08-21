@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/lwindolf/liferea/actions/workflows/cb.yml/badge.svg)](https://github.com/lwindolf/liferea/actions/workflows/cb.yml)
+[![Build Status](https://github.com/lwindolf/liferea/actions/workflows/cb.yml/badge.svg?branch=liferea-1_16)](https://github.com/lwindolf/liferea/actions/workflows/cb.yml)
 
 [![Packages](https://repology.org/badge/latest-versions/liferea.svg)](https://repology.org/metapackage/liferea/versions)
 [![Packages](https://repology.org/badge/tiny-repos/liferea.svg)](https://repology.org/metapackage/liferea/versions)
