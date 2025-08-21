@@ -3,13 +3,12 @@ Tracking broken stuff in the GTK4 port
 To be fixed next:
 
 1. Make search dialog work
-2. crash on search folder rebuild
-3. fix search folder remove rule crash
+2. fix search folder remove rule crash
+3. fix advanced search add rule 
 
 To be fixed:
 
 - get tests building+running in Meson
-- fix advanced search add rule 
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
 - itemlist: Newsbin context menu does not work
 - DnD reimplementation

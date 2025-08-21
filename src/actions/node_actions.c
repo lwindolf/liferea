@@ -104,7 +104,7 @@ on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer 
 static void
 ui_popup_rebuild_vfolder (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	vfolder_rebuild ((Node *)user_data);
+	vfolder_rebuild (feedlist_get_selected ());
 }
 
 static void
