@@ -16,7 +16,6 @@
     <file compressed="true">ui/about.ui</file>
     <file compressed="true">ui/auth.ui</file>
     <file compressed="true">ui/google_source.ui</file>
-    <file compressed="true">ui/liferea_menu.ui</file>
     <file compressed="true">ui/mainwindow.ui</file>
     <file compressed="true">ui/mark_read_dialog.ui</file>
     <file compressed="true">ui/new_folder.ui</file>
@@ -31,6 +30,7 @@
     <file compressed="true">ui/rename_node.ui</file>
     <file compressed="true">ui/search_folder.ui</file>
     <file compressed="true">ui/search.ui</file>
+    <file compressed="true">ui/shortcuts.ui</file>
     <file compressed="true">ui/simple_subscription.ui</file>
     <file compressed="true">ui/theoldreader_source.ui</file>
     <file compressed="true">ui/ttrss_source.ui</file>
@@ -41,7 +41,6 @@
     <file compressed="true">help/folders_en.html</file>
     <file compressed="true">help/headlines_en.html</file>
     <file compressed="true">help/preferences_en.html</file>
-    <file compressed="true">help/reference_en.html</file>
     <file compressed="true">help/searching_en.html</file>
     <file compressed="true">help/subscriptions_en.html</file>
     <file compressed="true">help/topics_en.html</file>
@@ -55,7 +54,6 @@
     <file compressed="true">help/folders_de.html</file>
     <file compressed="true">help/headlines_de.html</file>
     <file compressed="true">help/preferences_de.html</file>
-    <file compressed="true">help/reference_de.html</file>
     <file compressed="true">help/searching_de.html</file>
     <file compressed="true">help/subscriptions_de.html</file>
     <file compressed="true">help/topics_de.html</file>
@@ -69,7 +67,6 @@
     <file compressed="true">help/folders_it.html</file>
     <file compressed="true">help/headlines_it.html</file>
     <file compressed="true">help/preferences_it.html</file>
-    <file compressed="true">help/reference_it.html</file>
     <file compressed="true">help/searching_it.html</file>
     <file compressed="true">help/subscriptions_it.html</file>
     <file compressed="true">help/topics_it.html</file>
@@ -83,7 +80,6 @@
     <file compressed="true">help/folders_ru.html</file>
     <file compressed="true">help/headlines_ru.html</file>
     <file compressed="true">help/preferences_ru.html</file>
-    <file compressed="true">help/reference_ru.html</file>
     <file compressed="true">help/searching_ru.html</file>
     <file compressed="true">help/subscriptions_ru.html</file>
     <file compressed="true">help/topics_ru.html</file>

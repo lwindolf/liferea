@@ -2,6 +2,7 @@ Thanks for testing the unstable branch of Liferea. This will become Liferea v2.0
 Right now a lot of stuff is broken due to the GTK4 porting.
 
 To be fixed next:
+=================
 
 1. fix search folder remove rule crash
 2. fix advanced search rule change crash
@@ -9,7 +10,9 @@ To be fixed next:
 4. Crash on itemlist key press 'f'
 
 To be fixed later:
+==================
 
+- build check appstream lzone.de/liferea HTTP 403
 ../src/webkit/liferea_web_view.c:       // FIXME: GTK4 check if we need some type of shadow handling as with in GTK3 -> needs top border to look good
 - get tests building+running in Meson
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");

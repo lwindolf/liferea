@@ -720,21 +720,6 @@ liferea_shell_add_actions (const GActionEntry *entries, int count)
 	return group;
 }
 
-static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};
-static const gchar * liferea_accels_quit[] = {"<Control>q", NULL};
-static const gchar * liferea_accels_mark_feed_as_read[] = {"<Control>r", NULL};
-static const gchar * liferea_accels_next_unread_item[] = {"<Control>n", NULL};
-static const gchar * liferea_accels_prev_read_item[] = {"<Control><Shift>n", NULL};
-static const gchar * liferea_accels_toggle_item_read_status[] = {"<Control>m", NULL};
-static const gchar * liferea_accels_toggle_item_flag[] = {"<Control>t", NULL};
-static const gchar * liferea_accels_fullscreen[] = {"F11", NULL};
-static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", "<Control>equal",NULL};
-static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
-static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
-static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
-static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
-static const gchar * liferea_accels_launch_item_in_external_browser[] = {"<Control>d", NULL};
-
 itemPtr
 liferea_shell_find_next_unread (gulong startId)
 {
@@ -886,6 +871,21 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
 
 	/* 3. Add accelerators for shell */
+	static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};
+	static const gchar * liferea_accels_quit[] = {"<Control>q", NULL};
+	static const gchar * liferea_accels_mark_feed_as_read[] = {"<Control>r", NULL};
+	static const gchar * liferea_accels_next_unread_item[] = {"<Control>n", NULL};
+	static const gchar * liferea_accels_prev_read_item[] = {"<Control><Shift>n", NULL};
+	static const gchar * liferea_accels_toggle_item_read_status[] = {"<Control>m", NULL};
+	static const gchar * liferea_accels_toggle_item_flag[] = {"<Control>t", NULL};
+	static const gchar * liferea_accels_fullscreen[] = {"F11", NULL};
+	static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", "<Control>equal",NULL};
+	static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
+	static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
+	static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
+	static const gchar * liferea_accels_show_help[] = {"F1", NULL};
+	static const gchar * liferea_accels_launch_item_in_external_browser[] = {"<Control>d", NULL};
+
 	gtk_application_set_accels_for_action (app, "app.update-all", liferea_accels_update_all);
 	gtk_application_set_accels_for_action (app, "app.quit", liferea_accels_quit);
 	gtk_application_set_accels_for_action (app, "app.mark-selected-feed-as-read", liferea_accels_mark_feed_as_read);
@@ -898,7 +898,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.zoom-out", liferea_accels_zoom_out);
 	gtk_application_set_accels_for_action (app, "app.zoom-reset", liferea_accels_zoom_reset);
 	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
-	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
+	gtk_application_set_accels_for_action (app, "app.show-help-overlay", liferea_accels_show_help);
 	gtk_application_set_accels_for_action (app, "app.launch-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
 
 	/* 4.) setup feed and item list widgets */

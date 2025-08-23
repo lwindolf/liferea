@@ -22,7 +22,8 @@
 	(31,None,"about.ui","about.ui",None,None,None,None,None,None,None),
 	(32,None,"theoldreader_source.ui","theoldreader_source.ui",None,None,None,None,None,None,None),
 	(33,None,"ttrss_source.ui","ttrss_source.ui",None,None,None,None,None,None,None),
-	(34,None,"mainwindow.ui","mainwindow.ui",None,None,None,None,None,None,None)
+	(34,None,"mainwindow.ui","mainwindow.ui",None,None,None,None,None,None,None),
+	(35,None,None,"shortcuts.ui",None,None,None,None,None,None,None)
   </ui>
   <ui_library>
 	(2,"gtk","4.0",None),
@@ -517,7 +518,26 @@
 	(34,99,"GtkBox","searchbox",20,None,None,None,0,None,None),
 	(34,100,"GtkSearchEntry","searchentry",99,None,None,None,0,None,None),
 	(34,101,"GtkButton",None,99,None,None,None,1,None,None),
-	(34,102,"GtkButton",None,22,None,None,None,0,None,None)
+	(34,102,"GtkButton",None,22,None,None,None,0,None,None),
+	(35,1,"GtkShortcutsWindow","shortcuts",None,None,None,None,0,None,None),
+	(35,2,"GtkShortcutsSection",None,1,None,None,None,0,None,None),
+	(35,3,"GtkShortcutsGroup",None,2,None,None,None,0,None,None),
+	(35,4,"GtkShortcutsGroup",None,2,None,None,None,1,None,None),
+	(35,5,"GtkShortcutsShortcut",None,4,None,None,None,0,None,None),
+	(35,6,"GtkShortcutsShortcut",None,3,None,None,None,0,None,None),
+	(35,7,"GtkShortcutsShortcut",None,4,None,None,None,1,None,None),
+	(35,8,"GtkShortcutsGroup",None,2,None,None,None,2,None,None),
+	(35,9,"GtkShortcutsShortcut",None,8,None,None,None,0,None,None),
+	(35,10,"GtkShortcutsShortcut",None,3,None,None,None,1,None,None),
+	(35,11,"GtkShortcutsShortcut",None,3,None,None,None,2,None,None),
+	(35,12,"GtkShortcutsShortcut",None,3,None,None,None,3,None,None),
+	(35,13,"GtkShortcutsShortcut",None,4,None,None,None,2,None,None),
+	(35,14,"GtkShortcutsShortcut",None,4,None,None,None,3,None,None),
+	(35,15,"GtkShortcutsShortcut",None,4,None,None,None,4,None,None),
+	(35,16,"GtkShortcutsGroup",None,2,None,None,None,3,None,None),
+	(35,17,"GtkShortcutsShortcut",None,16,None,None,None,0,None,None),
+	(35,18,"GtkShortcutsShortcut",None,16,None,None,None,1,None,None),
+	(35,19,"GtkShortcutsShortcut",None,16,None,None,None,2,None,None)
   </object>
   <object_property>
 	(2,1,"GtkWidget","width-request","500",None,None,None,None,None,None,None,None,None),
@@ -1889,7 +1909,37 @@
 	(34,99,"GtkWidget","visible","False",None,None,None,None,None,None,None,None,None),
 	(34,100,"GtkSearchEntry","placeholder-text","Search item content",None,None,None,None,None,None,None,None,None),
 	(34,100,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
-	(34,101,"GtkButton","label","Advanced",None,None,None,None,None,None,None,None,None)
+	(34,101,"GtkButton","label","Advanced",None,None,None,None,None,None,None,None,None),
+	(35,3,"GtkShortcutsGroup","title","Feed List",None,None,None,None,None,None,None,None,None),
+	(35,4,"GtkShortcutsGroup","title","Item List",None,None,None,None,None,None,None,None,None),
+	(35,5,"GtkShortcutsShortcut","accelerator","f",None,None,None,None,None,None,None,None,None),
+	(35,5,"GtkShortcutsShortcut","title","Select next item",None,None,None,None,None,None,None,None,None),
+	(35,6,"GtkShortcutsShortcut","accelerator","u",None,None,None,None,None,None,None,None,None),
+	(35,6,"GtkShortcutsShortcut","title","Select previous feed",None,None,None,None,None,None,None,None,None),
+	(35,7,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;N",None,None,None,None,None,None,None,None,None),
+	(35,7,"GtkShortcutsShortcut","title","Next unread item",None,None,None,None,None,None,None,None,None),
+	(35,8,"GtkShortcutsGroup","title","Search",None,None,None,None,None,None,None,None,None),
+	(35,9,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;F",None,None,None,None,None,None,None,None,None),
+	(35,9,"GtkShortcutsShortcut","title","Open search bar",None,None,None,None,None,None,None,None,None),
+	(35,10,"GtkShortcutsShortcut","accelerator","d",None,None,None,None,None,None,None,None,None),
+	(35,10,"GtkShortcutsShortcut","title","Select next feed",None,None,None,None,None,None,None,None,None),
+	(35,11,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;R",None,None,None,None,None,None,None,None,None),
+	(35,11,"GtkShortcutsShortcut","title","Mark all read",None,None,None,None,None,None,None,None,None),
+	(35,12,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;U",None,None,None,None,None,None,None,None,None),
+	(35,12,"GtkShortcutsShortcut","title","Update all",None,None,None,None,None,None,None,None,None),
+	(35,13,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;M",0,None,None,None,None,None,None,None,None),
+	(35,13,"GtkShortcutsShortcut","title","Toggle read state",0,None,None,None,None,None,None,None,None),
+	(35,14,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;T",None,None,None,None,None,None,None,None,None),
+	(35,14,"GtkShortcutsShortcut","title","Toggle flag",None,None,None,None,None,None,None,None,None),
+	(35,15,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;D",None,None,None,None,None,None,None,None,None),
+	(35,15,"GtkShortcutsShortcut","title","Open in external browser",None,None,None,None,None,None,None,None,None),
+	(35,16,"GtkShortcutsGroup","title","Browser",None,None,None,None,None,None,None,None,None),
+	(35,17,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;plus",None,None,None,None,None,None,None,None,None),
+	(35,17,"GtkShortcutsShortcut","title","Zoom In",None,None,None,None,None,None,None,None,None),
+	(35,18,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;minus",None,None,None,None,None,None,None,None,None),
+	(35,18,"GtkShortcutsShortcut","title","Zoom Out",None,None,None,None,None,None,None,None,None),
+	(35,19,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;0",None,None,None,None,None,None,None,None,None),
+	(35,19,"GtkShortcutsShortcut","title","Reset Zoom",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_layout_property>
 	(2,3,4,"GtkGridLayoutChild","column","0",0,None,None,None),

@@ -196,9 +196,9 @@ on_topics_activate (GSimpleAction *action, GVariant *parameter, gpointer user_da
 }
 
 static void
-on_quick_reference_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_shortcuts_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	liferea_shell_add_html_tab ("reference_%s.html", _("Quick Reference"));
+	gtk_window_present (GTK_WINDOW (liferea_dialog_new ("shortcuts")));
 }
 
 static void
@@ -294,7 +294,7 @@ static const GActionEntry gaction_entries[] = {
 	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
-	{"show-help-quick-reference", on_quick_reference_activate, NULL, NULL, NULL},
+	{"show-help-overlay", on_shortcuts_activate, NULL, NULL, NULL},
 	{"show-help-faq", on_faq_activate, NULL, NULL, NULL},
 	{"show-about", on_about_activate, NULL, NULL, NULL},
 
