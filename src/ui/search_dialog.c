@@ -101,6 +101,9 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 		search_clean_results (vfolder);
 		search_dialog = NULL;
 	}
+
+	if (-6 == responseId)
+		gtk_window_close (GTK_WINDOW (dialog));
 }
 
 /* callback copied from search_folder_dialog.c */
@@ -137,7 +140,7 @@ search_dialog_open (const gchar *query)
 	gtk_viewport_set_child (GTK_VIEWPORT (liferea_dialog_lookup (dialog, "ruleview_search")), rule_editor_get_widget (re));
 
 	/* bind buttons */
-	g_signal_connect (liferea_dialog_lookup (dialog, "addrulebtn2"), "clicked", G_CALLBACK (on_addrulebtn_clicked), re);
+	g_signal_connect (liferea_dialog_lookup (dialog, "addrulebtn"), "clicked", G_CALLBACK (on_addrulebtn_clicked), re);
 	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_search_dialog_response), re);
 }
 

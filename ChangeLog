@@ -1,5 +1,17 @@
 2025-01-20  Lars Windolf <lar.windolf@gmx.de>
 
+	Version 1.99.0
+	
+	* Removed HTML shortcut documentation in favour of GtkShortCutsWindow
+	  Also changed hotkey F1 to point a shortcuts
+	  (Lars Windolf)
+
+	* Changed simple search from a dialog to a search bar
+	  (Lars Windolf)
+
+
+2025-01-20  Lars Windolf <lar.windolf@gmx.de>
+
 	Version 1.15.9
 
 	* #1391: GObject refactoring nodePtr -> Node, updateJobPtr -> UpdateJob 

@@ -4,8 +4,8 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 To be fixed next:
 =================
 
-1. fix search folder remove rule crash
-2. fix advanced search rule change crash
+1. Crash on advanced search create search folder
+2. Crash on search folder properties save
 3. Crash on feedlist key press 'd' / 'u'
 4. Crash on itemlist key press 'f'
 

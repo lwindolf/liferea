@@ -39,6 +39,11 @@
                   <object class="GtkBox" id="hbox4">
                     <property name="spacing">6</property>
                     <child>
+                      <object class="GtkButton" id="addrulebtn">
+                        <property name="label">Add</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkCheckButton" id="anyRuleRadioBtn2">
                         <property name="group">allRuleRadioBtn2</property>
                         <property name="label" translatable="yes">A_ny Rule Matches</property>
@@ -61,7 +66,11 @@
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow4">
                         <property name="child">
-                          <object class="GtkViewport" id="ruleview_search"/>
+                          <object class="GtkViewport" id="ruleview_search">
+                            <child>
+                              <object class="GtkButton"/>
+                            </child>
+                          </object>
                         </property>
                         <property name="focusable">1</property>
                         <property name="vexpand">1</property>
@@ -94,26 +103,8 @@
         <child>
           <object class="GtkButton" id="savesearchbtn">
             <property name="focusable">1</property>
+            <property name="label">Save Search</property>
             <property name="receives-default">1</property>
-            <child>
-              <object class="GtkBox" id="hbox3">
-                <property name="spacing">6</property>
-                <child>
-                  <object class="GtkImage" id="image1">
-                    <property name="hexpand">1</property>
-                    <property name="icon-name">edit-find</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label11">
-                    <property name="hexpand">1</property>
-                    <property name="label" translatable="yes">Add _Search Folder...</property>
-                    <property name="mnemonic-widget">savesearchbtn</property>
-                    <property name="use-underline">1</property>
-                  </object>
-                </child>
-              </object>
-            </child>
           </object>
         </child>
         <child>
