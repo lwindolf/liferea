@@ -437,7 +437,7 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 			break;
 		case 2:
 			if (node) {
-				feedlist_mark_all_read (node);
+				g_action_group_activate_action (G_ACTION_GROUP (g_application_get_default ()), "mark-feed-as-read", g_variant_new_string (node->id));
 				itemview_update_node_info (node);
 				itemview_update ();
 			}

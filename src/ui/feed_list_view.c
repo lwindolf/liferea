@@ -452,16 +452,16 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 void
 on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	Node		*feedlist;
+	Node		*node;
 	gboolean 	confirm_mark_read;
 	gboolean 	do_mark_read = TRUE;
 
 	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
-		feedlist = feedlist_get_root ();
-	else if (user_data)
-		feedlist = (Node *) user_data;
+		node = feedlist_get_root ();
+	else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-feed-as-read"))
+		node = node_from_id (g_variant_get_string (parameter, NULL));
 	else
-		feedlist = feedlist_get_selected ();
+		node = feedlist_get_selected ();
 
 	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
 
@@ -469,7 +469,7 @@ on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer us
 		gint result;
 		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
 		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
-		const gchar *feed_title = (feedlist_get_root () == feedlist) ? _("all feeds"):node_get_title (feedlist);
+		const gchar *feed_title = (feedlist_get_root () == node) ? _("all feeds"):node_get_title (node);
 		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
 
 		g_object_set (confirm_dialog, "text", primary_message, NULL);
@@ -485,7 +485,7 @@ on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer us
 	}
 
 	if (do_mark_read)
-		feedlist_mark_all_read (feedlist);
+		feedlist_mark_all_read (node);
 }
 
 void

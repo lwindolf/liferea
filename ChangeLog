@@ -1,3 +1,11 @@
+To be released
+
+	Version 1.16.2
+
+	* Fix #1421 "Mark all as read ?" warning dialog does not appear on middle-click
+	  (Lars Windolf)
+
+
 2025-08-20  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.1
