@@ -442,12 +442,8 @@
           <attribute name="label" translatable="yes">_Contents</attribute>
         </item>
         <item>
-          <attribute name="action">app.show-help-quick-reference</attribute>
-          <attribute name="label" translatable="yes">_Quick Reference</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.show-help-faq</attribute>
-          <attribute name="label" translatable="yes">_FAQ</attribute>
+          <attribute name="action">app.show-shortcuts</attribute>
+          <attribute name="label" translatable="yes">_Shortcuts</attribute>
         </item>
       </section>
       <section>

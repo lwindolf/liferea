@@ -884,6 +884,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
 	static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
 	static const gchar * liferea_accels_show_help[] = {"F1", NULL};
+	static const gchar * liferea_accels_show_shortcuts[] = {"<Control>question", NULL};
 	static const gchar * liferea_accels_launch_item_in_external_browser[] = {"<Control>d", NULL};
 
 	gtk_application_set_accels_for_action (app, "app.update-all", liferea_accels_update_all);
@@ -898,7 +899,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.zoom-out", liferea_accels_zoom_out);
 	gtk_application_set_accels_for_action (app, "app.zoom-reset", liferea_accels_zoom_reset);
 	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
-	gtk_application_set_accels_for_action (app, "app.show-help-overlay", liferea_accels_show_help);
+	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help);
+	gtk_application_set_accels_for_action (app, "app.show-shortcuts", liferea_accels_show_shortcuts);
 	gtk_application_set_accels_for_action (app, "app.launch-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
 
 	/* 4.) setup feed and item list widgets */

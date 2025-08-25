@@ -209,14 +209,6 @@ on_shortcuts_activate (GSimpleAction *action, GVariant *parameter, gpointer user
 }
 
 static void
-on_faq_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	g_autofree gchar *url = create_help_url("faq_%s.html");
-	LifereaBrowser *browser = browser_tabs_add_new (create_help_url (url), _("FAQ"), TRUE);
-	g_object_set (G_OBJECT (browser), "hidden-urlbar", TRUE, NULL);
-}
-
-static void
 on_menu_quit (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	liferea_application_shutdown ();
@@ -306,8 +298,7 @@ static const GActionEntry gaction_entries[] = {
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
 	{"discover-feeds", on_discover_feeds_activate, NULL, NULL, NULL},
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
-	{"show-help-overlay", on_shortcuts_activate, NULL, NULL, NULL},
-	{"show-help-faq", on_faq_activate, NULL, NULL, NULL},
+	{"show-shortcuts", on_shortcuts_activate, NULL, NULL, NULL},
 	{"show-about", on_about_activate, NULL, NULL, NULL},
 
 	/* Parameter type must be NULL for toggle. */
