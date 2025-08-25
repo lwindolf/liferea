@@ -190,6 +190,12 @@ liferea_shell_add_html_tab (const gchar *file, const gchar *name)
 }
 
 static void
+on_discover_feeds_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)     
+{
+        browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/?target=_self&show-title=false", _("Discover Feeds"), TRUE);
+}
+
+static void
 on_topics_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	liferea_shell_add_html_tab ("topics_%s.html", _("Help Topics"));
@@ -295,6 +301,7 @@ static const GActionEntry gaction_entries[] = {
 	{"manage-plugins", on_manage_plugins_clicked, NULL, NULL, NULL},
 	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
+	{"discover-feeds", on_discover_feeds_activate, NULL, NULL, NULL},
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
 	{"show-help-overlay", on_shortcuts_activate, NULL, NULL, NULL},
 	{"show-help-faq", on_faq_activate, NULL, NULL, NULL},
