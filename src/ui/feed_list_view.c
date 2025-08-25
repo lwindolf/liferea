@@ -395,7 +395,7 @@ feed_list_view_pressed_cb (GtkGestureClick *gesture, gdouble x, gdouble y, guint
 				return TRUE;
 			case GDK_BUTTON_MIDDLE:
 				/* Middle mouse click toggles read status... */
-				feedlist_mark_all_read (node);
+				g_action_group_activate_action (G_ACTION_GROUP (g_application_get_default ()), "mark-feed-as-read", g_variant_new_string (node->id));
 				return TRUE;
 		}
 	}

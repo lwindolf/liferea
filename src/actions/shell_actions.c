@@ -94,22 +94,22 @@ on_mark_all_read_response (GtkDialog *dialog, gint response_id, gpointer user_da
 static void
 on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	Node		*feedlist;
+	Node		*node;
 	gboolean 	confirm_mark_read;
 
 	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
-		feedlist = feedlist_get_root ();
-	else if (user_data)
-		feedlist = (Node *) user_data;
+		node = feedlist_get_root ();
+	else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-feed-as-read"))
+		node = node_from_id (g_variant_get_string (parameter, NULL));
 	else
-		feedlist = feedlist_get_selected ();
+		node = feedlist_get_selected ();
 
 	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
 
 	if (confirm_mark_read) {
 		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
 		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
-		const gchar *feed_title = (feedlist_get_root () == feedlist) ? _("all feeds"):node_get_title (feedlist);
+		const gchar *feed_title = (feedlist_get_root () == node) ? _("all feeds"):node_get_title (node);
 		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
 
 		g_object_set (confirm_dialog, "text", primary_message, NULL);
@@ -119,7 +119,7 @@ on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data
 		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
 
 		g_signal_connect (G_OBJECT (confirm_dialog), "response",
-	                  G_CALLBACK (on_mark_all_read_response), (gpointer)feedlist);
+	                  G_CALLBACK (on_mark_all_read_response), (gpointer)node);
 	}
 }
 
@@ -277,6 +277,8 @@ on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpoin
 
 static const GActionEntry gaction_entries[] = {
 	{"update-all", on_menu_update_all, NULL, NULL, NULL},
+	{"mark-feed-as-read", on_mark_all_read, "s", NULL, NULL},
+	{"mark-selected-feed-as-read", on_mark_all_read, NULL, NULL, NULL},
 	{"mark-all-feeds-read", on_mark_all_read, NULL, NULL, NULL},
 	{"import-feed-list", on_menu_import, NULL, NULL, NULL},
 	{"export-feed-list", on_menu_export, NULL, NULL, NULL},
