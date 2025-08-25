@@ -55,11 +55,11 @@
 
    This causes quite some complexity outlined in below table
 
-   Use Case           Intern Rendering    Pre-Download       URL bar
-   ---------------------------------------------------------------------
-   item/node view     yes                 yes (feed-cache)   off
-   local help files   no                  no                 on
-   internet URL       no                  no                 on
+   Use Case             Intern Rendering    Pre-Download       URL bar
+   -------------------------------------------------------------------
+   item/node view       yes                 yes (feed-cache)   off
+   special URLs (help)  no                  no                 off
+   internet URL         no                  no                 on
  */
 
 enum {
@@ -72,6 +72,7 @@ enum {
 enum {
 	PROP_NONE,
 	PROP_RENDER_WIDGET,
+	PROP_HIDDEN_URLBAR,
 	PROP_ZOOM
 };
 
@@ -147,6 +148,9 @@ liferea_browser_get_property (GObject *gobject, guint prop_id, GValue *value, GP
 	LifereaBrowser *self = LIFEREA_BROWSER (gobject);
 
 	switch (prop_id) {
+		case PROP_HIDDEN_URLBAR:
+			g_value_set_boolean (value, gtk_widget_get_visible (self->urlentry) == FALSE);
+			break;
 		case PROP_RENDER_WIDGET:
 			g_value_set_object (value, self->renderWidget);
 			break;
@@ -160,6 +164,9 @@ static void
 liferea_browser_set_property (GObject *gobject, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
 	switch (prop_id) {
+		case PROP_HIDDEN_URLBAR:
+			gtk_widget_set_visible (LIFEREA_BROWSER (gobject)->urlentry, !g_value_get_boolean (value));
+			break;
 		case PROP_ZOOM:
 			{
 				gint zoom = g_value_get_int (value);
@@ -200,6 +207,16 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 				"GtkWidget object",
 				GTK_TYPE_WIDGET,
 				G_PARAM_READABLE));
+
+	g_object_class_install_property (
+			object_class,
+			PROP_HIDDEN_URLBAR,
+			g_param_spec_boolean (
+				"hidden-urlbar",
+				"Hidden URL bar",
+				"Whether the URL bar is permanently hidden",
+				FALSE,
+				G_PARAM_READWRITE));
 
 	g_object_class_install_property (
 			object_class,
@@ -361,7 +378,11 @@ liferea_browser_progress_changed (LifereaBrowser *browser, gdouble progress)
 void
 liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location)
 {
-	if (browser->url && !g_str_has_prefix (browser->url, "liferea://")) {
+	gboolean hiddenUrlbar;
+
+	g_object_get (G_OBJECT (browser), "hidden-urlbar", &hiddenUrlbar, NULL);
+
+	if (browser->url && !g_str_has_prefix (browser->url, "liferea://") && !hiddenUrlbar) {
 		g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (browser->url, -1);
 		gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 

@@ -61,7 +61,7 @@ do_menu_update (Node *node)
 
 }
 
-static void
+/*static void
 on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	Node *node = NULL;
@@ -75,7 +75,7 @@ on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 		do_menu_update (node);
 	else
 		g_warning ("on_menu_update: no feedlist selected");
-}
+}*/
 
 static void
 on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
@@ -175,30 +175,31 @@ on_about_activate (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 	// FIXME GTK4 g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_set_visible), NULL);
 }
 
-static void
-liferea_shell_add_html_tab (const gchar *file, const gchar *name)
+static gchar *
+create_help_url (const gchar *file)
 {
 	gchar *filepattern = g_strdup_printf (PACKAGE_DATA_DIR "/doc/html/%s", file);
 	gchar *filename = common_get_localized_filename (filepattern);
 	gchar *fileuri = g_strdup_printf ("file://%s", filename);
 
-	browser_tabs_add_new (fileuri, name, TRUE);
-
 	g_free (filepattern);
 	g_free (filename);
-	g_free (fileuri);
+	return fileuri;
 }
 
 static void
 on_discover_feeds_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)     
 {
-        browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/?target=_self&show-title=false", _("Discover Feeds"), TRUE);
+        LifereaBrowser *browser = browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/?target=_self&show-title=false", _("Discover Feeds"), TRUE);
+	g_object_set (G_OBJECT (browser), "hidden-urlbar", TRUE, NULL);
 }
 
 static void
 on_topics_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	liferea_shell_add_html_tab ("topics_%s.html", _("Help Topics"));
+	g_autofree gchar *url = create_help_url("topics_%s.html");
+	LifereaBrowser *browser = browser_tabs_add_new (url, _("Help Topics"), TRUE);
+	g_object_set (G_OBJECT (browser), "hidden-urlbar", TRUE, NULL);
 }
 
 static void
@@ -210,7 +211,9 @@ on_shortcuts_activate (GSimpleAction *action, GVariant *parameter, gpointer user
 static void
 on_faq_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	liferea_shell_add_html_tab ("faq_%s.html", _("FAQ"));
+	g_autofree gchar *url = create_help_url("faq_%s.html");
+	LifereaBrowser *browser = browser_tabs_add_new (create_help_url (url), _("FAQ"), TRUE);
+	g_object_set (G_OBJECT (browser), "hidden-urlbar", TRUE, NULL);
 }
 
 static void
