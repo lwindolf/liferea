@@ -8,6 +8,15 @@ To be released
 	* Fixes crash when subscribing with "Discover feeds"
 	  (Lars Windolf)
 
+	* URL bar is now hidden for special help tabs
+	  (Lars Windolf)
+
+	* Removes outdated FAQ menu entry
+	  (Lars Windolf)
+	
+	* GtkShortCutsWindow is now used for displaying hotkeys, new hotkey is Ctrl-?
+	  (Lars Windolf)
+
 
 2025-08-20  Lars Windolf <lars.windolf@gmx.de>
 

@@ -843,42 +843,39 @@ on_about_activate (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 	gtk_widget_show (dialog);
 }
 
-static void
-liferea_shell_add_html_tab (const gchar *file, const gchar *name)
+static gchar *
+create_help_url (const gchar *file)
 {
 	gchar *filepattern = g_strdup_printf (PACKAGE_DATA_DIR "/" PACKAGE "/doc/html/%s", file);
 	gchar *filename = common_get_localized_filename (filepattern);
 	gchar *fileuri = g_strdup_printf ("file://%s", filename);
 
-	browser_tabs_add_new (fileuri, name, TRUE);
-
 	g_free (filepattern);
 	g_free (filename);
-	g_free (fileuri);
+	return fileuri;
 }
 
 static void
 on_action_discover_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/?target=_self&show-title=false", _("Discover Feeds"), TRUE);
+        LifereaBrowser *browser = browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/?target=_self&show-title=false", _("Discover Feeds"), TRUE);
+	g_object_set (G_OBJECT (browser), "hidden-urlbar", TRUE, NULL);
 }
 
 static void
 on_topics_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	liferea_shell_add_html_tab ("topics_%s.html", _("Help Topics"));
+	g_autofree gchar *url = create_help_url ("topics_%s.html");
+	LifereaBrowser *browser = browser_tabs_add_new (url, _("Help Topics"), TRUE);
+	g_object_set (G_OBJECT (browser), "hidden-urlbar", TRUE, NULL);
 }
 
 static void
-on_quick_reference_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_shortcuts_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	liferea_shell_add_html_tab ("reference_%s.html", _("Quick Reference"));
-}
-
-static void
-on_faq_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	liferea_shell_add_html_tab ("faq_%s.html", _("FAQ"));
+	GtkWindow *window = GTK_WINDOW (liferea_dialog_new ("shortcuts"));
+	gtk_widget_show_all (GTK_WIDGET (window));
+	gtk_window_present (window);
 }
 
 static void
@@ -1033,8 +1030,7 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"manage-plugins", on_manage_plugins_clicked, NULL, NULL, NULL},
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
-	{"show-help-quick-reference", on_quick_reference_activate, NULL, NULL, NULL},
-	{"show-help-faq", on_faq_activate, NULL, NULL, NULL},
+	{"show-shortcuts", on_shortcuts_activate, NULL, NULL, NULL},
 	{"show-about", on_about_activate, NULL, NULL, NULL},
 
 	/* Parameter type must be NULL for toggle. */
@@ -1292,6 +1288,7 @@ static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
 static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
 static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
 static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
+static const gchar * liferea_accels_show_shortcuts[] = {"<Control>question", NULL};
 static const gchar * liferea_accels_launch_item_in_external_browser[] = {"<Control>d", NULL};
 
 void
@@ -1365,6 +1362,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.zoom-out", liferea_accels_zoom_out);
 	gtk_application_set_accels_for_action (app, "app.zoom-reset", liferea_accels_zoom_reset);
 	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
+	gtk_application_set_accels_for_action (app, "app.show-shortcuts", liferea_accels_show_shortcuts);
 	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
 	gtk_application_set_accels_for_action (app, "app.launch-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
 

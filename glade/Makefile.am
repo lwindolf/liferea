@@ -20,6 +20,7 @@ glade_DATA = about.ui \
 	rename_node.ui \
 	search_folder.ui \
 	search.ui \
+	shortcuts.ui \
 	simple_search.ui \
 	simple_subscription.ui \
 	theoldreader_source.ui \

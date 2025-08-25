@@ -59,7 +59,7 @@
    ---------------------------------------------------------------------
    item/node view     yes                 yes (feed-cache)   off
    item/node view     yes                 yes (feed-cache)   off
-   local help files   no                  no                 on
+   local help files   no                  no                 yes
    internet URL       no                  no                 on
  */
 
@@ -90,7 +90,8 @@ enum {
 
 enum {
 	PROP_NONE,
-	PROP_RENDER_WIDGET
+	PROP_RENDER_WIDGET,
+	PROP_HIDDEN_URLBAR
 };
 
 /* LifereaBrowser toolbar callbacks */
@@ -162,8 +163,24 @@ liferea_browser_get_property (GObject *gobject, guint prop_id, GValue *value, GP
 	LifereaBrowser *self = LIFEREA_BROWSER (gobject);
 
 	switch (prop_id) {
+		case PROP_HIDDEN_URLBAR:
+			g_value_set_boolean (value, gtk_widget_get_visible (self->urlentry) == FALSE);
+			break;
 		case PROP_RENDER_WIDGET:
 			g_value_set_object (value, self->renderWidget);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+			break;
+	}
+}
+
+static void
+liferea_browser_set_property (GObject *gobject, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+	switch (prop_id) {
+		case PROP_HIDDEN_URLBAR:
+			gtk_widget_set_visible (LIFEREA_BROWSER (gobject)->urlentry, !g_value_get_boolean (value));
 			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
@@ -177,6 +194,7 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->get_property = liferea_browser_get_property;
+	object_class->set_property = liferea_browser_set_property;
 	object_class->finalize = liferea_browser_finalize;
 
 	/* LifereaBrowser:renderWidget: */
@@ -189,6 +207,16 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 				"GtkWidget object",
 				GTK_TYPE_WIDGET,
 				G_PARAM_READABLE));
+
+	g_object_class_install_property (
+			object_class,
+			PROP_HIDDEN_URLBAR,
+			g_param_spec_boolean (
+				"hidden-urlbar",
+				"Hidden URL bar",
+				"Whether the URL bar is permanently hidden",
+				FALSE,
+				G_PARAM_READWRITE));
 
 	liferea_browser_signals[STATUSBAR_CHANGED] =
 		g_signal_new ("statusbar-changed",
@@ -350,7 +378,11 @@ liferea_browser_progress_changed (LifereaBrowser *browser, gdouble progress)
 void
 liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location)
 {
-	if (browser->url && !g_str_has_prefix (browser->url, "liferea://")) {
+	gboolean hiddenUrlbar;
+
+	g_object_get (G_OBJECT (browser), "hidden-urlbar", &hiddenUrlbar, NULL);
+
+	if (browser->url && !g_str_has_prefix (browser->url, "liferea://") && !hiddenUrlbar) {
 		browser_history_add_location (browser->history, browser->url);
 
 		gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
