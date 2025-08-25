@@ -59,7 +59,7 @@
    ---------------------------------------------------------------------
    item/node view     yes                 yes (feed-cache)   off
    item/node view     yes                 yes (feed-cache)   off
-   local help files   no                  no                 yes
+   local help files   no                  no                 off
    internet URL       no                  no                 on
  */
 
