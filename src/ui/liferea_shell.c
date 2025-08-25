@@ -860,7 +860,7 @@ liferea_shell_add_html_tab (const gchar *file, const gchar *name)
 static void
 on_action_discover_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/", _("Discover Feeds"), TRUE);
+	browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/?target=_self&show-title=false", _("Discover Feeds"), TRUE);
 }
 
 static void
