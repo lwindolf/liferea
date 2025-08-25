@@ -47,7 +47,6 @@
     <file compressed="true">help/updating_en.html</file>
     <file compressed="true">help/newsbin_en.html</file>
     <file compressed="true">help/onlineservices_en.html</file>
-    <file compressed="true">help/faq_en.html</file>
 
     <file compressed="true">help/about_de.html</file>
     <file compressed="true">help/concepts_de.html</file>
@@ -60,7 +59,6 @@
     <file compressed="true">help/updating_de.html</file>
     <file compressed="true">help/newsbin_de.html</file>
     <file compressed="true">help/onlineservices_de.html</file>
-    <file compressed="true">help/faq_de.html</file>
 
     <file compressed="true">help/about_it.html</file>
     <file compressed="true">help/concepts_it.html</file>
@@ -73,7 +71,6 @@
     <file compressed="true">help/updating_it.html</file>
     <file compressed="true">help/newsbin_it.html</file>
     <file compressed="true">help/onlineservices_it.html</file>
-    <file compressed="true">help/faq_it.html</file>
 
     <file compressed="true">help/about_ru.html</file>
     <file compressed="true">help/concepts_ru.html</file>
@@ -86,7 +83,6 @@
     <file compressed="true">help/updating_ru.html</file>
     <file compressed="true">help/newsbin_ru.html</file>
     <file compressed="true">help/onlineservices_ru.html</file>
-    <file compressed="true">help/faq_ru.html</file>
 
     <file compressed="true">help/help_feed_default.png</file>
     <file compressed="true">help/help_feed_error.png</file>
