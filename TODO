@@ -12,7 +12,6 @@ To be fixed next:
 To be fixed later:
 ==================
 
-- build check appstream lzone.de/liferea HTTP 403
 ../src/webkit/liferea_web_view.c:       // FIXME: GTK4 check if we need some type of shadow handling as with in GTK3 -> needs top border to look good
 - get tests building+running in Meson
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
