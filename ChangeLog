@@ -4,6 +4,9 @@ To be released
 
 	* Fix #1421 "Mark all as read ?" warning dialog does not appear on middle-click
 	  (Lars Windolf)
+
+	* Fixes #904: charset related issue with links
+	  (Lars Windolf)
 	
 	* Fixes crash when subscribing with "Discover feeds"
 	  (Lars Windolf)

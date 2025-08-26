@@ -55,6 +55,7 @@ src/tests/html_auto
 src/tests/parse_date
 src/tests/parse_html
 src/tests/parse_rss
+src/tests/parse_uri
 src/tests/parse_xml
 src/tests/social
 src/tests/update

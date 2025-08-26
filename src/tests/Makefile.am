@@ -2,7 +2,7 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS     = parse_html favicon parse_date parse_rss parse_xml social update
+TEST_PROGS     = parse_html parse_uri favicon parse_date parse_rss parse_xml social update
 MEMCHECK_PROGS = $(TEST_PROGS)
 
 test: $(TEST_PROGS)
@@ -93,6 +93,9 @@ parse_date_LDADD = $(favicon_LDADD)
 
 parse_rss_CFLAGS = $(AM_CPPFLAGS)
 parse_rss_LDADD = $(favicon_LDADD)
+
+parse_uri_CFLAGS = $(AM_CPPFLAGS)
+parse_uri_LDADD = $(favicon_LDADD)
 
 parse_xml_CFLAGS = $(AM_CPPFLAGS)
 parse_xml_LDADD = $(favicon_LDADD)
