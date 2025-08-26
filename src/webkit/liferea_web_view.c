@@ -328,8 +328,6 @@ fullscreen_toggle_widget_visible (GtkWidget *wid, gpointer user_data) {
 
 	fdata = user_data;
 
-	// FIXME: GTK4 check if we need some type of shadow handling as with in GTK3
-
 	if (wid == fdata->me && !GTK_IS_NOTEBOOK(wid)) {
 		return;
 	}

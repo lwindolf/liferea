@@ -120,35 +120,6 @@ liferea_webkit_enable_itp_cb (GSettings *gsettings,
 	    g_settings_get_boolean (gsettings, key));
 }
 
-static gchar *
-webkit_get_font (guint *size)
-{
-	gchar *font = NULL;
-
-	*size = 11;	/* default fallback */
-
-	/* font configuration support */
-	conf_get_str_value (USER_FONT, &font);
-	if (NULL == font || 0 == strlen (font)) {
-		if (NULL != font) {
-			g_free (font);
-			font = NULL;
-		}
-		conf_get_default_font (&font);
-	}
-
-	if (font) {
-		/* The GTK2/GNOME font name format is "<font name> <size>" */
-		gchar *tmp = strrchr(font, ' ');
-		if (tmp) {
-			*tmp++ = 0;
-			*size = atoi(tmp);
-		}
-	}
-
-	return font;
-}
-
 static gboolean
 liferea_webkit_authorize_authenticated_peer (GDBusAuthObserver 	*observer,
 					     GIOStream		*stream,
@@ -319,8 +290,6 @@ liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer 
 		gsize length = 0;
 		const guchar *data = g_bytes_get_data (b, &length);
 		const gchar *mime;
-		
-		// FIXME: what about freeing b?
 		g_autoptr(GInputStream) stream = g_memory_input_stream_new_from_data (data, length, NULL);
 		
 		// For now we assume all resources are javascript, so MIME is hardcoded
@@ -380,19 +349,17 @@ liferea_webkit_init (LifereaWebKit *self)
 	webkit_network_session_set_itp_enabled (webkit_network_session_get_default (), enable_itp);
 
 	/* Webkit web extensions */
-	g_warning("FIXME: Webkit initialize-web-extensions");
-	/*g_signal_connect (
+	g_signal_connect (
 		webkit_web_context_get_default (),
 		"initialize-web-extensions",
 		G_CALLBACK (liferea_webkit_initialize_web_extensions),
-		self);*/
+		self);
 
-	g_warning("FIXME: Webkit download-started");
-	/*g_signal_connect (
+	g_signal_connect (
 		webkit_web_context_get_default (),
 		"download-started",
 		G_CALLBACK (liferea_webkit_download_started),
-		self);*/
+		self);
 }
 
 /**
@@ -442,7 +409,7 @@ static void
 liferea_webkit_default_settings (WebKitSettings *settings)
 {
 	gchar		*user_agent;
-	gboolean	disable_javascript, enable_plugins;
+	gboolean	disable_javascript;
 
 	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
 	g_object_set (settings, "enable-javascript", !disable_javascript, NULL);
