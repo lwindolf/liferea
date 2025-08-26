@@ -12,6 +12,7 @@ To be fixed next:
 To be fixed later:
 ==================
 
+- itemlist: mark read/flag happens on wrong row (on down)
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
 - itemlist: Newsbin context menu does not work
 - DnD reimplementation
@@ -20,8 +21,6 @@ To be fixed later:
 - make auto layout switch work again
 - remaining GTK4 FIXMES:
 
-../src/ui/item_list_view.c:                     g_warning("FIXME: GTK4 port: itemlist_remove_selected ();");
-../src/ui/item_list_view.c:     // FIXME: port this to GTK4!
 ../src/ui/ui_dnd.c:    (FIXME: implement the last part)
 ../src/ui/ui_dnd.c:     g_warning ("FIXME GTK4: drag and drop not yet implemented");
 ../src/ui/liferea_shell.c:      // FIXME: GTK4 https://developer.gnome.org/documentation/tutorials/save-state.html

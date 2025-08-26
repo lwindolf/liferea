@@ -392,34 +392,30 @@ item_list_view_item_removed (GObject *obj, gint itemId, gpointer user_data)
 {
 	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
 	itemPtr		item = item_load (itemId);
+	GtkTreeIter	iter;
 
 	g_assert (NULL != item);
-	g_warning("FIXME: reenable selection check item_list_view_item_removed");
-	//if (item_list_view_id_to_iter (ilv, item->id, &iter)) {
+	if (item_list_view_id_to_iter (ilv, item->id, &iter)) {
 		/* Using the GtkTreeIter check if it is currently selected. If yes,
 		   scroll down by one in the sorted GtkTreeView to ensure something
 		   is selected after removing the GtkTreeIter */
-/*		GtkTreePath	*path = gtk_tree_model_get_path (gtk_tree_view_get_model (ilv->treeview), &iter);
+		GtkTreePath	*path = gtk_tree_model_get_path (gtk_tree_view_get_model (ilv->treeview), &iter);
 		GtkTreeSelection *select = gtk_tree_view_get_selection (ilv->treeview);
 		GtkTreePath	*next = gtk_tree_path_copy (path);
 		GtkTreeIter	nextIter;
-g_print("1\n");
+		
 		g_assert (select);
 		g_assert (path);
 		g_assert (next);
 		gtk_tree_path_next (next);
-		g_print("2\n");
 		gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &nextIter, next);
-		g_print("3\n");
 		gtk_tree_selection_select_iter (select, &nextIter);
-		g_print("4\n");
 		
 		gtk_tree_store_remove (GTK_TREE_STORE (gtk_tree_view_get_model (ilv->treeview)), &iter);
-		g_print("5\n");
 	} else {
 		g_warning ("Fatal: item to be removed not found in item id list!");
 	}
-*/
+
 	ilv->item_ids = g_slist_remove (ilv->item_ids, GUINT_TO_POINTER (item->id));
 }
 
@@ -802,11 +798,6 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 	GtkTreeViewColumn	*column;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
-
-	// FIXME: port this to GTK4!
-	/* avoid handling header clicks */
-	/*if (eb->window != gtk_tree_view_get_bin_window (ilv->treeview))
-		return FALSE;*/
 
 	if (gtk_tree_view_get_path_at_pos (ilv->treeview, (gint)x, (gint)y, &path, &column, NULL, NULL)) {
 		if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &iter, path))
