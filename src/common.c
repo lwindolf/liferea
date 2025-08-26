@@ -1,7 +1,7 @@
 /**
  * @file common.c common routines for Liferea
  *
- * Copyright (C) 2003-2023  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  * Copyright (C) 2022       Lorenzo L. Ancora <admin@lorenzoancora.info>
@@ -138,23 +138,12 @@ common_create_cache_filename (const gchar *folder, const gchar *filename, const 
 xmlChar *
 common_uri_escape (const xmlChar *url)
 {
-	xmlChar	*result, *tmp;
+	g_autoptr(GError) err = NULL;
+	g_autoptr(GUri) uri = g_uri_parse (url, G_URI_FLAGS_ENCODED, &err);
+	if(err)
+		return (xmlChar *)g_strdup((char *)url); // return a copy of the original URL on error
 
-	g_assert (NULL != url);
-
-	/* xmlURIEscape returns NULL if spaces are in the URL,
-	   so we need to replace them first (see SF #2965158).
-	   TODO: perhaps replace xmlURIEscape with g_uri_escape_string ?
-	 */
-	tmp = (xmlChar *)common_strreplace (g_strdup ((gchar *)url), " ", "%20");
-	result = xmlURIEscape (tmp);
-	g_free (tmp);
-
-	/* workaround if escaping somehow fails... */
-	if (!result)
-		result = (xmlChar *)g_strdup ((gchar *)url);
-
-	return result;
+	return (xmlChar *)g_uri_to_string (uri);
 }
 
 xmlChar *
