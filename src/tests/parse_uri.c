@@ -69,7 +69,7 @@ tc_uri_sanitize (gconstpointer user_data)
 }
 
 int
-main (int argc, char *argv[])
+test_parse_uri (int argc, char *argv[])
 {
 	int result;
 

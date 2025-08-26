@@ -63,11 +63,23 @@ liferea_deps = [
 ]
 
 liferea = executable('liferea',
-  liferea_sources,
+  liferea_sources + files('src/main.c'),
   liferea_resources,
   dependencies: liferea_deps,
   include_directories: include_directories('.', 'src')
 )
+
+foreach name: [
+  'parse_date',
+  'parse_html',
+  'parse_rss',
+  'parse_uri',
+  'parse_xml',
+  'social',
+  'update'
+]
+  test(name, liferea, args: ['--test', name])
+endforeach
 
 install_subdir('plugins', install_dir: libdir)
 install_subdir('css', install_dir: datadir)

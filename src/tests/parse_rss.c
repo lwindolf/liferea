@@ -94,7 +94,7 @@ tc_parse_feed (gconstpointer user_data)
 }
 
 int
-main (int argc, char *argv[])
+test_parse_rss (int argc, char *argv[])
 {
 	int result;
 

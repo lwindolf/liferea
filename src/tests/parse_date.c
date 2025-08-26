@@ -62,7 +62,7 @@ tc_parse_iso8601 (gconstpointer user_data)
 }
 
 int
-main (int argc, char *argv[])
+test_parse_date (int argc, char *argv[])
 {
 	int result;
 

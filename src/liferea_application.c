@@ -43,6 +43,7 @@
 #include "update.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
+#include "tests/test.h"
 
 #include <girepository.h>
 
@@ -313,6 +314,9 @@ liferea_application_new (int argc, char *argv[])
 	gint status;
 
 	g_assert (NULL == liferea_app);
+
+	if (argc > 2 && argv[1] && g_str_equal (argv[1], "--test"))
+		return run_test (argc, argv);
 
 	liferea_app = g_object_new (LIFEREA_APPLICATION_TYPE,
 		                    "flags", G_APPLICATION_HANDLES_OPEN,

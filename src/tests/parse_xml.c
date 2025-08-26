@@ -139,7 +139,7 @@ tc_strip (gconstpointer user_data)
 }
 
 int
-main (int argc, char *argv[])
+test_parse_xml (int argc, char *argv[])
 {
 	gint result;
 

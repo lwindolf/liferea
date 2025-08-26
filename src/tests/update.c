@@ -34,15 +34,15 @@ typedef struct tc {
         UpdateJob       *job;
 } *tcPtr;
 
-struct tc tc_url                = { "https://github.com/",          FALSE, 0, "github", NULL };
-//struct tc tc_dns_fail           = { "https://doesnotexist.local", TRUE, 0, NULL, NULL };   // FIXME: cannot be tested due to missing error callback causing memory leak
-struct tc tc_port_fail          = { "http://localhost:6666",      TRUE,  0, NULL, NULL };
-struct tc tc_proto_fail         = { "htps://localhost",           TRUE,  0, NULL, NULL };
-struct tc tc_local_file         = { "file:///etc/hosts",          FALSE, 0, "localhost", NULL };
-struct tc tc_http_301           = { "https://lzone.de/http/301",    FALSE, 200, NULL, NULL };     // We expect HTTP 200 because the networking code is supposed to do the redirect
-struct tc tc_http_308           = { "https://lzone.de/http/308",    FALSE, 200, NULL, NULL };     // We expect HTTP 200 because the networking code is supposed to do the redirect
-struct tc tc_http_404           = { "https://lzone.de/http/404",    FALSE, 404, NULL, NULL };
-struct tc tc_http_410           = { "https://lzone.de/http/410",    FALSE, 410, NULL, NULL };
+static struct tc tc_url                = { "https://github.com/",          FALSE, 0, "github", NULL };
+//static struct tc tc_dns_fail           = { "https://doesnotexist.local", TRUE, 0, NULL, NULL };   // FIXME: cannot be tested due to missing error callback causing memory leak
+static struct tc tc_port_fail          = { "http://localhost:6666",      TRUE,  0, NULL, NULL };
+static struct tc tc_proto_fail         = { "htps://localhost",           TRUE,  0, NULL, NULL };
+static struct tc tc_local_file         = { "file:///etc/hosts",          FALSE, 0, "localhost", NULL };
+static struct tc tc_http_301           = { "https://lzone.de/http/301",    FALSE, 200, NULL, NULL };     // We expect HTTP 200 because the networking code is supposed to do the redirect
+static struct tc tc_http_308           = { "https://lzone.de/http/308",    FALSE, 200, NULL, NULL };     // We expect HTTP 200 because the networking code is supposed to do the redirect
+static struct tc tc_http_404           = { "https://lzone.de/http/404",    FALSE, 404, NULL, NULL };
+static struct tc tc_http_410           = { "https://lzone.de/http/410",    FALSE, 410, NULL, NULL };
 
 // result is global because we run async and exit the main loop upon test end
 static int result = 1;
@@ -131,7 +131,7 @@ start_updates (gpointer user_data)
 }
 
 int
-main (int argc, char *argv[])
+test_update (int argc, char *argv[])
 {
 	g_test_init (&argc, &argv, NULL);
 

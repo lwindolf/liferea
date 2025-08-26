@@ -18,6 +18,7 @@ Compile with
 
     meson setup builddir
     meson compile -C builddir
+    meson test    -C builddir
 
 To install
 

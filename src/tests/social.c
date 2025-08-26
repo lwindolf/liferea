@@ -53,7 +53,7 @@ tc_build_uri (gconstpointer user_data)
 }
 
 int
-main (int argc, char *argv[])
+test_social (int argc, char *argv[])
 {
 	int result;
 

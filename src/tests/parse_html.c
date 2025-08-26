@@ -146,7 +146,7 @@ tc_auto_discover_link (gconstpointer user_data)
 }
 
 int
-main (int argc, char *argv[])
+test_parse_html (int argc, char *argv[])
 {
 	g_test_init (&argc, &argv, NULL);
 

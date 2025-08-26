@@ -35,4 +35,4 @@ jobs:
     - run: meson setup builddir --prefix=$(pwd)/inst
     - run: meson compile -C builddir
     - run: meson install -C builddir
-    # FIXME - run: cd src/tests && make test
+    - run: meson test -C builddir
