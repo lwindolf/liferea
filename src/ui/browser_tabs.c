@@ -176,7 +176,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 
 	g_signal_connect ((gpointer)close_button, "clicked", G_CALLBACK (on_browser_tab_close), NULL);
 	g_object_set_data_full (G_OBJECT (close_button), "controller", controller, (GDestroyNotify)g_object_unref);
-	g_object_set_data_full (G_OBJECT (close_button), "htmlview", htmlview, (GDestroyNotify)g_object_unref);
+	g_object_set_data_full (G_OBJECT (widget), "htmlview", htmlview, (GDestroyNotify)g_object_unref);
 
 	i = gtk_notebook_append_page (tabs->notebook, widget, labelBox);
 	g_signal_connect (controller, "key-pressed", G_CALLBACK (on_tab_key_press), widget);
@@ -204,11 +204,12 @@ browser_tabs_get_active_htmlview (void)
 {
 	gint current = gtk_notebook_get_current_page (tabs->notebook);
 	GtkWidget *child = gtk_notebook_get_nth_page (tabs->notebook, current);
-	
-	if (0 != current)
-		return LIFEREA_BROWSER (g_object_get_data (G_OBJECT (child), "htmlview"));
-	
 	gpointer htmlview;
-	g_object_get (G_OBJECT (liferea_shell_get_instance()), "htmlview", &htmlview, NULL);
+
+	if (0 != current)
+		htmlview = g_object_get_data (G_OBJECT (child), "htmlview");
+	else
+		g_object_get (G_OBJECT (liferea_shell_get_instance()), "htmlview", &htmlview, NULL);
+
 	return LIFEREA_BROWSER (htmlview);
 }

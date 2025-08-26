@@ -17,7 +17,6 @@ To be fixed later:
 - g_warning("FIXME: reenable selection check item_list_view_item_removed");
 - itemlist: Newsbin context menu does not work
 - DnD reimplementation
-- browser zoom
 - restore ATK taggings
 - select next unread
 - remaining GTK4 FIXMES:
@@ -44,9 +43,6 @@ To be fixed later:
 ../src/ui/liferea_shell.c:      // FIXME GTK4
 ../src/ui/liferea_shell.c:      feed_list_view_set_reduce_mode (FALSE); // FIXME: this would be better triggered by a GAction init somewhere
 ../src/ui/liferea_shell.c:      // FIXME: how to do deiconify in GTK4?
-../src/ui/liferea_browser.c:                            g_warning("FIXME: setting zoom level not implemented");
-../src/ui/liferea_browser.c:    g_warning ("FIXME: LifereaBrowser:zoom property is not implemented");
-../src/ui/liferea_browser.c:    // FIXME: not yet supported
 ../src/actions/shell_actions.c: // FIXME: use node type capability check
 ../src/actions/shell_actions.c:// FIXME replace this with a bind!
 ../src/actions/shell_actions.c: // FIXME GTK4 g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_set_visible), NULL);

@@ -72,8 +72,7 @@ enum {
 enum {
 	PROP_NONE,
 	PROP_RENDER_WIDGET,
-	PROP_HIDDEN_URLBAR,
-	PROP_ZOOM
+	PROP_HIDDEN_URLBAR
 };
 
 /* LifereaBrowser toolbar callbacks */
@@ -167,13 +166,6 @@ liferea_browser_set_property (GObject *gobject, guint prop_id, const GValue *val
 		case PROP_HIDDEN_URLBAR:
 			gtk_widget_set_visible (LIFEREA_BROWSER (gobject)->urlentry, !g_value_get_boolean (value));
 			break;
-		case PROP_ZOOM:
-			{
-				gint zoom = g_value_get_int (value);
-				conf_set_int_value (LAST_ZOOMLEVEL, zoom);
-				g_warning("FIXME: setting zoom level not implemented");
-			}
-			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
 			break;
@@ -218,18 +210,6 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 				FALSE,
 				G_PARAM_READWRITE));
 
-	g_object_class_install_property (
-			object_class,
-			PROP_ZOOM,
-			g_param_spec_int (
-				"zoom",
-				"Zoom",
-				"Zoom level",
-				0, 10000, zoom,
-				G_PARAM_READWRITE));
-
-	g_warning ("FIXME: LifereaBrowser:zoom property is not implemented");
-
 	liferea_browser_signals[STATUSBAR_CHANGED] =
 		g_signal_new ("statusbar-changed",
 		G_OBJECT_CLASS_TYPE (object_class),
@@ -265,12 +245,6 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
-}
-
-static void
-liferea_browser_online_status_changed (NetworkMonitor *nm, gboolean online, gpointer userdata)
-{
-	// FIXME: not yet supported
 }
 
 static void
@@ -694,9 +668,6 @@ liferea_browser_init (LifereaBrowser *browser)
 
 	liferea_browser_clear (browser);
 
-	g_signal_connect (network_monitor_get (), "online-status-changed",
-	                  G_CALLBACK (liferea_browser_online_status_changed),
-	                  browser);
 	g_signal_connect (network_monitor_get (), "proxy-changed",
 	                  G_CALLBACK (liferea_browser_proxy_changed),
 	                  browser);
