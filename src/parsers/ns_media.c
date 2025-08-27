@@ -38,7 +38,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
 	gchar *description, *tmp, *tmp2, *thumbnail, *count, *max, *avg, *views;
 	/*
-	   Maximual definition could look like this:
+	   Maximum definition could look like this:
 	   
         	<media:content 
         	       url="http://www.foo.com/movie.mov" 
