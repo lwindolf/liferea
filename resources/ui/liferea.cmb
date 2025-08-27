@@ -524,19 +524,20 @@
 	(35,4,"GtkShortcutsGroup",None,2,None,None,None,1,None,None),
 	(35,5,"GtkShortcutsShortcut",None,4,None,None,None,0,None,None),
 	(35,6,"GtkShortcutsShortcut",None,3,None,None,None,0,None,None),
-	(35,7,"GtkShortcutsShortcut",None,4,None,None,None,1,None,None),
+	(35,7,"GtkShortcutsShortcut",None,4,None,None,None,2,None,None),
 	(35,8,"GtkShortcutsGroup",None,2,None,None,None,2,None,None),
 	(35,9,"GtkShortcutsShortcut",None,8,None,None,None,0,None,None),
 	(35,10,"GtkShortcutsShortcut",None,3,None,None,None,1,None,None),
 	(35,11,"GtkShortcutsShortcut",None,3,None,None,None,2,None,None),
 	(35,12,"GtkShortcutsShortcut",None,3,None,None,None,3,None,None),
-	(35,13,"GtkShortcutsShortcut",None,4,None,None,None,2,None,None),
-	(35,14,"GtkShortcutsShortcut",None,4,None,None,None,3,None,None),
-	(35,15,"GtkShortcutsShortcut",None,4,None,None,None,4,None,None),
+	(35,13,"GtkShortcutsShortcut",None,4,None,None,None,3,None,None),
+	(35,14,"GtkShortcutsShortcut",None,4,None,None,None,4,None,None),
+	(35,15,"GtkShortcutsShortcut",None,4,None,None,None,5,None,None),
 	(35,16,"GtkShortcutsGroup",None,2,None,None,None,3,None,None),
 	(35,17,"GtkShortcutsShortcut",None,16,None,None,None,0,None,None),
 	(35,18,"GtkShortcutsShortcut",None,16,None,None,None,1,None,None),
-	(35,19,"GtkShortcutsShortcut",None,16,None,None,None,2,None,None)
+	(35,19,"GtkShortcutsShortcut",None,16,None,None,None,2,None,None),
+	(35,20,"GtkShortcutsShortcut",None,4,None,None,None,1,None,None)
   </object>
   <object_property>
 	(2,1,"GtkWidget","width-request","500",None,None,None,None,None,None,None,None,None),
@@ -1933,7 +1934,9 @@
 	(35,18,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;minus",None,None,None,None,None,None,None,None,None),
 	(35,18,"GtkShortcutsShortcut","title","Zoom Out",None,None,None,None,None,None,None,None,None),
 	(35,19,"GtkShortcutsShortcut","accelerator","&lt;Ctrl&gt;0",None,None,None,None,None,None,None,None,None),
-	(35,19,"GtkShortcutsShortcut","title","Reset Zoom",None,None,None,None,None,None,None,None,None)
+	(35,19,"GtkShortcutsShortcut","title","Reset Zoom",None,None,None,None,None,None,None,None,None),
+	(35,20,"GtkShortcutsShortcut","accelerator","b",0,None,None,None,None,None,None,None,None),
+	(35,20,"GtkShortcutsShortcut","title","Select previous item",0,None,None,None,None,None,None,None,None)
   </object_property>
   <object_layout_property>
 	(2,3,4,"GtkGridLayoutChild","column","0",0,None,None,None),
