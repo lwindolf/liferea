@@ -149,15 +149,15 @@ on_menu_export_items_to_file_cb (GtkDialog *dialog, gint res, gpointer user_data
 static void
 on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	Node *node = (Node *) user_data;
-	GtkWindow *parent;
-	GtkWidget *dialog;
-	GtkFileChooser *chooser;
-	GtkFileFilter *feed_files_filter, *all_files_filter;
-	gint res;
+	Node		*node = (Node *) user_data;
+	GtkWindow	*parent;
+	GtkWidget	*dialog;
+	GtkFileChooser	*chooser;
+	GtkFileFilter	*feed_files_filter, *all_files_filter;
+	gint		res;
         g_autoptr(GFile) file;
-	g_autofree gchar *curname;
-	const gchar *title;
+	g_autofree gchar *curname = NULL;
+	const gchar	*title;
 
 	parent = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 

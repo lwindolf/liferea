@@ -281,7 +281,7 @@ static void
 liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer user_data)
 {
 	const gchar *path = webkit_uri_scheme_request_get_path (request);
-	g_autofree gchar *rpath;
+	g_autofree gchar *rpath = NULL;
 	GBytes *b;
 
 	rpath = g_strdup_printf ("/org/gnome/liferea%s", path);

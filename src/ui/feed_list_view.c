@@ -952,7 +952,7 @@ feed_list_view_remove (Node *node)
 {
 	GtkWidget	*dialog;
 	GtkWindow	*mainwindow;
-	g_autofree gchar	*text;
+	g_autofree gchar	*text = NULL;
 
 	g_assert (node == feedlist_get_selected ());
 

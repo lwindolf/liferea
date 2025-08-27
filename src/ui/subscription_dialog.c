@@ -130,7 +130,7 @@ on_dialog_response (GtkDialog *d, gint response_id, gpointer user_data)
 {
 	GtkWidget		*dialog = GTK_WIDGET (d);
 	subscriptionPtr		subscription = (subscriptionPtr)user_data;
-	g_autofree gchar	*newSource;
+	g_autofree gchar	*newSource = NULL;
 	const gchar		*newFilter;
 	gboolean		needsUpdate = FALSE;
 	Node			*node = subscription->node;
@@ -254,7 +254,7 @@ on_feed_prop_url_radio (GtkToggleButton *button, gpointer user_data)
 static void
 on_select_local_file_cb (const gchar *filename, gpointer user_data)
 {
-	g_autofree gchar *utfname;
+	g_autofree gchar *utfname = NULL;
 
 	if (!filename)
 		return;
@@ -267,7 +267,7 @@ on_select_local_file_cb (const gchar *filename, gpointer user_data)
 static void
 on_select_filter_cb (const gchar *filename, gpointer user_data)
 {
-	g_autofree gchar *utfname;
+	g_autofree gchar *utfname = NULL;
 
 	if (!filename)
 		return;

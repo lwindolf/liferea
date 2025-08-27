@@ -81,7 +81,7 @@ ui_show_error_box (const char *format, ...)
 {
 	GtkWidget		*dialog;
 	va_list			args;
-	g_autofree gchar	*msg;
+	g_autofree gchar	*msg = NULL;
 
 	g_return_if_fail (format != NULL);
 
@@ -103,7 +103,7 @@ ui_show_info_box (const char *format, ...)
 {
 	GtkWidget		*dialog;
 	va_list			args;
-	g_autofree gchar	*msg;
+	g_autofree gchar	*msg = NULL;
 
 	g_return_if_fail (format != NULL);
 

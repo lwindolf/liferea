@@ -217,7 +217,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 		
 		/* Only if we got some ids */
 		if (elements) {
-			g_autofree gchar 	*url;
+			g_autofree gchar 	*url = NULL;
 			UpdateRequest		*request;
 
 			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents", root->subscription->source);
@@ -266,7 +266,7 @@ google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscriptio
 
 	if (!g_str_equal (request->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
 		g_autofree gchar* sourceEscaped = g_uri_escape_string (metadata_list_get (subscription->metadata, "feed-id"), NULL, TRUE);
-		g_autofree gchar* url;
+		g_autofree gchar* url = NULL;
 		
 		/* Note: we have to do a /stream/items/ids here as several Google Reader
 		   clone implementations (e.g. Miniflux) do not implement /stream/contents.
