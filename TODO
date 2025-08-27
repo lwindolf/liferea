@@ -6,8 +6,7 @@ To be fixed next:
 
 1. Crash on advanced search create search folder
 2. Crash on search folder properties save
-3. Crash on itemlist key press 'f'
-4. Crash on item follow link
+3. Feed properties dialog does not close on OK
 
 To be fixed later:
 ==================
