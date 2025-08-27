@@ -60,10 +60,10 @@ ui_common_setup_combo_text (GtkComboBox *combo, gint col)
 void
 ui_common_treeview_move_cursor (GtkTreeView *treeview, gint step)
 {
-	gboolean	ret;
+	gboolean unused;
 
 	gtk_widget_grab_focus (GTK_WIDGET (treeview));
-	g_signal_emit_by_name (treeview, "move-cursor", GTK_MOVEMENT_DISPLAY_LINES, step, &ret);
+	g_signal_emit_by_name (treeview, "move-cursor", GTK_MOVEMENT_DISPLAY_LINES, step, FALSE /* extend selection */, FALSE /* modify selection */, &unused);
 }
 
 void
