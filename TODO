@@ -4,7 +4,8 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 To be fixed next:
 =================
 
-1. Crash on advanced search create search folder
+1. Fix deleting feeds
+2. Fix deleting items
 
 To be fixed later:
 ==================

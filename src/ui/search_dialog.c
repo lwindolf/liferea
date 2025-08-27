@@ -102,7 +102,7 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 		search_dialog = NULL;
 	}
 
-	if (-6 == responseId)
+	if (-6 == responseId || 2 == responseId)
 		gtk_window_close (GTK_WINDOW (dialog));
 }
 
