@@ -66,10 +66,10 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 
 	if (response_id == GTK_RESPONSE_OK) {
 		/* save new search folder settings */
-		node_set_title (sfd->node, liferea_dialog_entry_get (GTK_WIDGET("dialog"), "searchNameEntry"));
+		node_set_title (sfd->node, liferea_dialog_entry_get (sfd->dialog, "searchNameEntry"));
 		rule_editor_save (sfd->re, sfd->vfolder->itemset);
-		sfd->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn")));
-		sfd->vfolder->unreadOnly = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "hideReadItemsBtn")));
+		sfd->vfolder->itemset->anyMatch = gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, "anyRuleRadioBtn")));
+		sfd->vfolder->unreadOnly = gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, "hideReadItemsBtn")));
 
 		/* update search folder */
 		vfolder_reset (sfd->vfolder);
@@ -84,6 +84,8 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		/* rebuild the search folder */
 		vfolder_rebuild (sfd->node);
 	}
+
+	gtk_window_close (GTK_WINDOW (sfd->dialog));
 }
 
 static int
@@ -120,8 +122,8 @@ search_folder_dialog_new (Node *node)
 	liferea_dialog_entry_set (sfd->dialog, "searchNameEntry", node_get_title (node));
 
 	/* Set up rule match type */
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sfd->dialog, sfd->vfolder->itemset->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sfd->dialog, "hideReadItemsBtn")), sfd->vfolder->unreadOnly);
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, sfd->vfolder->itemset->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, "hideReadItemsBtn")), sfd->vfolder->unreadOnly);
 
 	/* Set up rule list vbox */
 	gtk_viewport_set_child (GTK_VIEWPORT (liferea_dialog_lookup (sfd->dialog, "ruleview_vfolder_dialog")), rule_editor_get_widget (sfd->re));
