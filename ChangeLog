@@ -20,6 +20,9 @@ To be released
 	* GtkShortCutsWindow is now used for displaying hotkeys, new hotkey is Ctrl-?
 	  (Lars Windolf)
 
+	* Fixes incorrectly emitting "move-cursor" signal in GtkTreeView
+	  (Lars Windolf)
+
 
 2025-08-20  Lars Windolf <lars.windolf@gmx.de>
 
