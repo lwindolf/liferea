@@ -10,7 +10,7 @@ To be fixed next:
 To be fixed later:
 ==================
 
-- itemlist: Newsbin context menu does not work
+- strange selection behaviour on read filtered itemlist
 - DnD reimplementation
 - restore ATK taggings
 - select next unread

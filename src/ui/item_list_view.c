@@ -739,7 +739,7 @@ item_list_view_popup_menu (ItemListView *ilv, itemPtr item)
 		while (iter) {
 			Node *node = (Node *)iter->data;
 			g_menu_item_set_label(menu_item, node_get_title(node));
-			g_menu_item_set_action_and_target(menu_item, "app.copy-item-to-newsbin", "(umt)", i, TRUE, (guint64) item->id);
+			g_menu_item_set_action_and_target(menu_item, "app.copy-item-to-newsbin", "(ut)", i, (guint64) item->id);
 			g_menu_append_item(submenu, menu_item);
 			iter = g_slist_next(iter);
 			i++;

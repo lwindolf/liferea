@@ -128,14 +128,12 @@ on_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_da
 	itemPtr		item = NULL;
 	guint32 	newsbin_index;
 	guint64 	item_id;
-	gboolean 	maybe_item_id;
 
-	g_variant_get (parameter, "(umt)", &newsbin_index, &maybe_item_id, &item_id);
-	if (maybe_item_id)
-		item = item_load (item_id);
-	else
-		item = itemlist_get_selected ();
+	g_assert (parameter);
+	g_variant_get (parameter, "(ut)", &newsbin_index, &item_id);
 
+	item = item_load (item_id);
+	g_assert (NULL != item);
 	newsbin_add_item (newsbin_index, item);
 }
 
@@ -184,16 +182,17 @@ email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 }
 
 static const GActionEntry gaction_entries[] = {
+	// menu actions
 	{"toggle-selected-item-read-status", on_toggle_unread_status, NULL, NULL, NULL},
 	{"toggle-selected-item-flag", on_toggle_item_flag, NULL, NULL, NULL},
 	{"remove-selected-item", on_remove_item, NULL, NULL, NULL},
 	{"launch-selected-item-in-tab", on_launch_item_in_tab, NULL, NULL, NULL},
 	{"launch-selected-item-in-browser", on_launch_item_in_browser, NULL, NULL, NULL},
 	{"launch-selected-item-in-external-browser", on_launch_item_in_external_browser, NULL, NULL, NULL},
-	// FIXME: Maybe type causes exception in GApplication {"copy-item-to-newsbin", on_copy_to_newsbin, "(umt)", NULL, NULL},
+	{"copy-item-to-newsbin", on_copy_to_newsbin, "(ut)", NULL, NULL},
+	// popup menu actions
 	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
 	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
-	// FIXME: duplicate?
 	{"remove-item", on_remove_item, "t", NULL, NULL},
 	{"open-item-in-tab", on_launch_item_in_tab, "t", NULL, NULL},
 	{"open-item-in-browser", on_launch_item_in_browser, "t", NULL, NULL},
