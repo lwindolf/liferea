@@ -82,7 +82,7 @@ class HeaderBarPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivata
         box.add(button)
 
         button = Gtk.Button()
-        icon = Gio.ThemedIcon(name="emblem-ok-symbolic")
+        icon = Gio.ThemedIcon(name="object-select-symbolic")
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         button.add(image)
         button.set_action_name("app.mark-selected-feed-as-read")
