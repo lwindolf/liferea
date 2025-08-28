@@ -575,15 +575,17 @@ on_shell_key_pressed_event (GtkEventControllerKey *controller, guint keyval, gui
 	if (0 == (state & default_modifiers)) {
 		switch (keyval) {
 			// FIXME: GTK4 migration
-			/*case GDK_KEY_KP_Delete:
+			case GDK_KEY_KP_Delete:
 			case GDK_KEY_Delete:
-				if (focusw == GTK_WIDGET (shell->feedListView))
-					return FALSE;	// to be handled in feed_list_view_key_press_cb() 
+				if (focusw == liferea_shell_lookup ("feedlist"))
+					gtk_event_controller_key_forward (controller, focusw);
+					return FALSE;
 
 				//on_action_remove_item (NULL, NULL, NULL);
 				g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
 				return TRUE;
 				break;
+/*
 			case GDK_KEY_n:
 				//on_next_unread_item_activate (NULL, NULL, NULL);
 				g_warning("FIXME GTK4 migrate next unread");

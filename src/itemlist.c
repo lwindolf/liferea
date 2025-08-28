@@ -371,7 +371,7 @@ itemlist_load (Node *node)
 	debug (DEBUG_GUI, "loading item list with node \"%s\"", node_get_title (node));
 
 	g_assert (!itemlist->priv->filter);
-g_print("itemlist_load called %s\n",node->title);
+
 	g_signal_emit_by_name (itemlist, "item-batch-start", 0);
 
 	/* 1. Filter check. Don't continue if folder is selected and

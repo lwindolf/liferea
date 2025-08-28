@@ -259,7 +259,6 @@ feed_list_view_popup_menu (Node *node)
 {
 	GMenu		*menu_model = g_menu_new ();
 	GMenu		*section = g_menu_new ();
-	GMenuItem 	*menu_item;
 	gboolean	writeableFeedlist, isRoot, addChildren, validSelection;
 
 	if (node->parent) {
@@ -406,17 +405,21 @@ feed_list_view_pressed_cb (GtkGestureClick *gesture, gdouble x, gdouble y, guint
 static gboolean
 feed_list_view_key_pressed_cb (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
 {
-	if (state & GDK_CONTROL_MASK) {
-		if (keyval == GDK_KEY_Delete) {
-			Node *node = feedlist_get_selected ();
+	guint default_modifiers = gtk_accelerator_get_default_mod_mask ();
 
-			if (node) {
-				if (state & GDK_SHIFT_MASK)
-					feedlist_remove_node (node);
-				else
-					feed_list_view_remove (node);
-				return TRUE;
-			}
+	if ((keyval == GDK_KEY_Delete) ||
+		(keyval == GDK_KEY_KP_Delete)) {
+		Node *node = feedlist_get_selected ();
+
+		if (!node)
+			return FALSE;
+
+		if (0 == (state & default_modifiers)) {
+			feed_list_view_remove (node);
+			return TRUE;
+		} else if (state & GDK_SHIFT_MASK) {
+			feedlist_remove_node (node);
+			return TRUE;
 		}
 	}
 
@@ -945,6 +948,8 @@ feed_list_view_remove_cb (GtkDialog *dialog, gint response_id, gpointer user_dat
 {
 	if (GTK_RESPONSE_ACCEPT == response_id)
 		feedlist_remove_node ((Node *)user_data);
+
+	gtk_window_close (GTK_WINDOW (dialog));
 }
 
 void
@@ -956,7 +961,6 @@ feed_list_view_remove (Node *node)
 
 	g_assert (node == feedlist_get_selected ());
 
-	liferea_shell_set_status_bar ("%s \"%s\"", _("Deleting entry"), node_get_title (node));
 	text = g_strdup_printf (IS_FOLDER (node)?_("Are you sure that you want to delete \"%s\" and its contents?"):_("Are you sure that you want to delete \"%s\"?"), node_get_title (node));
 
 	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
@@ -972,6 +976,7 @@ feed_list_view_remove (Node *node)
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
+	gtk_window_present (GTK_WINDOW (dialog));
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 	                  G_CALLBACK (feed_list_view_remove_cb), node);

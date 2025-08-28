@@ -4,19 +4,16 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 To be fixed next:
 =================
 
-1. Fix deleting feeds
-2. Fix deleting items
+1. g_warning("FIXME: reenable selection check item_list_view_item_removed");
+2. make auto layout switch work again
 
 To be fixed later:
 ==================
 
-- itemlist: mark read/flag happens on wrong row (on down)
-- g_warning("FIXME: reenable selection check item_list_view_item_removed");
 - itemlist: Newsbin context menu does not work
 - DnD reimplementation
 - restore ATK taggings
 - select next unread
-- make auto layout switch work again
 - remaining GTK4 FIXMES:
 
 ../src/ui/ui_dnd.c:    (FIXME: implement the last part)
@@ -26,7 +23,6 @@ To be fixed later:
 ../src/ui/liferea_shell.c:      // FIXME: GTK4
 ../src/ui/liferea_shell.c:/* FIXME: GTK4
 ../src/ui/liferea_shell.c:// FIXME: GTK4
-../src/ui/liferea_shell.c:                      // FIXME: GTK4 migration
 ../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
 ../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate next unread");
 ../src/ui/liferea_shell.c:g_warning("FIXME: GTK4 restore pane position sanity checks");

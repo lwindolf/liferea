@@ -388,14 +388,12 @@ item_list_view_all_items_removed (GObject *obj, gpointer user_data)
 }
 
 static void
-item_list_view_item_removed (GObject *obj, gint itemId, gpointer user_data)
+item_list_view_item_removed (GObject *obj, gulong id, gpointer user_data)
 {
 	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
-	itemPtr		item = item_load (itemId);
 	GtkTreeIter	iter;
 
-	g_assert (NULL != item);
-	if (item_list_view_id_to_iter (ilv, item->id, &iter)) {
+	if (item_list_view_id_to_iter (ilv, id, &iter)) {
 		/* Using the GtkTreeIter check if it is currently selected. If yes,
 		   scroll down by one in the sorted GtkTreeView to ensure something
 		   is selected after removing the GtkTreeIter */
@@ -416,7 +414,7 @@ item_list_view_item_removed (GObject *obj, gint itemId, gpointer user_data)
 		g_warning ("Fatal: item to be removed not found in item id list!");
 	}
 
-	ilv->item_ids = g_slist_remove (ilv->item_ids, GUINT_TO_POINTER (item->id));
+	ilv->item_ids = g_slist_remove (ilv->item_ids, GUINT_TO_POINTER (id));
 }
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
@@ -428,7 +426,6 @@ item_list_view_item_batch_started (GObject *obj, gpointer user_data)
 	GtkTreeStore		*itemstore;
 	GtkTreeSelection	*select;
 
-	g_print("item_list_view_item_batch_started()\n");
         itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (ilv->treeview));
 
 	/* unselecting all items is important to remove items
@@ -621,7 +618,8 @@ on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint ke
 
 	switch (keyval) {
 		case GDK_KEY_Delete:
-			g_warning("FIXME: GTK4 port: itemlist_remove_selected ();");
+		case GDK_KEY_KP_Delete:
+			itemlist_remove_item (itemlist_get_selected ());
 			return TRUE;
 		case GDK_KEY_space:
 			itemlist_toggle_read_status (itemlist_get_selected ());
@@ -659,14 +657,16 @@ static gboolean
 on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip, GtkTreeViewColumn *headline_column)
 {
 	GtkTreeView *view = GTK_TREE_VIEW (widget);
-	GtkTreeModel *model; GtkTreePath *path; GtkTreeIter iter;
+	GtkTreeModel *model;
+	GtkTreePath *path;
+	GtkTreeIter iter;
 	gboolean ret = FALSE;
 
 	if (gtk_tree_view_get_tooltip_context (view, x, y, keyboard_mode, &model, &path, &iter)) {
 		GtkTreeViewColumn *column;
 		gint bx, by;
 		gtk_tree_view_convert_widget_to_bin_window_coords (view, x, y, &bx, &by);
-		gtk_tree_view_get_path_at_pos (view, x, y, NULL, &column, NULL, NULL);
+		gtk_tree_view_get_path_at_pos (view, bx, by, NULL, &column, NULL, NULL);
 
 		if (column == headline_column) {
 			GtkCellRenderer *cell;
@@ -798,8 +798,11 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 	GtkTreeViewColumn	*column;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
+	gint			bx, by;
 
-	if (gtk_tree_view_get_path_at_pos (ilv->treeview, (gint)x, (gint)y, &path, &column, NULL, NULL)) {
+	gtk_tree_view_convert_widget_to_bin_window_coords (ilv->treeview, (int)x, (int)y, &bx, &by);
+
+	if (gtk_tree_view_get_path_at_pos (ilv->treeview, (gint)bx, (gint)by, &path, &column, NULL, NULL)) {
 		if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &iter, path))
 			item = item_load (item_list_view_iter_to_id (ilv, &iter));
 		gtk_tree_path_free (path);
