@@ -278,41 +278,6 @@ liferea_shell_save_layout (void)
 	    x > work_area.width ||
 	    y > work_area.height)
 		return;*/
-
-	// FIXME: GTK4 https://developer.gnome.org/documentation/tutorials/save-state.html
-	/* save window size */
-}
-
-/*
- * Restore the window position from the values saved into gconf. Note
- * that this does not display/present/show the mainwindow.
- */
-static void
-liferea_shell_restore_position (void)
-{
-	/* load window position */
-	int x, y, w, h;
-
-	conf_get_int_value (LAST_WINDOW_X, &x);
-	conf_get_int_value (LAST_WINDOW_Y, &y);
-
-	conf_get_int_value (LAST_WINDOW_WIDTH, &w);
-	conf_get_int_value (LAST_WINDOW_HEIGHT, &h);
-
-	debug (DEBUG_GUI, "Retrieved saved setting: size %dx%d position %d:%d", w, h, x, y);
-
-	/* Restore position only if the width and height were saved */
-	if (w != 0 && h != 0) {
-		g_warning ("FIXME GTK4 restore window dimensions");
-	}
-
-	/*conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
-
-	if (last_window_maximized)
-		gtk_window_maximize (GTK_WINDOW (shell->window));
-	else
-		gtk_window_unmaximize (GTK_WINDOW (shell->window));
-	*/
 }
 
 static void
@@ -458,44 +423,12 @@ liferea_shell_set_important_status_bar (const char *format, ...)
 static gboolean
 on_window_resize_cb (gpointer user_data)
 {
-	gint 		vpane_pos = 0, hpane_pos = 0, wpane_pos = 0;
-	GtkWidget	*pane;
-//	GdkWindow	*gdk_window;
-//	GtkAllocation	allocation;
-
 	shell->resizeTimer = 0;
 
 	/* If we are in auto layout mode we ask to calculate it again */
 	if (NODE_VIEW_MODE_AUTO == shell->currentLayoutMode)
 		liferea_shell_set_layout (NODE_VIEW_MODE_AUTO);
-
-	/* Sanity check pane sizes for 0 values after layout switch
-	   this is necessary when switching wide mode to maximized window */
-
-	/* get pane proportions */
-	pane = liferea_shell_lookup ("leftpane");
-	if (!pane)
-		return FALSE;
-	vpane_pos = gtk_paned_get_position (GTK_PANED (pane));
-
-	pane = liferea_shell_lookup ("normalViewPane");
-	if (!pane)
-		return FALSE;
-	hpane_pos = gtk_paned_get_position (GTK_PANED (pane));
-
-	pane = liferea_shell_lookup ("wideViewPane");
-	if (!pane)
-		return FALSE;
-	wpane_pos = gtk_paned_get_position (GTK_PANED (pane));
-
-	// The following code partially duplicates liferea_shell_restore_panes()
-// FIXME: GTK4
-	/* a) set leftpane to 1/3rd of window size if too large */
-
-	/* b) set normalViewPane to 50% container height if too large */
-
-	/* c) set wideViewPane to 50% container width if too large */
-
+	
 	return FALSE;
 }
 
@@ -577,10 +510,10 @@ on_shell_key_pressed_event (GtkEventControllerKey *controller, guint keyval, gui
 			// FIXME: GTK4 migration
 			case GDK_KEY_KP_Delete:
 			case GDK_KEY_Delete:
-				if (focusw == liferea_shell_lookup ("feedlist"))
+				if (focusw == liferea_shell_lookup ("feedlist")) {
 					gtk_event_controller_key_forward (controller, focusw);
 					return FALSE;
-
+				}
 				//on_action_remove_item (NULL, NULL, NULL);
 				g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
 				return TRUE;
@@ -650,53 +583,41 @@ liferea_shell_copy_to_clipboard (const gchar *str)
 	gdk_clipboard_set_text (copypaste, str);
 }
 
-static gboolean
-liferea_shell_restore_layout (gpointer user_data)
+static void
+liferea_shell_restore_layout (void)
 {
-//	GdkWindow	*gdk_window;
-//	GtkAllocation	allocation;
+	GtkWidget	*widget;
+	gint		w, h;
 	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
-
-	liferea_shell_restore_position ();
 
 	/* This only works after the window has been restored, so we do it last. */
 	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
 	conf_get_int_value (LAST_HPANE_POS, &last_hpane_pos);
 	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
 
-g_warning("FIXME: GTK4 restore pane position sanity checks");	
 	/* Sanity check pane sizes for too large values */
 	/* a) set leftpane to 1/3rd of window size if too large */
-	//gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
-	//if (gdk_window_get_width (gdk_window) * 95 / 100 <= last_vpane_pos || 0 == last_vpane_pos)
-	//	last_vpane_pos = gdk_window_get_width (gdk_window) / 3;
 	
+	/* In GTK4 get_default_size is effectively given us the size */
+	gtk_window_get_default_size (shell->window, &w, &h);
+	if (w * 95 / 100 <= last_vpane_pos || 0 == last_vpane_pos)
+		last_vpane_pos = w / 3;
+
 	/* b) set normalViewPane to 50% container height if too large */
-	//gtk_widget_get_allocation (GTK_WIDGET (liferea_shell_lookup ("normalViewPane")), &allocation);
-	//if ((allocation.height * 95 / 100 <= last_hpane_pos) || 0 == last_hpane_pos)
-	//	last_hpane_pos = allocation.height / 2;
-	
+	widget = GTK_WIDGET (liferea_shell_lookup ("normalViewPane"));
+	if ((gtk_widget_get_height (widget) * 95 / 100 <= last_hpane_pos) || 0 == last_hpane_pos)
+		last_hpane_pos = gtk_widget_get_height (widget) / 2;
+
 	/* c) set wideViewPane to 50% container width if too large */
-	//gtk_widget_get_allocation (GTK_WIDGET (liferea_shell_lookup ("wideViewPane")), &allocation);
-	//if ((allocation.width * 95 / 100 <= last_wpane_pos) || 0 == last_wpane_pos)
-//		last_wpane_pos = allocation.width / 2;
+	widget = GTK_WIDGET (liferea_shell_lookup ("wideViewPane"));
+	if ((gtk_widget_get_width (widget) * 95 / 100 <= last_wpane_pos) || 0 == last_wpane_pos)
+		last_wpane_pos = gtk_widget_get_width (widget) / 2;
 
 	debug (DEBUG_GUI, "Restoring pane proportions (left:%d normal:%d wide:%d)", last_vpane_pos, last_hpane_pos, last_wpane_pos);
 
 	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
 	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
 	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
-	
-	return FALSE;
-}
-
-static void
-liferea_shell_restore_state (const gchar *overrideWindowState)
-{
-	/* Need to run asynchronous otherwise pane widget allocation is reported
-	   wrong, maybe it is running to early as we realize only above. Also
-	   only like this window position restore works properly. */
-	g_idle_add (liferea_shell_restore_layout, NULL);
 }
 
 static void
@@ -872,6 +793,16 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
 
+	/* 2.) Load shell state and bind for persisting */
+	liferea_shell_restore_layout ();
+	GSettings *settings = conf_get_settings ();
+	g_settings_bind (settings, LAST_WINDOW_WIDTH, shell->window, "default-width", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (settings, LAST_WINDOW_HEIGHT, shell->window, "default-height", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (settings, LAST_WINDOW_MAXIMIZED, shell->window, "maximized", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (settings, LAST_VPANE_POS, liferea_shell_lookup ("leftpane"), "position", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (settings, LAST_HPANE_POS, liferea_shell_lookup ("normalViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (settings, LAST_WPANE_POS, liferea_shell_lookup ("wideViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
+
 	/* 3. Add accelerators for shell */
 	static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};
 	static const gchar * liferea_accels_quit[] = {"<Control>q", NULL};
@@ -914,7 +845,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 5.) update and restore all menu elements */
 	liferea_shell_setup_URL_receiver ();
-	liferea_shell_restore_state (overrideWindowState);
 
 	// 6.) Restore selection (FIXME: Move to feed list code?)
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {
@@ -958,12 +888,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 void liferea_shell_show_window (void)
 {
-	GtkWidget *mainwindow = GTK_WIDGET (shell->window);
-
-	if (!gtk_widget_get_visible (GTK_WIDGET (mainwindow)))
-		liferea_shell_restore_position ();
-	// FIXME: how to do deiconify in GTK4?
-	//gtk_window_deiconify (GTK_WINDOW (mainwindow));
 	gtk_window_present (shell->window);
 }
 

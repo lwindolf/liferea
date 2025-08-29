@@ -4,8 +4,8 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 To be fixed next:
 =================
 
-1. g_warning("FIXME: reenable selection check item_list_view_item_removed");
-2. make auto layout switch work again
+1. make auto layout switch work again
+2. tests failing on Github in test "update" with SIGTRAP
 
 To be fixed later:
 ==================
@@ -18,14 +18,8 @@ To be fixed later:
 
 ../src/ui/ui_dnd.c:    (FIXME: implement the last part)
 ../src/ui/ui_dnd.c:     g_warning ("FIXME GTK4: drag and drop not yet implemented");
-../src/ui/liferea_shell.c:      // FIXME: GTK4 https://developer.gnome.org/documentation/tutorials/save-state.html
-../src/ui/liferea_shell.c:              g_warning ("FIXME GTK4 restore window dimensions");
-../src/ui/liferea_shell.c:      // FIXME: GTK4
-../src/ui/liferea_shell.c:/* FIXME: GTK4
-../src/ui/liferea_shell.c:// FIXME: GTK4
 ../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
 ../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate next unread");
-../src/ui/liferea_shell.c:g_warning("FIXME: GTK4 restore pane position sanity checks");
 ../src/ui/liferea_shell.c:      // 6.) Restore selection (FIXME: Move to feed list code?)
 ../src/ui/liferea_shell.c:      g_warning ("FIXME GTK4 on_window_resize_cb");
 ../src/ui/liferea_shell.c:      // FIXME GTK4
@@ -36,8 +30,6 @@ To be fixed later:
 ../src/actions/shell_actions.c: // FIXME GTK4 g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_set_visible), NULL);
 ../src/actions/shell_actions.c: // FIXME: this looks wrong here
 ../src/actions/shell_actions.c: // FIXME: action group state init
-../src/actions/item_actions.c:  // FIXME: Maybe type causes exception in GApplication {"copy-item-to-newsbin", on_copy_to_newsbin, "(umt)", NULL, NULL},
-../src/actions/item_actions.c:  // FIXME: duplicate?
 ../src/actions/node_actions.c:  // FIXME
 ../src/actions/node_actions.c:        ui_common_action_enable (ag, "node-rebuild-vfolder", TRUE);     // FIXME
 ../src/actions/node_actions.c:        ui_common_action_enable (ag, "node-convert-to-local", TRUE);    // FIXME

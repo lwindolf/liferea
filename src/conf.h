@@ -84,11 +84,15 @@ void	conf_deinit (void);
 
 /* preferences access methods */
 
+/**
+ * Returns the Liferea GSettings object.
+ */
+GSettings * conf_get_settings (void);
+
 #define conf_get_bool_value(key, value) conf_get_bool_value_from_schema (NULL, key, value)
 #define conf_get_str_value(key, value) conf_get_str_value_from_schema (NULL, key, value)
 #define conf_get_strv_value(key, value) conf_get_strv_value_from_schema (NULL, key, value)
 #define conf_get_int_value(key, value) conf_get_int_value_from_schema (NULL, key, value)
-
 
 /**
  * Returns true if the key is defined in the schema for the given gsettings.
