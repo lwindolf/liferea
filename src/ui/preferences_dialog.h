@@ -2,7 +2,7 @@
  * @file preferences_dialog.h Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,23 +34,6 @@ G_DECLARE_FINAL_TYPE (PreferencesDialog, preferences_dialog, PREFERENCES, DIALOG
  * Show the preferences dialog.
  */
 void preferences_dialog_open (void);
-
-/* functions used in glade/prefs.ui */
-void on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data);
-void on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data);
-void on_deferdeletemode_toggled (GtkToggleButton *togglebutton, gpointer user_data);
-void on_popupwindowsoptionbtn_clicked (GtkButton *button, gpointer user_data);
-void on_startupactionbtn_toggled (GtkButton *button, gpointer user_data);
-void on_browsercmd_changed (GtkEditable *editable, gpointer user_data);
-void on_openlinksinsidebtn_clicked (GtkToggleButton *button, gpointer user_data);
-void on_disablejavascript_toggled (GtkToggleButton *togglebutton, gpointer user_data);
-void on_enableplugins_toggled (GtkToggleButton *togglebutton, gpointer user_data);
-void on_itemCountBtn_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
-void on_default_update_interval_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
-void on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data);
-void on_enc_action_change_btn_clicked (GtkButton *button, gpointer user_data);
-void on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data);
-void on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data);
 
 G_END_DECLS
 

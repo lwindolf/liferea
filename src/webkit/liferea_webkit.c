@@ -349,17 +349,17 @@ liferea_webkit_init (LifereaWebKit *self)
 	webkit_network_session_set_itp_enabled (webkit_network_session_get_default (), enable_itp);
 
 	/* Webkit web extensions */
-	g_signal_connect (
+	/*g_signal_connect (
 		webkit_web_context_get_default (),
 		"initialize-web-extensions",
 		G_CALLBACK (liferea_webkit_initialize_web_extensions),
 		self);
-
-	g_signal_connect (
+*/
+	/*g_signal_connect (
 		webkit_web_context_get_default (),
 		"download-started",
 		G_CALLBACK (liferea_webkit_download_started),
-		self);
+		self);*/
 }
 
 /**

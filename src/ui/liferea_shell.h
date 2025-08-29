@@ -147,14 +147,6 @@ GtkWidget * liferea_shell_get_window (void);
  */
 itemPtr liferea_shell_find_next_unread (gulong startId);
 
-/**
- * liferea_shell_set_layout:
- * @newMode:	new view mode (NODE_VIEW_MODE_*)
- *
- * Switches the layout for the given viewing mode.
- */
-void liferea_shell_set_layout (nodeViewType newMode);
-
 G_END_DECLS
 
 #endif

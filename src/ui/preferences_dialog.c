@@ -2,7 +2,7 @@
  * @file preferences_dialog.c Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -105,9 +105,9 @@ preferences_dialog_class_init (PreferencesDialogClass *klass)
 /* Preference callbacks */
 
 void
-on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+on_folderdisplaybtn_toggled (GtkCheckButton *togglebutton, gpointer user_data)
 {
-	gboolean enabled = gtk_toggle_button_get_active(togglebutton);
+	gboolean enabled = gtk_check_button_get_active(togglebutton);
 	conf_set_int_value(FOLDER_DISPLAY_MODE, (TRUE == enabled)?1:0);
 }
 
@@ -117,14 +117,14 @@ on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
  * itemlist. The item selection is lost by this.
  */
 void
-on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+on_folderhidereadbtn_toggled (GtkCheckButton *togglebutton, gpointer user_data)
 {
 	Node		*displayedNode;
 	gboolean	enabled;
 
 	displayedNode = itemlist_get_displayed_node ();
 
-	enabled = gtk_toggle_button_get_active (togglebutton);
+	enabled = gtk_check_button_get_active (togglebutton);
 	conf_set_bool_value (FOLDER_DISPLAY_HIDE_READ, enabled);
 
 	if (displayedNode && IS_FOLDER (displayedNode)) {
@@ -137,9 +137,9 @@ on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 }
 
 void
-on_startupactionbtn_toggled (GtkButton *button, gpointer user_data)
+on_startupactionbtn_toggled (GtkCheckButton *button, gpointer user_data)
 {
-	gboolean enabled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
+	gboolean enabled = gtk_check_button_get_active (GTK_CHECK_BUTTON (button));
 	conf_set_int_value (STARTUP_FEED_ACTION, enabled?0:1);
 }
 
@@ -170,15 +170,15 @@ on_browser_changed (GtkComboBox *optionmenu, gpointer user_data)
 }
 
 void
-on_openlinksinsidebtn_clicked (GtkToggleButton *button, gpointer user_data)
+on_openlinksinsidebtn_clicked (GtkCheckButton *button, gpointer user_data)
 {
-	conf_set_bool_value (BROWSE_INSIDE_APPLICATION, gtk_toggle_button_get_active (button));
+	conf_set_bool_value (BROWSE_INSIDE_APPLICATION, gtk_check_button_get_active (button));
 }
 
 void
-on_disablejavascript_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+on_disablejavascript_toggled (GtkCheckButton *togglebutton, gpointer user_data)
 {
-	conf_set_bool_value (DISABLE_JAVASCRIPT, gtk_toggle_button_get_active (togglebutton));
+	conf_set_bool_value (DISABLE_JAVASCRIPT, gtk_check_button_get_active (togglebutton));
 }
 
 static void
@@ -258,40 +258,33 @@ on_default_view_mode_changed (gpointer user_data)
 	gint 	mode = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data));
 	
 	conf_set_int_value (DEFAULT_VIEW_MODE, mode);
-	liferea_shell_set_layout (mode);
 }
 
 void
-on_deferdeletemode_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+on_deferdeletemode_toggled (GtkCheckButton *togglebutton, gpointer user_data)
 {
 	gboolean	enabled;
 
-	enabled = gtk_toggle_button_get_active (togglebutton);
+	enabled = gtk_check_button_get_active (togglebutton);
 	conf_set_bool_value (DEFER_DELETE_MODE, enabled);
 }
 
 void
-on_readermodebtn_toggled (GtkToggleButton *button, gpointer user_data)
+on_donottrackbtn_toggled (GtkCheckButton *button, gpointer user_data)
 {
-	conf_set_bool_value (ENABLE_READER_MODE, gtk_toggle_button_get_active (button));
+	conf_set_bool_value (DO_NOT_TRACK, gtk_check_button_get_active (button));
 }
 
 void
-on_donottrackbtn_toggled (GtkToggleButton *button, gpointer user_data)
+on_donotsellbtn_toggled (GtkCheckButton *button, gpointer user_data)
 {
-	conf_set_bool_value (DO_NOT_TRACK, gtk_toggle_button_get_active (button));
+	conf_set_bool_value (DO_NOT_SELL, gtk_check_button_get_active (button));
 }
 
 void
-on_donotsellbtn_toggled (GtkToggleButton *button, gpointer user_data)
+on_itpbtn_toggled (GtkCheckButton *button, gpointer user_data)
 {
-	conf_set_bool_value (DO_NOT_SELL, gtk_toggle_button_get_active (button));
-}
-
-void
-on_itpbtn_toggled (GtkToggleButton *button, gpointer user_data)
-{
-	conf_set_bool_value (ENABLE_ITP, gtk_toggle_button_get_active (button));
+	conf_set_bool_value (ENABLE_ITP, gtk_check_button_get_active (button));
 }
 
 static void
@@ -334,7 +327,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* check box for feed startup update */
 	conf_get_int_value (STARTUP_FEED_ACTION, &iSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "startupactionbtn")), (iSetting == 0));
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (pd->dialog, "startupactionbtn")), (iSetting == 0));
 
 	/* cache size setting */
 	widget = liferea_dialog_lookup (pd->dialog, "itemCountBtn");
@@ -369,9 +362,9 @@ preferences_dialog_init (PreferencesDialog *pd)
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), pd);
 
 	conf_get_int_value (FOLDER_DISPLAY_MODE, &iSetting);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "folderdisplaybtn")), iSetting?TRUE:FALSE);
+	gtk_check_button_set_active(GTK_CHECK_BUTTON (liferea_dialog_lookup (pd->dialog, "folderdisplaybtn")), iSetting?TRUE:FALSE);
 	conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &bSetting);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "hidereadbtn")), bSetting?TRUE:FALSE);
+	gtk_check_button_set_active(GTK_CHECK_BUTTON (liferea_dialog_lookup (pd->dialog, "hidereadbtn")), bSetting?TRUE:FALSE);
 
 	/* ================== panel 3 "headlines" ==================== */
 
@@ -388,7 +381,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	                            iSetting);
 
 	conf_get_bool_value (DEFER_DELETE_MODE, &bSetting);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "deferdeletebtn")), bSetting?TRUE:FALSE);
+	gtk_check_button_set_active(GTK_CHECK_BUTTON (liferea_dialog_lookup (pd->dialog, "deferdeletebtn")), bSetting?TRUE:FALSE);
 
 	/* Setup social bookmarking list */
 	i = 0;
@@ -416,12 +409,12 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* set the inside browsing flag */
 	widget = liferea_dialog_lookup(pd->dialog, "browseinwindow");
 	conf_get_bool_value(BROWSE_INSIDE_APPLICATION, &bSetting);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), bSetting);
+	gtk_check_button_set_active(GTK_CHECK_BUTTON(widget), bSetting);
 
 	/* set the javascript-disabled flag */
 	widget = liferea_dialog_lookup(pd->dialog, "disablejavascript");
 	conf_get_bool_value(DISABLE_JAVASCRIPT, &bSetting);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), bSetting);
+	gtk_check_button_set_active(GTK_CHECK_BUTTON(widget), bSetting);
 
 	conf_get_str_value (BROWSER_ID, &configuredBrowser);
 	manualBrowser = !strcmp (configuredBrowser, "manual");
@@ -448,10 +441,10 @@ preferences_dialog_init (PreferencesDialog *pd)
 		default:
 		case 2: /* manual proxy -> deprecated so fall through to auto detect */
 		case 0: /* proxy auto detect */
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), TRUE);
+			gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), TRUE);
 			break;
 		case 1: /* no proxy */
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), TRUE);
+			gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), TRUE);
 			break;
 	}
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), "clicked", G_CALLBACK (on_proxyAutoDetect_clicked), pd);
@@ -461,15 +454,15 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	widget = liferea_dialog_lookup (pd->dialog, "donottrackbtn");
 	conf_get_bool_value (DO_NOT_TRACK, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (widget), bSetting);
 
 	widget = liferea_dialog_lookup (pd->dialog, "donotsellbtn");
 	conf_get_bool_value (DO_NOT_SELL, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (widget), bSetting);
 
 	widget = liferea_dialog_lookup (pd->dialog, "itpbtn");
 	conf_get_bool_value (ENABLE_ITP, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (widget), bSetting);
 
 	g_signal_connect_object (pd->dialog, "destroy", G_CALLBACK (preferences_dialog_destroy_cb), pd, 0);
 

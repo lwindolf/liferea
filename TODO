@@ -4,8 +4,9 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 To be fixed next:
 =================
 
-1. make auto layout switch work again
-2. tests failing on Github in test "update" with SIGTRAP
+1. tests failing on Github in test "update" with SIGTRAP
+2. Migrate preferences dialog to gsettings bindings
+3. Fix select next unread
 
 To be fixed later:
 ==================
@@ -13,7 +14,6 @@ To be fixed later:
 - strange selection behaviour on read filtered itemlist
 - DnD reimplementation
 - restore ATK taggings
-- select next unread
 - remaining GTK4 FIXMES:
 
 ../src/ui/ui_dnd.c:    (FIXME: implement the last part)
@@ -21,10 +21,8 @@ To be fixed later:
 ../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
 ../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate next unread");
 ../src/ui/liferea_shell.c:      // 6.) Restore selection (FIXME: Move to feed list code?)
-../src/ui/liferea_shell.c:      g_warning ("FIXME GTK4 on_window_resize_cb");
 ../src/ui/liferea_shell.c:      // FIXME GTK4
 ../src/ui/liferea_shell.c:      feed_list_view_set_reduce_mode (FALSE); // FIXME: this would be better triggered by a GAction init somewhere
-../src/ui/liferea_shell.c:      // FIXME: how to do deiconify in GTK4?
 ../src/actions/shell_actions.c: // FIXME: use node type capability check
 ../src/actions/shell_actions.c:// FIXME replace this with a bind!
 ../src/actions/shell_actions.c: // FIXME GTK4 g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_set_visible), NULL);

@@ -736,31 +736,6 @@
                         </layout>
                       </object>
                     </child>
-                    <child>
-                      <object class="GtkBox">
-                        <child>
-                          <object class="GtkCheckButton" id="readermodebtn">
-                            <property name="focusable">1</property>
-                            <property name="halign">start</property>
-                            <property name="label" translatable="yes">Use _Reader mode.</property>
-                            <property name="margin-start">12</property>
-                            <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_readermodebtn_toggled"/>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="ellipsize">end</property>
-                            <property name="label" translatable="yes">This enables &lt;a href="https://github.com/mozilla/readability"&gt;stripping&lt;/a&gt; all non-content elements (like scripts, fonts, tracking)</property>
-                            <property name="use-markup">1</property>
-                          </object>
-                        </child>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="row">1</property>
-                        </layout>
-                      </object>
-                    </child>
                   </object>
                 </property>
                 <property name="position">6</property>

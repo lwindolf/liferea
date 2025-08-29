@@ -220,7 +220,7 @@ itemlist_class_init (ItemListClass *klass)
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_INT,
+		G_TYPE_NONE,
 		0);
 }
 
