@@ -113,7 +113,6 @@
                             <property name="label" translatable="yes">_Update all subscriptions at startup.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_startupactionbtn_toggled"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="column-span">3</property>
@@ -141,7 +140,6 @@
                             <property name="text" translatable="yes">1</property>
                             <property name="value">1</property>
                             <property name="width-request">60</property>
-                            <signal name="value-changed" handler="on_default_update_interval_value_changed"/>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">2</property>
@@ -149,17 +147,12 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkComboBox" id="globalRefreshIntervalUnitComboBox">
-                            <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext5"/>
-                              <!-- Custom child fragments -->
-                              <attributes>
-                                <attribute name="text">0</attribute>
-                              </attributes>
-                            </child>
+                          <object class="GtkDropDown" id="globalRefreshIntervalUnit">
                             <layout>
                               <property name="column">2</property>
+                              <property name="column-span">1</property>
                               <property name="row">2</property>
+                              <property name="row-span">1</property>
                             </layout>
                           </object>
                         </child>
@@ -211,7 +204,7 @@
                             <property name="label" translatable="yes">_Show the items of all child feeds when a folder is selected.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_folderdisplaybtn_toggled"/>
+                            <signal name="toggled" handler="on_folder_settings_changed"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -225,7 +218,7 @@
                             <property name="label" translatable="yes">_Hide read items.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_folderhidereadbtn_toggled"/>
+                            <signal name="toggled" handler="on_folder_settings_changed"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
@@ -315,7 +308,6 @@
                           <object class="GtkLabel">
                             <property name="label" translatable="yes">_Skim through articles with:</property>
                             <property name="margin-start">12</property>
-                            <property name="mnemonic-widget">skimKeyCombo</property>
                             <property name="use-underline">1</property>
                             <property name="xalign">0.0</property>
                             <layout>
@@ -328,41 +320,10 @@
                           <object class="GtkLabel">
                             <property name="label" translatable="yes">_Default View Mode:</property>
                             <property name="margin-start">12</property>
-                            <property name="mnemonic-widget">defaultViewModeCombo</property>
                             <property name="use-underline">1</property>
                             <property name="xalign">0.0</property>
                             <layout>
                               <property name="column">0</property>
-                              <property name="row">2</property>
-                            </layout>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkComboBox" id="skimKeyCombo">
-                            <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext3"/>
-                              <!-- Custom child fragments -->
-                              <attributes>
-                                <attribute name="text">0</attribute>
-                              </attributes>
-                            </child>
-                            <layout>
-                              <property name="column">1</property>
-                              <property name="row">1</property>
-                            </layout>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkComboBox" id="defaultViewModeCombo">
-                            <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext4"/>
-                              <!-- Custom child fragments -->
-                              <attributes>
-                                <attribute name="text">0</attribute>
-                              </attributes>
-                            </child>
-                            <layout>
-                              <property name="column">1</property>
                               <property name="row">2</property>
                             </layout>
                           </object>
@@ -374,7 +335,6 @@
                             <property name="label" translatable="yes">_Defer removing read items from folders and search folders.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_deferdeletemode_toggled"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="column-span">2</property>
@@ -392,6 +352,28 @@
                               <property name="column">0</property>
                               <property name="column-span">2</property>
                               <property name="row">4</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkDropDown" id="skimKey">
+                            <property name="hexpand">True</property>
+                            <layout>
+                              <property name="column">1</property>
+                              <property name="column-span">1</property>
+                              <property name="row">1</property>
+                              <property name="row-span">1</property>
+                            </layout>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkDropDown" id="defaultViewMode">
+                            <property name="hexpand">True</property>
+                            <layout>
+                              <property name="column">1</property>
+                              <property name="column-span">1</property>
+                              <property name="row">2</property>
+                              <property name="row-span">1</property>
                             </layout>
                           </object>
                         </child>
@@ -424,7 +406,6 @@
                           <object class="GtkLabel">
                             <property name="label" translatable="yes">_Post Bookmarks to</property>
                             <property name="margin-start">12</property>
-                            <property name="mnemonic-widget">socialpopup</property>
                             <property name="use-underline">1</property>
                             <layout>
                               <property name="column">0</property>
@@ -433,10 +414,12 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkComboBox" id="socialpopup">
+                          <object class="GtkDropDown" id="social">
                             <layout>
                               <property name="column">1</property>
+                              <property name="column-span">1</property>
                               <property name="row">1</property>
+                              <property name="row-span">1</property>
                             </layout>
                           </object>
                         </child>
@@ -490,7 +473,6 @@
                             <property name="label" translatable="yes">Open links in Liferea's _window.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_openlinksinsidebtn_clicked"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">1</property>
@@ -504,7 +486,6 @@
                             <property name="label" translatable="yes">_Never run external Javascript.</property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_disablejavascript_toggled"/>
                             <layout>
                               <property name="column">0</property>
                               <property name="row">2</property>
@@ -540,7 +521,6 @@
                           <object class="GtkLabel">
                             <property name="label" translatable="yes">_Browser:</property>
                             <property name="margin-start">12</property>
-                            <property name="mnemonic-widget">browserpopup</property>
                             <property name="use-underline">1</property>
                             <property name="xalign">0.0</property>
                             <layout>
@@ -568,7 +548,6 @@
                             <property name="focusable">1</property>
                             <property name="hexpand">True</property>
                             <property name="placeholder-text">(%s for URL)</property>
-                            <signal name="changed" handler="on_browsercmd_changed"/>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">2</property>
@@ -576,11 +555,12 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkComboBox" id="browserpopup">
-                            <property name="hexpand">True</property>
+                          <object class="GtkDropDown" id="browserpopup">
                             <layout>
                               <property name="column">1</property>
+                              <property name="column-span">1</property>
                               <property name="row">1</property>
+                              <property name="row-span">1</property>
                             </layout>
                           </object>
                         </child>
@@ -689,7 +669,6 @@
                         <property name="label" translatable="yes">Tell websites that I do _not want to be tracked.</property>
                         <property name="margin-start">12</property>
                         <property name="use-underline">1</property>
-                        <signal name="toggled" handler="on_donottrackbtn_toggled"/>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">2</property>
@@ -703,7 +682,6 @@
                         <property name="label" translatable="yes">Tell websites not to _sell or share my data.</property>
                         <property name="margin-start">12</property>
                         <property name="use-underline">1</property>
-                        <signal name="toggled" handler="on_donotsellbtn_toggled"/>
                         <layout>
                           <property name="column">0</property>
                           <property name="row">3</property>
@@ -719,7 +697,6 @@
                             <property name="label" translatable="yes">_Intelligent Tracking Prevention. </property>
                             <property name="margin-start">12</property>
                             <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_itpbtn_toggled"/>
                           </object>
                         </child>
                         <child>
@@ -752,6 +729,10 @@
     </child>
     <child internal-child="action_area">
       <object class="GtkBox">
+        <property name="margin-bottom">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-start">6</property>
+        <property name="margin-top">6</property>
         <property name="visible">True</property>
         <child>
           <object class="GtkButton" id="prefclosebtn">

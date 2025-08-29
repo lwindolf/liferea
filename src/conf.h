@@ -53,7 +53,7 @@
 #define STARTUP_FEED_ACTION		"startup-feed-action"
 
 /* folder handling settings */
-#define FOLDER_DISPLAY_MODE		"folder-display-mode"
+#define FOLDER_DISPLAY_CHILDREN		"folder-display-children"
 #define FOLDER_DISPLAY_HIDE_READ	"folder-display-hide-read"
 #define REDUCED_FEEDLIST		"reduced-feedlist"
 
@@ -83,11 +83,6 @@ void	conf_init (void);
 void	conf_deinit (void);
 
 /* preferences access methods */
-
-/**
- * Returns the Liferea GSettings object.
- */
-GSettings * conf_get_settings (void);
 
 #define conf_get_bool_value(key, value) conf_get_bool_value_from_schema (NULL, key, value)
 #define conf_get_str_value(key, value) conf_get_str_value_from_schema (NULL, key, value)
@@ -219,4 +214,5 @@ void conf_signal_connect (const gchar *signal, GCallback cb, gpointer data);
  * This is a convenience function that calls g_settings_bind with Liferea settings.
  */
 void conf_bind (const gchar *key, gpointer object, const gchar *property, GSettingsBindFlags flags);
+
 #endif

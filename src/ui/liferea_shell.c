@@ -82,7 +82,6 @@ struct _LifereaShell {
 	GtkStatusbar	*statusbar;		/*<< main window status bar */
 	gboolean	statusbarLocked;	/*<< flag locking important message on status bar */
 	guint		statusbarLockTimer;	/*<< timer id for status bar lock reset timer */
-	guint		resizeTimer;		/*<< timer id for resize callback */
 
 	ItemList	*itemlist;
 	FeedList	*feedlist;
@@ -497,14 +496,14 @@ on_auto_update_layout (gpointer user_data)
 static gboolean
 on_window_resize_cb (gpointer user_data)
 {
-	shell->resizeTimer = 0;
-	g_print("on_window_resize_cb\n");
+	static gint resizeTimer = 0;
+
 	/* If we are in auto layout mode we ask to calculate it again */
 	if (shell->autoLayout) {
-		if (shell->resizeTimer)
-			g_source_remove (shell->resizeTimer);
+		if (resizeTimer)
+			g_source_remove (resizeTimer);
 
-		shell->resizeTimer = g_timeout_add(100, (GSourceFunc)on_auto_update_layout, NULL);
+		resizeTimer = g_timeout_add(100, (GSourceFunc)on_auto_update_layout, NULL);
 	}
 	
 	return FALSE;
@@ -784,15 +783,14 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 2.) Load shell state and bind for persisting */
 	liferea_shell_restore_layout ();
-	GSettings *settings = conf_get_settings ();
-	g_settings_bind (settings, DEFAULT_VIEW_MODE, shell, "layout-mode", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_WINDOW_WIDTH, shell->window, "default-width", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_WINDOW_WIDTH, shell->window, "default-width", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_WINDOW_HEIGHT, shell->window, "default-height", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_WINDOW_MAXIMIZED, shell->window, "maximized", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_VPANE_POS, liferea_shell_lookup ("leftpane"), "position", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_HPANE_POS, liferea_shell_lookup ("normalViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_WPANE_POS, liferea_shell_lookup ("wideViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (DEFAULT_VIEW_MODE, shell, "layout-mode", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_WINDOW_WIDTH, shell->window, "default-width", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_WINDOW_WIDTH, shell->window, "default-width", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_WINDOW_HEIGHT, shell->window, "default-height", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_WINDOW_MAXIMIZED, shell->window, "maximized", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_VPANE_POS, liferea_shell_lookup ("leftpane"), "position", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_HPANE_POS, liferea_shell_lookup ("normalViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_WPANE_POS, liferea_shell_lookup ("wideViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
 
 	/* 3. Add accelerators for shell */
 	static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};

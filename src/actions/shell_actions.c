@@ -150,7 +150,7 @@ on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpoint
 static void
 on_prefbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	preferences_dialog_open ();
+	(void) g_object_new (PREFERENCES_DIALOG_TYPE, NULL);
 }
 
 static void

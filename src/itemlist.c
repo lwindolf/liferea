@@ -330,7 +330,7 @@ itemlist_merge_item_callback (itemPtr item, gpointer _unused)
 static gboolean
 itemlist_itemset_is_valid (itemSetPtr itemSet)
 {
-	gint	folder_display_mode;
+	gboolean folder_display_children;
 	Node	*node;
 
 	node = node_from_id (itemSet->nodeId);
@@ -343,8 +343,8 @@ itemlist_itemset_is_valid (itemSetPtr itemSet)
 	    !node_is_ancestor (itemlist->priv->currentNode, node))
 		return FALSE; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
 
-	conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
-	if (IS_FOLDER (itemlist->priv->currentNode) && !folder_display_mode)
+	conf_get_bool_value (FOLDER_DISPLAY_CHILDREN, &folder_display_children);
+	if (IS_FOLDER (itemlist->priv->currentNode) && !folder_display_children)
 		return FALSE; /* Bail out if it is a folder without the recursive display preference set */
 
 	debug (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
@@ -363,7 +363,7 @@ void
 itemlist_load (Node *node)
 {
 	itemSetPtr	itemSet;
-	gint		folder_display_mode;
+	gboolean	folder_display_children;
 	gboolean	display_hide_read = FALSE;
 
 	g_return_if_fail (NULL != node);
@@ -380,8 +380,8 @@ itemlist_load (Node *node)
 
 	/* for folders and other hierarchic nodes do preference based filtering */
 	if (IS_FOLDER (node) || node->children) {
-		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
-		if (!folder_display_mode)
+		conf_get_bool_value (FOLDER_DISPLAY_CHILDREN, &folder_display_children);
+		if (!folder_display_children)
 			return;
 
 		conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &display_hide_read);

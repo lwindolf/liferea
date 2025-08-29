@@ -5,15 +5,21 @@ To be fixed next:
 =================
 
 1. tests failing on Github in test "update" with SIGTRAP
-2. Migrate preferences dialog to gsettings bindings
-3. Fix select next unread
+2. Fix select next unread
 
 To be fixed later:
 ==================
 
+- proxy radio in preferences does not do anything
 - strange selection behaviour on read filtered itemlist
 - DnD reimplementation
 - restore ATK taggings
+- preferences:
+(net.sourceforge.liferea:109397): Gtk-CRITICAL **: 18:27:09.947: gtk_widget_set_sensitive: assertion 'GTK_IS_WIDGET (widget)' failed
+(net.sourceforge.liferea:109397): Gtk-CRITICAL **: 18:27:09.947: gtk_widget_set_sensitive: assertion 'GTK_IS_WIDGET (widget)' failed
+sys:1: Warning: ../../../gobject/gsignal.c:2532: signal 'clicked' is invalid for instance '0x60fef357c020' of type 'GtkCheckButton'
+sys:1: Warning: ../../../gobject/gsignal.c:2532: signal 'clicked' is invalid for instance '0x60fef357e7a0' of type 'GtkCheckButton'
+
 - remaining GTK4 FIXMES:
 
 ../src/ui/ui_dnd.c:    (FIXME: implement the last part)

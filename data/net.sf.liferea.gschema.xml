@@ -2,6 +2,11 @@
 <schemalist gettext-domain="liferea">
   <schema gettext-domain="liferea" id="net.sf.liferea" path="/org/gnome/liferea/">
     <child name="plugins" schema="net.sf.liferea.plugins"/>
+    <key name="schema-version" type="i">
+      <default>0</default>
+      <summary>The version of the settings schema</summary>
+      <description>This value is incremented when the settings schema changes.</description>
+    </key>
     <key name="browse-inside-application" type="b">
       <default>false</default>
       <summary>Open links inside of Liferea?</summary>
@@ -114,13 +119,18 @@
     </key>
     <key name="folder-display-mode" type="i">
       <default>1</default>
+      <summary>DEPRECATED, migrated to folder-display-children.</summary>
+      <description>If set to 0 no items are displayed when selecting a folder. If set to 1 all items of all child nodes are displayed when selecting a folder.</description>
+    </key>
+    <key name="folder-display-children" type="b">
+      <default>true</default>
       <summary>Determine if folders show all child content.</summary>
-      <description>If set to 0 no items are displayed when selecting a folder. If set to 1 all items of all childs are displayed when  selecting a folder.</description>
+      <description>If enabled no items are displayed when selecting a folder. If set to 1 all items of all child nodes are displayed when selecting a folder.</description>
     </key>
     <key name="folder-display-hide-read" type="b">
       <default>true</default>
       <summary>Filter read items when displaying folders.</summary>
-      <description>If this option is enabled and folder-display-mode is  not 0 when clicking a folder only the unread items  of all childs will be displayed.</description>
+      <description>If enabled and folder-display-children is TRUE when clicking a folder only the unread items of all child nodes will be displayed.</description>
     </key>
     <key name="reduced-feedlist" type="b">
       <default>false</default>
@@ -134,27 +144,27 @@
     </key>
     <key name="proxy-host" type="s">
       <default>''</default>
-      <summary>Proxy host.</summary>
+      <summary>NOT SUPPORTED ANYMORE! Proxy host.</summary>
       <description>This options determines the proxy host.</description>
     </key>
     <key name="proxy-port" type="i">
       <default>8080</default>
-      <summary>Proxy port.</summary>
+      <summary>NOT SUPPORTED ANYMORE! Proxy port.</summary>
       <description>This options determines the proxy port.</description>
     </key>
     <key name="proxy-use-authentication" type="b">
       <default>false</default>
-      <summary>Proxy auth.</summary>
+      <summary>NOT SUPPORTED ANYMORE! Proxy auth.</summary>
       <description>This options determines if auth is requiered.</description>
     </key>
     <key name="proxy-authentication-user" type="s">
       <default>''</default>
-      <summary>Proxy user.</summary>
+      <summary>NOT SUPPORTED ANYMORE! Proxy user.</summary>
       <description>This options determines auth username.</description>
     </key>
     <key name="proxy-authentication-password" type="s">
       <default>''</default>
-      <summary>Proxy password.</summary>
+      <summary>NOT SUPPORTED ANYMORE! Proxy password.</summary>
       <description>This options determines auth password.</description>
     </key>
     <key name="social-bm-site" type="s">

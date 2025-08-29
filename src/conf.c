@@ -248,6 +248,7 @@ void
 conf_init (void)
 {
 	GSettingsSchemaSource *source;
+	gint schemaVersion = 0;
 
 	/* ensure we migrated from gconf to gsettings */
 	conf_ensure_migrated (LIFEREA_SCHEMA_NAME);
@@ -270,6 +271,20 @@ conf_init (void)
 
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb (NULL, 0, NULL, NULL);
+
+	/* Perform schema migration */
+	conf_get_int_value ("schema-version", &schemaVersion);
+	if (schemaVersion < 1) {
+		debug (DEBUG_CONF, "Schema migration to v1");
+
+		// folder-display-mode needs to be converted from int to bool
+		gint folder_display_mode;
+		conf_get_int_value ("folder-display-mode", &folder_display_mode);
+		if (folder_display_mode)
+			conf_set_bool_value (FOLDER_DISPLAY_CHILDREN, TRUE);
+
+		conf_set_int_value ("schema-version", 1);
+	}
 }
 
 void
