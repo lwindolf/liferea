@@ -1,5 +1,13 @@
 To be released
 
+	Version 1.16.3
+
+	* Rewrite window size and pane position restoration to GSettings bindings
+	  (Lars Windolf)
+
+
+2025-08-28  Lars Windolf <lars.windolf@gmx.de>
+
 	Version 1.16.2
 
 	* Fix #1421 "Mark all as read ?" warning dialog does not appear on middle-click

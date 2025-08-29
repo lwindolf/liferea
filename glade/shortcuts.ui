@@ -53,6 +53,14 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
+                <property name="accelerator">b</property>
+                <property name="title">Select previous item</property>
+              </object>
+            </child>
+ 
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
                 <property name="accelerator">&lt;Ctrl&gt;N</property>
                 <property name="title">Next unread item</property>
               </object>

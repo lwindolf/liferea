@@ -41,6 +41,12 @@ static GSettings *settings;
 static GSettings *desktop_settings;
 static GSettings *fdo_settings;
 
+GSettings *
+conf_get_settings (void)
+{
+	return settings;
+}
+
 static void
 conf_ensure_migrated (const gchar *name)
 {

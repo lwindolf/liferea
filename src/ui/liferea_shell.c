@@ -626,21 +626,15 @@ on_window_resize_cb (gpointer user_data)
 
 	/* get pane proportions */
 	pane = liferea_shell_lookup ("leftpane");
-	if (!pane)
-		return FALSE;
 	vpane_pos = gtk_paned_get_position (GTK_PANED (pane));
 
 	pane = liferea_shell_lookup ("normalViewPane");
-	if (!pane)
-		return FALSE;
 	hpane_pos = gtk_paned_get_position (GTK_PANED (pane));
 
 	pane = liferea_shell_lookup ("wideViewPane");
-	if (!pane)
-		return FALSE;
 	wpane_pos = gtk_paned_get_position (GTK_PANED (pane));
 
-	// The following code partially duplicates liferea_shell_restore_panes()
+	// The following code partially duplicates liferea_shell_restore_layout()
 
 	/* a) set leftpane to 1/3rd of window size if too large */
 	gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
@@ -1172,14 +1166,12 @@ static const GActionEntry liferea_shell_link_gaction_entries[] = {
 	{"email-the-author", email_the_author, "t", NULL, NULL}
 };
 
-static gboolean
-liferea_shell_restore_layout (gpointer user_data)
+static void
+liferea_shell_restore_layout (void)
 {
 	GdkWindow	*gdk_window;
 	GtkAllocation	allocation;
 	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
-
-	liferea_shell_restore_position ();
 
 	/* This only works after the window has been restored, so we do it last. */
 	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
@@ -1207,8 +1199,6 @@ liferea_shell_restore_layout (gpointer user_data)
 	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
 	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
 	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
-	
-	return FALSE;
 }
 
 static void
@@ -1268,11 +1258,6 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 		gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("wideViewPane")), liferea_shell_lookup ("wideViewItems"),
 			"resize", TRUE, NULL);
 	}
-	
-	/* Need to run asynchronous otherwise pane widget allocation is reported
-	   wrong, maybe it is running to early as we realize only above. Also
-	   only like this window position restore works properly. */
-	g_idle_add (liferea_shell_restore_layout, NULL);
 }
 
 static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};
@@ -1448,6 +1433,14 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 		feed_list_view_select (node_from_id (id));
 		g_free (id);
 	}
+
+
+	/* Load shell state and bind for persisting */
+	liferea_shell_restore_layout ();
+	GSettings *settings = conf_get_settings ();
+	g_settings_bind (settings, LAST_VPANE_POS, liferea_shell_lookup ("leftpane"), "position", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (settings, LAST_HPANE_POS, liferea_shell_lookup ("normalViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
+	g_settings_bind (settings, LAST_WPANE_POS, liferea_shell_lookup ("wideViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
 
 	/* 12. Setup shell window signals, only after all widgets are ready */
 	g_signal_connect (shell->feedlist, "new-items",
