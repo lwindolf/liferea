@@ -2,7 +2,7 @@ To be released
 
 	Version 1.16.3
 
-	* Rewrite window size and pane position restoration to GSettings bindings
+	* Rewrite GtkPaned position restoration to GSettings bindings
 	  (Lars Windolf)
 
 
