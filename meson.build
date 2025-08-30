@@ -69,14 +69,14 @@ liferea = executable('liferea',
   include_directories: include_directories('.', 'src')
 )
 
+# Note: the 'update' test is explicitly skipped as it's gsettings dependency breaks CI build (missing X11/DBUS)
 foreach name: [
   'parse_date',
   'parse_html',
   'parse_rss',
   'parse_uri',
   'parse_xml',
-  'social',
-  'update'
+  'social'
 ]
   test(name, liferea, args: ['--test', name])
 endforeach
