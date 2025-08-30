@@ -31,11 +31,11 @@ conf.set_quoted('VERSION', meson.project_version())
 conf.set('ENABLE_NLS', 1)
 
 # Due to the mess in pygobject we need to know with which girepository we
-# are run. Please change to 2.0 if building again pygobject > 3.52.3
+# are run. Please change to 2 if building again pygobject >= 3.52.3
 # (See also https://github.com/lwindolf/liferea/issues/1425)
 #
-# At a later point the default here will switch to 2.0
-conf.set_quoted('GI_REPOSITORY', 'girepository-1.0')
+# At a later point the default here will switch to 2
+conf.set('USE_GI_REPOSITORY_VERSION', 1)
 
 configure_file(
   input: 'config.h.in',
