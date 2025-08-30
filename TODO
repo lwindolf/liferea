@@ -4,13 +4,13 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 To be fixed next:
 =================
 
-1. tests failing on Github in test "update" with SIGTRAP
-2. Fix select next unread
+1. Fix select next unread
+2. search bar is not visible in wide view
+3. proxy radio in preferences does not do anything
 
 To be fixed later:
 ==================
 
-- proxy radio in preferences does not do anything
 - strange selection behaviour on read filtered itemlist
 - DnD reimplementation
 - restore ATK taggings
