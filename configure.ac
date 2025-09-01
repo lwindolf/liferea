@@ -27,6 +27,20 @@ AC_CHECK_FUNCS([strsep])
 PKG_PROG_PKG_CONFIG()
 
 ################################################################################
+# Plugins via Introspection
+
+GOBJECT_INTROSPECTION_CHECK([0.9.3])
+
+# Check pygobject version to select matching girepository
+PKG_CHECK_MODULES([PYGOBJECT], [pygobject-3.0 < 3.52.3],
+  [AC_DEFINE_UNQUOTED(USE_GI_REPOSITORY_VERSION, 1,
+    [defines the girepository version to use])
+    [girepository="gobject-introspection-1.0"]],
+  [AC_DEFINE_UNQUOTED(USE_GI_REPOSITORY_VERSION, 2,
+    [defines the girepository version to use])
+    [girepository="girepository-2.0"]])
+
+################################################################################
 # Mandatory library dependencies
 
 pkg_modules="	gtk+-3.0 >= 3.24.0
@@ -41,10 +55,10 @@ pkg_modules="	gtk+-3.0 >= 3.24.0
 		libsoup-3.0 >= 3.0.7
 		webkit2gtk-4.1
 		json-glib-1.0
-		gobject-introspection-1.0
 		gsettings-desktop-schemas
 		libpeas-2
-		fribidi >= 0.19.7"
+		fribidi >= 0.19.7
+		$girepository"
 
 ################################################################################
 
@@ -67,19 +81,6 @@ uname=`uname`
 AC_DEFINE_UNQUOTED(OS, $uname, [defines a OS version string, used for OS specific code])
 AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the user agent string])
 AC_MSG_RESULT(user agent OS = $uname)
-
-################################################################################
-# Plugins via Introspection
-
-GOBJECT_INTROSPECTION_CHECK([0.9.3])
-
-# Due to the mess in pygobject we need to know with which girepository we
-# are running against. Please change from 1 to 2 if building against pygobject > 3.52.3
-# (See also https://github.com/lwindolf/liferea/issues/1425)
-#
-# When setting this to 2 also ensure to replace "gobject-introspection-1.0"
-# in the dependencies above with "girepository-2.0"
-AC_DEFINE_UNQUOTED(USE_GI_REPOSITORY_VERSION, 1, [defines the girepository version to use])
 
 ################################################################################
 
