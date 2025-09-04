@@ -42,13 +42,12 @@ G_DECLARE_FINAL_TYPE (ItemListView, item_list_view, ITEM_LIST, VIEW, GObject)
  * item_list_view_create: (skip)
  * @feedlist:	the FeedList
  * @itemlist:	the ItemList
- * @wide:	TRUE if ItemListView should be optimized for wide view
  *
  * Create a new ItemListView instance.
  *
  * Returns: (transfer none):	the ItemListView instance
  */
-ItemListView * item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide);
+ItemListView * item_list_view_create (FeedList *feedlist, ItemList *itemlist);
 
 /**
  * item_list_view_get_widget:

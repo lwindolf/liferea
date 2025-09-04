@@ -91,13 +91,19 @@ struct _ItemListView {
 	GtkTreeStore	*batch_itemstore;	/*<< GtkTreeStore prepared unattached and to be set on update() */
 
 	GHashTable	*columns;               /*<< Named GtkTreeViewColumns */
+	GtkCellRenderer *headlineRenderer;	/*<< Renderer for the headline column */
 
-	gboolean	wideView;		/*<< TRUE if date has to be rendered into headline column (because date column is invisible) */
+	gboolean	wideView;		/*<< TRUE for wide view mode */
 };
 
 enum {
 	SELECTION_CHANGED,
 	LAST_SIGNAL
+};
+
+enum {
+	PROP_NONE,
+	PROP_WIDE_VIEW
 };
 
 static guint item_list_view_signals[LAST_SIGNAL] = { 0 };
@@ -126,11 +132,76 @@ item_list_view_finalize (GObject *object)
 }
 
 static void
+item_list_view_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+        ItemListView *ilv = ITEM_LIST_VIEW (object);
+
+        switch (prop_id) {
+	        case PROP_WIDE_VIEW:
+			g_value_set_boolean (value, ilv->wideView);
+			break;
+	}
+}
+
+static void
+item_list_view_set_property (GObject *object, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+	ItemListView *ilv = ITEM_LIST_VIEW (object);
+
+	switch (prop_id) {
+	        case PROP_WIDE_VIEW:
+			ilv->wideView = g_value_get_boolean (value);
+
+			GtkTreeViewColumn *state = g_hash_table_lookup (ilv->columns, "state");
+			GtkTreeViewColumn *date = g_hash_table_lookup (ilv->columns, "date");
+			GtkTreeViewColumn *favicon = g_hash_table_lookup (ilv->columns, "favicon");
+			GtkTreeViewColumn *headline = g_hash_table_lookup (ilv->columns, "headline");
+			GtkCellRenderer *renderer;
+
+			gtk_tree_view_column_set_visible (state, !ilv->wideView);
+			gtk_tree_view_column_set_visible (date, !ilv->wideView);
+			gtk_tree_view_column_clear_attributes (headline, ilv->headlineRenderer);
+			gtk_tree_view_column_add_attribute (headline, ilv->headlineRenderer, "markup", IS_LABEL);
+			gtk_tree_view_column_add_attribute (headline, ilv->headlineRenderer, "xalign", ITEMSTORE_ALIGN);
+			gtk_tree_view_column_add_attribute (headline, ilv->headlineRenderer, "weight", ITEMSTORE_WEIGHT);
+
+			if (ilv->wideView) {				
+				gtk_tree_view_set_grid_lines (ilv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
+				gtk_tree_view_column_set_sizing (state, GTK_TREE_VIEW_COLUMN_FIXED);
+				gtk_tree_view_column_set_sizing (date, GTK_TREE_VIEW_COLUMN_FIXED);
+				gtk_tree_view_column_set_sizing (favicon, GTK_TREE_VIEW_COLUMN_FIXED);
+				gtk_tree_view_column_set_sizing (headline, GTK_TREE_VIEW_COLUMN_FIXED);			
+
+				gtk_tree_view_column_set_sort_column_id (headline, IS_TIME);				
+				g_object_set (ilv->headlineRenderer, "ellipsize", PANGO_ELLIPSIZE_NONE, NULL);
+				g_object_set (ilv->headlineRenderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
+				g_object_set (ilv->headlineRenderer, "wrap-width", 300, NULL);
+			} else {
+				
+				gtk_tree_view_set_grid_lines (ilv->treeview, GTK_TREE_VIEW_GRID_LINES_NONE);
+				gtk_tree_view_column_set_sizing (date, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+				gtk_tree_view_column_set_sizing (headline, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+
+				gtk_tree_view_column_set_sort_column_id (headline, IS_LABEL);
+				
+				g_object_set (ilv->headlineRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+				g_object_set (ilv->headlineRenderer, "wrap-mode", PANGO_WRAP_NONE, NULL);
+			}
+
+			gtk_tree_view_set_fixed_height_mode (ilv->treeview, ilv->wideView);
+
+			break;
+	}
+}
+
+static void
 item_list_view_class_init (ItemListViewClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->finalize = item_list_view_finalize;
+	object_class->get_property = item_list_view_get_property;
+	object_class->set_property = item_list_view_set_property;
 
 	item_list_view_signals[SELECTION_CHANGED] =
 		g_signal_new ("selection-changed",
@@ -143,6 +214,14 @@ item_list_view_class_init (ItemListViewClass *klass)
 		G_TYPE_NONE,
 		1,
 		G_TYPE_INT);
+
+	g_object_class_install_property (object_class,
+		                         PROP_WIDE_VIEW,
+		                         g_param_spec_boolean ("wide-view",
+		                                               "Wide View",
+		                                               "TRUE if wide mode rendering with more text and less columns is used",
+		                                               FALSE,
+		                                               G_PARAM_READWRITE));
 }
 
 /* helper functions for item <-> iter conversion */
@@ -633,66 +712,6 @@ on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint ke
 	}
 }
 
-/* Show tooltip when headline's column text (IS_LABEL) is truncated. */
-
-static gint
-get_cell_renderer_width (GtkWidget *widget, GtkCellRenderer *cell, const gchar *text, gint weight)
-{
-	PangoLayout	*layout = gtk_widget_create_pango_layout (widget, text);
-	PangoAttrList	*attrbs = pango_attr_list_new();
-	PangoRectangle	rect;
-	gint		xpad = 0;
-
-	pango_attr_list_insert (attrbs, pango_attr_weight_new (weight));
-	pango_layout_set_attributes (layout, attrbs);
-	pango_attr_list_unref (attrbs);
-	pango_layout_get_pixel_extents (layout, NULL, &rect);
-	g_object_unref (G_OBJECT (layout));
-
-	gtk_cell_renderer_get_padding (cell, &xpad, NULL);
-	return (xpad * 2) + rect.x + rect.width;
-}
-
-static gboolean
-on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip, GtkTreeViewColumn *headline_column)
-{
-	GtkTreeView *view = GTK_TREE_VIEW (widget);
-	GtkTreeModel *model;
-	GtkTreePath *path;
-	GtkTreeIter iter;
-	gboolean ret = FALSE;
-
-	if (gtk_tree_view_get_tooltip_context (view, x, y, keyboard_mode, &model, &path, &iter)) {
-		GtkTreeViewColumn *column;
-		gint bx, by;
-		gtk_tree_view_convert_widget_to_bin_window_coords (view, x, y, &bx, &by);
-		gtk_tree_view_get_path_at_pos (view, bx, by, NULL, &column, NULL, NULL);
-
-		if (column == headline_column) {
-			GtkCellRenderer *cell;
-			GList *renderers = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (column));
-			cell = GTK_CELL_RENDERER (renderers->data);
-			g_list_free (renderers);
-
-			gchar *text;
-			gint weight;
-			gtk_tree_model_get (model, &iter, IS_LABEL, &text, ITEMSTORE_WEIGHT, &weight, -1);
-
-			gint full_width = get_cell_renderer_width (widget, cell, text, weight);
-			gint column_width = gtk_tree_view_column_get_width (column);
-			if (full_width > column_width) {
-				gtk_tooltip_set_text (tooltip, text);
-				ret = TRUE;
-			}
-			g_free (text);
-		}
-
-		gtk_tree_view_set_tooltip_row (view, tooltip, path);
-		gtk_tree_path_free (path);
-	}
-	return ret;
-}
-
 static GMenu *
 item_list_view_popup_menu (ItemListView *ilv, itemPtr item)
 {
@@ -956,7 +975,7 @@ item_list_view_init (ItemListView *ilv)
 }
 
 ItemListView *
-item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
+item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 {
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
@@ -964,7 +983,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	gchar			**conf_column_order;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
-	ilv->wideView = wide;
+	ilv->wideView = FALSE;
 
 	ilv->columns = g_hash_table_new (g_str_hash, g_str_equal);
 
@@ -974,6 +993,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	ilv->middle_gesture = gtk_gesture_click_new ();
 
 	ilv->ilscrolledwindow = gtk_scrolled_window_new ();
+	gtk_widget_set_vexpand (ilv->ilscrolledwindow, TRUE);
 	g_object_ref_sink (ilv->ilscrolledwindow);
 	gtk_widget_show (ilv->ilscrolledwindow);
 
@@ -982,10 +1002,6 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	ilv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
 	gtk_tree_view_set_enable_search (ilv->treeview, FALSE);
 	gtk_tree_view_set_show_expanders (ilv->treeview, FALSE);
-	if (wide) {
-		gtk_tree_view_set_fixed_height_mode (ilv->treeview, FALSE);
-		gtk_tree_view_set_grid_lines (ilv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
-	}
 	gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_WIDGET (ilv->treeview));
 	gtk_widget_show (GTK_WIDGET (ilv->treeview));
 	gtk_widget_set_name (GTK_WIDGET (ilv->treeview), "itemlist");
@@ -994,11 +1010,10 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
+	
 	//g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
 	g_hash_table_insert (ilv->columns, "state", column);
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
-	if (wide)
-		gtk_tree_view_column_set_visible (column, FALSE);
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
@@ -1006,23 +1021,14 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	g_hash_table_insert (ilv->columns, "favicon", column);
 
-	renderer = gtk_cell_renderer_text_new ();
-	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer,
+	ilv->headlineRenderer = gtk_cell_renderer_text_new ();
+	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), ilv->headlineRenderer,
 	                                                   "markup", IS_LABEL,
 							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
 	gtk_tree_view_column_set_expand (headline_column, TRUE);
 	g_hash_table_insert (ilv->columns, "headline", headline_column);
 	g_object_set (headline_column, "resizable", TRUE, NULL);
-	if (wide) {
-		gtk_tree_view_column_set_sort_column_id (headline_column, IS_TIME);
-		g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
-		g_object_set (renderer, "wrap-width", 300, NULL);
-	} else {
-		gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
-		g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
-		gtk_tree_view_column_add_attribute (headline_column, renderer, "weight", ITEMSTORE_WEIGHT);
-	}
 
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer,
@@ -1032,8 +1038,6 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 	g_hash_table_insert (ilv->columns, "date", column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
-	if (wide)
-		gtk_tree_view_column_set_visible (column, FALSE);
 
 	conf_get_strv_value (LIST_VIEW_COLUMN_ORDER, &conf_column_order);
 	for (gchar **li = conf_column_order; *li; li++) {
@@ -1060,11 +1064,6 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), GTK_EVENT_CONTROLLER (ilv->popup_gesture));
 	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), GTK_EVENT_CONTROLLER(ilv->gesture));
 	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), ilv->keypress);
-
-	if (!wide) {
-		gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->treeview), TRUE);
-		g_signal_connect (G_OBJECT (ilv->treeview), "query-tooltip", G_CALLBACK (on_item_list_view_query_tooltip), headline_column);
-	}
 
 	g_signal_connect (feedlist, "items-updated", G_CALLBACK (item_list_view_update_all_items), ilv);
 	g_signal_connect (itemlist, "item-batch-start", G_CALLBACK (item_list_view_item_batch_started), ilv);

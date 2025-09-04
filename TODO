@@ -1,16 +1,16 @@
-Thanks for testing the unstable branch of Liferea. This will become Liferea v2.0.
+Thanks for testing the unstable branch of Liferea. This will become Liferea v1.99/2.0.
 Right now a lot of stuff is broken due to the GTK4 porting.
 
 To be fixed next:
 =================
 
 1. Fix select next unread
-2. search bar is not visible in wide view
-3. proxy radio in preferences does not do anything
+2. proxy radio in preferences does not do anything
 
 To be fixed later:
 ==================
 
+- replace "make update-po"
 - strange selection behaviour on read filtered itemlist
 - DnD reimplementation
 - restore ATK taggings

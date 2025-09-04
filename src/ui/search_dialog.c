@@ -196,4 +196,3 @@ simple_search_dialog_open (void)
 {
 	on_toggle_searchbox (NULL, NULL);
 }
-

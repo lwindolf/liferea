@@ -114,34 +114,37 @@
                                     <property name="orientation">vertical</property>
                                     <property name="spacing">6</property>
                                     <child>
-                                      <object class="GtkBox" id="searchbox">
-                                        <property name="margin-bottom">3</property>
-                                        <property name="margin-end">6</property>
-                                        <property name="margin-start">6</property>
-                                        <property name="margin-top">6</property>
-                                        <property name="spacing">6</property>
-                                        <property name="visible">False</property>
-                                        <child>
-                                          <object class="GtkSearchEntry" id="searchentry">
-                                            <property name="hexpand">True</property>
-                                            <property name="placeholder-text">Search item content</property>
-                                            <signal name="activate" handler="on_searchentry_activated"/>
-                                          </object>
-                                        </child>
-                                        <child>
-                                          <object class="GtkButton">
-                                            <property name="label">Advanced</property>
-                                            <signal name="activate" handler="on_advancedsearch_activated"/>
-                                            <signal name="clicked" handler="on_advancedsearch_activated"/>
-                                          </object>
-                                        </child>
-                                      </object>
-                                    </child>
-                                    <child>
                                       <object class="GtkViewport" id="normalViewItems">
                                         <property name="vexpand">True</property>
                                         <child>
-                                          <object class="GtkButton"/>
+                                          <object class="GtkBox" id="itemListViewContainer">
+                                            <property name="orientation">vertical</property>
+                                            <property name="vexpand">True</property>
+                                            <child>
+                                              <object class="GtkBox" id="searchbox">
+                                                <property name="margin-bottom">3</property>
+                                                <property name="margin-end">6</property>
+                                                <property name="margin-start">6</property>
+                                                <property name="margin-top">6</property>
+                                                <property name="spacing">6</property>
+                                                <property name="visible">False</property>
+                                                <child>
+                                                  <object class="GtkSearchEntry" id="searchentry">
+                                                    <property name="hexpand">True</property>
+                                                    <property name="placeholder-text">Search item content</property>
+                                                    <signal name="activate" handler="on_searchentry_activated"/>
+                                                  </object>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkButton">
+                                                    <property name="label">Advanced</property>
+                                                    <signal name="activate" handler="on_advancedsearch_activated"/>
+                                                    <signal name="clicked" handler="on_advancedsearch_activated"/>
+                                                  </object>
+                                                </child>
+                                              </object>
+                                            </child>
+                                          </object>
                                         </child>
                                       </object>
                                     </child>
