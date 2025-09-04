@@ -574,29 +574,28 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 	xmlDocPtr	doc = NULL;
 
 	g_assert (NULL != fpc->data);
-	g_assert (NULL != fpc->feed);
-	g_assert (NULL != fpc->feed->parseErrors);
+	g_assert (NULL != fpc->subscription->parseErrors);
 
-	fpc->feed->valid = FALSE;
+	fpc->subscription->valid = FALSE;
 
 	/* we don't like no data */
 	if (0 == fpc->dataLength) {
 		debug (DEBUG_PARSING, "xml_parse_feed(): empty input while parsing \"%s\"!", fpc->subscription->node->title);
-		g_string_append (fpc->feed->parseErrors, "Empty input!\n");
+		g_string_append (fpc->subscription->parseErrors, "Empty input!\n");
 		return NULL;
 	}
 
 	errors = g_new0 (struct errorCtxt, 1);
-	errors->msg = fpc->feed->parseErrors;
+	errors->msg = fpc->subscription->parseErrors;
 
 	doc = xml_parse (fpc->data, (size_t)fpc->dataLength, errors);
 	if (!doc) {
 		debug (DEBUG_PARSING, "xml_parse_feed(): could not parse feed \"%s\"!", fpc->subscription->node->title);
-		g_string_prepend (fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));
-		g_string_append (fpc->feed->parseErrors, "\n");
+		g_string_prepend (fpc->subscription->parseErrors, _("XML Parser: Could not parse document:\n"));
+		g_string_append (fpc->subscription->parseErrors, "\n");
 	}
 
-	fpc->feed->valid = !(errors->errorCount > 0);
+	fpc->subscription->valid = !(errors->errorCount > 0);
 	g_free (errors);
 
 	return doc;

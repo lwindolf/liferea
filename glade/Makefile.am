@@ -10,7 +10,6 @@ glade_DATA = about.ui \
 	mark_read_dialog.ui \
 	new_folder.ui \
 	new_newsbin.ui \
-	new_subscription.ui \
 	node_source.ui \
 	opml_source.ui \
 	plugins.ui \

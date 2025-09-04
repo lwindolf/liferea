@@ -79,7 +79,6 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new ("feed");
 		node_set_title (node, title);
-		node_set_data (node, feed_new ());
 		node_set_parent (node, folder?folder:source->root, -1);
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = source->root->source->type->feedSubscriptionType;

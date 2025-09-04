@@ -552,7 +552,7 @@ atom10_parse_entry (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	ctxt->item->readStatus = FALSE;
 
 	if (0 == ctxt->item->time)
-		ctxt->item->time = ctxt->feed->time;
+		ctxt->item->time = ctxt->subscription->time;
 
 	return ctxt->item;
 }
@@ -740,7 +740,7 @@ atom10_parse_feed_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10
 	timestamp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (timestamp) {
 		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "contentUpdateDate", timestamp);
-		ctxt->feed->time = date_parse_ISO8601 (timestamp);
+		ctxt->subscription->time = date_parse_ISO8601 (timestamp);
 		g_free (timestamp);
 	}
 }
@@ -774,7 +774,7 @@ atom10_parse_feed (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 
 	while (TRUE) {
 		if (xmlStrcmp (cur->name, BAD_CAST"feed")) {
-			g_string_append (ctxt->feed->parseErrors, "<p>Could not find Atom 1.0 header!</p>");
+			g_string_append (ctxt->subscription->parseErrors, "<p>Could not find Atom 1.0 header!</p>");
 			break;
 		}
 

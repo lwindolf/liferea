@@ -972,8 +972,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 					}
 					gtk_tree_path_free (path);
 				}
-				feedlist_add_subscription (g_strdup (tmp2), NULL, NULL,
-				                           UPDATE_REQUEST_PRIORITY_HIGH);
+				feedlist_add_subscription_by_url (tmp2);
 			}
 		}
 		gtk_drag_finish (context, TRUE, FALSE, time_received);

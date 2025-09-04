@@ -152,7 +152,7 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 			subscription->node->available = TRUE;
 		} else {
 			subscription->node->available = FALSE;
-			g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by Reedah API!"));
+			g_string_append (subscription->parseErrors, _("Could not parse JSON returned by Reedah API!"));
 		}
 	} else {
 		subscription->node->available = FALSE;

@@ -131,7 +131,6 @@ default_source_add_subscription (Node *node, subscriptionPtr subscription)
 	   subscription type... */
 	Node *child = node_new ("feed");
 	node_set_title (child, _("New Subscription"));
-	node_set_data (child, feed_new ());
 	node_set_subscription (child, subscription);	/* feed subscription type is implicit */
 	feedlist_node_added (child);
 	

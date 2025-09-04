@@ -76,7 +76,6 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		if (url) {
 			node = node_new ("feed");
-			node_set_data (node, feed_new ());
 			node_set_subscription (node, subscription_new ((gchar *)url, NULL, NULL));
 		} else {
 			node = node_new ("folder");

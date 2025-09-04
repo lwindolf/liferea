@@ -48,16 +48,15 @@ typedef struct subscription {
 	Node		*node;			/*<< the feed list node the subscription is attached to */
 	struct subscriptionType *type;		/*<< the subscription type */
 
+	// state
 	gchar		*source;		/*<< current source, can be changed by redirects */
 	gchar		*origSource;		/*<< the source given when creating the subscription */
 	updateOptionsPtr updateOptions;		/*<< update options for the feed source */
 	UpdateJob 	*updateJob;		/*<< update request structure used when downloading the subscribed source */
 
-	gint		updateInterval;		/*<< user defined update interval in minutes */
-	guint		defaultInterval;	/*<< optional update interval as specified by the feed in minutes */
-
 	GSList		*metadata;		/*<< metadata list assigned to this subscription */
 
+	// network state
 	fetchError	error;			/*<< Fetch error code (used for user-facing UI to differentiate subscription update processing phases) */
 	gchar		*updateError;		/*<< textual description of processing errors */
 	gchar		*httpError;		/*<< textual description of HTTP protocol errors */
@@ -70,8 +69,27 @@ typedef struct subscription {
 
 	gboolean	discontinued;		/*<< flag to avoid updating after HTTP 410 */
 
+	// parsing state
+	gboolean	valid;			/**< FALSE if there was an error in xml_parse_feed() */
+	GString		*parseErrors;		/**< Detailed textual description of parsing errors (e.g. library error handler output) */
+	gint64		time;			/**< Feeds modified date */
+	struct feedHandler *fhp;		/**< Feed format parsing handler. */
+
+	// settings
+	gint		updateInterval;		/*<< user defined update interval in minutes */
+
+	// feed-only settings
+	guint		defaultInterval;	/*<< optional update interval as specified by the feed in minutes */
 	gchar		*filtercmd;		/*<< feed filter command */
 	gchar		*filterError;		/*<< textual description of filter errors */
+	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
+
+	gboolean	encAutoDownload;	/**< if TRUE do automatically download enclosures */
+	gboolean	ignoreComments;		/**< if TRUE ignore comment feeds for this feed */
+	gboolean	markAsRead;		/**< if TRUE downloaded items are automatically marked as read */
+	gboolean	html5Extract;		/**< if TRUE try to fetch extra content via HTML5 / Google AMP */
+	gboolean	alwaysShowInReduced;	/**< for newsbins only, if TRUE always show when using reduced feed list */
+	gboolean	loadItemLink;		/*<< if TRUE do automatically load the item link into the HTML pane */	
 } *subscriptionPtr;
 
 /**
@@ -247,6 +265,25 @@ void subscription_set_filter(subscriptionPtr subscription, const gchar * filter)
  * @param password	the password
  */
 void subscription_set_auth_info (subscriptionPtr subscription, const gchar *username, const gchar *password);
+
+/**
+ * Returns the subscription-specific maximum cache size.
+ * If none is set it returns the global default setting.
+ *
+ * @param subscription	the subscription
+ *
+ * @returns max item count
+ */
+guint subscription_get_max_item_count (subscriptionPtr subscription);
+
+/**
+ * subscription_enrich_item: (skip)
+ * Tries to fetch extra content for the item description
+ *
+ * @subscription: the subscription
+ * @item: the item
+ */
+void subscription_enrich_item (subscriptionPtr subscription, itemPtr item);
 
 /**
  * Frees the given subscription structure.

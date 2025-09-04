@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.h  property dialog for feed subscriptions
  *
- * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,9 +40,6 @@ G_DECLARE_FINAL_TYPE (SubscriptionPropDialog, subscription_prop_dialog, SUBSCRIP
  * Returns: (transfer none): a properties dialog
  */
 SubscriptionPropDialog *subscription_prop_dialog_new	(subscriptionPtr subscription);
-
-#define NEW_SUBSCRIPTION_DIALOG_TYPE (new_subscription_dialog_get_type ())
-G_DECLARE_FINAL_TYPE (NewSubscriptionDialog, new_subscription_dialog, NEW_SUBSCRIPTION, DIALOG, GObject)
 
 #define SIMPLE_SUBSCRIPTION_DIALOG_TYPE (simple_subscription_dialog_get_type ())
 G_DECLARE_FINAL_TYPE (SimpleSubscriptionDialog, simple_subscription_dialog, SIMPLE_SUBSCRIPTION, DIALOG, GObject)

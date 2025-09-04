@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.c  property dialog for feed subscriptions
  *
- * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -35,6 +35,14 @@
 #include "ui/feed_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
+
+/* The subscription dialog can currently be used in three modes
+
+     1. Simple (source entry only) subscribe mode -> creates a feed subscription
+     2. Advanced subscribe mode -> creates a new feed subscription using all options
+     3. Properties mode for existing feed subscription -> provides all options
+     3. Properties mode for special subscriptions -> hides many options
+*/
 
 /* Note: these update interval literals should be kept in sync with the
    ones in ui_prefs.c! */
@@ -70,13 +78,7 @@ typedef struct ui_data {
 struct _SubscriptionPropDialog {
 	GObject	parentInstance;
 
-	subscriptionPtr subscription;	/** used only for "properties" dialog */
-	dialogData		ui_data;
-};
-
-struct _NewSubscriptionDialog {
-	GObject	parentInstance;
-
+	subscriptionPtr subscription;
 	dialogData		ui_data;
 };
 
@@ -188,11 +190,11 @@ on_propdialog_response (GtkDialog *dialog,
 		gboolean	needsUpdate = FALSE;
 		subscriptionPtr	subscription = spd->subscription;
 		Node		*node = spd->subscription->node;
-		feedPtr		feed = (feedPtr)node->data;
 
-		if (SUBSCRIPTION_TYPE(subscription) == feed_get_subscription_type ()) {
+		if (SUBSCRIPTION_TYPE (subscription) == feed_get_subscription_type ()) {
 			/* "General" */
-			node_set_title(node, gtk_entry_get_text(GTK_ENTRY(spd->ui_data.feedNameEntry)));
+			if (node)
+				node_set_title (node, gtk_entry_get_text (GTK_ENTRY (spd->ui_data.feedNameEntry)));
 
 			/* Filter handling */
 			newFilter = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (spd->ui_data.dialog, "filterEntry")));
@@ -239,13 +241,13 @@ on_propdialog_response (GtkDialog *dialog,
 
 		/* "Archive" handling */
 		if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "feedCacheDefault"))))
-			feed->cacheLimit = CACHE_DEFAULT;
+			subscription->cacheLimit = CACHE_DEFAULT;
 		else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "feedCacheDisable"))))
-			feed->cacheLimit = CACHE_DISABLE;
+			subscription->cacheLimit = CACHE_DISABLE;
 		else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "feedCacheUnlimited"))))
-			feed->cacheLimit = CACHE_UNLIMITED;
+			subscription->cacheLimit = CACHE_UNLIMITED;
 		else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "feedCacheLimited"))))
-			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "cacheItemLimit")));
+			subscription->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "cacheItemLimit")));
 
 		if (SUBSCRIPTION_TYPE(subscription) == feed_get_subscription_type ()) {
 			/* "Download" Options */
@@ -253,17 +255,24 @@ on_propdialog_response (GtkDialog *dialog,
 		}
 
 		/* "Advanced" options */
-		feed->encAutoDownload = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enclosureDownloadCheck")));
-		feed->loadItemLink    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
-		feed->ignoreComments  = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "ignoreCommentFeeds")));
-		feed->markAsRead      = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "markAsReadCheck")));
-		feed->html5Extract    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "html5ExtractCheck")));
+		subscription->encAutoDownload = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enclosureDownloadCheck")));
+		subscription->loadItemLink    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
+		subscription->ignoreComments  = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "ignoreCommentFeeds")));
+		subscription->markAsRead      = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "markAsReadCheck")));
+		subscription->html5Extract    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "html5ExtractCheck")));
 
-		feed_list_view_update_node (node->id);
-		feedlist_schedule_save ();
-		db_subscription_update (subscription);
-		if (needsUpdate)
-			subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+		if (node) {
+			/* Update existing subscription */
+			feed_list_view_update_node (node->id);
+			feedlist_schedule_save ();
+			db_subscription_update (subscription);
+
+			if (needsUpdate)
+				subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+		} else {
+			/* Handle "Advanced" subscribe */
+			feedlist_add_subscription_check_duplicate (subscription);
+		}
 	}
 
 	g_object_unref(spd);
@@ -381,12 +390,16 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gint		defaultInterval, spinSetInterval;
 	gchar 		*defaultIntervalStr;
 	Node		*node = subscription->node;
-	feedPtr		feed = (feedPtr)node->data;
 
 	spd->subscription = subscription;
 
 	/* General */
-	gtk_entry_set_text (GTK_ENTRY (spd->ui_data.feedNameEntry), node_get_title (node));
+	if (node) {
+		gtk_entry_set_text (GTK_ENTRY (spd->ui_data.feedNameEntry), node_get_title (node));
+	} else {
+		gtk_widget_set_sensitive (spd->ui_data.feedNameEntry, FALSE);
+		gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->ui_data.dialog, "subscriptionPropNotebook")), 1);	// Show "Source" tab for new subscriptions
+	}
 
 	spd->ui_data.refreshInterval = liferea_dialog_lookup (spd->ui_data.dialog, "refreshIntervalSpinButton");
 
@@ -478,18 +491,18 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	}
 
 	/* Archive */
-	if (feed->cacheLimit == CACHE_DISABLE) {
+	if (subscription->cacheLimit == CACHE_DISABLE) {
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "feedCacheDisable")), TRUE);
-	} else if (feed->cacheLimit == CACHE_DEFAULT) {
+	} else if (subscription->cacheLimit == CACHE_DEFAULT) {
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "feedCacheDefault")), TRUE);
-	} else if (feed->cacheLimit == CACHE_UNLIMITED) {
+	} else if (subscription->cacheLimit == CACHE_UNLIMITED) {
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "feedCacheUnlimited")), TRUE);
 	} else {
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "feedCacheLimited")), TRUE);
-		gtk_spin_button_set_value (GTK_SPIN_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "cacheItemLimit")), feed->cacheLimit);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "cacheItemLimit")), subscription->cacheLimit);
 	}
 
-	gtk_widget_set_sensitive (liferea_dialog_lookup (spd->ui_data.dialog, "cacheItemLimit"), feed->cacheLimit > 0);
+	gtk_widget_set_sensitive (liferea_dialog_lookup (spd->ui_data.dialog, "cacheItemLimit"), subscription->cacheLimit > 0);
 
 	on_feed_prop_filtercheck (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "filterCheckbox")), &(spd->ui_data));
 
@@ -497,11 +510,11 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "dontUseProxyCheck")), subscription->updateOptions->dontUseProxy);
 
 	/* Advanced */
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "loadItemLinkCheck")), feed->loadItemLink);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "ignoreCommentFeeds")), feed->ignoreComments);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "markAsReadCheck")), feed->markAsRead);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "html5ExtractCheck")), feed->html5Extract);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "enclosureDownloadCheck")), subscription->encAutoDownload);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "loadItemLinkCheck")), subscription->loadItemLink);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "ignoreCommentFeeds")), subscription->ignoreComments);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "markAsReadCheck")), subscription->markAsRead);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "html5ExtractCheck")), subscription->html5Extract);
 
 	/* Remove tabs we do not need... */
 	if (SUBSCRIPTION_TYPE (subscription) != feed_get_subscription_type ()) {
@@ -565,99 +578,6 @@ subscription_prop_dialog_new (subscriptionPtr subscription)
 	return spd;
 }
 
-/* complex "New" dialog */
-
-G_DEFINE_TYPE (NewSubscriptionDialog, new_subscription_dialog, G_TYPE_OBJECT);
-
-static void
-new_subscription_dialog_finalize (GObject *object)
-{
-	NewSubscriptionDialog *nsd = NEW_SUBSCRIPTION_DIALOG (object);
-
-	gtk_widget_destroy (nsd->ui_data.dialog);
-}
-
-static void
-new_subscription_dialog_class_init (NewSubscriptionDialogClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->finalize = new_subscription_dialog_finalize;
-}
-
-static void
-on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
-{
-	NewSubscriptionDialog *nsd = (NewSubscriptionDialog *)user_data;
-
-	if (response_id == GTK_RESPONSE_OK) {
-		gchar *source = NULL;
-		const gchar *filter = NULL;
-		updateOptionsPtr options;
-
-		/* Source */
-		source = ui_subscription_dialog_decode_source (&(nsd->ui_data));
-
-		/* Filter handling */
-		filter = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (nsd->ui_data.dialog, "filterEntry")));
-		if (!gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (nsd->ui_data.dialog, "filterCheckbox"))) ||
-		    !strcmp(filter,"")) { /* Maybe this should be a test to see if the file exists? */
-			filter = NULL;
-		}
-
-		options = g_new0 (struct updateOptions, 1);
-		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (nsd->ui_data.dialog, "dontUseProxyCheck")));
-
-		feedlist_add_subscription_check_duplicate (source, filter, options, UPDATE_REQUEST_PRIORITY_HIGH);
-		g_free (source);
-	}
-
-	g_object_unref (nsd);
-}
-
-static void
-new_subscription_dialog_init (NewSubscriptionDialog *nsd)
-{
-	GtkWidget	*newdialog;
-
-	nsd->ui_data.dialog = newdialog = liferea_dialog_new ("new_subscription");
-
-	/* Setup source entry */
-	nsd->ui_data.sourceEntry = liferea_dialog_lookup (newdialog, "sourceEntry");
-	gtk_widget_grab_focus (GTK_WIDGET (nsd->ui_data.sourceEntry));
-	gtk_entry_set_activates_default (GTK_ENTRY (nsd->ui_data.sourceEntry), TRUE);
-
-	nsd->ui_data.selectFile = liferea_dialog_lookup (newdialog, "selectSourceFileButton");
-	g_signal_connect (nsd->ui_data.selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), &(nsd->ui_data));
-
-	/* Feed location radio buttons */
-	nsd->ui_data.fileRadio = liferea_dialog_lookup (newdialog, "feed_loc_file");
-	nsd->ui_data.urlRadio = liferea_dialog_lookup (newdialog, "feed_loc_url");
-	nsd->ui_data.cmdRadio = liferea_dialog_lookup (newdialog, "feed_loc_command");
-
-	g_signal_connect (nsd->ui_data.urlRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), &(nsd->ui_data));
-	g_signal_connect (nsd->ui_data.fileRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), &(nsd->ui_data));
-	g_signal_connect (nsd->ui_data.cmdRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), &(nsd->ui_data));
-
-	g_signal_connect (liferea_dialog_lookup (newdialog, "filterCheckbox"), "toggled", G_CALLBACK (on_feed_prop_filtercheck), &(nsd->ui_data));
-	g_signal_connect (liferea_dialog_lookup (newdialog, "filterSelectFile"), "clicked", G_CALLBACK (on_selectfile_pressed), &(nsd->ui_data));
-
-	gtk_widget_grab_default (liferea_dialog_lookup (newdialog, "newfeedbtn"));
-	g_signal_connect (G_OBJECT (newdialog), "response", G_CALLBACK (on_newdialog_response), nsd);
-
-	on_feed_prop_filtercheck (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (newdialog, "filterCheckbox")), &(nsd->ui_data));
-	on_feed_prop_url_radio (GTK_TOGGLE_BUTTON (nsd->ui_data.urlRadio), &(nsd->ui_data));
-
-	gtk_widget_show_all (newdialog);
-}
-
-int
-ui_complex_subscription_dialog_cb (gpointer userdata)
-{
-	(void) NEW_SUBSCRIPTION_DIALOG (g_object_new (NEW_SUBSCRIPTION_DIALOG_TYPE, NULL));
-	return FALSE;
-}
-
 /* simple "New" dialog */
 
 G_DEFINE_TYPE (SimpleSubscriptionDialog, simple_subscription_dialog, G_TYPE_OBJECT);
@@ -678,6 +598,14 @@ simple_subscription_dialog_class_init (SimpleSubscriptionDialogClass *klass)
 	object_class->finalize = simple_subscription_dialog_finalize;
 }
 
+static gboolean
+open_properties_dialog (gpointer user_data)
+{
+	subscriptionPtr subscription = subscription_new ("https://", NULL, NULL);
+	subscription_prop_dialog_new (subscription);
+	return FALSE; /* don't call again */
+}
+
 static void
 on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
@@ -688,13 +616,13 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->ui_data.sourceEntry))),
 		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		feedlist_add_subscription_check_duplicate (source, NULL, NULL, UPDATE_REQUEST_PRIORITY_HIGH);
+		feedlist_add_subscription_by_url (source);
 		g_free (source);
 	}
 
 	/* APPLY code misused for "Advanced" */
 	if (response_id == GTK_RESPONSE_APPLY)
-		g_idle_add (ui_complex_subscription_dialog_cb, NULL);
+		g_idle_add ((GSourceFunc)open_properties_dialog, NULL);
 
 	g_object_unref (ssd);
 }

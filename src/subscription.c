@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,11 @@
 #include "db.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "itemlist.h"
 #include "metadata.h"
 #include "net.h"
 #include "subscription_icon.h"
+#include "xml.h"
 #include "ui/auth_dialog.h"
 #include "ui/feed_list_view.h"
 #include "ui/itemview.h"
@@ -53,6 +55,8 @@ subscription_new (const gchar *source,
 	subscription = g_new0 (struct subscription, 1);
 	subscription->type = feed_get_subscription_type ();
 	subscription->updateOptions = options;
+	subscription->cacheLimit = CACHE_DEFAULT;
+	subscription->valid = TRUE;
 
 	if (!subscription->updateOptions)
 		subscription->updateOptions = g_new0 (struct updateOptions, 1);
@@ -118,6 +122,7 @@ subscription_can_be_updated (subscriptionPtr subscription)
 		g_warning ("Feed source is NULL! This should never happen - cannot update!");
 		return FALSE;
 	}
+	
 	return TRUE;
 }
 
@@ -480,6 +485,10 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 	if (!source)
 		source = xmlGetProp (xml, BAD_CAST "xmlurl");	/* e.g. for AmphetaDesk */
 
+	xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST"type");
+	subscription->fhp = feed_type_str_to_fhp ((gchar *)typeStr);
+	xmlFree (typeStr);
+
 	if (source) {
 		if (!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
@@ -525,6 +534,46 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		subscription->updateOptions->password = (gchar *)xmlGetProp (xml, BAD_CAST "password");
 	}
 
+	/* Set the feed cache limit */
+	tmp = xmlGetProp (xml, BAD_CAST "cacheLimit");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"unlimited"))
+		subscription->cacheLimit = CACHE_UNLIMITED;
+	else
+		subscription->cacheLimit = common_parse_long ((gchar *)tmp, CACHE_DEFAULT);
+	xmlFree (tmp);
+
+	/* enclosure auto download flag */
+	tmp = xmlGetProp (xml, BAD_CAST"encAutoDownload");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		subscription->encAutoDownload = TRUE;
+	xmlFree (tmp);
+
+	/* comment feed handling flag */
+	tmp = xmlGetProp (xml, BAD_CAST"ignoreComments");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		subscription->ignoreComments = TRUE;
+	xmlFree (tmp);
+
+	tmp = xmlGetProp (xml, BAD_CAST"markAsRead");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		subscription->markAsRead = TRUE;
+	xmlFree (tmp);
+
+	tmp = xmlGetProp (xml, BAD_CAST"html5Extract");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		subscription->html5Extract = TRUE;
+	xmlFree (tmp);
+
+	tmp = xmlGetProp (xml, BAD_CAST"loadItemLink");
+	if (tmp && !xmlStrcmp ((xmlChar *)tmp, BAD_CAST"true"))
+		subscription->loadItemLink = TRUE;
+	xmlFree (tmp);
+
+	tmp = xmlGetProp (xml, BAD_CAST"alwaysShowInReducedMode");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		subscription->alwaysShowInReduced = TRUE;
+	xmlFree (tmp);
+
 	return subscription;
 }
 
@@ -548,7 +597,123 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 	if (subscription->updateOptions->dontUseProxy)
 		xmlNewProp (xml, BAD_CAST"dontUseProxy", BAD_CAST"true");
 
+	if (trusted) {
+		g_autofree gchar *cacheLimit = NULL;
+
+		if (subscription->cacheLimit >= 0)
+			cacheLimit = g_strdup_printf ("%d", subscription->cacheLimit);
+		if (subscription->cacheLimit == CACHE_UNLIMITED)
+			cacheLimit = g_strdup ("unlimited");
+		if (cacheLimit)
+			xmlNewProp (xml, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
+
+		if (subscription->encAutoDownload)
+			xmlNewProp (xml, BAD_CAST"encAutoDownload", BAD_CAST"true");
+
+		if (subscription->ignoreComments)
+			xmlNewProp (xml, BAD_CAST"ignoreComments", BAD_CAST"true");
+
+		if (subscription->markAsRead)
+			xmlNewProp (xml, BAD_CAST"markAsRead", BAD_CAST"true");
+
+		if (subscription->html5Extract)
+			xmlNewProp (xml, BAD_CAST"html5Extract", BAD_CAST"true");
+
+		if (subscription->loadItemLink)
+			xmlNewProp (xml, BAD_CAST"loadItemLink", BAD_CAST"true");
+
+		if (subscription->alwaysShowInReduced)
+			xmlNewProp (xml, BAD_CAST"alwaysShowInReducedMode", BAD_CAST"true");
+
+		debug (DEBUG_CACHE, "adding subscription: source=%s interval=%d cacheLimit=%s",
+			subscription_get_source (subscription),
+			subscription_get_update_interval (subscription),
+			(cacheLimit != NULL ? cacheLimit : ""));
+	}
+
 	g_free (interval);
+}
+
+// content scraping
+
+static void
+subscription_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags) {
+	itemPtr item;
+	gchar	*article;
+
+	if (!result->data || result->httpstatus >= 400)
+		return;
+
+	item = item_load (GPOINTER_TO_UINT (userdata));
+	if (!item)
+		return;
+
+	article = xhtml_extract_from_string (result->data, result->source);
+	if (article) {
+		// Enable AMP images by replacing <amg-img> by <img>
+		gchar **tmp_split = g_strsplit(article, "<amp-img", 0);
+		gchar *tmp = g_strjoinv("<img", tmp_split);
+		g_strfreev (tmp_split);
+		g_free (article);
+		article = tmp;
+
+		metadata_list_set (&(item->metadata), "richContent", article);
+		db_item_update (item);
+		itemlist_update_item (item);
+		g_free (article);
+	}
+	item_unload (item);
+}
+
+/**
+ * Checks content of an items source and tries to crawl content
+ */
+void
+subscription_enrich_item (subscriptionPtr subscription, itemPtr item)
+{
+	UpdateRequest *request;
+
+	if (!item->source) {
+		debug (DEBUG_PARSING, "Cannot HTML5-enrich item %s because it has no source!", item->title);
+		return;
+	}
+
+	// Don't enrich twice
+	if (NULL != metadata_list_get (item->metadata, "richContent")) {
+		debug (DEBUG_PARSING, "Skipping already HTML5 enriched item %s", item->title);
+		return;
+	}
+
+	// Fetch item->link document and try to parse it as XHTML
+	debug (DEBUG_PARSING, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
+	request = update_request_new (
+		item->source,
+		NULL,	// updateState
+		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)
+	);
+
+	update_job_new (subscription, request, subscription_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
+}
+
+
+guint
+subscription_get_max_item_count (subscriptionPtr subscription)
+{
+	gint	default_max_items;
+
+	switch (subscription->cacheLimit) {
+		case CACHE_DEFAULT: // -1
+			conf_get_int_value (DEFAULT_MAX_ITEMS, &default_max_items);
+			return default_max_items;
+			break;
+		case CACHE_DISABLE: // 0
+		case CACHE_UNLIMITED:
+			return G_MAXUINT;
+			break;
+		default: // any other positive value
+			return subscription->cacheLimit;
+			break;
+	}
 }
 
 void
@@ -563,6 +728,9 @@ subscription_free (subscriptionPtr subscription)
 	g_free (subscription->source);
 	g_free (subscription->origSource);
 	g_free (subscription->filtercmd);
+
+	if (subscription->parseErrors)
+		g_string_free (subscription->parseErrors, TRUE);
 
 	update_job_cancel_by_owner (subscription);
 	update_options_free (subscription->updateOptions);

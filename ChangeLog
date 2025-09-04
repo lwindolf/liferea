@@ -5,6 +5,12 @@ To be released
 	* Rewrite GtkPaned position restoration to GSettings bindings
 	  (Lars Windolf)
 
+	* #1304 Show full feed properties dialog on 'Advanced' subscribe
+	  (Lars Windolf)
+
+	* #1453 Automatically determine girepository version to use
+	  (loqs)
+
 
 2025-08-28  Lars Windolf <lars.windolf@gmx.de>
 

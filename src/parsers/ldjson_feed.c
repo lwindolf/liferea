@@ -136,7 +136,7 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 			item_set_time (ctxt->item, date_parse_ISO8601 (tmp));
 	} else {
 		// or default to current feed timestamp
-		ctxt->item->time = ctxt->feed->time;
+		ctxt->item->time = ctxt->subscription->time;
 	}
 
 	if ((tmp = json_get_string (node, "url"))) {
@@ -250,7 +250,7 @@ ldjson_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 	xmlNodePtr	cur;
 	xmlChar		*baseURL = xmlNodeGetBase (root->doc, root);
 
-	ctxt->feed->time = time(NULL);
+	ctxt->subscription->time = time(NULL);
 
 	/* For homepage the HTML page itself is the default source */
 	subscription_set_homepage (ctxt->subscription, ctxt->subscription->source);
@@ -272,7 +272,7 @@ ldjson_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 	}
 
 	if(!xpath_foreach_match (root, "//script[@type='application/ld+json']", ldjson_feed_parse_json, ctxt)) {
-		g_string_append(ctxt->feed->parseErrors, "<p>Could not find any ld+json tags!</p>");
+		g_string_append(ctxt->subscription->parseErrors, "<p>Could not find any ld+json tags!</p>");
 		return;
 	}
 }

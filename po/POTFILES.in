@@ -195,7 +195,6 @@ src/xml.h
 [type: gettext/glade]glade/mark_read_dialog.ui
 [type: gettext/glade]glade/new_folder.ui
 [type: gettext/glade]glade/new_newsbin.ui
-[type: gettext/glade]glade/new_subscription.ui
 [type: gettext/glade]glade/node_source.ui
 [type: gettext/glade]glade/opml_source.ui
 [type: gettext/glade]glade/plugins.ui

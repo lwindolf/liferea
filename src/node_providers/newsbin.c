@@ -43,32 +43,16 @@ newsbin_get_list (void)
 static void
 newsbin_import (Node *node, Node *parent, xmlNodePtr cur, gboolean trusted)
 {
-	xmlChar		*tmp;
 	feed_get_provider ()->import (node, parent, cur, trusted);
 
-	/* but we don't need a subscription (created by feed_import()) */
-	g_free (node->subscription);
-	node->subscription = NULL;
+	node->subscription->cacheLimit = CACHE_UNLIMITED;
 
-	tmp = xmlGetProp (cur, BAD_CAST"alwaysShowInReducedMode");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		((feedPtr)node->data)->alwaysShowInReduced = TRUE;
-	xmlFree (tmp);
-
-	((feedPtr)node->data)->cacheLimit = CACHE_UNLIMITED;
-
-	newsbin_list = g_slist_append(newsbin_list, node);
+	newsbin_list = g_slist_append (newsbin_list, node);
 }
 
 static void
 newsbin_export (Node *node, xmlNodePtr xml, gboolean trusted)
 {
-	feedPtr feed = (feedPtr) node->data;
-
-	if (trusted) {
-		if (feed->alwaysShowInReduced)
-			xmlNewProp (xml, BAD_CAST"alwaysShowInReducedMode", BAD_CAST"true");
-	}
 }
 
 static void
@@ -90,14 +74,13 @@ on_newsbin_common_btn_clicked (GtkDialog *dialog, gint response_id, gpointer use
 
 	if (!newsbin) {
 		newsbin = node_new ("newsbin");
-		node_set_data (newsbin, (gpointer)feed_new ());
-		newsbin_list = g_slist_append(newsbin_list, newsbin);
+		newsbin_list = g_slist_append (newsbin_list, newsbin);
 		newly_created = TRUE;
 	}
 
 	node_set_title (newsbin, liferea_dialog_entry_get (GTK_WIDGET (dialog), "newsbinnameentry"));
 	if (newsbin->data) {
-		((feedPtr)newsbin->data)->alwaysShowInReduced = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showinreduced));
+		newsbin->subscription->alwaysShowInReduced = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showinreduced));
 	}
 	if (newly_created) {
 		feedlist_node_added (newsbin);
@@ -115,7 +98,7 @@ ui_newsbin_common (Node *node)
 	if (node) {
 		gtk_window_set_title (GTK_WINDOW (dialog), _("News Bin Properties"));
 		liferea_dialog_entry_set (dialog, "newsbinnameentry", node_get_title (node));
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), ((feedPtr)node->data)->alwaysShowInReduced);
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), node->subscription->alwaysShowInReduced);
 	} else {
 		gtk_window_set_title (GTK_WINDOW (dialog), _("Create News Bin"));
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), FALSE);

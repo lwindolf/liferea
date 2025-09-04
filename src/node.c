@@ -400,12 +400,9 @@ node_to_json (Node *node)
 
 	node_source_to_json (node, b);
 
-	if (g_str_equal (NODE_PROVIDER (node)->id, "feed")) {
-		feedPtr feed = (feedPtr) node->data;
-		if(feed && feed->parseErrors && (strlen(feed->parseErrors->str) > 0)) {
-			json_builder_set_member_name (b, "parseErrror");
-			json_builder_add_string_value (b, feed->parseErrors->str);
-		}
+	if(node->subscription && node->subscription->parseErrors && (strlen(node->subscription->parseErrors->str) > 0)) {
+		json_builder_set_member_name (b, "parseError");
+		json_builder_add_string_value (b, node->subscription->parseErrors->str);
 	}
 
 	json_builder_end_object (b);

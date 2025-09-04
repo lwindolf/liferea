@@ -57,7 +57,7 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 
 	// or default to current feed timestamp
 	if (0 == ctxt->item->time)
-		ctxt->item->time = ctxt->feed->time;
+		ctxt->item->time = ctxt->subscription->time;
 
 	// get link
 	if ((cur = xpath_find (itemNode, ".//a/@href"))) {
@@ -111,7 +111,7 @@ html5_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 	xmlNodePtr	cur;
 	xmlChar		*baseURL = xmlNodeGetBase (root->doc, root);
 
-	ctxt->feed->time = time(NULL);
+	ctxt->subscription->time = time(NULL);
 
 	/* For HTML5 source the homepage is the source */
 	subscription_set_homepage (ctxt->subscription, ctxt->subscription->source);
@@ -133,7 +133,7 @@ html5_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 	}
 
 	if (!xpath_foreach_match (root, "/html/body//article", html5_feed_parse_article, ctxt)) {
-		g_string_append(ctxt->feed->parseErrors, "<p>Could not find HTML5 tags!</p>");
+		g_string_append(ctxt->subscription->parseErrors, "<p>Could not find HTML5 tags!</p>");
 		return;
 	}
 }

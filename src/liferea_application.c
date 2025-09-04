@@ -105,7 +105,7 @@ on_app_open (GApplication *application,
 				g_free (tmp);
 			}
 
-			feedlist_add_subscription_check_duplicate (uri, NULL, NULL, 0);
+			feedlist_add_subscription_by_url (uri);
 			g_free (uri);
 		}
 

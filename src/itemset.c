@@ -51,14 +51,13 @@ itemset_foreach (itemSetPtr itemSet, itemActionFunc callback, gpointer userdata)
 	}
 }
 
-// FIXME: this ought to be a subscription property!
 static guint
 itemset_get_max_item_count (itemSetPtr itemSet)
 {
 	Node *node = node_from_id (itemSet->nodeId);
 
-	if (node && IS_FEED (node))
-		return feed_get_max_item_count (node);
+	if (node->subscription)
+		return subscription_get_max_item_count (node->subscription);
 
 	return G_MAXUINT;
 }
@@ -235,8 +234,8 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 		itemSet->ids = g_list_prepend (itemSet->ids, GUINT_TO_POINTER (item->id));
 
 		/* step 3: trigger async enrichment */
-		if (node && IS_FEED (node) && ((feedPtr)node->data)->html5Extract)
-			feed_enrich_item (node->subscription, item);
+		if (node->subscription && node->subscription->html5Extract)
+			subscription_enrich_item (node->subscription, item);
 
 		debug (DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title (item), item->id, itemSet);
 
@@ -259,7 +258,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 		}
 
 		/* step 5: Check item for new enclosures to download */
-		if (node && (((feedPtr)node->data)->encAutoDownload)) {
+		if (node->subscription && node->subscription->encAutoDownload) {
 			GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 			while (iter) {
 				enclosurePtr enc = enclosure_from_string (iter->data);

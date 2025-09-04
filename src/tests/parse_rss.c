@@ -66,7 +66,6 @@ tc_parse_feed (gconstpointer user_data)
 	GList			*iter;
 
 	node = node_new ("feed");
-	node_set_data (node, feed_new ());
  	node_set_subscription (node, subscription_new (NULL, NULL, NULL));
 	ctxt = feed_parser_ctxt_new (node->subscription, tc[0], strlen(tc[0]));
 
