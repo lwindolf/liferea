@@ -52,10 +52,8 @@ node_provider_get_name (Node *node)
 {
 	/* To distinguish different feed formats (Atom, RSS...) we do
 	   return different type identifiers for feed subscriptions... */
-	if (IS_FEED (node)) {
-		g_assert (NULL != node->data);
-		return feed_type_fhp_to_str (((feedPtr)(node->data))->fhp);
-	}
+	if (node->subscription && node->subscription->type == feed_get_subscription_type ())
+		return feed_type_fhp_to_str (node->subscription->fhp);
 	
 	return NODE_PROVIDER (node)->id;
 }

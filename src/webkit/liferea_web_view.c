@@ -231,7 +231,7 @@ on_popup_save_link_activate (GSimpleAction *action, GVariant *parameter, gpointe
 static void
 on_popup_subscribe_link_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feedlist_add_subscription (g_variant_get_string (parameter, NULL), NULL, NULL, 0);
+	feedlist_add_subscription_by_url (g_variant_get_string (parameter, NULL));
 }
 
 static void

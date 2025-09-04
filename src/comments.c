@@ -122,7 +122,6 @@ comments_process_update_result (const UpdateResult * const result, gpointer user
 
 		/* parse the new downloaded feed into fake node, subscription and feed */
 		node = node_new ("feed");
-		node_set_data (node, feed_new ());
 		node_set_subscription (node, subscription_new (result->source, NULL, NULL));
 		ctxt = feed_parser_ctxt_new (node->subscription, result->data, result->size);
 
@@ -144,7 +143,7 @@ comments_process_update_result (const UpdateResult * const result, gpointer user
 
 			debug (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
 			comments = db_itemset_load (commentFeed->id);
-			itemset_merge_items (comments, ctxt->items, ctxt->feed->valid, FALSE);
+			itemset_merge_items (comments, ctxt->items, ctxt->subscription->valid, FALSE);
 			itemset_free (comments);
 
 			/* No comment feed truncating as comment items are automatically

@@ -118,7 +118,6 @@ google_source_merge_feed (GoogleSourcePtr source, const gchar *url, const gchar 
 		debug (DEBUG_UPDATE, "adding %s (id=%s, url=%s)", title, id, url);
 		node = node_new ("feed");
 		node_set_title (node, title);
-		node_set_data (node, feed_new ());
 		node_set_parent (node, folder?folder:source->root, -1);
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = source->root->source->type->feedSubscriptionType;

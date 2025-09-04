@@ -73,7 +73,7 @@ static gboolean
 liferea_dbus_subscribe (LifereaDBus *self, const gchar *url, GError **err)
 {
 	liferea_shell_show_window ();
-	feedlist_add_subscription (url, NULL, NULL, 0);
+	feedlist_add_subscription_by_url (url);
 	return TRUE;
 }
 

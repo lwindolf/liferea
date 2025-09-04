@@ -312,16 +312,16 @@ item_to_json (LifereaItem *item)
 		json_builder_set_member_name (b, "feedTitle");
 		json_builder_add_string_value (b, node_get_title (feedNode));
 
-		feedPtr feed = (feedPtr)feedNode->data;
-		if (feed) {
-			if (!feed->ignoreComments) {
+		subscriptionPtr subscription = feedNode->subscription;
+		if (subscription) {
+			if (!subscription->ignoreComments) {
 				if (item->commentFeedId) {
 					itemSetPtr itemSet = comments_get_itemset (item->commentFeedId);
 					if (itemSet) {
 						json_builder_set_member_name (b, "comments");
 						json_builder_begin_array (b);
 
-						GList		*iter = itemSet->ids;
+						GList *iter = itemSet->ids;
 						while (iter) {
 							itemPtr comment = item_load (GPOINTER_TO_UINT (iter->data));
 

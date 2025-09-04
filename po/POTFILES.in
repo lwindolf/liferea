@@ -206,7 +206,6 @@ src/xml.h
 [type: gettext/glade]resources/mark_read_dialog.ui
 [type: gettext/glade]resources/new_folder.ui
 [type: gettext/glade]resources/new_newsbin.ui
-[type: gettext/glade]resources/new_subscription.ui
 [type: gettext/glade]resources/node_source.ui
 [type: gettext/glade]resources/opml_source.ui
 [type: gettext/glade]resources/plugins.ui
@@ -216,7 +215,7 @@ src/xml.h
 [type: gettext/glade]resources/rename_node.ui
 [type: gettext/glade]resources/search_folder.ui
 [type: gettext/glade]resources/search.ui
-[type: gettext/glade]resources/simple_search.ui
+[type: gettext/glade]resources/shortcuts.ui
 [type: gettext/glade]resources/simple_subscription.ui
 [type: gettext/glade]resources/theoldreader_source.ui
 [type: gettext/glade]resources/ttrss_source.ui

@@ -88,7 +88,6 @@ feed_parser_ctxt_new (subscriptionPtr subscription, const gchar *data, gsize siz
 
 	ctxt = g_new0 (struct feedParserCtxt, 1);
 	ctxt->subscription = subscription;
-	ctxt->feed = (feedPtr)subscription->node->data;
 	ctxt->data = data;
 	ctxt->dataLength = size;
 	ctxt->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
@@ -180,10 +179,10 @@ feed_parse (feedParserCtxtPtr ctxt)
 
 	g_assert (NULL == ctxt->items);
 
-	if (ctxt->feed->parseErrors)
-		g_string_truncate (ctxt->feed->parseErrors, 0);
+	if (ctxt->subscription->parseErrors)
+		g_string_truncate (ctxt->subscription->parseErrors, 0);
 	else
-		ctxt->feed->parseErrors = g_string_new (NULL);
+		ctxt->subscription->parseErrors = g_string_new (NULL);
 
 	/* Prepare two documents, one parse as XML and one as XHTML.
 	   Depending on the feed parser being an HTML parser the one
@@ -198,7 +197,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 
 		if (NULL == (xmlNode = xmlDocGetRootElement (xmlDoc))) {
 			ctxt->subscription->error = FETCH_ERROR_XML;
-			g_string_append (ctxt->feed->parseErrors, _("Empty document!"));
+			g_string_append (ctxt->subscription->parseErrors, _("Empty document!"));
 			break;
 		}
 
@@ -207,7 +206,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 		}
 
 		if (!xmlNode->name) {
-			g_string_append (ctxt->feed->parseErrors, _("Invalid XML!"));
+			g_string_append (ctxt->subscription->parseErrors, _("Invalid XML!"));
 			break;
 		}
 	} while (0);
@@ -218,7 +217,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			break;
 
 		if (NULL == (htmlNode = xmlDocGetRootElement (htmlDoc))) {
-			//g_string_append (ctxt->feed->parseErrors, _("Empty document!"));
+			//g_string_append (ctxt->subscription->parseErrors, _("Empty document!"));
 			break;
 		}
 	} while (0);
@@ -229,7 +228,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 		feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
 
 		if (xmlNode && handler && handler->checkFormat && !handler->html && (*(handler->checkFormat))(xmlDoc, xmlNode)) {
-			ctxt->feed->fhp = handler;
+			ctxt->subscription->fhp = handler;
 			feed_parser_ctxt_cleanup (ctxt);
 			(*(handler->feedParser)) (ctxt, xmlNode);
 			success = TRUE;
@@ -256,7 +255,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 		feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
 
 		if (htmlNode && handler && handler->checkFormat && handler->html && (*(handler->checkFormat))(htmlDoc, htmlNode)) {
-			ctxt->feed->fhp = handler;
+			ctxt->subscription->fhp = handler;
 			feed_parser_ctxt_cleanup (ctxt);
 			(*(handler->feedParser)) (ctxt, htmlNode);
 			success = TRUE;
@@ -277,8 +276,8 @@ feed_parse (feedParserCtxtPtr ctxt)
 		     strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML ")))
 			ctxt->subscription->error = FETCH_ERROR_DISCOVER;
 	} else {
-		if (ctxt->feed->fhp) {
-			debug (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
+		if (ctxt->subscription->fhp) {
+			debug (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->subscription->fhp));
 			ctxt->subscription->autoDiscoveryTries = 0;
 		} else {
 			/* Auto discovery found a link that is being processed

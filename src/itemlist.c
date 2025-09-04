@@ -613,7 +613,7 @@ itemlist_selection_changed (ItemList *ilv, gulong itemId, gpointer unused)
 
 			item_set_read_state (item, TRUE);
 
-			if (IS_FEED (node) && node->data && ((feedPtr)node->data)->loadItemLink && (link = item_make_link (item))) {
+			if (node->subscription && node->subscription->loadItemLink && (link = item_make_link (item))) {
 				browser_launch_URL (link, TRUE /* force internal */);
 				g_free (link);
 			}

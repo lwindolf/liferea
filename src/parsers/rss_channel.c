@@ -96,7 +96,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			if(NULL != (tmp = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1))) {
 				ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "pubDate", tmp);
-				ctxt->feed->time = date_parse_RFC822 (tmp);
+				ctxt->subscription->time = date_parse_RFC822 (tmp);
 				g_free(tmp);
 			}
 		}
@@ -209,7 +209,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	short 		rdf = 0;
 	int 		error = 0;
 
-	ctxt->feed->time = time(NULL);
+	ctxt->subscription->time = time(NULL);
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 		cur = cur->xmlChildrenNode;
@@ -222,7 +222,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		/* explicitly no "cur = cur->xmlChildrenNode;" ! */
 		rdf = 0;
 	} else {
-		g_string_append(ctxt->feed->parseErrors, "<p>Could not find RDF/RSS header!</p>");
+		g_string_append(ctxt->subscription->parseErrors, "<p>Could not find RDF/RSS header!</p>");
 		error = 1;
 	}
 
@@ -282,7 +282,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					if ((!xmlStrcmp(itemNode->name, BAD_CAST"item"))) {
 						if(NULL != (ctxt->item = parseRSSItem(ctxt, itemNode))) {
 							if(0 == ctxt->item->time)
-								ctxt->item->time = ctxt->feed->time;
+								ctxt->item->time = ctxt->subscription->time;
 							ctxt->items = g_list_append(ctxt->items, ctxt->item);
 						}
 					}
@@ -292,7 +292,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				/* collect channel items */
 				if(NULL != (ctxt->item = parseRSSItem(ctxt, cur))) {
 					if(0 == ctxt->item->time)
-						ctxt->item->time = ctxt->feed->time;
+						ctxt->item->time = ctxt->subscription->time;
 					ctxt->items = g_list_append(ctxt->items, ctxt->item);
 				}
 

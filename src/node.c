@@ -1,7 +1,7 @@
 /*
  * @file node.c  hierarchic feed list node handling
  *
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -391,12 +391,9 @@ node_to_json (Node *node)
 		metadata_list_to_json (node->subscription->metadata, b);
 	}
 
-	if (g_str_equal (NODE_PROVIDER (node)->id, "feed")) {
-		feedPtr feed = (feedPtr) node->data;
-		if(feed && feed->parseErrors && (strlen(feed->parseErrors->str) > 0)) {
-			json_builder_set_member_name (b, "parseErrror");
-			json_builder_add_string_value (b, feed->parseErrors->str);
-		}
+	if(node->subscription && node->subscription->parseErrors && (strlen(node->subscription->parseErrors->str) > 0)) {
+		json_builder_set_member_name (b, "parseError");
+		json_builder_add_string_value (b, node->subscription->parseErrors->str);
 	}
 
 	json_builder_end_object (b);

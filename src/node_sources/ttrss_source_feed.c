@@ -147,7 +147,7 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 		} else {
 			subscription->node->available = FALSE;
 
-			g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by TinyTinyRSS API!"));
+			g_string_append (subscription->parseErrors, _("Could not parse JSON returned by TinyTinyRSS API!"));
 		}
 
 		g_object_unref (parser);
@@ -182,7 +182,7 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	}
 
 	/* We can always max out as TinyTinyRSS does limit results itself */
-	fetchCount = feed_get_max_item_count (subscription->node);
+	fetchCount = subscription_get_max_item_count (subscription);
 
 	request->postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, fetchCount);
 	source_name = g_strdup_printf (TTRSS_URL, source->url);

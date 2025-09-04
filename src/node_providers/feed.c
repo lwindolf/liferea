@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -40,67 +40,12 @@
 #include "ui/subscription_dialog.h"
 #include "ui/feed_list_view.h"
 
-feedPtr
-feed_new (void)
-{
-	feedPtr		feed;
-
-	feed = g_new0 (struct feed, 1);
-
-	feed->cacheLimit = CACHE_DEFAULT;
-	feed->valid = TRUE;
-
-	return feed;
-}
-
 static void
 feed_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 {
-	xmlChar		*cacheLimitStr, *title,	*tmp;
-	feedPtr		feed = NULL;
+	xmlChar		*title;
 
-	xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST"type");
-
-	feed = feed_new ();
-	feed->fhp = feed_type_str_to_fhp ((gchar *)typeStr);
-
-	node_set_data (node, feed);
 	node_set_subscription (node, subscription_import (xml, trusted));
-
-	/* Set the feed cache limit */
-	cacheLimitStr = xmlGetProp (xml, BAD_CAST "cacheLimit");
-	if (cacheLimitStr && !xmlStrcmp (cacheLimitStr, BAD_CAST"unlimited"))
-		feed->cacheLimit = CACHE_UNLIMITED;
-	else
-		feed->cacheLimit = common_parse_long ((gchar *)cacheLimitStr, CACHE_DEFAULT);
-	xmlFree (cacheLimitStr);
-
-	/* enclosure auto download flag */
-	tmp = xmlGetProp (xml, BAD_CAST"encAutoDownload");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		feed->encAutoDownload = TRUE;
-	xmlFree (tmp);
-
-	/* comment feed handling flag */
-	tmp = xmlGetProp (xml, BAD_CAST"ignoreComments");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		feed->ignoreComments = TRUE;
-	xmlFree (tmp);
-
-	tmp = xmlGetProp (xml, BAD_CAST"markAsRead");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		feed->markAsRead = TRUE;
-	xmlFree (tmp);
-
-	tmp = xmlGetProp (xml, BAD_CAST"html5Extract");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		feed->html5Extract = TRUE;
-	xmlFree (tmp);
-
-	tmp = xmlGetProp (xml, BAD_CAST"loadItemLink");
-	if (tmp && !xmlStrcmp ((xmlChar *)tmp, BAD_CAST"true"))
-		feed->loadItemLink = TRUE;
-	xmlFree (tmp);
 
 	title = xmlGetProp (xml, BAD_CAST"title");
 	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
@@ -113,135 +58,16 @@ feed_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 	xmlFree (title);
 
 	if (node->subscription)
-		debug (DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d",
+		debug (DEBUG_CACHE, "import feed: title=%s source=%s interval=%d",
 		        node_get_title (node),
 	        	subscription_get_source (node->subscription),
-		        typeStr,
 		        subscription_get_update_interval (node->subscription));
-	xmlFree (typeStr);
 }
 
 static void
 feed_export (Node *node, xmlNodePtr xml, gboolean trusted)
 {
-	feedPtr feed = (feedPtr) node->data;
-	gchar *cacheLimit = NULL;
-
-	if (node->subscription)
-		subscription_export (node->subscription, xml, trusted);
-
-	if (trusted) {
-		if (feed->cacheLimit >= 0)
-			cacheLimit = g_strdup_printf ("%d", feed->cacheLimit);
-		if (feed->cacheLimit == CACHE_UNLIMITED)
-			cacheLimit = g_strdup ("unlimited");
-		if (cacheLimit)
-			xmlNewProp (xml, BAD_CAST"cacheLimit", BAD_CAST cacheLimit);
-
-		if (feed->encAutoDownload)
-			xmlNewProp (xml, BAD_CAST"encAutoDownload", BAD_CAST"true");
-
-		if (feed->ignoreComments)
-			xmlNewProp (xml, BAD_CAST"ignoreComments", BAD_CAST"true");
-
-		if (feed->markAsRead)
-			xmlNewProp (xml, BAD_CAST"markAsRead", BAD_CAST"true");
-
-		if (feed->html5Extract)
-			xmlNewProp (xml, BAD_CAST"html5Extract", BAD_CAST"true");
-
-		if (feed->loadItemLink)
-			xmlNewProp (xml, BAD_CAST"loadItemLink", BAD_CAST"true");
-	}
-
-	if (node->subscription)
-		debug (DEBUG_CACHE, "adding feed: source=%s interval=%d cacheLimit=%s",
-		        subscription_get_source (node->subscription),
-			subscription_get_update_interval (node->subscription),
-		        (cacheLimit != NULL ? cacheLimit : ""));
-	g_free (cacheLimit);
-}
-
-guint
-feed_get_max_item_count (Node *node)
-{
-	gint	default_max_items;
-	feedPtr	feed = (feedPtr)node->data;
-
-	switch (feed->cacheLimit) {
-		case CACHE_DEFAULT:
-			conf_get_int_value (DEFAULT_MAX_ITEMS, &default_max_items);
-			return default_max_items;
-			break;
-		case CACHE_DISABLE:
-		case CACHE_UNLIMITED:
-			return G_MAXUINT;
-			break;
-		default:
-			return feed->cacheLimit;
-			break;
-	}
-}
-
-// content scraping
-
-static void
-feed_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags) {
-	itemPtr item;
-	gchar	*article;
-
-	if (!result->data || result->httpstatus >= 400)
-		return;
-
-	item = item_load (GPOINTER_TO_UINT (userdata));
-	if (!item)
-		return;
-
-	article = xhtml_extract_from_string (result->data, result->source);
-	if (article) {
-		// Enable AMP images by replacing <amg-img> by <img>
-		gchar **tmp_split = g_strsplit(article, "<amp-img", 0);
-		gchar *tmp = g_strjoinv("<img", tmp_split);
-		g_strfreev (tmp_split);
-		g_free (article);
-		article = tmp;
-
-		metadata_list_set (&(item->metadata), "richContent", article);
-		db_item_update (item);
-		itemlist_update_item (item);
-		g_free (article);
-	}
-	item_unload (item);
-}
-
-/**
- * Checks content of an items source and tries to crawl content
- */
-void
-feed_enrich_item (subscriptionPtr subscription, itemPtr item)
-{
-	UpdateRequest *request;
-
-	if (!item->source) {
-		debug (DEBUG_PARSING, "Cannot HTML5-enrich item %s because it has no source!", item->title);
-		return;
-	}
-
-	// Don't enrich twice
-	if (NULL != metadata_list_get (item->metadata, "richContent")) {
-		debug (DEBUG_PARSING, "Skipping already HTML5 enriched item %s", item->title);
-		return;
-	}
-
-	// Fetch item->link document and try to parse it as XHTML
-	debug (DEBUG_PARSING, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
-	request = update_request_new (
-		item->source,
-		NULL,	// updateState
-		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)
-	);
-
-	update_job_new (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
+	subscription_export (node->subscription, xml, trusted);
 }
 
 /* implementation of subscription type interface */
@@ -260,7 +86,7 @@ feed_process_update_result (subscriptionPtr subscription, const UpdateResult * c
 		/* No feed found, display an error */
 		node->available = FALSE;
 
-	} else if (!ctxt->feed->fhp) {
+	} else if (!ctxt->subscription->fhp) {
 		/* There's a feed but no handler. This means autodiscovery
 		 * found a feed, but we still need to download it.
 		 * An update should be in progress that will process it */
@@ -272,7 +98,7 @@ feed_process_update_result (subscriptionPtr subscription, const UpdateResult * c
 
 		/* merge the resulting items into the node's item set */
 		itemSet = node_get_itemset (node);
-		node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
+		node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->subscription->valid, ctxt->subscription->markAsRead);
 		if (node->newCount)
 			itemlist_merge_itemset (itemSet);
 		itemset_free (itemSet);
@@ -342,11 +168,6 @@ feed_properties (Node *node)
 static void
 feed_free (Node *node)
 {
-	feedPtr	feed = (feedPtr)node->data;
-
-	if (feed->parseErrors)
-		g_string_free (feed->parseErrors, TRUE);
-	g_free (feed);
 }
 
 subscriptionTypePtr

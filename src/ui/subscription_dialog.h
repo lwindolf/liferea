@@ -24,7 +24,7 @@
 #include "subscription.h"
 
 /**
- * subscription_prop_dialog_new:
+ * subscription_prop_dialog_new: (skip)
  * @subscription:	the subscription to load into the dialog
  * 
  * Creates a feed properties dialog.
@@ -32,7 +32,7 @@
 void subscription_prop_dialog_new (subscriptionPtr subscription);
 
 /**
- * subscription_dialog_new:
+ * subscription_dialog_new: (skip)
  *
  * Create a simple subscription dialog.
  */

@@ -28,7 +28,6 @@
 /** Holds all information used on feed parsing time */
 typedef struct feedParserCtxt {
 	subscriptionPtr	subscription;		/**< the subscription the feed belongs to (optional) */
-	feedPtr		feed;			/**< the feed structure to fill */
 	GList		*items;			/**< the list of new items */
 	itemPtr		item;			/**< the item currently parsed (or NULL) */
 

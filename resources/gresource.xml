@@ -20,7 +20,6 @@
     <file compressed="true">ui/mark_read_dialog.ui</file>
     <file compressed="true">ui/new_folder.ui</file>
     <file compressed="true">ui/new_newsbin.ui</file>
-    <file compressed="true">ui/new_subscription.ui</file>
     <file compressed="true">ui/node_source.ui</file>
     <file compressed="true">ui/opml_source.ui</file>
     <file compressed="true">ui/plugins.ui</file>

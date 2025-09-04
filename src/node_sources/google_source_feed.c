@@ -156,7 +156,7 @@ google_source_feed_subscription_process_update_result (const UpdateResult* const
 		subscription->node->available = TRUE;
 	} else {
 		subscription->node->available = FALSE;
-		g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by Google Reader API!"));
+		g_string_append (subscription->parseErrors, _("Could not parse JSON returned by Google Reader API!"));
 	}
 }
 

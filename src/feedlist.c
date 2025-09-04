@@ -454,31 +454,35 @@ feedlist_add_folder (const gchar *title)
 }
 
 void
-feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
+feedlist_add_subscription (subscriptionPtr subscription)
 {
 	Node	*parent = feedlist_get_parent_node ();
-
-	g_assert (NULL != source);
 
 	if (0 == (NODE_PROVIDER (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS)) {
 		g_warning ("feedlist_add_subscription: this should never happen!");
 		return;
 	}
 
-	node_source_add_subscription (parent->source->root, subscription_new (source, filter, options));
+	node_source_add_subscription (parent->source->root, subscription);
 }
 
 void
-feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
+feedlist_add_subscription_check_duplicate (subscriptionPtr subscription)
 {
 	Node *duplicateNode = NULL;
 
-	duplicateNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
+	duplicateNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, subscription_get_source (subscription));
 	if (!duplicateNode) {
-		feedlist_add_subscription (source, filter, options, UPDATE_REQUEST_PRIORITY_HIGH);
+		feedlist_add_subscription (subscription);
 	} else {
-		feed_list_view_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicateNode);
+		feed_list_view_add_duplicate_url_subscription (subscription, duplicateNode);
 	}
+}
+
+void
+feedlist_add_subscription_by_url (const gchar *url)
+{
+	feedlist_add_subscription_check_duplicate (subscription_new (g_strdup (url), NULL, NULL));
 }
 
 void

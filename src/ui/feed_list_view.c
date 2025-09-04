@@ -439,7 +439,7 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 	if (!node)
 		return FALSE;
 
-	if (IS_NEWSBIN(node) && node->data && ((feedPtr)node->data)->alwaysShowInReduced)
+	if (node->subscription && node->subscription->alwaysShowInReduced)
 		return TRUE;
 
 	if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
@@ -988,7 +988,7 @@ feed_list_view_add_duplicate_url_cb (GtkDialog *dialog, gint response_id, gpoint
 	subscriptionPtr tempSubscription = (subscriptionPtr) user_data;
 
 	if (response_id == GTK_RESPONSE_ACCEPT)
-		feedlist_add_subscription (tempSubscription->source, NULL, NULL, 0);
+		feedlist_add_subscription (tempSubscription);
 	else
 		subscription_free (tempSubscription);
 }
