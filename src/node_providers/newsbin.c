@@ -75,16 +75,15 @@ on_newsbin_common_btn_clicked (GtkDialog *dialog, gint response_id, gpointer use
 	if (!newsbin) {
 		newsbin = node_new ("newsbin");
 		newsbin_list = g_slist_append (newsbin_list, newsbin);
+		node_set_subscription (newsbin, subscription_new (NULL, NULL, NULL));
 		newly_created = TRUE;
 	}
 
 	node_set_title (newsbin, liferea_dialog_entry_get (GTK_WIDGET (dialog), "newsbinnameentry"));
-	if (newsbin->data) {
-		newsbin->subscription->alwaysShowInReduced = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showinreduced));
-	}
-	if (newly_created) {
+	newsbin->subscription->alwaysShowInReduced = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showinreduced));
+
+	if (newly_created)
 		feedlist_node_added (newsbin);
-	}
 
 	feedlist_schedule_save ();
 }
