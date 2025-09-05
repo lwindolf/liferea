@@ -55,6 +55,7 @@
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/ui_update.h"
+#include "webkit/liferea_web_view.h"
 
 extern gboolean searchFolderRebuild; /* db.c */
 
@@ -917,6 +918,25 @@ on_menu_export (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	export_OPML_file ();
 }
 
+static void
+on_print_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	LifereaBrowser *browser;
+	GtkWidget *webview;
+	
+	// First see if a browser tab is active
+	browser = browser_tabs_get_active_htmlview ();
+
+	// If not print the item view
+	if (!browser)
+		g_object_get (G_OBJECT (shell->itemview), "html-view", &browser, NULL);
+
+	g_return_if_fail (browser != NULL);
+
+	g_object_get (G_OBJECT (browser), "renderwidget", &webview, NULL);
+	liferea_web_view_print (LIFEREA_WEB_VIEW (webview));
+}
+
 /* methods to receive URLs which were dropped anywhere in the main window */
 static void
 liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time_received)
@@ -1025,6 +1045,7 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
 	{"show-shortcuts", on_shortcuts_activate, NULL, NULL, NULL},
 	{"show-about", on_about_activate, NULL, NULL, NULL},
+	{"print", on_print_activate, NULL, NULL, NULL},
 
 	/* Parameter type must be NULL for toggle. */
 	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},

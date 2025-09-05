@@ -36,12 +36,38 @@ typedef struct _LifereaWebViewClass LifereaWebViewClass;
 
 GType liferea_web_view_get_type (void);
 
-LifereaWebView *
-liferea_web_view_new (void);
+/**
+ * liferea_web_view_new:
+ *
+ * Create a new #LifereaWebView.
+ *
+ * Returns: a new #LifereaWebView
+ */
+LifereaWebView *liferea_web_view_new (void);
 
-void
-liferea_web_view_set_dbus_connection (LifereaWebView *self, GDBusConnection *connection);
+/**
+ * liferea_web_view_set_dbus_connection: (skip)
+ * Set the D-Bus connection to be used by the web view.
+ *
+ * @self: a #LifereaWebView
+ * @connection: a #GDBusConnection
+ */
+void liferea_web_view_set_dbus_connection (LifereaWebView *self, GDBusConnection *connection);
 
-void
-liferea_web_view_scroll_pagedown (LifereaWebView *self);
+/**
+ * liferea_web_view_scroll_pagedown:
+ * Scroll the web view down by one page.
+ *
+ * @self: a #LifereaWebView
+ */
+void liferea_web_view_scroll_pagedown (LifereaWebView *self);
+
+/**
+ * liferea_web_view_print:
+ * Print the contents of the web view.
+ *
+ * @self: a #LifereaWebView
+ */
+void liferea_web_view_print (LifereaWebView *self);
+
 #endif

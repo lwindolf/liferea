@@ -169,13 +169,21 @@
           <attribute name="action">app.show-update-monitor</attribute>
           <attribute name="label" translatable="yes">_Update Monitor</attribute>
         </item>
+      </section>
+      <section>
         <item>
           <attribute name="action">app.show-preferences</attribute>
           <attribute name="label" translatable="yes">_Preferences</attribute>
         </item>
-	<item>
+	      <item>
           <attribute name="action">app.manage-plugins</attribute>
           <attribute name="label" translatable="yes">_Manage Plugins</attribute>
+        </item>
+      </section>
+      <section>
+ 	      <item>
+          <attribute name="action">app.print</attribute>
+          <attribute name="label" translatable="yes">_Print</attribute>
         </item>
       </section>
     </submenu>

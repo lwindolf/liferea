@@ -5,6 +5,9 @@ To be released
 	* Rewrite GtkPaned position restoration to GSettings bindings
 	  (Lars Windolf)
 
+	* #1239 Add print support, new menu option in 'Tools'
+	  (Lars Windolf)
+
 	* #1304 Show full feed properties dialog on 'Advanced' subscribe
 	  (Lars Windolf)
 

@@ -28,6 +28,7 @@
 #include "feedlist.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
+#include "ui/liferea_shell.h"
 #include "ui/liferea_browser.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
@@ -274,6 +275,15 @@ on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpoi
 
 	WebKitWebInspector *inspector = webkit_web_view_get_inspector (WEBKIT_WEB_VIEW (user_data));
 	webkit_web_inspector_show (WEBKIT_WEB_INSPECTOR(inspector));
+}
+
+void
+liferea_web_view_print (LifereaWebView *self)
+{
+	g_autoptr(WebKitPrintOperation) operation = NULL;
+
+	operation = webkit_print_operation_new (WEBKIT_WEB_VIEW (self));
+	webkit_print_operation_run_dialog (operation, GTK_WINDOW (liferea_shell_get_window ()));
 }
 
 static const GActionEntry liferea_web_view_gaction_entries[] = {
