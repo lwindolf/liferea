@@ -56,7 +56,7 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 {
 	Node *node = node_from_id (itemSet->nodeId);
 
-	if (node->subscription)
+	if (node && node->subscription)
 		return subscription_get_max_item_count (node->subscription);
 
 	return G_MAXUINT;
