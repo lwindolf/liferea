@@ -415,16 +415,24 @@
           <attribute name="label" translatable="yes">_Update Monitor</attribute>
         </item>
         <item>
-          <attribute name="action">app.show-preferences</attribute>
-          <attribute name="label" translatable="yes">_Preferences</attribute>
+          <attribute name="action">node-sort-feeds</attribute>
+          <attribute name="label" translatable="yes">_Sort Feeds</attribute>
         </item>
+      </section>
+      <section>
         <item>
           <attribute name="action">app.manage-plugins</attribute>
           <attribute name="label" translatable="yes">_Manage Plugins</attribute>
         </item>
         <item>
-          <attribute name="action">node-sort-feeds</attribute>
-          <attribute name="label" translatable="yes">_Sort Feeds</attribute>
+          <attribute name="action">app.show-preferences</attribute>
+          <attribute name="label" translatable="yes">_Preferences</attribute>
+        </item>
+      </section>
+      <section>
+        <item>
+          <attribute name="action">app.print</attribute>
+          <attribute name="label">Print</attribute>
         </item>
       </section>
     </submenu>

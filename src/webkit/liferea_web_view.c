@@ -258,6 +258,15 @@ on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpoi
 	webkit_web_inspector_show (WEBKIT_WEB_INSPECTOR(inspector));
 }
 
+void
+liferea_web_view_print (LifereaWebView *self)
+{
+	g_autoptr(WebKitPrintOperation) operation = NULL;
+
+	operation = webkit_print_operation_new (WEBKIT_WEB_VIEW (self));
+	webkit_print_operation_run_dialog (operation, GTK_WINDOW (liferea_shell_get_window ()));
+}
+
 static const GActionEntry liferea_web_view_gaction_entries[] = {
 	{"save-link", on_popup_save_link_activate, "s", NULL, NULL},
 	{"subscribe-link", on_popup_subscribe_link_activate, "s", NULL, NULL},

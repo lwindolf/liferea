@@ -50,6 +50,7 @@
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/ui_update.h"
+#include "webkit/liferea_web_view.h"
 
 static void
 do_menu_update (Node *node)
@@ -276,6 +277,20 @@ on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpoin
 	itemlist_set_selected (liferea_shell_find_next_unread (0));
 }
 
+static void
+on_print_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	LifereaBrowser *browser;
+	GtkWidget *webview;
+	
+	// First see if a browser tab is active
+	browser = browser_tabs_get_active_htmlview ();
+	g_return_if_fail (browser != NULL);
+
+	g_object_get (G_OBJECT (browser), "renderwidget", &webview, NULL);
+	liferea_web_view_print (LIFEREA_WEB_VIEW (webview));
+}
+
 static const GActionEntry gaction_entries[] = {
 	{"update-all", on_menu_update_all, NULL, NULL, NULL},
 	{"mark-feed-as-read", on_mark_all_read, "s", NULL, NULL},
@@ -300,6 +315,7 @@ static const GActionEntry gaction_entries[] = {
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
 	{"show-shortcuts", on_shortcuts_activate, NULL, NULL, NULL},
 	{"show-about", on_about_activate, NULL, NULL, NULL},
+	{"print", on_print_activate, NULL, NULL, NULL},
 
 	/* Parameter type must be NULL for toggle. */
 	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
