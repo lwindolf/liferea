@@ -41,6 +41,7 @@ liferea_deps = [
   dependency('webkitgtk-6.0', version: '>= 2.43.4'),
   dependency('webkitgtk-web-process-extension-6.0', version: '>= 2.43.4'),
   dependency('libpeas-2'),
+  dependency('pango', version: '>= 1.56'),
   dependency('fribidi', version: '>= 0.19.7')
 ]
 

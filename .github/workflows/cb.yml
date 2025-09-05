@@ -1,10 +1,10 @@
 name: "Build Check"
 on:
   push:
-    branches: [main, liferea-1_16]
+    branches: [main]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [main, liferea-1_16]
+    branches: [main]
   schedule:
     - cron: '0 21 * * 6'
   workflow_dispatch:
@@ -14,7 +14,7 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     container:    
-      image: 'ubuntu:24.10'
+      image: 'ubuntu:25.04'
 
     steps:
     - name: Checkout repository
