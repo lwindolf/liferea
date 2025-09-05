@@ -188,19 +188,13 @@ on_updateallfavicons_clicked (GtkButton *button, gpointer user_data)
 static void
 on_proxyAutoDetect_clicked (GtkButton *button, gpointer user_data)
 {
-	PreferencesDialog *pd = PREFERENCES_DIALOG (user_data);
-
 	conf_set_int_value (PROXY_DETECT_MODE, 0);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxybox")), FALSE);
 }
 
 static void
 on_noProxy_clicked (GtkButton *button, gpointer user_data)
 {
-	PreferencesDialog *pd = PREFERENCES_DIALOG (user_data);
-
 	conf_set_int_value (PROXY_DETECT_MODE, 1);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxybox")), FALSE);
 }
 
 static void
@@ -337,8 +331,8 @@ preferences_dialog_init (PreferencesDialog *pd)
 			gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), TRUE);
 			break;
 	}
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), "clicked", G_CALLBACK (on_proxyAutoDetect_clicked), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), "clicked", G_CALLBACK (on_noProxy_clicked), pd);
+	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), "toggled", G_CALLBACK (on_proxyAutoDetect_clicked), pd);
+	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), "toggled", G_CALLBACK (on_noProxy_clicked), pd);
 
 	/* ================= panel 6 "Privacy" ======================== */
 

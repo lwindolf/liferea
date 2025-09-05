@@ -5,20 +5,14 @@ To be fixed next:
 =================
 
 1. Fix select next unread
-2. proxy radio in preferences does not do anything
+2. DnD reimplementation
 
 To be fixed later:
 ==================
 
 - replace "make update-po"
 - strange selection behaviour on read filtered itemlist
-- DnD reimplementation
 - restore ATK taggings
-- preferences:
-(net.sourceforge.liferea:109397): Gtk-CRITICAL **: 18:27:09.947: gtk_widget_set_sensitive: assertion 'GTK_IS_WIDGET (widget)' failed
-(net.sourceforge.liferea:109397): Gtk-CRITICAL **: 18:27:09.947: gtk_widget_set_sensitive: assertion 'GTK_IS_WIDGET (widget)' failed
-sys:1: Warning: ../../../gobject/gsignal.c:2532: signal 'clicked' is invalid for instance '0x60fef357c020' of type 'GtkCheckButton'
-sys:1: Warning: ../../../gobject/gsignal.c:2532: signal 'clicked' is invalid for instance '0x60fef357e7a0' of type 'GtkCheckButton'
 
 - remaining GTK4 FIXMES:
 
