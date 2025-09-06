@@ -13,6 +13,8 @@ To be fixed later:
 - replace "make update-po"
 - strange selection behaviour on read filtered itemlist
 - restore ATK taggings
+- plugin manager list is empty
+- feed list middle click mark all read
 
 - remaining GTK4 FIXMES:
 
