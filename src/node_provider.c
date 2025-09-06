@@ -50,12 +50,14 @@ node_provider_register (nodeProviderPtr provider)
 const gchar *
 node_provider_get_name (Node *node)
 {
+	const gchar * result = NODE_PROVIDER (node)->id;
+
 	/* To distinguish different feed formats (Atom, RSS...) we do
 	   return different type identifiers for feed subscriptions... */
-	if (node->subscription && node->subscription->type == feed_get_subscription_type ())
-		return feed_type_fhp_to_str (node->subscription->fhp);
-	
-	return NODE_PROVIDER (node)->id;
+	if (g_str_equal (result, feed_get_provider ()->id) && node->subscription)
+		result = feed_type_fhp_to_str (node->subscription->fhp);
+
+	return result;
 }
 
 nodeProviderPtr

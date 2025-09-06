@@ -117,10 +117,10 @@ subscription_can_be_updated (subscriptionPtr subscription)
 		return FALSE;
 	}
 
-	if (!subscription_get_source (subscription)) {
-		g_warning ("Feed source is NULL! This should never happen - cannot update!");
+	// can be the case for newsbins
+	if (!subscription_get_source (subscription))
 		return FALSE;
-	}
+
 	return TRUE;
 }
 
