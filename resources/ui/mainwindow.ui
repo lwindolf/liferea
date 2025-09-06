@@ -51,7 +51,7 @@
             <child>
               <object class="GtkButton">
                 <property name="action-name">app.mark-selected-feed-as-read</property>
-                <property name="icon-name">emblem-ok-symbolic</property>
+                <property name="icon-name">object-select-symbolic</property>
                 <property name="tooltip-text">Mark Items Read</property>
               </object>
             </child>

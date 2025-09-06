@@ -1641,7 +1641,7 @@
 	(34,8,"GtkButton","icon-name","edit-redo-symbolic",0,None,None,None,None,None,None,None,None),
 	(34,8,"GtkWidget","tooltip-text","Next Unread Item",0,None,None,None,None,None,None,None,None),
 	(34,9,"GtkActionable","action-name","app.mark-selected-feed-as-read",0,None,None,None,None,None,None,None,None),
-	(34,9,"GtkButton","icon-name","emblem-ok-symbolic",0,None,None,None,None,None,None,None,None),
+	(34,9,"GtkButton","icon-name","object-select-symbolic",0,None,None,None,None,None,None,None,None),
 	(34,9,"GtkWidget","tooltip-text","Mark Items Read",0,None,None,None,None,None,None,None,None),
 	(34,10,"GtkOrientable","orientation","vertical",0,None,None,None,None,None,None,None,None),
 	(34,10,"GtkWidget","hexpand","1",0,None,None,None,None,None,None,None,None),
