@@ -1,3 +1,13 @@
+To be released
+
+	Version 1.16.4
+
+	* Fixes a regression introduced in 1.16.3 that broken newsbins. The "type"
+	  attribute in the exported OPML was wrong. If you are affected please manually
+	  change "type" for your news bins back to "newsbin" in the OPML file
+	  (usually ~/.config/liferea/feedlist.opml).
+
+
 2025-09-05  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.3
