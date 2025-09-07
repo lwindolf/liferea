@@ -256,9 +256,6 @@ liferea_shell_restore_position (void)
 		debug (DEBUG_GUI, "Restoring to size %dx%d position %d:%d", w, h, x, y);
 
 		gtk_window_move (GTK_WINDOW (shell->window), x, y);
-
-		/* load window size */
-		gtk_window_resize (GTK_WINDOW (shell->window), w, h);
 	}
 
 	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
@@ -1313,6 +1310,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
 
+	conf_bind (LAST_WINDOW_WIDTH, shell->window, "default-width", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_WINDOW_HEIGHT, shell->window, "default-height", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_VPANE_POS, liferea_shell_lookup ("leftpane"), "position", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_HPANE_POS, liferea_shell_lookup ("normalViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
+	conf_bind (LAST_WPANE_POS, liferea_shell_lookup ("wideViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
+
 	/* Add GActions to application */
 	shell->generalActions = G_ACTION_GROUP (g_simple_action_group_new ());
 	g_action_map_add_action_entries (G_ACTION_MAP(shell->generalActions), liferea_shell_gaction_entries, G_N_ELEMENTS (liferea_shell_gaction_entries), NULL);
@@ -1454,13 +1457,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 		g_free (id);
 	}
 
-
 	/* Load shell state and bind for persisting */
 	liferea_shell_restore_layout ();
-	GSettings *settings = conf_get_settings ();
-	g_settings_bind (settings, LAST_VPANE_POS, liferea_shell_lookup ("leftpane"), "position", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_HPANE_POS, liferea_shell_lookup ("normalViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (settings, LAST_WPANE_POS, liferea_shell_lookup ("wideViewPane"), "position", G_SETTINGS_BIND_DEFAULT);
 
 	/* 12. Setup shell window signals, only after all widgets are ready */
 	g_signal_connect (shell->feedlist, "new-items",
