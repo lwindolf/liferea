@@ -344,7 +344,7 @@ feedlist_find_node (Node *parent, feedListFindType type, const gchar *str)
 		/* Check child node */
 		switch (type) {
 			case NODE_BY_URL:
-				if (node->subscription)
+				if (node->subscription && node->subscription->source)
 					found = g_str_equal (str, subscription_get_source (node->subscription));
 				break;
 			case NODE_BY_ID:
