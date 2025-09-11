@@ -15,13 +15,12 @@ To be fixed later:
 - replace "make update-po"
 - strange selection behaviour on read filtered itemlist
 - restore ATK taggings
+- show floating links in LifereaBrowser view
 
 - remaining GTK4 FIXMES:
 
 ../src/ui/ui_dnd.c:    (FIXME: implement the last part)
 ../src/ui/ui_dnd.c:     g_warning ("FIXME GTK4: drag and drop not yet implemented");
-../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
-../src/ui/liferea_shell.c:                              g_warning("FIXME GTK4 migrate next unread");
 ../src/ui/liferea_shell.c:      // 6.) Restore selection (FIXME: Move to feed list code?)
 ../src/ui/liferea_shell.c:      // FIXME GTK4
 ../src/ui/liferea_shell.c:      feed_list_view_set_reduce_mode (FALSE); // FIXME: this would be better triggered by a GAction init somewhere

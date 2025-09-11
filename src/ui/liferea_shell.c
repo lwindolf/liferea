@@ -74,14 +74,9 @@ struct _LifereaShell {
 	LifereaPluginsEngine *plugins;
 
 	GtkWindow	*window;		/*<< Liferea main window */
-	GtkWidget	*headerbar;
 
 	gboolean	autoLayout;		/*<< TRUE if automatic layout switching is active */
 	guint		currentLayoutMode;	/*<< effective layout mode (email or wide) */
-
-	GtkStatusbar	*statusbar;		/*<< main window status bar */
-	gboolean	statusbarLocked;	/*<< flag locking important message on status bar */
-	guint		statusbarLockTimer;	/*<< timer id for status bar lock reset timer */
 
 	ItemList	*itemlist;
 	FeedList	*feedlist;
@@ -268,144 +263,16 @@ liferea_shell_init (LifereaShell *ls)
 	gtk_builder_add_from_resource (shell->xml, "/org/gnome/liferea/ui/itemlist.ui", NULL);
 }
 
-static void
-liferea_shell_update_unread_stats (gpointer user_data)
-{
-	gint	new_items, unread_items;
-	gchar	*msg, *tmp;
-
-	if (!shell)
-		return;
-
-	new_items = feedlist_get_new_item_count ();
-	unread_items = feedlist_get_unread_item_count ();
-
-	if (new_items != 0)
-		msg = g_strdup_printf (ngettext (" (%d new)", " (%d new)", new_items), new_items);
-	else
-		msg = g_strdup ("");
-
-	if (unread_items != 0)
-		tmp = g_strdup_printf (ngettext ("%d unread%s", "%d unread%s", unread_items), unread_items, msg);
-	else
-		tmp = g_strdup ("");
-
-	// FIXME: GTK4
-	//gtk_label_set_text (GTK_LABEL (shell->statusbar_feedsinfo), tmp);
-	g_free (tmp);
-	g_free (msg);
-}
-
-/*
-   Due to the unsuitable GtkStatusBar stack handling, which doesn't
-   allow to keep messages on top of the stack for some time without
-   overwriting them with newly arriving messages, we need some extra
-   handling here.
-
-   Liferea knows two types of status messages:
-
-     -> low prio messages (e.g. updating status messages)
-     -> high prio messages (caused by user interaction, e.g. link hovering)
-
-   The ideas is to keep the high prio messages always visible no matter
-   what low prio messages arrive. To solve this we define the status bar
-   stack is always a stack of two messages at most. At the bottom of the
-   stack is always the latest low prio message and on top of the stack
-   is the latest high prio message (or none at all).
-
-   To enforce this using GtkStatusBar we use a lock to avoid adding
-   low prio messages on top of high priority ones. This lock is valid
-   for at most 5s which should be enough to read the high priority
-   message. Afterwards new low priority messages will overrule the
-   out-dated high priority message.
- */
-
-static gboolean
-liferea_shell_unlock_status_bar_cb (gpointer user_data)
-{
-	shell->statusbarLocked = FALSE;
-	shell->statusbarLockTimer = 0;
-
-	return FALSE;
-}
-
-static gboolean
-liferea_shell_set_status_bar_important_cb (gpointer user_data)
-{
-	gchar		*text = (gchar *)user_data;
-	guint		id;
-	GtkStatusbar	*statusbar;
-
-	statusbar = GTK_STATUSBAR (shell->statusbar);
-	id = gtk_statusbar_get_context_id (statusbar, "important");
-	gtk_statusbar_pop (statusbar, id);
-	gtk_statusbar_push (statusbar, id, text);
-	g_free(text);
-
-	return FALSE;
-}
-
-static gboolean
-liferea_shell_set_status_bar_default_cb (gpointer user_data)
-{
-	gchar		*text = (gchar *)user_data;
-	guint		id;
-	GtkStatusbar	*statusbar;
-
-	statusbar = GTK_STATUSBAR (shell->statusbar);
-	id = gtk_statusbar_get_context_id (statusbar, "default");
-	gtk_statusbar_pop (statusbar, id);
-	gtk_statusbar_push (statusbar, id, text);
-	g_free(text);
-
-	return FALSE;
-}
-
 void
 liferea_shell_set_status_bar (const char *format, ...)
 {
-	va_list		args;
-	gchar		*text;
-
-	if (shell->statusbarLocked)
-		return;
-
-	g_return_if_fail (format != NULL);
-
-	va_start (args, format);
-	text = g_strdup_vprintf (format, args);
-	va_end (args);
-
-	g_idle_add ((GSourceFunc)liferea_shell_set_status_bar_default_cb, (gpointer)text);
+	// FIXME: implement a modern GTK4 solution
 }
 
 void
 liferea_shell_set_important_status_bar (const char *format, ...)
 {
-	va_list		args;
-	gchar		*text;
-
-	g_return_if_fail (format != NULL);
-
-	va_start (args, format);
-	text = g_strdup_vprintf (format, args);
-	va_end (args);
-
-	shell->statusbarLocked = FALSE;
-	if (shell->statusbarLockTimer) {
-		g_source_remove (shell->statusbarLockTimer);
-		shell->statusbarLockTimer = 0;
-	}
-
-	/* URL hover messages are reset with an empty string, so
-	   we must locking the status bar on empty strings! */
-	if (!g_str_equal (text, "")) {
-		/* Realize 5s locking for important messages... */
-		shell->statusbarLocked = TRUE;
-		shell->statusbarLockTimer = g_timeout_add_seconds (5, liferea_shell_unlock_status_bar_cb, NULL);
-	}
-
-	g_idle_add ((GSourceFunc)liferea_shell_set_status_bar_important_cb, (gpointer)text);
+	// FIXME: implement a modern GTK4 solution
 }
 
 
@@ -581,7 +448,6 @@ on_shell_key_pressed_event (GtkEventControllerKey *controller, guint keyval, gui
 	/* check for treeview navigation */
 	if (0 == (state & default_modifiers)) {
 		switch (keyval) {
-			// FIXME: GTK4 migration
 			case GDK_KEY_KP_Delete:
 			case GDK_KEY_Delete:
 				if (focusw == liferea_shell_lookup ("feedlist")) {
@@ -767,9 +633,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->plugins = liferea_plugins_engine_get ();
 	shell->itemlist = ITEMLIST (g_object_new (ITEMLIST_TYPE, NULL));
 	shell->feedlist = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
-	shell->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
-	shell->statusbarLocked = FALSE;
-	shell->statusbarLockTimer = 0;
 	shell->htmlview = LIFEREA_BROWSER (content_view_create (shell->feedlist, shell->itemlist));
 	shell->itemListView = item_list_view_create (shell->feedlist, shell->itemlist);
 	gtk_box_append (GTK_BOX (liferea_shell_lookup ("itemListViewContainer")), item_list_view_get_widget (shell->itemListView));
@@ -835,8 +698,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	}
 
 	/* 7. Setup shell window signals, only after all widgets are ready */
-	g_signal_connect (shell->feedlist, "new-items", G_CALLBACK (liferea_shell_update_unread_stats), NULL);
-
 	g_signal_connect (shell->window, "notify::default-width", G_CALLBACK (on_window_resize_cb), NULL);
 	g_signal_connect (shell->window, "notify::default-height", G_CALLBACK (on_window_resize_cb), NULL);
 	g_signal_connect (shell->window, "notify::maximized", G_CALLBACK (on_window_resize_cb), NULL);
