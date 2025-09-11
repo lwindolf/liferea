@@ -1,11 +1,26 @@
 To be released
 
+	Version 1.16.5
+
+	* Fixes a crash on subscribing when at least one news bin does exist.
+	  (Lars Windolf)
+
+
+2025-09-09  Lars Windolf <lars.windolf@gmx.de>
+
 	Version 1.16.4
 
 	* Fixes a regression introduced in 1.16.3 that broken newsbins. The "type"
 	  attribute in the exported OPML was wrong. If you are affected please manually
 	  change "type" for your news bins back to "newsbin" in the OPML file
-	  (usually ~/.config/liferea/feedlist.opml).
+	  usually ~/.config/liferea/feedlist.opml.
+	  (Lars Windolf)
+
+	* Fixes #1423 regression in main window geometry restoration
+	  (Lars Windolf)
+
+	* Fixes #1454 deprecated icon in headerbar plugin
+	  (Branko Grubić)
 
 
 2025-09-05  Lars Windolf <lars.windolf@gmx.de>
