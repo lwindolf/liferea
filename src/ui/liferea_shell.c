@@ -588,16 +588,13 @@ on_shell_key_pressed_event (GtkEventControllerKey *controller, guint keyval, gui
 					gtk_event_controller_key_forward (controller, focusw);
 					return FALSE;
 				}
-				//on_action_remove_item (NULL, NULL, NULL);
-				g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
+				g_action_group_activate_action (G_ACTION_GROUP (shell->itemlistActions), "remove-selected-item", NULL);
 				return TRUE;
 				break;
-/*
 			case GDK_KEY_n:
-				//on_next_unread_item_activate (NULL, NULL, NULL);
-				g_warning("FIXME GTK4 migrate next unread");
+				g_action_group_activate_action (G_ACTION_GROUP (shell->shellActions), "next-unread-item", NULL);
 				return TRUE;
-				break;*/
+				break;
 			case GDK_KEY_f:
 				item_list_view_move_cursor (shell->itemListView, 1);
 				return TRUE;
