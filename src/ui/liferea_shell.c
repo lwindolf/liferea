@@ -785,7 +785,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	liferea_shell_restore_layout ();
 	conf_bind (DEFAULT_VIEW_MODE, shell, "layout-mode", G_SETTINGS_BIND_DEFAULT);
 	conf_bind (LAST_WINDOW_WIDTH, shell->window, "default-width", G_SETTINGS_BIND_DEFAULT);
-	conf_bind (LAST_WINDOW_WIDTH, shell->window, "default-width", G_SETTINGS_BIND_DEFAULT);
 	conf_bind (LAST_WINDOW_HEIGHT, shell->window, "default-height", G_SETTINGS_BIND_DEFAULT);
 	conf_bind (LAST_WINDOW_MAXIMIZED, shell->window, "maximized", G_SETTINGS_BIND_DEFAULT);
 	conf_bind (LAST_VPANE_POS, liferea_shell_lookup ("leftpane"), "position", G_SETTINGS_BIND_DEFAULT);

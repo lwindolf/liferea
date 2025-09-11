@@ -6,15 +6,15 @@ To be fixed next:
 
 1. Fix select next unread
 2. DnD reimplementation
+3. feed list middle click mark all read
 
 To be fixed later:
 ==================
 
+- plugin manager list is empty
 - replace "make update-po"
 - strange selection behaviour on read filtered itemlist
 - restore ATK taggings
-- plugin manager list is empty
-- feed list middle click mark all read
 
 - remaining GTK4 FIXMES:
 
