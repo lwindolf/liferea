@@ -1,4 +1,4 @@
-To be released
+2025-09-13  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.5
 
@@ -6,6 +6,9 @@ To be released
 	  (Lars Windolf)
 
 	* Fixes #1455 crash on viewing items with comment feeds.
+	  (Lars Windolf)
+
+	* Fix input field vertical expand and margins in several dialogs
 	  (Lars Windolf)
 
 
