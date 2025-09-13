@@ -5,6 +5,9 @@ To be released
 	* Fixes a crash on subscribing when at least one news bin does exist.
 	  (Lars Windolf)
 
+	* Fixes #1455 crash on viewing items with comment feeds.
+	  (Lars Windolf)
+
 
 2025-09-09  Lars Windolf <lars.windolf@gmx.de>
 
