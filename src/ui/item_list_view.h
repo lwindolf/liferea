@@ -98,15 +98,6 @@ gboolean item_list_view_contains_id (ItemListView *ilv, gulong id);
 void item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortType, gboolean sortReversed);
 
 /**
- * item_list_view_select: (skip)
- * @ilv:	the ItemListView
- * @item:	the item to select
- *
- * Selects the given item (if it is in the ItemListView).
- */
-void item_list_view_select (ItemListView *ilv, itemPtr item);
-
-/**
  * item_list_view_remove_item: (skip)
  * @ilv:	the ItemListView
  * @item:	the item to remove

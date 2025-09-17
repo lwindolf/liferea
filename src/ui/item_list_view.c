@@ -156,7 +156,6 @@ item_list_view_set_property (GObject *object, guint prop_id, const GValue *value
 			GtkTreeViewColumn *date = g_hash_table_lookup (ilv->columns, "date");
 			GtkTreeViewColumn *favicon = g_hash_table_lookup (ilv->columns, "favicon");
 			GtkTreeViewColumn *headline = g_hash_table_lookup (ilv->columns, "headline");
-			GtkCellRenderer *renderer;
 
 			gtk_tree_view_column_set_visible (state, !ilv->wideView);
 			gtk_tree_view_column_set_visible (date, !ilv->wideView);
@@ -374,10 +373,10 @@ on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer user_data)
 	GtkTreeModel	*model;
 	gulong		id = 0;
 
-	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 		id = item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter);
-
-	g_signal_emit_by_name (user_data, "selection-changed", id);
+		g_signal_emit_by_name (user_data, "selection-changed", id);
+	}
 }
 
 static void
@@ -970,6 +969,38 @@ item_list_view_item_added (GObject *obj, gint itemId, gpointer userdata)
 }
 
 static void
+item_list_view_select (GObject *obj, gint id, gpointer user_data)
+{
+	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
+	GtkTreeView		*treeview = ilv->treeview;
+	GtkTreeSelection	*selection;
+	GtkTreeIter		iter;
+
+	if (!treeview)
+		return;
+
+	selection = gtk_tree_view_get_selection (treeview);
+
+	if (id) {
+		if (item_list_view_id_to_iter (ilv, id, &iter)) {
+			GtkTreePath	*path = NULL;
+
+			path = gtk_tree_model_get_path (gtk_tree_view_get_model (treeview), &iter);
+			if (path) {
+				gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
+				gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
+				gtk_tree_path_free (path);
+			}
+		} else {
+			g_warning ("item_list_view_select : attempt to select an item which is not present in the view.");
+			gtk_tree_selection_unselect_all (selection);
+		}
+	} else {
+		gtk_tree_selection_unselect_all (selection);
+	}
+}
+
+static void
 item_list_view_init (ItemListView *ilv)
 {
 }
@@ -1000,6 +1031,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	ilv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
+g_print("ilv->treeview = %p\n", ilv->treeview);
 	gtk_tree_view_set_enable_search (ilv->treeview, FALSE);
 	gtk_tree_view_set_show_expanders (ilv->treeview, FALSE);
 	gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_WIDGET (ilv->treeview));
@@ -1072,6 +1104,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 	g_signal_connect (itemlist, "all-items-removed", G_CALLBACK (item_list_view_all_items_removed), ilv);
 	g_signal_connect (itemlist, "item-removed", G_CALLBACK (item_list_view_item_removed), ilv);
 	g_signal_connect (itemlist, "item-updated", G_CALLBACK (item_list_view_item_updated), ilv);
+	g_signal_connect (itemlist, "item-selected", G_CALLBACK (item_list_view_select), ilv);
 	
 	g_signal_connect (ilv, "selection-changed", G_CALLBACK (itemlist_selection_changed), itemlist);
 
@@ -1086,31 +1119,6 @@ item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 	// In wide view we want to save vertical space and hide the state column
 	if (ilv->wideView)
 		gtk_tree_view_column_set_visible (g_hash_table_lookup(ilv->columns, "state"), !enabled);
-}
-
-void
-item_list_view_select (ItemListView *ilv, itemPtr item)
-{
-	GtkTreeView		*treeview = ilv->treeview;
-	GtkTreeSelection	*selection;
-	GtkTreeIter		iter;
-
-	selection = gtk_tree_view_get_selection (treeview);
-
-	if (item && item_list_view_id_to_iter (ilv, item->id, &iter)) {
-		GtkTreePath	*path = NULL;
-
-		path = gtk_tree_model_get_path (gtk_tree_view_get_model (treeview), &iter);
-		if (path) {
-			gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
-			gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
-			gtk_tree_path_free (path);
-		}
-	} else {
-		if (item)
-			g_warning ("item_list_view_select : attempt to select an item which is not present in the view.");
-		gtk_tree_selection_unselect_all (selection);
-	}
 }
 
 itemPtr

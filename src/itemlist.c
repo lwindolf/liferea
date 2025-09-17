@@ -242,7 +242,9 @@ void
 itemlist_set_selected (itemPtr item)
 {
 	itemlist->priv->selectedId = item?item->id:0;
-	g_signal_emit_by_name (itemlist, "item-selected", item?item->id:0);
+	if (item && !item->readStatus)
+		itemlist_toggle_read_status (item);
+	g_signal_emit_by_name (itemlist, "item-selected", itemlist->priv->selectedId);
 }
 
 Node *
@@ -283,7 +285,7 @@ itemlist_check_for_deferred_action (void)
 		return;
 
 	item = itemlist_get_selected ();
-	itemlist_set_selected (NULL);
+	itemlist->priv->selectedId = 0;
 
 	/* check for item hiding caused by itemlist filter rule (i.e. folder hide read items) */
 	if (!itemlist_filter_check_item (item)) {
@@ -430,24 +432,10 @@ itemlist_select_next_unread (void)
 	itemPtr	result = NULL;
 
 	itemlist->priv->loading++;	/* prevent unwanted selections */
-g_warning("FIXME itemlist_select_next_unread");
-	/* before scanning the feed list, we test if there is a unread
-	   item in the currently selected feed! */
-	//result = itemview_find_unread_item (itemlist->priv->selectedId);
 
-	/* If none is found we continue searching in the feed list */
-	//if (!result) {
-		/* scan feed list and find first feed with unread items */
-	//	Node *node = feedlist_find_unread_feed (feedlist_get_root ());
-	//	if (node) {
-	//		/* load found feed */
-	//		feed_list_view_select (node);
-	//		result = itemview_find_unread_item (0);	/* find first unread item */
-	//	} else {
-	//		/* if we don't find a feed with unread items do nothing */
-	//		liferea_shell_set_status_bar (_("There are no unread items"));
-	//	}
-	//}
+	g_warning("FIXME itemlist_select_next_unread");
+
+	result = liferea_shell_find_next_unread (itemlist->priv->selectedId);
 
 	itemlist->priv->loading--;
 
@@ -602,14 +590,14 @@ itemlist_selection_changed (ItemList *ilv, gulong itemId, gpointer unused)
 		more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action ();
 
-			debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
+		debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
 
-			itemlist_set_selected (item);
+		itemlist_set_selected (item);
 
-			/* set read and unset update status when selecting */
-			if (item) {
-				gchar	*link = NULL;
-				Node	*node = node_from_id (item->nodeId);
+		/* set read and unset update status when selecting */
+		if (item) {
+			gchar	*link = NULL;
+			Node	*node = node_from_id (item->nodeId);
 
 			item_set_read_state (item, TRUE);
 
@@ -620,8 +608,6 @@ itemlist_selection_changed (ItemList *ilv, gulong itemId, gpointer unused)
 		}
 
 		feedlist_reset_new_item_count ();
-
-		g_signal_emit_by_name (itemlist, "item-selected", NULL);
 	}
 	g_object_unref (item);
 }

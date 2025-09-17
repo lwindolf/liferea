@@ -62,22 +62,6 @@ do_menu_update (Node *node)
 
 }
 
-/*static void
-on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node *node = NULL;
-
-	if (user_data)
-		node = (Node *) user_data;
-	else
-		node = feedlist_get_selected ();
-
-	if (node)
-		do_menu_update (node);
-	else
-		g_warning ("on_menu_update: no feedlist selected");
-}*/
-
 static void
 on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
@@ -87,9 +71,8 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 static void
 on_mark_all_read_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	if (response_id == GTK_RESPONSE_OK) {
+	if (response_id == GTK_RESPONSE_OK)
 		feedlist_mark_all_read ((Node *) user_data);
-	}
 }
 
 static void
@@ -274,7 +257,7 @@ ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_d
 static void
 on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpointer user_data)
 {
-	itemlist_set_selected (liferea_shell_find_next_unread (0));
+	itemlist_select_next_unread ();	
 }
 
 static void

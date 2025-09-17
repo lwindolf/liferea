@@ -589,9 +589,7 @@ liferea_shell_find_next_unread (gulong startId)
 {
 	itemPtr	result = NULL;
 
-	/* Note: to select in sorting order we need to do it in the ItemListView
-	   otherwise we would have to sort the item list here... */
-
+	/* Note: to select in sorting order we need to do it in the ItemListView widget */
 	g_assert (shell->itemListView);
 
 	/* First do a scan from the start position (usually the selected
@@ -605,7 +603,19 @@ liferea_shell_find_next_unread (gulong startId)
 
 	/* Return NULL if not found, or only the selected item is unread */
 	if (result && result->id == startId)
-		return NULL;
+		result = NULL;
+
+	/* If none is found we continue searching in the feed list */
+	if (!result) {
+		/* scan feed list and find first feed with unread items */
+		Node *node = feedlist_find_unread_feed (feedlist_get_root ());
+		if (node) {
+			/* load found feed */
+			feedlist_set_selected (node);
+			/* find first unread item */
+			result = item_list_view_find_unread_item (shell->itemListView, 0);
+		}
+	}
 
 	return result;
 }
