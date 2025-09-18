@@ -46,9 +46,6 @@
 struct _FeedListView {
 	GObject			parentInstance;
 
-	GtkEventController	*controller;
-	GtkGesture		*popup_gesture;
-	GtkGesture		*middle_gesture;
 	GtkTreeView		*treeview;
 	GtkTreeModel		*filter;
 	GtkTreeStore		*feedstore;
@@ -73,21 +70,9 @@ static void feed_list_view_reload_feedlist ();
 static void feed_list_view_select (Node *node);
 
 static void
-feed_list_view_finalize (GObject *object)
-{
-	FeedListView *flv = FEED_LIST_VIEW (object);
-
-	g_object_unref (flv->controller);
-	g_object_unref (flv->popup_gesture);
-	g_object_unref (flv->middle_gesture);
-}
-
-static void
 feed_list_view_class_init (FeedListViewClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->finalize = feed_list_view_finalize;
 
 	feed_list_view_signals[SELECTION_CHANGED] =
 		g_signal_new ("selection-changed",
@@ -742,10 +727,6 @@ feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 	/* Set up store */
 	g_assert (NULL == flv);
 	flv = FEED_LIST_VIEW (g_object_new (FEED_LIST_VIEW_TYPE, NULL));
-
-	flv->controller = gtk_event_controller_key_new ();
-	flv->popup_gesture = gtk_gesture_click_new ();
-	flv->middle_gesture = gtk_gesture_click_new ();
 	flv->treeview = treeview;
 	flv->feedstore = gtk_tree_store_new (FS_LEN,
 	                                     G_TYPE_STRING,
@@ -792,16 +773,19 @@ feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 
 	g_object_set (titleRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
+	GtkEventController *controller = gtk_event_controller_key_new ();
+	GtkGesture *popup_gesture = gtk_gesture_click_new ();
+	GtkGesture *middle_gesture = gtk_gesture_click_new ();
 	g_signal_connect (G_OBJECT (flv->treeview), "row-activated",   G_CALLBACK (feed_list_view_row_activated_cb), flv);
-	g_signal_connect (flv->controller, "key-pressed", G_CALLBACK (feed_list_view_key_pressed_cb), flv);
-	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (flv->middle_gesture), GDK_BUTTON_MIDDLE);
-	g_signal_connect (flv->middle_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
-	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (flv->popup_gesture), GDK_BUTTON_SECONDARY);
-	g_signal_connect (flv->popup_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
+	g_signal_connect (controller, "key-pressed", G_CALLBACK (feed_list_view_key_pressed_cb), flv);
+	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (middle_gesture), GDK_BUTTON_MIDDLE);
+	g_signal_connect (middle_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
+	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (popup_gesture), GDK_BUTTON_SECONDARY);
+	g_signal_connect (popup_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
 
-	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), flv->controller);
-	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), GTK_EVENT_CONTROLLER (flv->middle_gesture));
-	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), GTK_EVENT_CONTROLLER (flv->popup_gesture));
+	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), controller);
+	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), GTK_EVENT_CONTROLLER (middle_gesture));
+	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), GTK_EVENT_CONTROLLER (popup_gesture));
 
 	select = gtk_tree_view_get_selection (flv->treeview);
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);

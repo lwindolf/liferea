@@ -670,7 +670,7 @@ item_list_view_item_updated (GObject *obj, gint itemId, gpointer user_data)
 }
 
 static void
-item_list_view_update_all_items (GObject *obj, gpointer user_data)
+item_list_view_update_all_items (GObject *obj, const gchar *nodeId, gpointer user_data)
 {
 	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
         gboolean        valid;

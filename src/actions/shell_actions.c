@@ -104,6 +104,8 @@ on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data
 
 		g_signal_connect (G_OBJECT (confirm_dialog), "response",
 	                  G_CALLBACK (on_mark_all_read_response), (gpointer)node);
+	} else {
+		feedlist_mark_all_read (node);
 	}
 }
 
