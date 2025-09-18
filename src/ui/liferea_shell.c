@@ -485,26 +485,26 @@ on_shell_key_pressed_event (GtkEventControllerKey *controller, guint keyval, gui
 	return FALSE;
 }
 
+static gboolean
+on_drop_received (GtkDropTarget *target, const GValue *value, double x, double y, gpointer user_data)
+{
+	if (G_VALUE_HOLDS(value, G_TYPE_STRING)) {
+		const gchar *text = g_value_get_string (value);
+		if (text)
+			feedlist_add_subscription_by_url (text);
+
+		return TRUE;
+	}
+	return FALSE;
+}
+
 static void
 liferea_shell_setup_URL_receiver (void)
 {
-	// FIXME: GTK4
-	/*GtkTargetEntry target_table[] = {
-		{ "STRING",     		GTK_TARGET_OTHER_WIDGET, 0 },
-		{ "text/plain", 		GTK_TARGET_OTHER_WIDGET, 0 },
-		{ "text/uri-list",		GTK_TARGET_OTHER_WIDGET, 1 },
-		{ "_NETSCAPE_URL",		GTK_TARGET_OTHER_APP, 1 },
-		{ "application/x-rootwin-drop", GTK_TARGET_OTHER_APP, 2 }
-	};
-*/
-
-	/* doesn't work with GTK_DEST_DEFAULT_DROP... */
-/*	gtk_drag_dest_set (mainwindow, GTK_DEST_DEFAULT_ALL,
-	                   target_table, sizeof (target_table)/sizeof (target_table[0]),
-	                   GDK_ACTION_COPY | GDK_ACTION_MOVE | GDK_ACTION_LINK);
-
-	g_signal_connect (G_OBJECT (mainwindow), "drag_data_received",
-	                  G_CALLBACK (liferea_shell_URL_received), NULL);*/
+	GtkDropTarget *drop_target = gtk_drop_target_new (G_TYPE_STRING, GDK_ACTION_COPY);
+	g_signal_connect (drop_target, "drop", G_CALLBACK (on_drop_received), NULL);
+	gtk_widget_add_controller (GTK_WIDGET (shell->window), GTK_EVENT_CONTROLLER (drop_target));
+	
 }
 
 void

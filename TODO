@@ -4,15 +4,14 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 To be fixed next:
 =================
 
-1. DnD reimplementation
-2. feed list middle click mark all read
+1. feed list middle click mark all read
+2. plugin manager list is empty 
+3. replace "make update-po"
 
 To be fixed later:
 ==================
 
 - Decide on whether to drop deferred removal in favour of keeping read items visible
-- plugin manager list is empty
-- replace "make update-po"
 - strange selection behaviour on read filtered itemlist
 - restore ATK taggings
 - show floating links in LifereaBrowser view
