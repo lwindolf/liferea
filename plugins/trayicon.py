@@ -24,7 +24,6 @@ from pathlib import Path
 from collections import namedtuple
 import cairo
 import gi
-gi.require_version('Liferea', '3.0')
 from gi.repository import Gio, GLib, GObject, Gtk, Liferea
 from gi.repository import Gdk, GdkPixbuf
 

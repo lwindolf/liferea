@@ -24,7 +24,6 @@ import os
 import time
 
 gi.require_version('Gtk', '3.0')
-gi.require_version('Liferea', '3.0')
 
 from gi.repository import GObject, GLib, Gtk, Gio, Liferea, Pango
 from urllib.parse import urlparse

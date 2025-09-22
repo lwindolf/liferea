@@ -112,8 +112,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 		error = NULL;
 	}
 #else
-	g_autoptr(GIRepository) repo = gi_repository_new ();
-	if (!gi_repository_require_private (repo,
+	if (!gi_repository_require_private (gi_repository_dup_default (),
 		typelib_dir, "Liferea", "3.0", 0, &error)) {
 		g_warning ("Could not load Liferea repository: %s", error->message);
 		g_error_free (error);
