@@ -74,6 +74,7 @@ liferea = executable('liferea',
 
 # Note: the 'update' test is explicitly skipped as it's gsettings dependency breaks CI build (missing X11/DBUS)
 foreach name: [
+  'parse_atom',
   'parse_date',
   'parse_html',
   'parse_rss',

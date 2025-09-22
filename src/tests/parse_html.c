@@ -150,7 +150,7 @@ test_parse_html (int argc, char *argv[])
 {
 	g_test_init (&argc, &argv, NULL);
 
-	if (argv[1] && g_str_equal (argv[1], "--debug"))
+        if (g_strv_contains ((const gchar **)argv, "--debug"))
 		debug_set_flags (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
 
 	g_test_add_data_func ("/html/auto_discover_link_xml", &tc_xml, &tc_auto_discover_link);
