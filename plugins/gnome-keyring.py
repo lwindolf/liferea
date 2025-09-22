@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import gi
-gi.require_version('Liferea', '3.0')
 gi.require_version('Secret', '1')
 from gi.repository import GObject, Liferea, Secret
 
