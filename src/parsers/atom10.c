@@ -307,7 +307,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 			if (ctxt->item)
 				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, relation, url);
 		} else {
-			// Atom RFC 4287 4.2.7.2 says no "rel" mean "alternate"
+			// Atom RFC 4287 4.2.7.2 says no "rel" means "alternate"
 			alternate = g_strdup (url);
 		}
 		xmlFree (baseURL);
@@ -400,13 +400,16 @@ atom10_parse_entry_id (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Pars
 static void
 atom10_parse_entry_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *href;
+	g_autofree gchar *rel = xml_get_attribute (cur, "rel");
+	g_autofree gchar *href = NULL;
+
+	// Github #1457: Do not overwrite existing source with rel="self" link
+	if (ctxt->item->source && rel && g_str_equal (rel, "self"))
+		return;
 
 	href = atom10_parse_link (cur, ctxt, state);
-	if (href) {
+	if (href)
 		item_set_source (ctxt->item, href);
-		g_free (href);
-	}
 }
 
 static void
@@ -646,7 +649,12 @@ atom10_parse_feed_id (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Parse
 static void
 atom10_parse_feed_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *href;
+	g_autofree gchar *rel = xml_get_attribute (cur, "rel");
+	g_autofree gchar *href = NULL;
+
+	// Github #1457: Do not overwrite existing source with rel="self" link
+	if (ctxt->subscription->metadata && metadata_list_get (ctxt->subscription->metadata, "homepage") && rel && g_str_equal (rel, "self"))
+		return;
 
 	href = atom10_parse_link (cur, ctxt, state);
 	if (href) {
@@ -656,8 +664,8 @@ atom10_parse_feed_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Par
 		/* Set the default base to the feed's HTML URL if not set yet */
 		if (baseURL == NULL)
 			xmlNodeSetBase (xmlDocGetRootElement (cur->doc), (xmlChar *)href);
-		else xmlFree (baseURL);
-		g_free (href);
+		else
+			xmlFree (baseURL);
 	}
 }
 
