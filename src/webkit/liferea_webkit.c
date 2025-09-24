@@ -318,6 +318,9 @@ liferea_webkit_handle_feed_scheme (WebKitURISchemeRequest *request, gpointer use
         const gchar *path = webkit_uri_scheme_request_get_path (request);
 
         feedlist_add_subscription_by_url (path);
+
+	g_autoptr(GInputStream) stream = g_memory_input_stream_new_from_data ("", 0, NULL);
+	webkit_uri_scheme_request_finish (request, stream, 0, "text/plain");
 }
 
 static void
