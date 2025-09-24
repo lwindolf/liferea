@@ -850,7 +850,7 @@ create_help_url (const gchar *file)
 static void
 on_action_discover_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-        LifereaBrowser *browser = browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/?target=_self&show-title=false", _("Discover Feeds"), TRUE);
+        LifereaBrowser *browser = browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/?show-title=false", _("Discover Feeds"), TRUE);
 	g_object_set (G_OBJECT (browser), "hidden-urlbar", TRUE, NULL);
 }
 
