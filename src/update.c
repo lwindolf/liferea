@@ -22,8 +22,6 @@
 
 #include "update.h"
 
-#include "net.h"
-
 /* update state interface */
 
 updateStatePtr

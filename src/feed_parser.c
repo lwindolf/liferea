@@ -29,6 +29,7 @@
 #include "parsers/html5_feed.h"
 #include "parsers/ldjson_feed.h"
 #include "parsers/rss_channel.h"
+#include "parsers/gopher.h"
 
 #define AUTO_DISCOVERY_MAX_REDIRECTS	5
 
@@ -51,6 +52,7 @@ feed_parsers_get_list (void)
 	/* Order is important ! */
 	feedHandlers = g_slist_append (feedHandlers, ldjson_init_feed_handler ());
 	feedHandlers = g_slist_append (feedHandlers, html5_init_feed_handler ());
+	feedHandlers = g_slist_append (feedHandlers, gopher_init_feed_handler ());
 
 	return feedHandlers;
 }
@@ -176,7 +178,6 @@ feed_parse (feedParserCtxtPtr ctxt)
 	GSList		*handlerIter;
 	gboolean	autoDiscovery = FALSE, success = FALSE;
 
-
 	g_assert (NULL == ctxt->items);
 
 	if (ctxt->subscription->parseErrors)
@@ -222,22 +223,33 @@ feed_parse (feedParserCtxtPtr ctxt)
 		}
 	} while (0);
 
-	/* 3.) try all XML parsers (this are all syndication format parsers) */
+	/* 3.) try all non-HTML parsers (this are all syndication format parsers) */
 	handlerIter = feed_parsers_get_list ();
 	while (handlerIter) {
 		feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
 
-		if (xmlNode && handler && handler->checkFormat && !handler->html && (*(handler->checkFormat))(xmlDoc, xmlNode)) {
+		// XML detection
+		if (xmlNode && handler->checkFormat && !handler->html && (*(handler->checkFormat))(xmlDoc, xmlNode)) {
 			ctxt->subscription->fhp = handler;
 			feed_parser_ctxt_cleanup (ctxt);
 			(*(handler->feedParser)) (ctxt, xmlNode);
 			success = TRUE;
 			break;
 		}
+
+		// Text detection
+		if (!xmlNode && handler->checkTextFormat && (*(handler->checkTextFormat))(ctxt->data, ctxt->subscription->source)) {
+			ctxt->subscription->fhp = handler;
+			feed_parser_ctxt_cleanup (ctxt);
+			(*(handler->textFeedParser)) (ctxt, ctxt->data);
+			success = TRUE;
+			break;
+		}
+
 		handlerIter = handlerIter->next;
 	}
 
-	/* 4.) None of the feed formats did work, chance is high that we are
+	/* 5.) None of the feed formats did work, chance is high that we are
 	       working on an HTML document. Let's look for feed links inside it! */
 	if (!success) {
 		ctxt->subscription->autoDiscoveryTries++;
@@ -247,8 +259,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			autoDiscovery = feed_parser_auto_discover (ctxt);
 		}
 	}
-
-	/* 5.) try all HTML parsers (these are all HTML based content extractors), note how those MUST
+	/* 6.) try all HTML parsers (these are all HTML based content extractors), note how those MUST
 	       be run after auto-discovery to not take precedence over not-yet discovered feed links */
 	handlerIter = feed_parsers_get_list ();
 	while (handlerIter) {
@@ -269,7 +280,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 	if (xmlDoc)
 		xmlFreeDoc (xmlDoc);
 
-	/* 6.) Update subscription error status */
+	/* 7.) Update subscription error status */
 	if (!success && !autoDiscovery) {
 		/* Fuzzy test for HTML document */
 		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
@@ -287,7 +298,6 @@ feed_parse (feedParserCtxtPtr ctxt)
 		success = TRUE;
 		ctxt->subscription->error = FETCH_ERROR_NONE;
 	}
-
 
 	return success;
 }

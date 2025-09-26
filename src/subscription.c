@@ -189,8 +189,8 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	if ((301 == result->httpstatus || 308 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
 		debug (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
-    statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
-  }
+		statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+	}
 
 	/* consider everything that prevents processing the data we got */
 	if (304 == result->httpstatus) {
@@ -275,7 +275,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	if (subscription->updateJob)
 		return;
 
-	debug (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
+	debug (DEBUG_UPDATE, "Scheduling %s to be updated (flags=%u)", node_get_title (subscription->node), flags);
 
 	if (subscription_can_be_updated (subscription)) {
 		now = g_get_real_time();
@@ -636,7 +636,7 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 // content scraping
 
 static void
-subscription_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags) {
+subscription_html5_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags) {
 	itemPtr item;
 	gchar	*article;
 
@@ -658,11 +658,33 @@ subscription_enrich_item_cb (const UpdateResult * const result, gpointer userdat
 
 		metadata_list_set (&(item->metadata), "richContent", article);
 		db_item_update (item);
-		itemlist_update_item (item);
 		g_free (article);
 	}
 	item_unload (item);
 }
+
+static void
+subscription_text_enrich_item_cb (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+{
+        if (!result->data || result->size <= 0) {
+                debug (DEBUG_UPDATE, "text fetch failed: %s", result->source);
+                return;
+        }
+
+        itemPtr item = item_load (GPOINTER_TO_UINT (user_data));
+        if (!item)
+                return;
+
+        g_autoptr(GString) description = g_string_new ("<pre>");
+        g_string_append_len (description, result->data, result->size);
+        g_string_append (description, "</pre>");
+g_print("enriched item %ld : %s\n", item->id, description->str);
+	metadata_list_set (&(item->metadata), "richContent", description->str);
+        db_item_update (item);
+
+        item_unload (item);
+}
+
 
 /**
  * Checks content of an items source and tries to crawl content
@@ -673,25 +695,28 @@ subscription_enrich_item (subscriptionPtr subscription, itemPtr item)
 	UpdateRequest *request;
 
 	if (!item->source) {
-		debug (DEBUG_PARSING, "Cannot HTML5-enrich item %s because it has no source!", item->title);
+		debug (DEBUG_PARSING, "Cannot enrich item %s because it has no source!", item->title);
 		return;
 	}
 
 	// Don't enrich twice
 	if (NULL != metadata_list_get (item->metadata, "richContent")) {
-		debug (DEBUG_PARSING, "Skipping already HTML5 enriched item %s", item->title);
+		debug (DEBUG_PARSING, "Skipping already enriched item %s", item->title);
 		return;
 	}
 
 	// Fetch item->link document and try to parse it as XHTML
-	debug (DEBUG_PARSING, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
+	debug (DEBUG_PARSING, "Fetching content for %ld %s : %s", item->id, item->title, item->source);
 	request = update_request_new (
 		item->source,
 		NULL,	// updateState
 		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)
 	);
 
-	update_job_new (subscription, request, subscription_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
+	if (strstr ("gopher://", item->source) != NULL)
+		update_job_new (subscription, request, subscription_text_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
+	else
+		update_job_new (subscription, request, subscription_html5_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
 }
 
 

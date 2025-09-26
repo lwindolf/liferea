@@ -1,3 +1,27 @@
+To be released
+
+	Version 1.16.6
+
+	* Removes GAsyncQueue usage and uses proper GThreadPools, this
+	  significantly speeds up updating and reduced GUI lag a lot
+	  (Lars Windolf)
+
+	* Add support for subscription to phlog gopher listings 
+	  (Lars Windolf)
+
+	* Add support for gopher:// URI schema in internal browser
+	  (Lars Windolf)
+
+	* Fixes #1457 link rel=alternate/self parsing
+	  (Lars Windolf)
+
+	* Fix frozen HTML page after launching feed:// links
+	  (Lars Windolf)
+
+	* Fix #1459 better requiring girepository-2.0 
+	  (oreo639)
+
+
 2025-09-13  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.5

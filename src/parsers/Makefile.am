@@ -12,6 +12,7 @@ noinst_LIBRARIES = libliparsers.a
 libliparsers_a_CFLAGS = $(PACKAGE_FLAGS)
 libliparsers_a_SOURCES = \
 	atom10.c atom10.h \
+	gopher.c gopher.h \
 	html5_feed.c html5_feed.h \
 	ldjson_feed.c ldjson_feed.h \
 	ns_admin.c ns_admin.h \

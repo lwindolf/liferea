@@ -28,43 +28,23 @@
 /* global update job list, used for lookups when cancelling */
 static GSList	*jobs = NULL;
 
-static GAsyncQueue *pendingHighPrioJobs = NULL;
-static GAsyncQueue *pendingJobs = NULL;
-static guint numberOfActiveJobs = 0;
+static GThreadPool *normalPool = NULL;
+static GThreadPool *priorityPool = NULL;
 // FIXME: make configurable
 #define MAX_ACTIVE_JOBS	5
 
-static gboolean
-update_dequeue_job (gpointer user_data)
+static void
+update_start_job (gpointer data, gpointer user_data)
 {
-	UpdateJob *job;
-
-	if (!pendingJobs)
-		return FALSE;	/* we must be in shutdown */
-
-	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS)
-		return FALSE;	/* we'll be called again when a job finishes */
-
-	job = (UpdateJob *)g_async_queue_try_pop (pendingHighPrioJobs);
-
-	if (!job)
-		job = (UpdateJob *)g_async_queue_try_pop (pendingJobs);
-
-	if (!job)
-		return FALSE;	/* no request at the moment */
-
-	numberOfActiveJobs++;
+	UpdateJob *job = (UpdateJob *)data;
 
 	job->state = JOB_STATE_PROCESSING;
 
 	debug (DEBUG_UPDATE, "processing request (%s)", job->request->source);
-	if (job->callback == NULL) {
+	if (job->callback == NULL)
 		update_job_finished (job);
-	} else {
+	else
 		update_job_execute (job);
-	}
-
-	return FALSE;
 }
 
 void
@@ -72,13 +52,10 @@ update_job_queue_add (gpointer job, updateFlags flags)
 {
 	jobs = g_slist_append (jobs, job);
 
-	if (flags & UPDATE_REQUEST_PRIORITY_HIGH) {
-		g_async_queue_push (pendingHighPrioJobs, (gpointer)job);
-	} else {
-		g_async_queue_push (pendingJobs, (gpointer)job);
-	}
-
-	g_idle_add (update_dequeue_job, NULL);
+	if (flags & UPDATE_REQUEST_PRIORITY_HIGH)
+		g_thread_pool_push (priorityPool, (gpointer)job, NULL);
+	else
+		g_thread_pool_push (normalPool, (gpointer)job, NULL);
 }
 
 void
@@ -92,14 +69,6 @@ update_job_cancel_by_owner (gpointer owner)
 			job->callback = NULL;
 		iter = g_slist_next (iter);
 	}
-}
-
-void
-update_job_queue_finished (void)
-{
-	g_assert(numberOfActiveJobs > 0);
-	numberOfActiveJobs--;
-	g_idle_add (update_dequeue_job, NULL);
 }
 
 void
@@ -130,7 +99,8 @@ update_job_queue_get_count (guint *count, guint *max)
 	if (*count > maxcount)
 		maxcount = *count;
 
-        // FIXME: when does maxcount ever get reset?
+        if (*count == 0)
+	    maxcount = 0; // reset max when no jobs are running
 
 	*max = maxcount;
 }
@@ -138,8 +108,8 @@ update_job_queue_get_count (guint *count, guint *max)
 void
 update_init (void)
 {
-	pendingJobs = g_async_queue_new ();
-	pendingHighPrioJobs = g_async_queue_new ();
+	normalPool = g_thread_pool_new ((GFunc)update_start_job, NULL, MAX_ACTIVE_JOBS, FALSE, NULL);
+	priorityPool = g_thread_pool_new ((GFunc)update_start_job, NULL, MAX_ACTIVE_JOBS, FALSE, NULL);
 }
 
 void
@@ -147,15 +117,17 @@ update_deinit (void)
 {
 	GSList	*iter = jobs;
 
-	/* Cancel all jobs, to avoid async callbacks accessing the GUI */
+	/* Cancel all pending jobs, to avoid async callbacks accessing the GUI */
 	while (iter) {
 		UpdateJob *job = (UpdateJob *)iter->data;
 		job->callback = NULL;
 		iter = g_slist_next (iter);
 	}
 
-	g_async_queue_unref (pendingJobs);
-	g_async_queue_unref (pendingHighPrioJobs);
+	g_thread_pool_free (normalPool, FALSE, TRUE);
+	g_thread_pool_free (priorityPool, FALSE, TRUE);
+	normalPool = NULL;
+	priorityPool = NULL;
 
 	g_slist_free (jobs);
 	jobs = NULL;

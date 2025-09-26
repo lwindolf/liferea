@@ -35,13 +35,6 @@
 void update_job_queue_add (gpointer job, updateFlags flags);
 
 /**
- * update_job_queue_finished: (skip)
- * 
- * To be called by update_process_finished_job() when an update job has finished 
- */
-void update_job_queue_finished (void);
-
-/**
  * update_job_cancel_by_owner: (skip)
  * @owner:	pointer passed in update_request_new()
  * 
