@@ -1,7 +1,7 @@
 /**
  * @file update_job.c  handling update processing (network/local/filter/XSLT)
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -39,6 +39,7 @@
 #include "net.h"
 #include "update.h"
 #include "xml.h"
+#include "parsers/gopher.h"
 #include "ui/liferea_shell.h"
 
 #if defined (G_OS_WIN32) && !defined (WIFEXITED) && !defined (WEXITSTATUS)
@@ -424,18 +425,25 @@ update_job_execute (UpdateJob *job)
 		return;
 	}
 
-	/* if it has a protocol "://" prefix, but not "file://" it is an URI */
-	if (strstr (job->request->source, "://") && strncmp (job->request->source, "file://", 7)) {
-		network_process_request (job);
-		return;
-	}
-
-	/* otherwise it must be a local file... */
-	{
+	if (strncmp (job->request->source, "file://", 7) == 0) {
 		debug (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
 		update_load_file (job);
 		return;
 	}
+
+	if (strncmp (job->request->source, "gopher://", 9) == 0) {
+		debug (DEBUG_UPDATE, "Recognized gopher URI: %s", job->request->source);
+		gopher_process_request (job);
+		return;
+	}
+
+	/* if it has a protocol "://" prefix, but not "file://" it is an URI */
+	if (strstr (job->request->source, "://")) {
+		network_process_request (job);
+		return;
+	}
+
+	g_warning ("Invalid protocol requested with URI \"%s\"!", job->request->source);
 }
 
 UpdateJob *
@@ -502,8 +510,6 @@ update_apply_filter_finish(GObject *src, GAsyncResult *result, gpointer user_dat
 void
 update_job_finished (UpdateJob *job)
 {
-        update_job_queue_finished ();
-
 	/* Handling abandoned requests (e.g. after feed deletion) */
 	if (job->callback == NULL) {
 		debug (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);

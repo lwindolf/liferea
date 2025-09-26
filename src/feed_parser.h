@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.h  parsing of different feed formats
  *
- * Copyright (C) 2008-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +48,14 @@ typedef struct feedParserCtxt {
 typedef void 	(*feedParserFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
 
 /**
+ * Function type which parses the given feed data.
+ *
+ * @param ctxt	feed parsing context
+ * @param data	the raw text data to parse
+ */
+typedef void 	(*textParserFunc)	(feedParserCtxtPtr ctxt, const gchar *data);
+
+/**
  * Function type which checks a given XML document if it has the expected format.
  *
  * @param doc	the XML document
@@ -57,12 +65,27 @@ typedef void 	(*feedParserFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
  */
 typedef gboolean (*checkFormatFunc)	(xmlDocPtr doc, xmlNodePtr cur);
 
+/**
+ * Function type which checks a given text document if it has the expected format.
+ *
+ * @param ctxt	feed parsing context
+ * @param data	the raw text data to parse
+ */
+typedef gboolean (*checkTextFormatFunc)	(const gchar *data, const gchar *url);
+
 /** feed handler interface */
 typedef struct feedHandler {
 	const gchar	*typeStr;		/**< string representation of the feed type */
-	feedParserFunc	feedParser;		/**< feed type parse function */
-	checkFormatFunc	checkFormat;		/**< Parser for the feed type*/
-	gboolean	html;			/**< TRUE if this is a HTML parser (as opposed tp XML feeds) */
+
+	// for XML parsers
+	feedParserFunc	feedParser;		/**< (optional) feed type parse function */
+	checkFormatFunc	checkFormat;		/**< (optional) Parser for the feed type*/
+
+	// for text parsers
+	textParserFunc	textFeedParser;		/**< (optional) text feed type parse function */
+	checkTextFormatFunc checkTextFormat;	/**< (optional) Parser for the text feed type*/
+
+	gboolean	html;			/**< TRUE if this is a HTML parser (as opposed to XML feeds) */
 } *feedHandlerPtr;
 
 /**

@@ -115,7 +115,7 @@ async function load_item(data, baseURL, direction) {
 		let mediathumb = metadata_get(item, "mediathumbnail");
 		let mediadesc = metadata_get(item, "mediadescription");
 		let article;
-		let debugfooter = "<hr/>DEBUG:";
+		let debugfooter = `<hr/>DEBUG: item_id=${item?.id} `;
 
 		if (richContent) {
 			let shadowDoc = document.implementation.createHTMLDocument();
@@ -210,7 +210,7 @@ async function load_item(data, baseURL, direction) {
 		}
 
 		if(window.debugflags > 0)
-			document.body.innerHTML += debugfooter;
+			document.body.innerHTML += debugfooter + '<pre>' + JSON.stringify(item, null, 2) + '</pre>';
 
 	    return true;
 	} catch (e) {

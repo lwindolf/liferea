@@ -68,6 +68,7 @@ liferea_sources = files(
   'node_sources/reedah_source_feed_list.c',
   'node_sources/opml_source.c',
   'parsers/atom10.c',
+  'parsers/gopher.c',
   'parsers/html5_feed.c',
   'parsers/ldjson_feed.c',
   'parsers/ns_admin.c',

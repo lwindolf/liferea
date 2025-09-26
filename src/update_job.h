@@ -29,11 +29,10 @@
 
 #include "update.h"
 
-// FIXME: naming should not be JOB_STATE_... but JOB_STATE_...
 typedef enum {
 	JOB_STATE_PENDING = 0,	/*<< request added to download queue */
 	JOB_STATE_PROCESSING,	/*<< request currently downloading */
-	JOB_STATE_FINISHED		/*<< request processing finished */
+	JOB_STATE_FINISHED	/*<< request processing finished */
 } request_state;
 
 G_BEGIN_DECLS

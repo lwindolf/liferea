@@ -6,6 +6,7 @@
     <file compressed="true">i18n-filter.xslt</file>
   </gresource>
   <gresource prefix="/org/gnome/liferea">
+    <file compressed="true">js/gopher-renderer.js</file>
     <file compressed="true">js/htmlview.js</file>
     <file compressed="true">js/helpers/render.js</file>
     <file compressed="true">js/vendor/Readability.js</file>

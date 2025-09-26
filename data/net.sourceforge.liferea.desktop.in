@@ -13,4 +13,4 @@ Type=Application
 Categories=Network;News;
 X-Ubuntu-Gettext-Domain=liferea
 Version=1.1
-MimeType=application/rss+xml;application/atom+xml;application/rdf+xml;x-scheme-handler/feed
+MimeType=application/rss+xml;application/atom+xml;application/rdf+xml;x-scheme-handler/feed;x-scheme-handler/gopher

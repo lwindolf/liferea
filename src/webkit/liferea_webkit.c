@@ -34,6 +34,7 @@
 #include "download.h"
 #include "feedlist.h"
 #include "net.h"
+#include "update_job.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
 
@@ -313,6 +314,77 @@ liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer 
 }
 
 static void
+liferea_webkit_handle_gopher_scheme_cb
+(const UpdateResult * const result, gpointer user_data, updateFlags flags)
+{
+	WebKitURISchemeRequest *request = (WebKitURISchemeRequest *) user_data;
+	const gchar *path = webkit_uri_scheme_request_get_uri (request);
+
+	if (!result->data || result->size <= 0) {
+		g_autoptr(GError) error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "Gopher fetch failed");
+		webkit_uri_scheme_request_finish_error (request, error);
+		return;
+	} else {
+		gchar **uriFields = g_strsplit (path, "/", -1);
+		g_autoptr(GInputStream) stream = NULL;
+		g_autoptr(GString) html = NULL;
+		g_autofree gchar *encoded_data = NULL;
+		g_autofree gchar *mime = NULL;
+		gchar type = '1'; // default to directory
+		
+		// Set type if given in URI
+		if (uriFields[3] && strlen (uriFields[3]) > 0)
+			type = uriFields[3][0];
+
+		switch (type) {
+			case 'I': // image
+				// We try to detect the mime type from the data
+				mime = g_content_type_guess (uriFields[4], (const guchar *)result->data, result->size, NULL);
+				break;
+		}
+
+		switch (type) {
+			case '0': // text file
+			case '1': // directory
+				// We serve gopher data as a HTML with a renderer script, the content is base64 encoded
+				// and served as the body text
+				encoded_data = g_base64_encode ((const guchar *)result->data, result->size);
+				html = g_string_new ("");
+
+				g_string_append_printf (html, "<!DOCTYPE html>\n<html><head><title>%s</title></head><body data-mime=\"%s\">", uriFields[2], mime ? mime : "text/plain");
+				g_string_append (html, encoded_data);
+				g_string_append (html, "\n</body><script src=\"liferea:///js/gopher-renderer.js\"></script></html>");
+
+				stream = g_memory_input_stream_new_from_data (html->str, html->len, NULL);
+				webkit_uri_scheme_request_finish (request, stream, 0, "text/html;charset=utf-8");
+				break;
+			default:
+				stream = g_memory_input_stream_new_from_data ("<!DOCTYPE html>\n<html><head><title>Gopher Error</title></head><body>"
+					"<div id='content' class='content'><b>Liferea does not support this Gopher item type for rendering. You can open this link using the floodgap.com proxy <a href=\"https://gopher.floodgap.com/gopher/gw\">click here</a>.</b></div>"
+					"</body></html>", -1, NULL);
+				webkit_uri_scheme_request_finish (request, stream, 0, "text/html;charset=utf-8");
+				break;
+		}
+
+		g_strfreev (uriFields);
+	}
+}
+
+static void
+liferea_webkit_handle_gopher_scheme (WebKitURISchemeRequest *request, gpointer user_data)
+{
+	const gchar *path = webkit_uri_scheme_request_get_uri (request);
+
+	update_job_new (
+		NULL,
+		update_request_new (path, NULL, NULL),
+		liferea_webkit_handle_gopher_scheme_cb,
+		request,
+		UPDATE_REQUEST_NO_FEED
+	);
+}
+
+static void
 liferea_webkit_handle_feed_scheme (WebKitURISchemeRequest *request, gpointer user_data)
 {
         const gchar *path = webkit_uri_scheme_request_get_path (request);
@@ -330,10 +402,12 @@ liferea_webkit_init (LifereaWebKit *self)
 	WebKitSecurityManager		*security_manager;
 		
 	self->dbus_connections = NULL;
-	webkit_web_context_register_uri_scheme (webkit_web_context_get_default(), "liferea",
+	webkit_web_context_register_uri_scheme (webkit_web_context_get_default (), "liferea",
 		(WebKitURISchemeRequestCallback) liferea_webkit_handle_liferea_scheme, NULL, NULL);
-	webkit_web_context_register_uri_scheme (webkit_web_context_get_default(), "feed",
+	webkit_web_context_register_uri_scheme (webkit_web_context_get_default (), "feed",
 		(WebKitURISchemeRequestCallback) liferea_webkit_handle_feed_scheme, NULL, NULL);
+	webkit_web_context_register_uri_scheme (webkit_web_context_get_default (), "gopher",
+		(WebKitURISchemeRequestCallback) liferea_webkit_handle_gopher_scheme, NULL, NULL);
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
 	
