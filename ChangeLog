@@ -4,7 +4,7 @@ To be released
 
 	* Removes GAsyncQueue usage and uses proper GThreadPools, this
 	  significantly speeds up updating and reduced GUI lag a lot
-	  (Lars Windolf)
+	  (Rich Coe)
 
 	* Add support for subscription to phlog gopher listings 
 	  (Lars Windolf)
