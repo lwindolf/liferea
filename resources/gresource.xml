@@ -105,5 +105,7 @@
     <file compressed="true">help/help_subscribe_1.6.0.png</file>
     <file compressed="true">help/help_subscribe_adv_1.6.0.png</file>
     <file compressed="true">help/help_vfolder_1.6.0.png</file>
+
+    <file compressed="true">help/reference.css</file>
   </gresource>
 </gresources>
