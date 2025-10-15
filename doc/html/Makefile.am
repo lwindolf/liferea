@@ -73,7 +73,8 @@ EXTRA_DIST =	$(html_doc_en) \
 		$(html_doc_de) \
 		$(html_doc_it) \
 		$(html_doc_ru) \
-		$(html_doc_pictures_en)
+		$(html_doc_pictures_en) \
+		reference.css
 
 
 htmldoc_DATA =	$(html_doc_en) \
