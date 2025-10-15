@@ -74,6 +74,15 @@ typedef enum {
 void itemview_set_mode (itemViewMode mode);
 
 /**
+ * itemview_get_effective_layout:
+ *
+ * Returns the effective layout mode. Never returns NODE_VIEW_MODE_AUTO.
+ *
+ * Returns: the effective layout mode (NODE_VIEW_MODE_*)
+ */
+guint itemview_get_effective_layout (void);
+
+/**
  * itemview_add_item: (skip)
  * @item:		the item to add
  *

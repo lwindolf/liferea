@@ -678,7 +678,6 @@ subscription_text_enrich_item_cb (const UpdateResult * const result, gpointer us
         g_autoptr(GString) description = g_string_new ("<pre>");
         g_string_append_len (description, result->data, result->size);
         g_string_append (description, "</pre>");
-g_print("enriched item %ld : %s\n", item->id, description->str);
 	metadata_list_set (&(item->metadata), "richContent", description->str);
         db_item_update (item);
 
@@ -718,7 +717,6 @@ subscription_enrich_item (subscriptionPtr subscription, itemPtr item)
 	else
 		update_job_new (subscription, request, subscription_html5_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
 }
-
 
 guint
 subscription_get_max_item_count (subscriptionPtr subscription)

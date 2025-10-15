@@ -167,6 +167,14 @@ itemview_set_displayed_node (Node *node)
 	itemview_clear ();
 }
 
+guint itemview_get_effective_layout (void)
+{
+	if (itemview->autoLayout)
+		return itemview->currentLayoutMode;
+
+	return itemview->mode;
+}
+
 void
 itemview_add_item (itemPtr item)
 {

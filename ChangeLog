@@ -1,4 +1,4 @@
-To be released
+2025-10-15  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.6
 
@@ -15,11 +15,14 @@ To be released
 	* Fixes #1457 link rel=alternate/self parsing
 	  (Lars Windolf)
 
-	* Fix frozen HTML page after launching feed:// links
+	* Fixes frozen HTML page after launching feed:// links
 	  (Lars Windolf)
 
-	* Fix #1459 better requiring girepository-2.0 
+	* Fixes #1459 better requiring girepository-2.0 
 	  (oreo639)
+
+	* Fixes #1462 panes too small on start
+	  (Lars Windolf)
 
 
 2025-09-13  Lars Windolf <lars.windolf@gmx.de>

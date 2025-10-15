@@ -124,8 +124,8 @@ update_deinit (void)
 		iter = g_slist_next (iter);
 	}
 
-	g_thread_pool_free (normalPool, FALSE, TRUE);
-	g_thread_pool_free (priorityPool, FALSE, TRUE);
+	g_thread_pool_free (normalPool, TRUE, TRUE);
+	g_thread_pool_free (priorityPool, TRUE, TRUE);
 	normalPool = NULL;
 	priorityPool = NULL;
 
