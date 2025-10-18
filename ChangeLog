@@ -15,6 +15,9 @@
 	* Readd incorrectly removed reference.css file
 	  (Lars Windolf)
 
+	* Dark mode: dimmed images filter gets reset when hovering over image
+	  (Lars Windolf)
+
 	* Fixes #1457 link rel=alternate/self parsing
 	  (Lars Windolf)
 
