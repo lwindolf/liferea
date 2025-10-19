@@ -623,14 +623,14 @@ liferea_shell_fix_panes (gint tolerance)
 	hpane_pos = gtk_paned_get_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")));
 	wpane_pos = gtk_paned_get_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")));
 
-	/* a) set leftpane to 1/3rd of window size if too small/large */
+	/* a) set leftpane to 1/5th of window size if too small/large */
 	gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
 	width = gdk_window_get_width (gdk_window);
 	if ((width * (100 - tolerance) / 100 < vpane_pos) || 
 	    (width * tolerance / 100 > vpane_pos) ||
 	    (0 == vpane_pos)) {
 		debug (DEBUG_GUI, "Fixing leftpane position");
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), width / 3);
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), width / 5);
 	} else {
 		debug (DEBUG_GUI, "Leftpane position OK: window width %d pane pos %d", width, vpane_pos);
 	}
