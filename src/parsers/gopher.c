@@ -86,20 +86,27 @@ gopher_process_request (const UpdateJob *job)
         }
 
         /* Read the response */
+        g_autoptr(GByteArray) response_data = g_byte_array_new ();
         gchar buffer[1024*1024*5];      // FIXME: limit to 5MB for now
-        gssize bytes_read = g_socket_receive (socket, buffer, sizeof (buffer) - 1, NULL, &error);
-        if (bytes_read < 0) {
-                debug (DEBUG_UPDATE, "Failed to read response: %s", error->message);
-                job->result->data = NULL;
-		job->result->size = 0;
+        while (TRUE) {
+                gssize chunk_size = g_socket_receive (socket, buffer, sizeof (buffer), NULL, &error);
+                if (chunk_size <= 0 || (error && g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED)))
+                        break;
+               
+                g_byte_array_append (response_data, (guint8 *)buffer, chunk_size);
+        }      
+
+        if (response_data->len > 0) {
+                job->result->data = g_memdup2 (response_data->data, response_data->len);
+                job->result->size = response_data->len;
+                debug (DEBUG_UPDATE, "Received gopher response: %d bytes", job->result->size);
         } else {
-                buffer[bytes_read] = '\0';
-                job->result->data = g_strdup (buffer);
-                job->result->size = bytes_read;
-                debug (DEBUG_UPDATE, "Received response: %s", buffer);
+                job->result->data = NULL;
+                job->result->size = 0;
+                debug (DEBUG_UPDATE, "Failed to read response: %s", error ? error->message : "Unknown error");
         }
 
-       	update_job_finished (job);
+        update_job_finished (job);
 }
 
 /**
