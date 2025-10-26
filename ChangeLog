@@ -6,7 +6,7 @@
 	  significantly speeds up updating and reduced GUI lag a lot
 	  (Rich Coe)
 
-	* Add support for subscription to phlog gopher listings 
+	* Add support for subscribing to phlog gopher listings 
 	  (Lars Windolf)
 
 	* Add support for gopher:// URI schema in internal browser
