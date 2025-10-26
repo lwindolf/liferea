@@ -461,4 +461,7 @@ div.photoheader {
   img {
     filter: brightness(.8) contrast(1.2);
   }
+  img:hover {
+    filter: none;
+  }
 }
