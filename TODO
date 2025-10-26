@@ -1,0 +1,9 @@
+TODOs
+
+- RSS Finder tab dead after subscribing
+- RSS Finder Youtube channel subscribing with "Subscribe" does subscribe without query string
+- RSS Finder lädt viel zu langsam
+- RSS Finder sollte im selben Tab erneut öffnen
+- sync pane fix changes to 1.9x
+- bad (missing) right margin for images/videos/...
+- bad (missing) bottom margin for videos/audio/youtube embed

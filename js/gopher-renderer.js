@@ -83,15 +83,21 @@ document.body.onload = function() {
     switch (type) {
         case '0':
             div.innerHTML = gopherData;
-            return;
+
+            // Replace all text HTTP and Gopher URIs in div with a link
+            const uriRegex = /(https?:\/\/\S+|gopher:\/\/\S+)/g;
+            div.innerHTML = div.innerHTML.replace(uriRegex, match => {
+                return `<a href="${match}" target="_blank">${match}</a>`;
+            });
+            break;
         case '1':
             renderListing(div, gopherData);
-            return;
+            break;
         case 'I':
             div.innerHTML = '<img src="data:'+document.body.dataset.mime+';base64,' + base64Data + '" alt="Gopher Image"/>';
-            return;
+            break;
         default:
             div.innerHTML = '<b>Liferea does not support this Gopher item type "' + uriFields[1].charAt(0) + '" for rendering. You can open this link using the floodgap.com proxy <a href="https://gopher.floodgap.com/gopher/1/' + encodeURIComponent(window.location.href) + '">click here</a>.</b>';
-            return;
+            break;
     }
 }
