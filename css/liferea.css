@@ -443,12 +443,15 @@ div.photoheader {
 	text-overflow: ellipsis
 }
 
+video {
+	max-width: 100%;
+        height: auto;
+}
+
 #enclosureVideo video {
 	background: black;
 	min-width: 640px;
 	min-height: 480px;
-	max-width: 100%;
-        height: auto;
         display: block;
 }
 
