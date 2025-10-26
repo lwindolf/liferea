@@ -30,6 +30,9 @@
 	* Fixes #1462 panes too small on start
 	  (Lars Windolf)
 
+	* Fixes #1466 zoom in from browser context menu broken
+	  (Lars Windolf)
+
 
 2025-09-13  Lars Windolf <lars.windolf@gmx.de>
 

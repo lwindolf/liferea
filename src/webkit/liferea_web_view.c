@@ -257,14 +257,14 @@ static void
 on_popup_zoomin_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	LifereaBrowser *htmlview = g_object_get_data (G_OBJECT (user_data), "htmlview");
-	liferea_browser_do_zoom (htmlview, TRUE);
+	liferea_browser_do_zoom (htmlview, 1);
 }
 
 static void
 on_popup_zoomout_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	LifereaBrowser *htmlview = g_object_get_data (G_OBJECT (user_data), "htmlview");
-	liferea_browser_do_zoom (htmlview, FALSE);
+	liferea_browser_do_zoom (htmlview, -1);
 }
 
 static void

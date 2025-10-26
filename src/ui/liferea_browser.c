@@ -472,7 +472,6 @@ liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom)
 		liferea_browser_set_zoom (browser, 1.2 * liferea_browser_get_zoom (browser));
 	else
 		liferea_browser_set_zoom (browser, 0.8 * liferea_browser_get_zoom (browser));
-
 }
 
 /** render parameter type */
