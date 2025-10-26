@@ -210,7 +210,7 @@ async function load_item(data, baseURL, direction) {
 		}
 
 		if(window.debugflags > 0)
-			document.body.innerHTML += debugfooter + '<pre>' + JSON.stringify(item, null, 2) + '</pre>';
+			document.body.innerHTML += debugfooter + '<pre>' + escapeHTML(JSON.stringify(item, null, 2)) + '</pre>';
 
 	    return true;
 	} catch (e) {
