@@ -422,7 +422,14 @@ liferea_webkit_handle_gopher_scheme_cb
 			type = uriFields[3][0];
 
 		switch (type) {
-			case 'I': // image
+			// image
+			case 'g':
+			case 'I':
+			case ':':
+			// video
+			case '<':
+			// audio
+			case ';':
 				// We try to detect the mime type from the data
 				mime = g_content_type_guess (uriFields[4], (const guchar *)result->data, result->size, NULL);
 				break;
@@ -441,13 +448,17 @@ liferea_webkit_handle_gopher_scheme_cb
 				g_string_append (html, "\n</body><script src=\"liferea:///js/gopher-renderer.js\"></script></html>");
 
 				stream = g_memory_input_stream_new_from_data (html->str, html->len, NULL);
-				webkit_uri_scheme_request_finish (request, stream, 0, "text/html;charset=utf-8");
+				webkit_uri_scheme_request_finish (request, stream, -1, "text/html;charset=utf-8");
+				break;
+			case 'I': // image
+				stream = g_memory_input_stream_new_from_data (result->data, result->size, NULL);
+				webkit_uri_scheme_request_finish (request, stream, -1, mime ? mime : "application/octet-stream");
 				break;
 			default:
 				stream = g_memory_input_stream_new_from_data ("<!DOCTYPE html>\n<html><head><title>Gopher Error</title></head><body>"
 					"<div id='content' class='content'><b>Liferea does not support this Gopher item type for rendering. You can open this link using the floodgap.com proxy <a href=\"https://gopher.floodgap.com/gopher/gw\">click here</a>.</b></div>"
 					"</body></html>", -1, NULL);
-				webkit_uri_scheme_request_finish (request, stream, 0, "text/html;charset=utf-8");
+				webkit_uri_scheme_request_finish (request, stream, -1, "text/html;charset=utf-8");
 				break;
 		}
 
