@@ -422,6 +422,20 @@ liferea_webkit_handle_gopher_scheme_cb
 			type = uriFields[3][0];
 
 		switch (type) {
+			case '0': // text file
+			case '1': // directory
+				// We serve the gopher text data as a base64 encoded text in the <body> tag for
+				// processing by the gopher-renderer.js script, encoding fixes are performed in JS
+				encoded_data = g_base64_encode ((const guchar *)result->data, result->size);
+
+				html = g_string_new ("");
+				g_string_append_printf (html,
+					"<!DOCTYPE html>\n<html><head><title>%s</title></head><body>%s\n</body><script src=\"liferea:///js/gopher-renderer.js\"></script></html>",
+					uriFields[2], encoded_data);
+
+				stream = g_memory_input_stream_new_from_data (html->str, html->len, NULL);
+				webkit_uri_scheme_request_finish (request, stream, -1, "text/html;charset=utf-8");
+				break;
 			// image
 			case 'g':
 			case 'I':
@@ -432,25 +446,6 @@ liferea_webkit_handle_gopher_scheme_cb
 			case ';':
 				// We try to detect the mime type from the data
 				mime = g_content_type_guess (uriFields[4], (const guchar *)result->data, result->size, NULL);
-				break;
-		}
-
-		switch (type) {
-			case '0': // text file
-			case '1': // directory
-				// We serve gopher data as a HTML with a renderer script, the content is base64 encoded
-				// and served as the body text
-				encoded_data = g_base64_encode ((const guchar *)result->data, result->size);
-				html = g_string_new ("");
-
-				g_string_append_printf (html, "<!DOCTYPE html>\n<html><head><title>%s</title></head><body data-mime=\"%s\">", uriFields[2], mime ? mime : "text/plain");
-				g_string_append (html, encoded_data);
-				g_string_append (html, "\n</body><script src=\"liferea:///js/gopher-renderer.js\"></script></html>");
-
-				stream = g_memory_input_stream_new_from_data (html->str, html->len, NULL);
-				webkit_uri_scheme_request_finish (request, stream, -1, "text/html;charset=utf-8");
-				break;
-			case 'I': // image
 				stream = g_memory_input_stream_new_from_data (result->data, result->size, NULL);
 				webkit_uri_scheme_request_finish (request, stream, -1, mime ? mime : "application/octet-stream");
 				break;
