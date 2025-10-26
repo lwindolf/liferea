@@ -209,7 +209,7 @@ metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
 			g_free (tmp);
 			break;
 		case METADATA_TYPE_HTML5:
-			/* Remove DHTML */
+			/* We expect HTML5 content to be valid XML/XHTML that was extracted with XPath, so needs no checking */
 			checked_data = g_strdup (data);
 			break;
 	}
