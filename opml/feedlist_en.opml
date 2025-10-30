@@ -18,15 +18,15 @@
 		</outline>
 		<outline text="Open Source">		<!-- translate this title for localized feed list -->
 			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://feeds.feedburner.com/LifereaBlog" />
-			<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/atom.xml" />	
+			<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/rss20.xml" />	
 		</outline>
 		<outline text="Podcasts">		<!-- translate this title for localized feed list -->
 			<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/atom/"/>
+			<outline text="The Rest Is History" htmlUrl="https://podcasts.apple.com/us/podcast/the-rest-is-history/id1537788786" xmlUrl="https://feeds.megaphone.fm/GLT4787413333"/>
 		</outline>
 		<outline text="Music Blogs">		<!-- translate this title for localized feed list -->
-			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
 			<outline text="Gorilla vs. Bear"   htmlUrl="https://www.gorillavsbear.net" xmlUrl="https://www.gorillavsbear.net/category/mp3/feed/"/>
-			<outline text="KEXP"               htmlUrl="https://kexp.org/" xmlUrl="http://feeds.kexp.org/kexp/songoftheday"/>
+			<outline text="KEXP" htmlUrl="https://kexp.org/" xmlUrl="https://www.omnycontent.com/d/playlist/bad5d079-8dcb-4630-8770-aa090049131d/18f3a48e-1c64-43e8-96e9-aa40002038ee/856f4314-821f-46ca-bc8e-aa40002038f2/podcast.rss"/>
 			<outline text="Fluxblog"           htmlUrl="http://fluxblog.org" xmlUrl="http://www.fluxblog.org/"/>
 		</outline>
 		<outline text="Comics">

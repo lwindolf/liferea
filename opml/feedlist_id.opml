@@ -14,13 +14,13 @@
 		</outline>
 		<outline text="Sumber Terbuka">		<!-- translate this title for localized feed list -->
 			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://feeds.feedburner.com/LifereaBlog" />
-			<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/atom.xml" />
+			<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/rss20.xml" />
 		</outline>
 		<outline text="Podcasts">		<!-- translate this title for localized feed list -->
 			<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/atom/"/>
 		</outline>
 		<outline text="Blog Musik">		<!-- translate this title for localized feed list -->
-			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
+			<outline text="The Rest Is History" htmlUrl="https://podcasts.apple.com/us/podcast/the-rest-is-history/id1537788786" xmlUrl="https://feeds.megaphone.fm/GLT4787413333"/>
 			<outline text="Gorilla vs. Bear"   htmlUrl="https://www.gorillavsbear.net" xmlUrl="https://www.gorillavsbear.net/category/mp3/feed/"/>
 			<outline text="KEXP"               htmlUrl="http://kexp.org" xmlUrl="http://feeds.kexp.org/kexp/songoftheday"/>
 			<outline text="Fluxblog"           htmlUrl="http://fluxblog.org" xmlUrl="http://www.fluxblog.org/"/>
