@@ -22,6 +22,7 @@ js_files = $(js_in_files:.xml.in=.xml)
 
 js_deps = $(top_srcdir)/js/gresource.xml \
 	$(top_srcdir)/js/htmlview.js \
+	$(top_srcdir)/js/gopher-renderer.js \
 	$(top_srcdir)/js/helpers/render.js \
 	$(top_srcdir)/js/vendor/Readability.js \
 	$(top_srcdir)/js/vendor/purify.min.js \
