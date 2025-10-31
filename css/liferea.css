@@ -82,6 +82,7 @@ body {
 
   max-width: 800px;
   margin: 0 auto;
+  margin-bottom: 16px;
 
   line-height: 1.8;
 }
