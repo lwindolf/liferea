@@ -201,13 +201,7 @@ async function load_item(data, baseURL, direction) {
 			document.querySelector('#enclosureVideo audio').play();
 		});
 
-		let youtubeMatch = item.source.match(/https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/);
 		contentCleanup ();
-
-		if (youtubeMatch) {
-			youtube_embed (youtubeMatch[1]);
-			debugfooter += " youtube";
-		}
 
 		if(window.debugflags > 0)
 			document.body.innerHTML += debugfooter + '<pre>' + escapeHTML(JSON.stringify(item, null, 2)) + '</pre>';
