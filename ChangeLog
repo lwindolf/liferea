@@ -1,3 +1,12 @@
+To be released
+
+	Version 1.16.7
+
+	* Drop Youtube video embedding due to "error 153" and the general
+	  privacy implications
+	  (Lars Windolf)
+	  
+
 2025-10-30  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.6

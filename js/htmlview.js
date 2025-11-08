@@ -201,13 +201,7 @@ async function load_item(data, baseURL, direction) {
 			document.querySelector('#enclosureVideo audio').play();
 		});
 
-		let youtubeMatch = item.source.match(/https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/);
 		contentCleanup ();
-
-		if (youtubeMatch) {
-			youtube_embed (youtubeMatch[1]);
-			debugfooter += " youtube";
-		}
 
 		if(window.debugflags > 0)
 			document.body.innerHTML += debugfooter + '<pre>' + escapeHTML(JSON.stringify(item, null, 2)) + '</pre>';
@@ -267,12 +261,6 @@ function contentCleanup() {
 			if(el.innerHTML.length == 1)
 				el.parentNode.removeChild(el);
 		});
-}
-
-function youtube_embed(id) {
-	document.getElementById('youtube_embed').innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/' + id + '?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
-
-	return false;
 }
 
 export { load_node, load_item };

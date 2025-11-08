@@ -67,10 +67,6 @@
                                                 {{/if}}
                                         </div>
                                 {{/if}}
-
-				<!-- container for youtube_embed() -->
-				<div id='youtube_embed'>
-				</div>
                         </div>
                 </div>
         </script>
