@@ -201,9 +201,18 @@ async function load_item(data, baseURL, direction) {
 			document.querySelector('#enclosureAudio audio').play();
 		});
 
-		// Gopher monospace rendering
+
+		// Gopher monospace rendering and link expansion
 		if (item.source?.startsWith('gopher://')) {
-			document.getElementById('content').classList.add('gopher');
+			const div = document.getElementById('content');
+			div.classList.add('gopher');
+
+			// Replace all text HTTP and Gopher URIs in div with a link
+			const uriRegex = /\b(https?:\/\/\S+|gopher:\/\/\S+)/g;
+			div.innerHTML = div.innerHTML.replace(uriRegex, match => {
+				return `<a href="${match}" target="_blank">${match}</a>`;
+			});
+
 			debugfooter += " gopher";
 		}
 
