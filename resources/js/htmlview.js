@@ -196,10 +196,16 @@ async function load_item(data, baseURL, direction) {
 			document.querySelector('#enclosureVideo video').src = e.target.options[e.target.selectedIndex].value;
 			document.querySelector('#enclosureVideo video').play();
 		});
-		document.getElementById('#enclosureAudio select')?.addEventListener("change", (e) => {
+		document.querySelector('#enclosureAudio select')?.addEventListener("change", (e) => {
 			document.querySelector('#enclosureAudio audio').src = e.target.options[e.target.selectedIndex].value;
-			document.querySelector('#enclosureVideo audio').play();
+			document.querySelector('#enclosureAudio audio').play();
 		});
+
+		// Gopher monospace rendering
+		if (item.source?.startsWith('gopher://')) {
+				document.getElementById('content').classList.add('gopher');
+				debugfooter += " gopher";
+		}
 
 		contentCleanup ();
 

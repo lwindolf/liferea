@@ -224,6 +224,11 @@ div.content img.thumbnail {
 	margin-right:12px;
 }
 
+div#content.gopher * p {
+       font-family: monospace;
+       white-space: pre;
+}
+
 img.gravatar {
 	/* gravatars have align="left" so we need proper margin */
 	margin-right:12px;
