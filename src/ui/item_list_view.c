@@ -590,7 +590,7 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
 	}
 
 	if (ilv->wideView) {
-		const gchar *important = _(" <span background='red' color='black'> important </span> ");
+		const gchar *important = _(" <span background='red' color='white'> important </span> ");
 		gchar *teaser = NULL;
 		if(!noTitle)
 			teaser = item_get_teaser (item);
