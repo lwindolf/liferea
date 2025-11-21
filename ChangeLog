@@ -5,6 +5,10 @@ To be released
 	* Drop Youtube video embedding due to "error 153" and the general
 	  privacy implications
 	  (Lars Windolf)
+	
+	* Fixes #805: use white on red instead of black on red for 
+	  item list "Important" label
+	  (Lars Windolf)
 	  
 
 2025-10-30  Lars Windolf <lars.windolf@gmx.de>
