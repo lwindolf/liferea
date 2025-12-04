@@ -140,7 +140,7 @@ subscription_icon_handle_response (const UpdateResult * const result, gpointer u
 		image_mime_type_match = g_regex_new ("^image/(png|gif|jpeg|svg+xml)$", G_REGEX_CASELESS, 0, NULL);
 
 	if ((result->contentType && g_regex_match (image_mime_type_match, result->contentType, 0, NULL)) ||
-	    (result->data && g_regex_match (image_extension_match, result->data, 0, NULL))) {
+	    (result->source && g_regex_match (image_extension_match, result->source, 0, NULL))) {
 		subscription_icon_download_data_cb(result, user_data, flags);
 	} else {
 		subscription_icon_download_html_cb(result, user_data, flags);
