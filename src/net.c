@@ -243,7 +243,7 @@ network_process_request (const UpdateJob *job)
 		auth_params,
 		host,
 		port,
-		path,
+		(path && (strlen(path)>0))?path:"/"
 		query,
 		fragment
 	);
