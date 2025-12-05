@@ -9,6 +9,9 @@ To be released
 	* Fixes #805: use white on red instead of black on red for 
 	  item list "Important" label
 	  (Lars Windolf)
+
+	* Fixes #1478: No favicons for several feeds
+	  (Lars Windolf)
 	  
 
 2025-10-30  Lars Windolf <lars.windolf@gmx.de>
