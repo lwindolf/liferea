@@ -132,7 +132,7 @@ a {
   color: var(--primary);
 }
 
-div.item header h1 a {
+div.item header h1 a:not(.missingTitle) {
   color: var(--text-color);
   text-decoration: none;
 }

@@ -111,6 +111,7 @@ async function load_node(data, baseURL, direction) {
 async function load_item(data, baseURL, direction) {
 	try {
 		let item = JSON.parse(decodeURIComponent(data));
+		let title = item.title;
 		let richContent = metadata_get(item, "richContent");
 		let mediathumb = metadata_get(item, "mediathumbnail");
 		let mediadesc = metadata_get(item, "mediadescription");
@@ -132,20 +133,23 @@ async function load_item(data, baseURL, direction) {
 				}
 			}
 		}
-		
+
+		// Using article.title is important, as often the item.title is just a summary
+		// or something slightly different. Using the article.title allows for better
+		// title duplicate elimination (further below)
+		if(article?.title?.length > 5) {
+			title = article.title;
+			debugfooter += " articleTitle";
+		}
+
 		debug("item", item);
 		debug("article", article);
 
-		prepare(baseURL, item.title);
+		prepare(baseURL, title);
 		render("body", templateFix (document.getElementById('template').innerHTML), {
 			item,
 			direction,
-
-			// Using article.title is important, as often the item.title is just a summary
-			// or something slightly different. Using the article.title allow for better
-			// title duplicate elimination (further below)
-			title			: article?.title?.length > 5?article.title:item.title,
-
+			title,
 			author			: metadata_get(item, "author"),
 			creator			: metadata_get(item, "creator"),
 			sharedby		: metadata_get(item, "sharedby"),
@@ -224,6 +228,8 @@ async function load_item(data, baseURL, direction) {
 	    return true;
 	} catch (e) {
 		document.body.innerHTML = `<div id="errors">Error: Failed to load item! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
+		console.error(e.stack);
+		window.data = data;
 		return false;
 	}
 }

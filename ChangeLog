@@ -12,6 +12,9 @@ To be released
 
 	* Fixes #1478: No favicons for several feeds
 	  (Lars Windolf)
+	
+	* Fixes #1477: bsky.app links not being used
+	  (Lars Windolf)
 	  
 
 2025-10-30  Lars Windolf <lars.windolf@gmx.de>
