@@ -132,7 +132,7 @@ a {
   color: var(--primary);
 }
 
-div.item header h1 a {
+div.item header h1 a:not(.missingTitle) {
   color: var(--text-color);
   text-decoration: none;
 }
@@ -225,8 +225,8 @@ div.content img.thumbnail {
 }
 
 div#content.gopher * p {
-       font-family: monospace;
-       white-space: pre;
+	font-family: monospace;
+	white-space: pre;
 }
 
 img.gravatar {

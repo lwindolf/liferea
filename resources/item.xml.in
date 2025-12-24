@@ -15,7 +15,11 @@
                                         <div class="feedTitle">{{ item.feedTitle }}</div>
                                 {{/if}}
                                 <h1>
-                                        <a href="{{item.source}}">{{title}}</a>
+                                        {{#if title}}
+                                                <a href="{{item.source}}">{{title}}</a>
+                                        {{else}}
+                                                <a href="{{item.source}}" class="missingTitle">Link to post</a>
+                                        {{/if}}
                                 </h1>
                                 {{#if slashSection}}
                                         <div class="slash">
