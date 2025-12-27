@@ -51,7 +51,8 @@
                                         <div id='enclosureAudio'>
                                                 <audio class="enclosure" controls="controls" preload="none" src="{{audios.[0].url}}"></audio>
                                                 {{#if audios.[1]}}
-                                                <select>
+             
+make[3]: Leaving directory '/home/lars/git/liferea-1.16/src'                                   <select>
                                                         {{#each audios}}
                                                         <option value="{{this.url}}">{{this.url}}</option>
                                                         {{/each}}
@@ -80,6 +81,7 @@
 </body>
 <script type="module">
         import { load_item } from '/js/htmlview.js';
+        import * as u from '/js/user.js';
 
         window.load_item = load_item;
         window.onload = (e) => {
