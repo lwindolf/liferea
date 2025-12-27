@@ -85,6 +85,14 @@ function debug(text, obj) {
 
 async function load_node(data, baseURL, direction) {
 	try {
+		if(window.hookPreNodeRendering) {
+			data = window.hookPreNodeRendering(data);
+		}
+	} catch (e) {
+		debug("Error in hookPreNodeRendering", e);
+	}
+
+	try {
 		let node = JSON.parse(decodeURIComponent(data));
 
 		// FIXME
@@ -102,6 +110,9 @@ async function load_node(data, baseURL, direction) {
 		});
 
 		contentCleanup ();
+
+		if(window.hookPostNodeRendering)
+			window.hookPostNodeRendering();
 	} catch (e) {
 		document.body.innerHTML = `<div id="errors">Error: Failed to load node! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
 		return false;
@@ -109,6 +120,14 @@ async function load_node(data, baseURL, direction) {
 }
 
 async function load_item(data, baseURL, direction) {
+	try {
+		if(window.hookPreItemRendering) {
+			data = window.hookPreItemRendering(data);
+		}
+	} catch (e) {
+		debug("Error in hookPreItemRendering", e);
+	}
+
 	try {
 		let item = JSON.parse(decodeURIComponent(data));
 		let title = item.title;
@@ -224,6 +243,9 @@ async function load_item(data, baseURL, direction) {
 
 		if(window.debugflags > 0)
 			document.body.innerHTML += debugfooter + '<pre>' + escapeHTML(JSON.stringify(item, null, 2)) + '</pre>';
+
+		if(window.hookPostItemRendering)
+			window.hookPostItemRendering();
 
 	    return true;
 	} catch (e) {

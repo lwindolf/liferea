@@ -1,3 +1,12 @@
+To be released
+
+	Version 1.16.8
+
+	* Add a new user.js which is automatically installed to ~/.config/liferea/user.js
+	  that provides hooks for data and rendering manipulation.
+	  (Lars Windolf)
+	  
+
 2025-12-27  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.7

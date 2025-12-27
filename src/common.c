@@ -26,7 +26,6 @@
 #endif
 
 #include <libxml/uri.h>
-#include <libsoup/soup.h>
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <pango/pango-types.h>
@@ -94,6 +93,21 @@ common_init_paths (void)
 		common_copy_file (PACKAGE_DATA_DIR "/" PACKAGE "/css/user.css", filename);
 	g_free(filename);
 
+	/* Install user.js */
+	filename = common_create_config_filename ("user.js");
+	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
+		GBytes *resource_data = g_resources_lookup_data ("/org/gnome/liferea/js/user.js", G_RESOURCE_LOOKUP_FLAGS_NONE, NULL);
+		if (resource_data) {
+			gsize size;
+			const gchar *data = g_bytes_get_data (resource_data, &size);
+			g_file_set_contents (filename, data, size, NULL);
+			g_bytes_unref (resource_data);
+		} else {
+			g_warning ("Failed to load resource: /org/gnome/liferea/js/user.js");
+		}
+	}
+	g_free(filename);
+
 	/* ensure reasonable default umask */
 	umask (077);
 
@@ -142,7 +156,7 @@ xmlChar *
 common_uri_escape (const xmlChar *url)
 {
 	g_autoptr(GError) err = NULL;
-	g_autoptr(GUri) uri = g_uri_parse (url, G_URI_FLAGS_ENCODED, &err);
+	g_autoptr(GUri) uri = g_uri_parse ((gchar *)url, G_URI_FLAGS_ENCODED, &err);
 	if(err)
 		return (xmlChar *)g_strdup((char *)url); // return a copy of the original URL on error
 

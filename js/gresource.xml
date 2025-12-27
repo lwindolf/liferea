@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/org/gnome/liferea/js">
     <file compressed="true">htmlview.js</file>
+    <file compressed="true">user.js</file>
     <file compressed="true">gopher-renderer.js</file>
     <file compressed="true">helpers/render.js</file>
     <file compressed="true">vendor/Readability.js</file>

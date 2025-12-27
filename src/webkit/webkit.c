@@ -371,28 +371,43 @@ static void
 liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer user_data)
 {
 	const gchar *path = webkit_uri_scheme_request_get_path (request);
-	g_autofree gchar *rpath;
-	GBytes *b;
+	GBytes *b = NULL;
 
-	rpath = g_strdup_printf ("/org/gnome/liferea%s", path);
-	b = g_resources_lookup_data (rpath, 0, NULL);
+	if (g_str_equal (path, "/js/user.js")) {
+		g_autofree gchar *filename = common_create_config_filename ("user.js");
+		if (g_file_test (filename, G_FILE_TEST_IS_REGULAR)) {
+			gsize size;
+			gchar *data = NULL;
+			g_file_get_contents (filename, &data, &size, NULL);
+			b = g_bytes_new_take (data, size);
+		}
+	} else {
+		// Everything else is static and comes from gresource
+		g_autofree gchar *rpath = g_strdup_printf ("/org/gnome/liferea%s", path);
+		b = g_resources_lookup_data (rpath, 0, NULL);
+	}
+
 	if (b) {
 		gsize length = 0;
 		const guchar *data = g_bytes_get_data (b, &length);
 		const gchar *mime;
-		
-		// FIXME: what about freeing b?
 		g_autoptr(GInputStream) stream = g_memory_input_stream_new_from_data (data, length, NULL);
 		
 		// For now we assume all resources are javascript, so MIME is hardcoded
 		if (g_str_has_suffix (path, ".js"))
 			mime = "text/javascript";
+		else if (g_str_has_suffix (path, ".html"))
+			mime = "text/html";
+		else if (g_str_has_suffix (path, ".png"))
+			mime = "image/png";
+		else if (g_str_has_suffix (path, ".css"))
+			mime = "text/css";
 		else
 			mime = "text/plain";
 
 		webkit_uri_scheme_request_finish (request, stream, length, mime);
 	} else {
-		debug (DEBUG_HTML, "Failed to load liferea:// request for path %s (%s)", path, rpath);
+		debug (DEBUG_HTML, "Failed to load liferea:// request for path %s", path);
 		g_autoptr(GError) error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "Resource not found");
 		webkit_uri_scheme_request_finish_error (request, error);
 	}
@@ -420,6 +435,13 @@ liferea_webkit_handle_gopher_scheme_cb
 		// Set type if given in URI
 		if (uriFields[3] && strlen (uriFields[3]) > 0)
 			type = uriFields[3][0];
+
+		switch (type) {
+			case 'I': // image
+				// We try to detect the mime type from the data
+				mime = g_content_type_guess (uriFields[4], (const guchar *)result->data, result->size, NULL);
+				break;
+		}
 
 		switch (type) {
 			case '0': // text file

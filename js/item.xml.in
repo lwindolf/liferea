@@ -80,6 +80,7 @@
 </body>
 <script type="module">
         import { load_item } from '/js/htmlview.js';
+        import * as u from '/js/user.js';
 
         window.load_item = load_item;
         window.onload = (e) => {

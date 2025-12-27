@@ -129,6 +129,7 @@
 </body>
 <script type="module">
 	import { load_node } from '/js/htmlview.js';
+	import * as u from '/js/user.js';
 
         REPLACE_MARKER
 </script>
