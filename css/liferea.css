@@ -128,7 +128,7 @@ strong, b {
   font-weight: 600;
 }
 
-a {
+a[href] {
   color: var(--primary);
 }
 
@@ -240,56 +240,6 @@ img.gravatar {
 	margin:0px;
 }
 
-/* styles for the item description (currently also used for
-   the feed description) */
-table.itemhead, table.feedhead {
-	margin:0;
-	width:100%;
-	border:0;
-	border-bottom: 2px solid var(--box-bg);
-	clear:both;
-	color: var(--text-color);
-}
-
-.itemhead, .feedhead {
-	// FIXME background-color: #GTK-COLOR-MID;
-}
-
-table.itemhead * a.itemhead {
-	text-decoration:none;
-	color: var(--text-color);
-	font-weight:bold;
-}
-
-table.itemhead * td {
-	padding-top: 4px;
-}
-
-td.head_favicon {
-	width: 20px;
-	padding-left: 10px;
-	vertical-align: middle;
-}
-
-td.head_title {
-	padding:2px 5px;
-	width: 100%;
-	vertical-align: middle;
-}
-
-table.headmeta {
-	// FIXME: background:#GTK-COLOR-BG;
-	width:100%;
-	border:0;
-	border-bottom: 1px solid var(--box-bg);
-	margin:0;
-}
-
-table.headmeta td {
-	padding:1px 6px 1px 12px;
-	font-size:0.9em;
-}
-
 .hidden {
 	visibility:hidden;
 	display:none;
@@ -325,7 +275,6 @@ div.comment_title {
 	padding-left:6px;
 	padding-right:6px;
 	font-weight:bold;
-	// FIXME: background: var(--box-bg);
 }
 
 a.favicon {
@@ -363,7 +312,6 @@ a.favicon img {
 pre.errorOutput {
 	margin:10px 15px;
 	padding:5px;
-	border:2px solid var(--box-bg); // FIXME
 	background: var(--box-bg);
 	overflow:auto;
 }
@@ -395,47 +343,6 @@ ins {
 	padding-left:0.2rem;
 	padding-right:0.2rem;
 	color:white;
-}
-
-div.photoheader {
-	margin:10px 0;
-	padding-left:10px;
-	padding-right:10px;
-	//background-color:#GTK-COLOR-DARK;
-	//color:#GTK-COLOR-TEXT;
-}
-
-.video-embed {
-	position: relative;
-	max-width: 700px;
-	width: 100%;
-	margin-bottom: 10px;
-}
-
-.video-embed .thumb {
-	max-width: 700px;
-	width: 100%;
-}
-
-.video-embed .play-btn {
-	position: absolute;
-	max-width: 700px;
-	width: 100px;
-	height: 100px;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-}
-
-.video-embed .play-btn svg {
-	transition: all .3s ease;
-	fill: #fff;
-}
-
-.video-embed .play-btn:hover svg,
-.video-embed .play-btn:focus svg {
-	cursor: pointer;
-	fill: #ddd;
 }
 
 #enclosureVideo select,
