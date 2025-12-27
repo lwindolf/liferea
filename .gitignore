@@ -1,4 +1,5 @@
 .deps
+.intltool*
 *~
 *.a
 *.gmo
