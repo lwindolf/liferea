@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "eslint js/htmlview.js",
+    "test": "eslint resources/js/*.js",
     "installDeps": "cd node_modules && cp dompurify/dist/purify.js ../resources/js/vendor && cp dompurify/dist/purify.min.js ../resources/js/vendor && cp handlebars/dist/handlebars.js ../resources/js/vendor && cp handlebars/dist/handlebars.min.js ../resources/js/vendor && cp @mozilla/readability/Readability.js ../resources/js/vendor"
   },
   "dependencies": {

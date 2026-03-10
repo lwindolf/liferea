@@ -103,13 +103,15 @@ document.body.onload = function () {
     const div = document.getElementById('content');
     switch (type) {
         case '0':
-            div.innerHTML = gopherData;
+            {
+                div.innerHTML = gopherData;
 
-            // Replace all text HTTP and Gopher URIs in div with a link
-            const uriRegex = /(https?:\/\/\S+|gopher:\/\/\S+)/g;
-            div.innerHTML = div.innerHTML.replace(uriRegex, match => {
-                return `<a href="${match}" target="_blank">${match}</a>`;
-            });
+                // Replace all text HTTP and Gopher URIs in div with a link
+                const uriRegex = /(https?:\/\/\S+|gopher:\/\/\S+)/g;
+                div.innerHTML = div.innerHTML.replace(uriRegex, match => {
+                    return `<a href="${match}" target="_blank">${match}</a>`;
+                });
+            }
             break;
         case '1':
             renderListing(div, gopherData);
