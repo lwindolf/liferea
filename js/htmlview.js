@@ -49,16 +49,6 @@ function metadata_get(obj, key) {
 	return results[0][key];
 }
 
-function parseStatus(parsePhase, errorCode) {
-
-	if (errorCode == 0 || errorCode > parsePhase)
-		return "✅";
-	if (errorCode == parsePhase)
-		return "⛔";
-	if (parsePhase > errorCode)
-		return "⬜";
-}
-
 function templateFix(str, data) {
 	// sadly libxslt translating the handlebar templates causes
 	// attribute escaping and thereby destroying template expressions
@@ -142,7 +132,7 @@ async function load_item(data, baseURL, direction) {
 			shadowDoc.body.innerHTML = richContent;
 			debugfooter += " Scrape";
 
-			article = new Readability(shadowDoc, {charThreshold: 100}).parse();
+			article = new window.Readability(shadowDoc, {charThreshold: 100}).parse();
 			if (article) {
 				// Use rich content from Readability if available and better!
 				if (article.content.length > item.description.length) {
@@ -247,7 +237,7 @@ async function load_item(data, baseURL, direction) {
 		if(window.hookPostItemRendering)
 			window.hookPostItemRendering();
 
-	    return true;
+		return true;
 	} catch (e) {
 		document.body.innerHTML = `<div id="errors">Error: Failed to load item! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
 		console.error(e.stack);
@@ -263,7 +253,7 @@ function contentCleanup() {
 
 	// Run DOMPurify
 	let content = document.getElementById('content').innerHTML;
-	document.getElementById('content').innerHTML = DOMPurify.sanitize(content);
+	document.getElementById('content').innerHTML = window.DOMPurify.sanitize(content);
 
 	// Fix inline SVG sizes
 	const svgMinWidth = 50;
