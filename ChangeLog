@@ -5,7 +5,13 @@ To be released
 	* Add a new user.js which is automatically installed to ~/.config/liferea/user.js
 	  that provides hooks for data and rendering manipulation.
 	  (Lars Windolf)
-	  
+
+	* Change "Discover Feeds" to open in external browser. Due to
+	  rss-finder using ESM and Webkit enforcing CORS for ESM and 
+	  Cloudflares corsproxy.io now not available anymore there is no
+	  easy and secure way to simply embed it.
+	  (Lars Windolf)
+
 
 2025-12-27  Lars Windolf <lars.windolf@gmx.de>
 
