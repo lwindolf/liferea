@@ -80,6 +80,7 @@
 #define DO_NOT_TRACK			"do-not-track"
 #define DO_NOT_SELL                     "do-not-sell"
 #define INTRANET_CONNECTIVITY		"intranet-connectivity"
+#define MAX_UPDATE_THREADS              "max-update-threads"
 
 /* initializing methods */
 void	conf_init (void);

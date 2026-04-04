@@ -1,7 +1,7 @@
 /**
  * @file ui_update.c GUI update monitor
  * 
- * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2026 Lars Windolf <lars.windolf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,31 +39,34 @@ static GtkTreeStore *um2store = NULL;
 static GHashTable *um1hash = NULL;
 static GHashTable *um2hash = NULL;
 
-static void ui_update_remove_request(Node *node, GtkTreeStore *store, GHashTable *hash) {
+static void
+ui_update_remove_request (Node *node, GtkTreeStore *store, GHashTable *hash)
+{
 	GtkTreeIter	*iter;
 
-	iter = (GtkTreeIter *)g_hash_table_lookup(hash, node->id);
-	if(iter) {
-		gtk_tree_store_remove(store, iter);
-		g_hash_table_remove(hash, (gpointer)node->id);
-		g_free(iter);
+	iter = (GtkTreeIter *)g_hash_table_lookup (hash, node->id);
+	if (iter) {
+		gtk_tree_store_remove (store, iter);
+		g_hash_table_remove (hash, (gpointer)node->id);
 	}
 }
 
-static void ui_update_merge_request(Node *node, GtkTreeStore *store, GHashTable *hash) {
+static void
+ui_update_merge_request (Node *node, GtkTreeStore *store, GHashTable *hash)
+{
 	GtkTreeIter	*iter;
         gchar           *title;
 
-	if(NULL != (iter = (GtkTreeIter *)g_hash_table_lookup(hash, (gpointer)node->id)))
+	if (NULL != (iter = (GtkTreeIter *)g_hash_table_lookup (hash, (gpointer)node->id)))
 		return;
 
-	iter = g_new0(GtkTreeIter, 1);
-	gtk_tree_store_append(store, iter, NULL);
+	iter = g_new0 (GtkTreeIter, 1);
+	gtk_tree_store_append (store, iter, NULL);
         title = g_markup_escape_text (node_get_title (node), -1);
-	gtk_tree_store_set(store, iter, UM_REQUEST_TITLE, title,
-	                                UM_FAVICON, node_get_icon(node),
+	gtk_tree_store_set (store, iter, UM_REQUEST_TITLE, title,
+	                                UM_FAVICON, node_get_icon (node),
 	                                -1);
-	g_hash_table_insert(hash, (gpointer)node->id, (gpointer)iter);
+	g_hash_table_insert (hash, (gpointer)node->id, (gpointer)iter);
 
         g_free (title);
 }
@@ -94,10 +97,11 @@ ui_update_find_requests (Node *node) {
 	ui_update_remove_request (node, um2store, um2hash);
 }
 
-static gboolean ui_update_monitor_update(void *data) {
+static
+gboolean ui_update_monitor_update (void *data) {
 
-	if(umdialog) {
-		feedlist_foreach(ui_update_find_requests);
+	if (umdialog) {
+		feedlist_foreach (ui_update_find_requests);
 		return TRUE;
 	} else {
 		return FALSE;
@@ -116,18 +120,23 @@ ui_update_cancel (Node *node)
 	subscription_cancel_update (node->subscription);
 }
 
-void on_cancel_all_requests_clicked(GtkButton *button, gpointer user_data) {
-
-	feedlist_foreach(ui_update_cancel);
+void
+on_cancel_all_requests_clicked (GtkButton *button, gpointer user_data)
+{
+	feedlist_foreach (ui_update_cancel);
 }
 
 static void
 on_update_monitor_destroyed_cb(GtkWidget *widget, void *data)
 {
-	g_hash_table_destroy(um1hash);
-	g_hash_table_destroy(um2hash);
+	g_hash_table_destroy (um1hash);
+	g_hash_table_destroy (um2hash);
+	g_object_unref (um1store);
+	g_object_unref (um2store);
 	um1hash = NULL;
 	um2hash = NULL;
+	um1store = NULL;
+	um2store = NULL;
 	umdialog = NULL;
 }
 
@@ -143,7 +152,7 @@ on_menu_show_update_monitor(GSimpleAction *action, GVariant *parameter, gpointer
 	GtkTreeViewColumn 	*column;
 	GtkTreeView		*view;
 
-	if(!umdialog) {
+	if (!umdialog) {
 		umdialog = liferea_dialog_new ("update_monitor");
 		g_signal_connect (G_OBJECT (umdialog), "destroy", G_CALLBACK (on_update_monitor_destroyed_cb), NULL);
 		
@@ -178,10 +187,13 @@ on_menu_show_update_monitor(GSimpleAction *action, GVariant *parameter, gpointer
 		gtk_tree_view_append_column(view, column);		
 		
 		/* Fill in data */
-		um1hash = g_hash_table_new(g_str_hash, g_str_equal);
-		um2hash = g_hash_table_new(g_str_hash, g_str_equal);
-	 	(void)g_timeout_add_seconds(1, ui_update_monitor_update, NULL);
+		um1hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+		um2hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+		ui_update_monitor_update (NULL);
+	 	(void)g_timeout_add_seconds (1, ui_update_monitor_update, NULL);
+
+		gtk_widget_show_all (umdialog);
 	}
-	
-	gtk_window_present(GTK_WINDOW(umdialog));
+
+	gtk_window_present (GTK_WINDOW (umdialog));
 }

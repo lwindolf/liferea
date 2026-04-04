@@ -212,6 +212,11 @@
       <summary>Accept that there is not internet available.</summary>
       <description>Enable this if you are in an intranet with no internet connectivity. Otherwise updates won't work.</description>
     </key>
+    <key name="max-update-threads" type="i">
+      <default>3</default>
+      <summary>Maximum number of concurrent update threads per queue.</summary>
+      <description>This option determines the maximum number of concurrent update threads that can be run per update queue. Note there are two queues one for normal and one for high prio requests.</description>
+    </key>
   </schema>
 
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea.plugins" path="/org/gnome/liferea/plugins/">

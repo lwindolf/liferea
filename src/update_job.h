@@ -32,6 +32,7 @@
 typedef enum {
 	JOB_STATE_PENDING = 0,	/*<< request added to download queue */
 	JOB_STATE_PROCESSING,	/*<< request currently downloading */
+	JOB_STATE_FILTERING,	/*<< request currently being filtered */
 	JOB_STATE_FINISHED	/*<< request processing finished */
 } request_state;
 

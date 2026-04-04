@@ -1,7 +1,7 @@
 /**
  * @file update_job.c  handling update processing (network/local/filter/XSLT)
  *
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -326,7 +326,6 @@ update_exec_cmd (UpdateJob *job)
 	job->cmd.child_watch_id = g_child_watch_add (job->cmd.pid, (GChildWatchFunc) update_exec_cmd_cb_child_watch, job);
 	job->cmd.stdout_ch = g_io_channel_unix_new (job->cmd.fd);
 	job->cmd.io_watch_id = g_io_add_watch (job->cmd.stdout_ch, G_IO_IN | G_IO_HUP, (GIOFunc) update_exec_cmd_cb_out_watch, job);
-
 	job->cmd.timeout_id = g_timeout_add (get_exec_timeout_ms(), (GSourceFunc) update_exec_cmd_cb_timeout, job);
 }
 
@@ -403,7 +402,7 @@ static void update_job_init (UpdateJob *self) {
 	/* Add any instance initialization code here */
 }
 
-// dequeue job and execute it according to its job type (download, command, local file)
+// execute according to its job type (download, command, local file)
 void
 update_job_execute (UpdateJob *job)
 {
@@ -480,12 +479,10 @@ update_job_get_state (UpdateJob *job)
 }
 
 static gboolean
-update_process_result_idle_cb (gpointer user_data)
+update_process_result_cb (gpointer user_data)
 {
 	UpdateJob *job = (UpdateJob *)user_data;
-
-	job->state = JOB_STATE_FINISHED;
-        
+      
 	if (job->callback)
 		(job->callback) (job->result, job->user_data, job->flags);
 
@@ -497,14 +494,14 @@ update_process_result_idle_cb (gpointer user_data)
 static void
 update_apply_filter_async(GTask *task, gpointer src, gpointer tdata, GCancellable *ccan)
 {
-    update_apply_filter (UPDATE_JOB (tdata));
-    g_task_return_int (task, 0);
+	update_apply_filter (UPDATE_JOB (tdata));
+	g_task_return_int (task, 0);
 }
 
 static void
 update_apply_filter_finish(GObject *src, GAsyncResult *result, gpointer user_data)
 {
-    g_idle_add (update_process_result_idle_cb, user_data);
+	g_idle_add (update_process_result_cb, user_data);
 }
 
 void
@@ -519,6 +516,7 @@ update_job_finished (UpdateJob *job)
 
 	/* Finally execute the postfilter */
 	if (job->result->data && job->request->filtercmd) {
+		job->state = JOB_STATE_FILTERING;
                 GTask *task = g_task_new(NULL, NULL, update_apply_filter_finish, job);
                 g_task_set_task_data(task, job, NULL);
                 g_task_run_in_thread(task, update_apply_filter_async);
@@ -526,5 +524,6 @@ update_job_finished (UpdateJob *job)
                 return;
         }
 
-	g_idle_add (update_process_result_idle_cb, job);
+	job->state = JOB_STATE_FINISHED;
+	update_process_result_cb (job);
 }
