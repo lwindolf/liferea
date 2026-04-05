@@ -411,6 +411,12 @@ update_job_execute (UpdateJob *job)
 	   pass the processed job to update_job_finished()
 	   for result dequeuing */
 
+	/* if job was cancelled... */
+	if (job->callback == NULL) {
+		update_job_finished (job);
+		return;
+	}
+
 	/* everything starting with '|' is a local command */
 	if (*(job->request->source) == '|') {
 		if (job->request->allowCommands) {
@@ -478,11 +484,11 @@ update_job_get_state (UpdateJob *job)
 	return job->state;
 }
 
-static gboolean
-update_process_result_cb (gpointer user_data)
+gboolean
+update_job_process_result_idle_cb (gpointer user_data)
 {
 	UpdateJob *job = (UpdateJob *)user_data;
-      
+	  
 	if (job->callback)
 		(job->callback) (job->result, job->user_data, job->flags);
 
@@ -491,17 +497,11 @@ update_process_result_cb (gpointer user_data)
 	return FALSE;
 }
 
-static void
-update_apply_filter_async(GTask *task, gpointer src, gpointer tdata, GCancellable *ccan)
+void
+update_job_process_result (gpointer user_data)
 {
-	update_apply_filter (UPDATE_JOB (tdata));
-	g_task_return_int (task, 0);
-}
-
-static void
-update_apply_filter_finish(GObject *src, GAsyncResult *result, gpointer user_data)
-{
-	g_idle_add (update_process_result_cb, user_data);
+	// the job->callback has to be run in the main loop as it does DB transaction locking
+	g_idle_add (update_job_process_result_idle_cb, user_data);
 }
 
 void
@@ -517,13 +517,9 @@ update_job_finished (UpdateJob *job)
 	/* Finally execute the postfilter */
 	if (job->result->data && job->request->filtercmd) {
 		job->state = JOB_STATE_FILTERING;
-                GTask *task = g_task_new(NULL, NULL, update_apply_filter_finish, job);
-                g_task_set_task_data(task, job, NULL);
-                g_task_run_in_thread(task, update_apply_filter_async);
-                g_object_unref(task);
-                return;
+                update_apply_filter (job);
         }
 
 	job->state = JOB_STATE_FINISHED;
-	update_process_result_cb (job);
+	update_job_queue_finish (job);
 }

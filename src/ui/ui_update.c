@@ -81,7 +81,10 @@ ui_update_find_requests (Node *node) {
 		return;
 		
 	if (node->subscription->updateJob) {
-		if (JOB_STATE_PROCESSING == update_job_get_state (node->subscription->updateJob)) {
+		gint state = update_job_get_state (node->subscription->updateJob);
+		if (JOB_STATE_PROCESSING == state ||
+		    JOB_STATE_FILTERING == state ||
+		    JOB_STATE_FINISHED == state) {
 			ui_update_merge_request (node, um1store, um1hash);
 			ui_update_remove_request (node, um2store, um2hash);
 			return;

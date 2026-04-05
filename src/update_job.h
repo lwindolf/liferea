@@ -82,11 +82,19 @@ UpdateJob * update_job_new (gpointer owner,
 void update_job_execute (UpdateJob *job);
 
 /**
+ * update_job_process_result:
+ * @user_data: (nullable): user data passed to the result processing callback
+ * 
+ * Called by job queue to processes the result of an update job.
+ */
+void update_job_process_result (gpointer user_data);
+
+/**
  * update_job_finished:
  * @job:	the update job
  * 
  * To be called when an update job has been executed. Triggers
- * the job specific result processing callback.
+ * the job queue and specific result processing callback.
  */
 void update_job_finished (UpdateJob *job);
 
