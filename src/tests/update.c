@@ -28,21 +28,30 @@
 
 typedef struct tc {
 	gchar	        *url;
+        gchar           *filtercmd;
         gboolean        emptyBody;      // TRUE if empty body expected
+        gboolean        filterErrors;   // TRUE if filter errors expected
         int             httpStatus;     // expected HTTP status (or 0 to disable check)
         gchar           *testString;    // expected string in body
         UpdateJob       *job;
 } *tcPtr;
-
-struct tc tc_url                = { "https://github.com/",          FALSE, 0, "github", NULL };
-//struct tc tc_dns_fail           = { "https://doesnotexist.local", TRUE, 0, NULL, NULL };   // FIXME: cannot be tested due to missing error callback causing memory leak
-struct tc tc_port_fail          = { "http://localhost:6666",      TRUE,  0, NULL, NULL };
-struct tc tc_proto_fail         = { "htps://localhost",           TRUE,  0, NULL, NULL };
-struct tc tc_local_file         = { "file:///etc/hosts",          FALSE, 0, "localhost", NULL };
-struct tc tc_http_301           = { "https://lzone.de/http/301",    FALSE, 200, NULL, NULL };     // We expect HTTP 200 because the networking code is supposed to do the redirect
-struct tc tc_http_308           = { "https://lzone.de/http/308",    FALSE, 200, NULL, NULL };     // We expect HTTP 200 because the networking code is supposed to do the redirect
-struct tc tc_http_404           = { "https://lzone.de/http/404",    FALSE, 404, NULL, NULL };
-struct tc tc_http_410           = { "https://lzone.de/http/410",    FALSE, 410, NULL, NULL };
+struct tc tc_url                = { .url = "https://github.com/", .testString = "github" };
+//struct tc tc_dns_fail           = { .url = "https://doesnotexist.local", .emptyBody = TRUE };   // FIXME: cannot be tested due to missing error callback causing memory leak
+struct tc tc_port_fail          = { .url = "http://localhost:6666", .emptyBody = TRUE };
+struct tc tc_proto_fail         = { .url = "htps://localhost", .emptyBody = TRUE };
+struct tc tc_local_file         = { .url = "file:///etc/hosts", .testString = "localhost" };
+struct tc tc_http_301           = { .url = "https://lzone.de/http/301", .httpStatus = 200 };     // We expect HTTP 200 because the networking code is supposed to do the redirect
+struct tc tc_http_308           = { .url = "https://lzone.de/http/308", .httpStatus = 200 };     // We expect HTTP 200 because the networking code is supposed to do the redirect
+struct tc tc_http_404           = { .url = "https://lzone.de/http/404", .httpStatus = 404 };
+struct tc tc_http_410           = { .url = "https://lzone.de/http/410", .httpStatus = 410 };
+struct tc tc_script_ok          = { .url = "|./test-feed-script.sh",    .httpStatus = 200, .testString = "TEST STRING" }; // Run an existing script
+struct tc tc_script_fail        = { .url = "|./test-feed-script-fail.sh",  .emptyBody = TRUE, .httpStatus = 500 };        // Run an existing script that fails
+struct tc tc_script_missing     = { .url = "|./test-missing-script.sh",    .emptyBody = TRUE, .httpStatus = 500 };        // Run a missing script
+struct tc tc_script_notallowed  = { .url = "|./test-notallowed-script.sh", .emptyBody = TRUE, .httpStatus = 403 };        // Run a script where it is not allowed
+struct tc tc_filter_ok          = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script.sh", .httpStatus = 200, .testString = "TEST STRING" }; // Run a filter that works
+struct tc tc_filter_fail        = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script-fail.sh", .emptyBody = TRUE, .filterErrors = TRUE };      // Run a filter that fails
+struct tc tc_filter_missing     = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script-missing.sh", .emptyBody = TRUE, .filterErrors = TRUE };   // Run a filter that is missing
+// FIXME: XSL filter test case
 
 // result is global because we run async and exit the main loop upon test end
 static int result = 1;
@@ -63,6 +72,12 @@ tc_update_job_new (gpointer user_data)
         UpdateRequest	        *request;
 
 	request = update_request_new (tc->url, NULL, NULL);
+        request->filtercmd = g_strdup(tc->filtercmd);
+
+        // script handling
+        if (g_str_has_prefix (tc->url, "|") && !strstr (tc->url, "notallowed"))
+                request->allowCommands = TRUE;
+
         tc->job = update_job_new (tc, request, tc_update_cb, user_data, 0);
 	g_assert (tc->job != NULL);
         g_object_ref (tc->job);
@@ -83,6 +98,8 @@ tc_update_job_check_result (gconstpointer user_data) {
                 g_error ("Test string '%s' not found in result data!", tc->testString);
         if (tc->httpStatus && (tc->httpStatus != result->httpstatus))
                 g_error ("HTTP status %d != expected %d", result->httpstatus, tc->httpStatus);
+        if (tc->filterErrors && !result->filterErrors)
+                g_error ("Expected filter errors not found!");
 
         g_object_unref (job);
 }
@@ -102,6 +119,14 @@ check_updates (gpointer user_data)
         g_test_add_data_func ("/update_job/http-308",     	&tc_http_308,	&tc_update_job_check_result);
         g_test_add_data_func ("/update_job/http-404",     	&tc_http_404,	&tc_update_job_check_result);
         g_test_add_data_func ("/update_job/http-410",     	&tc_http_410,	&tc_update_job_check_result);
+        g_test_add_data_func ("/update_job/script-ok",     	&tc_script_ok,	        &tc_update_job_check_result);
+        g_test_add_data_func ("/update_job/script-fail",     	&tc_script_fail,	&tc_update_job_check_result);
+        g_test_add_data_func ("/update_job/script-missing",     &tc_script_missing,	&tc_update_job_check_result);
+        g_test_add_data_func ("/update_job/script-notallowed",  &tc_script_notallowed,  &tc_update_job_check_result);
+        g_test_add_data_func ("/update_job/filter-ok",          &tc_filter_ok,          &tc_update_job_check_result);
+        g_test_add_data_func ("/update_job/filter-fail",        &tc_filter_fail,        &tc_update_job_check_result);
+        g_test_add_data_func ("/update_job/filter-missing",     &tc_filter_missing,     &tc_update_job_check_result);
+
         result = g_test_run();
 
         g_main_loop_quit (loop);
@@ -124,8 +149,16 @@ start_updates (gpointer user_data)
         tc_update_job_new (&tc_http_308);
         tc_update_job_new (&tc_http_404);
         tc_update_job_new (&tc_http_410);
+        tc_update_job_new (&tc_script_ok);
+        tc_update_job_new (&tc_script_fail);
+        tc_update_job_new (&tc_script_missing);
+        tc_update_job_new (&tc_script_notallowed);
+        tc_update_job_new (&tc_filter_ok);
+        tc_update_job_new (&tc_filter_fail);
+        tc_update_job_new (&tc_filter_missing);
         update_job_queue_get_count (&nr, &max);
         g_assert (0 != nr);
+        g_assert (10 < max);
 
         return FALSE;
 }
@@ -143,7 +176,7 @@ main (int argc, char *argv[])
         network_init ();
 
         g_timeout_add_seconds (1, start_updates, NULL);
-        g_timeout_add_seconds (5, check_updates, NULL);
+        g_timeout_add_seconds (15, check_updates, NULL);
         loop = g_main_loop_new (NULL, FALSE);
         g_main_loop_run (loop);
 
