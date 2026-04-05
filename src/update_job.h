@@ -1,7 +1,7 @@
 /**
  * @file update_job.h  handling update processing (network/local/filter/XSLT)
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,7 @@ struct _UpdateJob {
  * update_job_new:
  * @owner: (nullable):		request owner (allows cancelling)
  * @request:			the request to execute
- * @callback:			result processing callback
+ * @callback: (scope forever)	result processing callback
  * @user_data: (nullable):	result processing callback parameters
  * @flags:			request/result processing flags
  * 

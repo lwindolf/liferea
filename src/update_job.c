@@ -484,7 +484,7 @@ update_job_get_state (UpdateJob *job)
 	return job->state;
 }
 
-gboolean
+static gboolean
 update_job_process_result_idle_cb (gpointer user_data)
 {
 	UpdateJob *job = (UpdateJob *)user_data;
