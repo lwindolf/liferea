@@ -146,7 +146,7 @@ on_update_monitor_destroyed_cb(GtkWidget *widget, void *data)
 void
 on_close_update_monitor_clicked (GtkButton *button, gpointer user_data)
 {
-	gtk_widget_destroy (umdialog);
+	gtk_window_destroy (GTK_WINDOW (umdialog));
 }
  
 void
@@ -194,8 +194,6 @@ on_menu_show_update_monitor(GSimpleAction *action, GVariant *parameter, gpointer
 		um2hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
 		ui_update_monitor_update (NULL);
 	 	(void)g_timeout_add_seconds (1, ui_update_monitor_update, NULL);
-
-		gtk_widget_show_all (umdialog);
 	}
 
 	gtk_window_present (GTK_WINDOW (umdialog));
