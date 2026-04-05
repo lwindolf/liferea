@@ -1,7 +1,7 @@
 /**
  * @file update_job_queue.h  handling async concurrent update processing
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 #ifndef _UPDATE_JOB_QUEUE_H
 #define _UPDATE_JOB_QUEUE_H
 
-#include "update.h"
 #include "update_job.h"
 
 /**
@@ -33,6 +32,14 @@
  * Queues the given job. The job might be delayed if other requests are pending.
  */
 void update_job_queue_add (gpointer job, updateFlags flags);
+
+/**
+ * update_job_queue_add:
+ * @job:	the job to finish
+  * 
+ * Queues the given job for result processing. The job might be delayed if other requests are pending.
+ */
+void update_job_queue_finish (gpointer job);
 
 /**
  * update_job_cancel_by_owner: (skip)

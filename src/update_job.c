@@ -1,7 +1,7 @@
 /**
  * @file update_job.c  handling update processing (network/local/filter/XSLT)
  *
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -403,7 +403,7 @@ static void update_job_init (UpdateJob *self) {
 	/* Add any instance initialization code here */
 }
 
-// dequeue job and execute it according to its job type (download, command, local file)
+// execute according to its job type (download, command, local file)
 void
 update_job_execute (UpdateJob *job)
 {
@@ -411,6 +411,12 @@ update_job_execute (UpdateJob *job)
 	   methods which then do anything they want with the job and
 	   pass the processed job to update_job_finished()
 	   for result dequeuing */
+
+	/* if job was cancelled... */
+	if (job->callback == NULL) {
+		update_job_finished (job);
+		return;
+	}
 
 	/* everything starting with '|' is a local command */
 	if (*(job->request->source) == '|') {
@@ -480,12 +486,10 @@ update_job_get_state (UpdateJob *job)
 }
 
 static gboolean
-update_process_result_idle_cb (gpointer user_data)
+update_job_process_result_idle_cb (gpointer user_data)
 {
 	UpdateJob *job = (UpdateJob *)user_data;
-
-	job->state = JOB_STATE_FINISHED;
-        
+	  
 	if (job->callback)
 		(job->callback) (job->result, job->user_data, job->flags);
 
@@ -494,17 +498,11 @@ update_process_result_idle_cb (gpointer user_data)
 	return FALSE;
 }
 
-static void
-update_apply_filter_async(GTask *task, gpointer src, gpointer tdata, GCancellable *ccan)
+void
+update_job_process_result (gpointer user_data)
 {
-    update_apply_filter (UPDATE_JOB (tdata));
-    g_task_return_int (task, 0);
-}
-
-static void
-update_apply_filter_finish(GObject *src, GAsyncResult *result, gpointer user_data)
-{
-    g_idle_add (update_process_result_idle_cb, user_data);
+	// the job->callback has to be run in the main loop as it does DB transaction locking
+	g_idle_add (update_job_process_result_idle_cb, user_data);
 }
 
 void
@@ -519,12 +517,10 @@ update_job_finished (UpdateJob *job)
 
 	/* Finally execute the postfilter */
 	if (job->result->data && job->request->filtercmd) {
-                GTask *task = g_task_new(NULL, NULL, update_apply_filter_finish, job);
-                g_task_set_task_data(task, job, NULL);
-                g_task_run_in_thread(task, update_apply_filter_async);
-                g_object_unref(task);
-                return;
+		job->state = JOB_STATE_FILTERING;
+                update_apply_filter (job);
         }
 
-	g_idle_add (update_process_result_idle_cb, job);
+	job->state = JOB_STATE_FINISHED;
+	update_job_queue_finish (job);
 }
