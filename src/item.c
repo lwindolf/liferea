@@ -54,7 +54,7 @@ liferea_item_finalize (GObject *object)
 
 	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free (item->metadata);
-
+	
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -198,16 +198,11 @@ item_get_teaser (LifereaItem *item)
 		// Truncate hard at pos 200 and search backward for a space
 		tmpDesc[200] = 0;
 		gchar *last_space = g_strrstr (tmpDesc, " ");
-		if (last_space) {
+		if (last_space)
 			*last_space = 0;
-			teaser = tmpDesc;
-		}
-	} else {
-		teaser = tmpDesc;
 	}
 
-	if (teaser)
-		teaser = g_strstrip (g_markup_escape_text (teaser, -1));
+	teaser = g_strstrip (g_markup_escape_text (tmpDesc, -1));
 
 	g_free (input);
 	g_free (tmpDesc);
