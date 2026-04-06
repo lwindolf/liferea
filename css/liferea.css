@@ -246,10 +246,20 @@ img.gravatar {
 	display:none;
 }
 
-.author, .categories, .source {
-        padding:0;
-	margin-left:0;
-        margin-right:12px;
+.meta {
+  padding:0;
+}
+.meta + .meta::before {
+  content: "---";
+}
+
+.category {
+  display: inline-block;
+  border: 1px solid var(--text-color-light);
+  border-radius: 0.35rem;
+  padding-left:0.2rem;
+  padding-right: 0.2rem;
+  margin-bottom: 0.2rem;
 }
 
 .date {
