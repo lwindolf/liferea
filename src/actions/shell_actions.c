@@ -39,7 +39,6 @@
 #include "node_source.h"
 #include "node_providers/newsbin.h"
 #include "node_providers/vfolder.h"
-#include "plugins/plugins_engine.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
@@ -143,12 +142,6 @@ static void
 on_searchbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	simple_search_dialog_open ();
-}
-
-static void
-on_manage_plugins_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	liferea_plugins_manage_dialog (GTK_WINDOW (liferea_shell_get_window ()));
 }
 
 static void
@@ -292,7 +285,6 @@ static const GActionEntry gaction_entries[] = {
 	{"zoom-out", on_zoomout_activate, NULL, NULL, NULL},
 	{"zoom-reset", on_zoomreset_activate, NULL, NULL, NULL},
 	{"show-update-monitor", on_menu_show_update_monitor, NULL, NULL, NULL},
-	{"manage-plugins", on_manage_plugins_clicked, NULL, NULL, NULL},
 	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
 	{"discover-feeds", on_discover_feeds_activate, NULL, NULL, NULL},

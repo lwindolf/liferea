@@ -70,6 +70,20 @@ gboolean liferea_plugin_is_active (GType type);
  */
 void liferea_plugins_manage_dialog (GtkWindow *parent);
 
+/**
+ * liferea_plugins_engine_get_all_plugins: (skip)
+ *
+ * Returns: (transfer none): the extension set containing all plugins
+ */
+PeasExtensionSet * liferea_plugins_engine_get_all_plugins (void);
+
+/**
+ * liferea_plugins_engine_enable_plugin: (skip)
+ * @info:	the plugin info
+ * @enabled:	TRUE to enable the plugin
+ */
+void liferea_plugins_engine_enable_plugin (PeasPluginInfo *info, gboolean enabled);
+
 G_END_DECLS
 
 #endif

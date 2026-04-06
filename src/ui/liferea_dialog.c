@@ -1,7 +1,7 @@
 /**
- * @file ui_dialog.c UI dialog handling
+ * @file liferea_dialog.c UI dialog handling
  *
- * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,32 +24,27 @@
 
 #include "ui/liferea_shell.h"
 
-#define LIFEREA_DIALOG_GET_PRIVATE liferea_dialog_get_instance_private
-
-struct LifereaDialogPrivate {
+typedef struct {
 	GtkBuilder *xml;
 
 	GtkWidget	*dialog;
+} LifereaDialogPrivate;
+
+struct _LifereaDialog {
+	GObject parent_instance;
 };
 
-static GObjectClass *parent_class = NULL;
-
-G_DEFINE_TYPE_WITH_CODE (LifereaDialog, liferea_dialog, G_TYPE_OBJECT, G_ADD_PRIVATE (LifereaDialog));
+G_DEFINE_TYPE_WITH_PRIVATE (LifereaDialog, liferea_dialog, G_TYPE_OBJECT)
 
 static void
 liferea_dialog_finalize (GObject *object)
 {
-	LifereaDialog *ls = LIFEREA_DIALOG (object);
+	LifereaDialog *ld = LIFEREA_DIALOG (object);
+	LifereaDialogPrivate *priv = liferea_dialog_get_instance_private (ld);
 
-	g_object_unref (ls->priv->xml);
+	g_object_unref (priv->xml);
 
-	G_OBJECT_CLASS (parent_class)->finalize (object);
-}
-
-static void
-liferea_dialog_destroy_cb (GtkWidget *widget, LifereaDialog *ld)
-{
-	g_object_unref (ld);
+	G_OBJECT_CLASS (liferea_dialog_parent_class)->finalize (object);
 }
 
 static void
@@ -57,15 +52,12 @@ liferea_dialog_class_init (LifereaDialogClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-	parent_class = g_type_class_peek_parent (klass);
-
 	object_class->finalize = liferea_dialog_finalize;
 }
 
 static void
 liferea_dialog_init (LifereaDialog *ld)
 {
-	ld->priv = LIFEREA_DIALOG_GET_PRIVATE (ld);
 }
 
 GtkWidget *
@@ -78,14 +70,14 @@ liferea_dialog_lookup (GtkWidget *widget, const gchar *name)
 
 	ld = LIFEREA_DIALOG (g_object_get_data (G_OBJECT (widget), "LifereaDialog"));
 
-	if (!IS_LIFEREA_DIALOG (ld)) {
+	if (!LIFEREA_IS_DIALOG (ld)) {
 		g_warning ("Fatal: liferea_dialog_lookup() called with something that is not a Liferea dialog!");
 		return NULL;
 	}
 
-	if (ld->priv->xml)
-		return GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
-
+	LifereaDialogPrivate *priv = liferea_dialog_get_instance_private (ld);
+	if (priv->xml)
+		return GTK_WIDGET (gtk_builder_get_object (priv->xml, name));
 	return NULL;
 }
 
@@ -97,17 +89,31 @@ liferea_dialog_new (const gchar *name)
 	g_autofree gchar *path = g_strdup_printf ("/org/gnome/liferea/ui/%s.ui", name);
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
-	ld->priv->xml = gtk_builder_new_from_resource (path);
-	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
+	LifereaDialogPrivate *priv = liferea_dialog_get_instance_private (ld);
+	priv->xml = gtk_builder_new ();
 
-	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window ()));
-	g_return_val_if_fail (ld->priv->dialog != NULL, NULL);
+	if (!gtk_builder_add_from_resource (priv->xml, path, NULL)) {
+		g_warning ("Could not load dialog UI file '%s'", path);
+		g_object_unref (ld);
+		return NULL;
+	}
 
-	g_object_set_data (G_OBJECT (ld->priv->dialog), "LifereaDialog", ld);
+	priv->dialog = GTK_WIDGET (gtk_builder_get_object (priv->xml, name));
+	if (!priv->dialog) {
+		g_warning ("Dialog '%s' not found in UI file", name);
+		g_object_unref (ld);
+		return NULL;
+	}
 
-	g_signal_connect_object (ld->priv->dialog, "destroy", G_CALLBACK (liferea_dialog_destroy_cb), ld, 0);
+	gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), GTK_WINDOW (liferea_shell_get_window ()));
+	g_return_val_if_fail (priv->dialog != NULL, NULL);
 
-	return ld->priv->dialog;
+	g_object_set_data (G_OBJECT (priv->dialog), "LifereaDialog", ld);
+
+	g_signal_connect_swapped (priv->dialog, "destroy", 
+							  G_CALLBACK (g_object_unref), ld);
+
+	return priv->dialog;
 }
 
 const gchar *

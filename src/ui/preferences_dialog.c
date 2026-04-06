@@ -26,11 +26,15 @@
 #  include <config.h>
 #endif
 
+#include <libpeas.h>
+
 #include "common.h"
 #include "conf.h"
 #include "favicon.h"
 #include "feedlist.h"
 #include "node_providers/folder.h"
+#include "plugins/liferea_shell_activatable.h"
+#include "plugins/plugins_engine.h"
 #include "itemlist.h"
 #include "social.h"
 #include "ui/item_list_view.h"
@@ -237,6 +241,19 @@ preferences_dialog_setup_drop_down (PreferencesDialog *pd, const gchar *widget_n
 	g_signal_connect (G_OBJECT (dropdown), "notify::selected", G_CALLBACK (on_drop_down_changed), pd);
 }
 
+static void
+on_plugin_switch_toggled (GtkSwitch *button, GParamSpec *pspec, gpointer userdata)
+{
+	PeasPluginInfo *info = (PeasPluginInfo *)userdata;
+	liferea_plugins_engine_enable_plugin (info, gtk_switch_get_active (button));
+}
+
+static void
+on_plugin_configure_clicked (GtkButton *button, gpointer userdata)
+{
+	liferea_activatable_create_configure_widget (LIFEREA_ACTIVATABLE (userdata));
+}
+
 void
 preferences_dialog_init (PreferencesDialog *pd)
 {
@@ -339,6 +356,70 @@ preferences_dialog_init (PreferencesDialog *pd)
 	conf_bind (ENABLE_ITP,   liferea_dialog_lookup (pd->dialog, "itpbtn"), "active", G_SETTINGS_BIND_DEFAULT);
 	conf_bind (DO_NOT_TRACK, liferea_dialog_lookup (pd->dialog, "donottrackbtn"), "active", G_SETTINGS_BIND_DEFAULT);
 	conf_bind (DO_NOT_SELL,  liferea_dialog_lookup (pd->dialog, "donotsellbtn"), "active", G_SETTINGS_BIND_DEFAULT);
+
+	/* ================= panel 7 "Plugins" ======================== */
+
+	GListModel *plugin_infos = G_LIST_MODEL (peas_engine_get_default ());
+	GtkWidget *list_box = liferea_dialog_lookup (pd->dialog, "plugins_listbox");
+	PeasExtensionSet *all_plugins = liferea_plugins_engine_get_all_plugins ();
+
+	for (guint i = 0; i < g_list_model_get_n_items (plugin_infos); i++) {
+		g_autoptr(PeasPluginInfo) info = PEAS_PLUGIN_INFO (g_list_model_get_item (plugin_infos, i));
+		const gchar *plugin_name = peas_plugin_info_get_name (info);
+		const gchar *plugin_desc = peas_plugin_info_get_description (info);
+		gboolean is_active = peas_plugin_info_is_loaded (info);
+
+		GObject *plugin = peas_extension_set_get_extension (all_plugins, info);
+		gboolean has_configure = LIFEREA_IS_ACTIVATABLE (plugin) && (LIFEREA_ACTIVATABLE_GET_IFACE (plugin)->create_configure_widget != NULL);
+
+		GtkWidget *row = gtk_list_box_row_new ();
+		GtkWidget *box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 10);
+		gtk_widget_set_margin_start (box, 6);
+		gtk_widget_set_margin_end (box, 6);
+		gtk_widget_set_margin_top (box, 6);
+		gtk_widget_set_margin_bottom (box, 6);
+
+		GtkWidget *active_checkbox = gtk_switch_new ();
+		gtk_switch_set_active (GTK_SWITCH (active_checkbox), is_active);
+		gtk_widget_set_tooltip_text (active_checkbox, _("Enable or disable this plugin"));
+		gtk_widget_set_valign (active_checkbox, GTK_ALIGN_CENTER);
+
+		GtkWidget *configure_button = NULL;
+		if (has_configure) {
+			configure_button = gtk_button_new_from_icon_name ("emblem-system-symbolic");
+			gtk_widget_set_tooltip_text (configure_button, _("Configure this plugin"));
+			gtk_widget_set_valign (configure_button, GTK_ALIGN_CENTER);
+			gtk_widget_set_sensitive (configure_button, is_active);
+		}
+
+		GtkWidget *text_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 5);
+		gtk_widget_set_hexpand (text_box, TRUE);
+
+		GtkWidget *label_name = gtk_label_new (NULL);
+		g_autofree gchar *markup = g_markup_printf_escaped ("<b>%s</b>", plugin_name);
+		gtk_label_set_markup (GTK_LABEL (label_name), markup);
+		gtk_label_set_xalign (GTK_LABEL (label_name), 0.0);
+
+		GtkWidget *label_desc = gtk_label_new (plugin_desc ? plugin_desc : "");
+		gtk_label_set_xalign (GTK_LABEL (label_desc), 0.0);
+		gtk_label_set_wrap (GTK_LABEL (label_desc), TRUE);
+		gtk_label_set_max_width_chars (GTK_LABEL (label_desc), 50);
+
+		gtk_box_append (GTK_BOX (text_box), label_name);
+		gtk_box_append (GTK_BOX (text_box), label_desc);
+		gtk_box_append (GTK_BOX (box), text_box);
+		if (configure_button)
+			gtk_box_append (GTK_BOX (box), configure_button);
+		gtk_box_append (GTK_BOX (box), active_checkbox);
+
+		gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), box);
+		gtk_list_box_append (GTK_LIST_BOX (list_box), row);
+
+		g_signal_connect (active_checkbox, "notify::active", G_CALLBACK (on_plugin_switch_toggled), info);
+		g_signal_connect (configure_button, "clicked", G_CALLBACK (on_plugin_configure_clicked), plugin);
+
+		g_object_set_data_full (G_OBJECT (row), "plugin-info", g_object_ref (info), g_object_unref);
+	}
 
 	g_signal_connect_swapped (G_OBJECT (pd->dialog), "response", G_CALLBACK (gtk_window_close), pd->dialog);
 

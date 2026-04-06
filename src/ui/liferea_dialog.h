@@ -1,7 +1,7 @@
 /**
  * @file ui_dialog.h UI dialog handling
  *
- * Copyright (C) 2007-2016  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _UI_DIALOG_H
-#define _UI_DIALOG_H
+#ifndef _LIFEREA_DIALOG_H
+#define _LIFEREA_DIALOG_H
 
 #include <gtk/gtk.h>
 #include <glib-object.h>
@@ -27,30 +27,8 @@
 
 G_BEGIN_DECLS
 
-#define LIFEREA_DIALOG_TYPE		(liferea_dialog_get_type ())
-#define LIFEREA_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_DIALOG_TYPE, LifereaDialog))
-#define LIFEREA_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), LIFEREA_DIALOG_TYPE, LifereaDialogClass))
-#define IS_LIFEREA_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_DIALOG_TYPE))
-#define IS_LIFEREA_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_DIALOG_TYPE))
-
-typedef struct LifereaDialog		LifereaDialog;
-typedef struct LifereaDialogClass	LifereaDialogClass;
-typedef struct LifereaDialogPrivate	LifereaDialogPrivate;
-
-struct LifereaDialog
-{
-	GObject		parent;
-
-	/*< private >*/
-	LifereaDialogPrivate	*priv;
-};
-
-struct LifereaDialogClass
-{
-	GObjectClass parent_class;
-};
-
-GType liferea_dialog_get_type	(void);
+#define LIFEREA_DIALOG_TYPE (liferea_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (LifereaDialog, liferea_dialog, LIFEREA, DIALOG, GObject)
 
 /**
  * liferea_dialog_new:

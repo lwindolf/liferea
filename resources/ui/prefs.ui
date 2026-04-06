@@ -723,6 +723,52 @@
                 </property>
               </object>
             </child>
+            <child>
+              <object class="GtkNotebookPage">
+                <property name="child">
+                  <object class="GtkGrid" id="pluginsPage">
+                    <property name="column-spacing">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="orientation">vertical</property>
+                    <property name="row-spacing">6</property>
+                    <child>
+                      <object class="GtkBox" id="vbox1">
+                        <property name="can-focus">0</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">12</property>
+                        <child>
+                          <object class="GtkBox">
+                            <child>
+                              <object class="GtkScrolledWindow">
+                                <child>
+                                  <object class="GtkListBox" id="plugins_listbox">
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <layout>
+                          <property name="column">0</property>
+                          <property name="row">0</property>
+                        </layout>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <property name="position">6</property>
+                <property name="tab">
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Plugins</property>
+                  </object>
+                </property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
