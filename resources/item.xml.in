@@ -29,18 +29,31 @@
                                                 {{/if}}
                                         </div>
                                 {{/if}}
-                                {{#if author }}
-                                        <div><_span>Author</_span>: {{{author}}}</div>
-                                {{/if}}
-                                {{#if creator }}
-                                        <div><_span>Creator</_span>: {{{creator}}}</div>
-                                {{/if}}
-                                {{#if sharedby }}
-                                        <div><_span>Shared By</_span>: {{{sharedby}}}</div>
-                                {{/if}}
-                                {{#if via }}
-                                        <div><_span>Via</_span>: <a href="{{via}}">{{via}}</a></div>
-                                {{/if}}
+
+                                <div class='metaHeader'>
+                                        {{#if author }}
+                                                <span class='meta'><_span>Author</_span>: {{{author}}}</span>
+                                        {{else}}
+                                                {{#if creator }}
+                                                        <span class='meta'><_span>Creator</_span>: {{{creator}}}</span>
+                                                {{/if}}
+                                        {{/if}}
+
+                                        {{#if sharedby }}
+                                                <span class='meta'><_span>Shared By</_span>: {{{sharedby}}}</span>
+                                        {{/if}}
+                                        {{#if via }}
+                                                <span class='meta'><_span>Via</_span>: <a href="{{via}}">{{via}}</a></span>
+                                        {{/if}}
+                                        {{#if categories}}
+                                                <span class='meta categories'>
+                                                        <_span>Filed under:</_span>
+                                                        {{#each categories}}
+                                                                <span class="category">{{.}}</span>
+                                                        {{/each}}
+                                                </span>
+                                        {{/if}}
+                                </div>
                         </header>			
 
                         <div id="content" class="content">
@@ -51,8 +64,7 @@
                                         <div id='enclosureAudio'>
                                                 <audio class="enclosure" controls="controls" preload="none" src="{{audios.[0].url}}"></audio>
                                                 {{#if audios.[1]}}
-             
-make[3]: Leaving directory '/home/lars/git/liferea-1.16/src'                                   <select>
+                                                <select>
                                                         {{#each audios}}
                                                         <option value="{{this.url}}">{{this.url}}</option>
                                                         {{/each}}
