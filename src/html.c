@@ -2,7 +2,7 @@
  * @file html.c  HTML parsing
  *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -271,6 +271,22 @@ html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 	xmlFreeDoc (doc);
 
 	return valid_links;
+}
+
+gchar *
+html_auto_discover_blogroll (const gchar * data, const gchar * defaultBaseUri)
+{
+	// Use simple regex to match <link rel="blogroll" href="...">
+	g_autoptr(GRegex) regex = g_regex_new ("<link[^>]+rel=['\"]blogroll['\"][^>]+href=['\"]([^\"']+)['\"]", 0, 0, NULL);
+	GMatchInfo *match_info;
+
+	if (g_regex_match(regex, data, 0, &match_info)) {
+		g_autofree gchar *url = g_match_info_fetch (match_info, 1);
+		gchar *full_url = (gchar *)common_build_url (url, defaultBaseUri);
+		return full_url;
+	}
+
+	return NULL;
 }
 
 GSList *

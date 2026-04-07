@@ -1,7 +1,7 @@
 /**
- * @file subscription.c  Downloading suitable subscription icons
+ * @file subscription_icon.c  Downloading suitable subscription icons and find blogrolls
  *
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 
 typedef struct iconDownloadCtxt {
 	gchar		        *id;		/**< icon cache id (=node id) */
+	gchar			*blogroll;	/**< blogroll link if found */
 	GSList			*urls;		/**< ordered list of URLs to try */
 	GSList			*doneUrls;	/**< list of URLs we did already try, used for lookup to avoid loops */
 	updateOptionsPtr	options;	/**< download options */
@@ -53,11 +54,33 @@ subscription_icon_download_ctxt_free (iconDownloadCtxtPtr ctxt)
 		return;
 
 	g_free (ctxt->id);
+	g_free (ctxt->blogroll);
 
 	g_slist_free_full (ctxt->urls, g_free);
 	g_slist_free_full (ctxt->doneUrls, g_free);
 
 	update_options_free (ctxt->options);
+}
+
+static void
+subscription_icon_download_end (iconDownloadCtxtPtr ctxt)
+{
+	const gchar *blogroll = ctxt->blogroll;
+
+	Node *node = node_from_id (ctxt->id);
+	if (!node)
+		return;
+
+	if (ctxt->blogroll)
+		debug (DEBUG_UPDATE, "Discovered blogroll: %s", blogroll);
+
+	// Even if we do not have a new blogroll, we should still update the old one
+	if (!blogroll)
+		blogroll = metadata_list_get (node->subscription->metadata, "blogroll");
+	if (blogroll)
+		subscription_set_blogroll (node->subscription, blogroll);
+
+	subscription_icon_download_ctxt_free (ctxt);
 }
 
 static void subscription_icon_download_next (iconDownloadCtxtPtr ctxt);
@@ -94,7 +117,7 @@ subscription_icon_download_data_cb (const UpdateResult * const result, gpointer 
 		subscription_icon_download_next (ctxt);
 	} else {
 		subscription_icon_downloaded (ctxt->id);
-		subscription_icon_download_ctxt_free (ctxt);
+		subscription_icon_download_end (ctxt);
 	}
 }
 
@@ -105,6 +128,10 @@ subscription_icon_download_html_cb (const UpdateResult * const result, gpointer 
 	gboolean success = FALSE;
 
 	if (result->size > 0 && result->data) {
+		/* Always check for a blogroll */
+		if (!ctxt->blogroll)
+			ctxt->blogroll = html_auto_discover_blogroll (result->data, result->source);
+
 		GSList *links = html_discover_favicon (result->data, result->source);
 		if (links) {
 			/* We have a definitive set of favicons now as reported
@@ -156,7 +183,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 
 	if (g_slist_length (ctxt->doneUrls) > ICON_DOWNLOAD_MAX_URLS) {
 		debug (DEBUG_UPDATE, "Stopping icon '%s' discovery after trying %d URLs.", ctxt->id, ICON_DOWNLOAD_MAX_URLS);
-		subscription_icon_download_ctxt_free (ctxt);
+		subscription_icon_download_end (ctxt);
 		return;
 	}
 
@@ -176,7 +203,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 		update_job_new (node_from_id (ctxt->id), request, subscription_icon_handle_response, ctxt, UPDATE_REQUEST_PRIORITY_HIGH | UPDATE_REQUEST_NO_FEED);
 	} else {
 		debug (DEBUG_UPDATE, "Icon '%s' discovery/download failed!", ctxt->id);
-		subscription_icon_download_ctxt_free (ctxt);
+		subscription_icon_download_end (ctxt);
 	}
 }
 

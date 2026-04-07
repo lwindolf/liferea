@@ -135,7 +135,7 @@ void feedlist_add_subscription (subscriptionPtr subscription);
  * feedlist_add_subscription_by_url:
  * @url:		the subscription URL to add
  *
- * Adds a new subscription to the feed list. Does not check for duplicates.
+ * Adds a new subscription to the feed list. Does check for duplicates.
  * Is interactive.
  */
 void feedlist_add_subscription_by_url (const gchar *url);

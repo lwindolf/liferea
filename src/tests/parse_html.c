@@ -123,6 +123,41 @@ gchar *tc_xml_rce[] = {
 	NULL
 };
 
+gchar *tc_blogroll[] = {
+	"<html><head><link rel=\"blogroll\" href=\"http://example.com/blogroll.opml\"></head>\n</html>",
+	"http://example.com",
+	"http://example.com/blogroll.opml",
+	NULL
+};
+
+gchar *tc_blogroll_relative[] = {
+	"<html><head><link rel=\"blogroll\" href=\"/blogroll.opml\"></head>\n</html>",
+	"http://example.com",
+	"http://example.com/blogroll.opml",
+	NULL
+};
+
+gchar *tc_blogroll_with_type[] = {
+	"<html><head><link rel=\"blogroll\" type=\"application/opml+xml\" href=\"http://example.com/blogroll.opml\"></head>\n</html>",
+	"http://example.com",
+	"http://example.com/blogroll.opml",
+	NULL
+};
+
+gchar *tc_blogroll_with_type2[] = {
+	"  <link rel=\"blogroll\" type=\"text/xml\" href=\"/.well-known/recommendations.opml\">",
+	"http://example.com",
+	"http://example.com/.well-known/recommendations.opml",
+	NULL
+};
+
+gchar *tc_blogroll_none[] = {
+	"<html><head><title>HEllo</title></head></html>",
+	"http://example.com",
+	NULL,
+	NULL
+};
+
 static void
 tc_auto_discover_link (gconstpointer user_data)
 {
@@ -145,6 +180,17 @@ tc_auto_discover_link (gconstpointer user_data)
 	g_slist_free_full (list, g_free);
 }
 
+static void
+tc_auto_discover_blogroll (gconstpointer user_data)
+{
+	gchar **tc = (gchar **)user_data;
+	g_autofree gchar *tmp, *result;
+
+	tmp = g_strdup (tc[0]);
+	result = html_auto_discover_blogroll (tmp, tc[1]);
+	g_assert_cmpstr (tc[2], ==, result);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -153,6 +199,7 @@ main (int argc, char *argv[])
 	if (argv[1] && g_str_equal (argv[1], "--debug"))
 		debug_set_flags (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
 
+	// feed discovery
 	g_test_add_data_func ("/html/auto_discover_link_xml", &tc_xml, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_base_url", &tc_xml_base_url, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_rss", &tc_rss, &tc_auto_discover_link);
@@ -165,6 +212,13 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/html/auto_discover_link_xml_atom2", &tc_xml_atom2, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_atom3", &tc_xml_atom3, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_rce", &tc_xml_rce, &tc_auto_discover_link);
+
+	// blogroll discovery
+	g_test_add_data_func ("/html/auto_discover_blogroll", &tc_blogroll, &tc_auto_discover_blogroll);
+	g_test_add_data_func ("/html/auto_discover_blogroll_relative", &tc_blogroll_relative, &tc_auto_discover_blogroll);
+	g_test_add_data_func ("/html/auto_discover_blogroll_with_type", &tc_blogroll_with_type, &tc_auto_discover_blogroll);
+	g_test_add_data_func ("/html/auto_discover_blogroll_with_type2", &tc_blogroll_with_type2, &tc_auto_discover_blogroll);
+	g_test_add_data_func ("/html/auto_discover_blogroll_none", &tc_blogroll_none, &tc_auto_discover_blogroll);
 
 	return g_test_run();
 }

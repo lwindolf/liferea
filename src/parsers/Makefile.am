@@ -24,6 +24,7 @@ libliparsers_a_SOURCES = \
 	ns_itunes.c ns_itunes.h \
 	ns_media.c ns_media.h \
 	ns_slash.c ns_slash.h \
+	ns_source.c ns_source.h \
 	ns_syn.c ns_syn.h \
 	ns_trackback.c ns_trackback.h \
 	ns_wfw.c ns_wfw.h \

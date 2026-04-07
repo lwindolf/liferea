@@ -116,10 +116,58 @@
         		</div>
 		{{/if}}
 
+		{{#*inline "blogrollItem"}}
+			<li>
+				{{#if htmlUrl}}
+					<a href="{{htmlUrl}}">{{ title }}</a>
+				{{else}}
+					{{ title }}
+				{{/if}}
+				{{#if xmlUrl}}
+				{{#compare type '==' 'rss'}}
+					(<a href="{{xmlUrl}}">Feed</a>)
+				{{/compare}}
+				{{/if}}
+
+				<span class="meta categories">
+				{{#each categories}}
+					<span class="category">{{.}}</span>
+				{{/each}}
+				</span>
+
+				{{#if children}}
+					<ul>
+					{{#each children}}
+						{{> blogrollItem}}
+					{{/each}}
+					</ul>
+				{{/if}}
+			</li>
+		{{/inline}}
+
+
 		<div id="content" class="content">
                         {{#if description}}
 			        <div id="description">{{{description}}}</div>
                         {{/if}}
+
+			{{#if blogrollData}}
+				<h2>Blogroll</h2>
+
+				<p>
+					{{blogrollData.title}} (<a href="{{blogroll}}">OPML</a>)
+				</p>
+
+				<ul class="blogroll">
+				{{#each blogrollData.children}}
+					{{> blogrollItem }}
+				{{/each}}
+				</ul>
+
+				{{#if blogrollData.lastUpdated}}
+					Last updated: {{blogrollData.lastUpdated}}
+				{{/if}}
+			{{/if}}
 		</div>
 	</div>
         </script>

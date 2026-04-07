@@ -118,6 +118,10 @@ metadata_init (void)
 	metadata_type_register ("mediastarRatingmax", 	METADATA_TYPE_TEXT);
 	metadata_type_register ("mediaviews", 		METADATA_TYPE_TEXT);
 
+	/* for source */
+	metadata_type_register ("blogroll",		METADATA_TYPE_URL);
+	metadata_type_register ("blogrollData",		METADATA_TYPE_TEXT);
+
 	return;
 }
 

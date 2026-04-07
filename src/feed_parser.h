@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.h  parsing of different feed formats
  *
- * Copyright (C) 2008-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,9 @@
 /** Holds all information used on feed parsing time */
 typedef struct feedParserCtxt {
 	subscriptionPtr	subscription;		/**< the subscription the feed belongs to (optional) */
+	GSList		*origSubscriptionMetadata; /**< copy of the subscription metadata before parsing, used to reset on parsing errors */
 	GList		*items;			/**< the list of new items */
 	itemPtr		item;			/**< the item currently parsed (or NULL) */
-
-	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 
 	gchar		*title;			/**< resulting feed/channel title */
 

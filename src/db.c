@@ -1491,6 +1491,8 @@ db_subscription_metadata_update (subscriptionPtr subscription)
 void
 db_subscription_load (subscriptionPtr subscription)
 {
+	if (subscription->metadata)
+		metadata_list_free (subscription->metadata);
 	subscription->metadata = db_subscription_metadata_load (subscription->node->id);
 }
 

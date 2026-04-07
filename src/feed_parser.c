@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.c  parsing of different feed formats
  *
- * Copyright (C) 2008-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ feed_parser_ctxt_new (subscriptionPtr subscription, const gchar *data, gsize siz
 	ctxt->subscription = subscription;
 	ctxt->data = data;
 	ctxt->dataLength = size;
-	ctxt->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+	ctxt->origSubscriptionMetadata = metadata_list_copy (subscription->metadata);
 
 	return ctxt;
 }
@@ -102,7 +102,7 @@ feed_parser_ctxt_free (feedParserCtxtPtr ctxt)
 {
 	if (ctxt) {
 		/* Don't free the itemset! */
-		g_hash_table_destroy (ctxt->tmpdata);
+		metadata_list_free (ctxt->origSubscriptionMetadata);
 		g_free (ctxt->title);
 		g_free (ctxt);
 	}
@@ -117,6 +117,14 @@ feed_parser_ctxt_free (feedParserCtxtPtr ctxt)
 static gboolean
 feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 {
+	g_autofree gchar *blogroll = NULL;
+
+	blogroll = html_auto_discover_blogroll (ctxt->data, subscription_get_source (ctxt->subscription));
+	if (blogroll) {
+		debug (DEBUG_UPDATE, "Discovered blogroll: %s", blogroll);
+		metadata_list_set (&(ctxt->subscription->metadata), "blogroll", blogroll);
+	}
+
 	gchar	*source = NULL;
 	GSList	*links;
 
@@ -147,16 +155,10 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 static void
 feed_parser_ctxt_cleanup (feedParserCtxtPtr ctxt)
 {
-	/* free old temp. parsing data, don't free right after parsing because
-	   it can be used until the last feed request is finished */
-	g_hash_table_destroy (ctxt->tmpdata);
-	ctxt->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
-
-	/* we always drop old metadata */
-	// FIXME: this is bad, doesn't belong here at all
+	/* different parsing attempts might modify the subscription metadata
+	   so we reload it each time from DB */
 	metadata_list_free (ctxt->subscription->metadata);
-
-	ctxt->subscription->metadata = NULL;
+	ctxt->subscription->metadata = metadata_list_copy (ctxt->origSubscriptionMetadata);
 }
 
 /**
@@ -249,7 +251,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 		handlerIter = handlerIter->next;
 	}
 
-	/* 5.) None of the feed formats did work, chance is high that we are
+	/* 4.) None of the feed formats did work, chance is high that we are
 	       working on an HTML document. Let's look for feed links inside it! */
 	if (!success) {
 		ctxt->subscription->autoDiscoveryTries++;
@@ -259,7 +261,8 @@ feed_parse (feedParserCtxtPtr ctxt)
 			autoDiscovery = feed_parser_auto_discover (ctxt);
 		}
 	}
-	/* 6.) try all HTML parsers (these are all HTML based content extractors), note how those MUST
+
+	/* 5.) try all HTML parsers (these are all HTML based content extractors), note how those MUST
 	       be run after auto-discovery to not take precedence over not-yet discovered feed links */
 	handlerIter = feed_parsers_get_list ();
 	while (handlerIter) {
@@ -280,7 +283,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 	if (xmlDoc)
 		xmlFreeDoc (xmlDoc);
 
-	/* 7.) Update subscription error status */
+	/* 6.) Update subscription error status */
 	if (!success && !autoDiscovery) {
 		/* Fuzzy test for HTML document */
 		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||

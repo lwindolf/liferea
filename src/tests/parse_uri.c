@@ -58,6 +58,68 @@ gchar *tc_uri_sanitize5[] = {	// umlauts and quotes
 	NULL
 };
 
+// Base URI test cases
+//
+// 1. URL to make absolute
+// 2. base URI
+// 3. result
+
+gchar *tc_base_uri1[] = {
+	"https://example.com/a/b.html",
+	"https://example.com",
+	"https://example.com/a/b.html",
+	NULL
+};
+
+gchar *tc_base_uri2[] = {
+	"https://example.com/a/b.html",
+	"http://example.com",
+	"https://example.com/a/b.html",
+	NULL
+};
+
+gchar *tc_base_uri3[] = {
+	"https://example.com/a/b.html",
+	"htp://example.com",
+	"https://example.com/a/b.html",
+	NULL
+};
+
+gchar *tc_base_uri4[] = {
+	"/a/b.html",
+	"https://example.com",
+	"https://example.com/a/b.html",
+	NULL
+};
+
+gchar *tc_base_uri5[] = {
+	"a/b.html",
+	"https://example.com",
+	"https://example.com/a/b.html",
+	NULL
+};
+
+gchar *tc_base_uri6[] = {
+	"/b.html",
+	"https://example.com/a",
+	"https://example.com/b.html",
+	NULL
+};
+
+gchar *tc_base_uri7[] = {
+	"b.html",
+	"https://example.com/a",
+	"https://example.com/b.html",
+	NULL
+};
+
+gchar *tc_base_uri8[] = {
+	"/b.html",
+	"https://example.com/a/",
+	"https://example.com/b.html",
+	NULL
+};
+
 static void
 tc_uri_sanitize (gconstpointer user_data)
 {
@@ -66,6 +128,16 @@ tc_uri_sanitize (gconstpointer user_data)
 
 	sanitized = (gchar *)common_uri_sanitize ((xmlChar *)tc[0]);
 	g_assert_cmpstr (sanitized, ==, tc[1]);
+}
+
+static void
+tc_base_uri (gconstpointer user_data)
+{
+	gchar			**tc = (gchar **)user_data;
+	g_autofree gchar	*result = NULL;
+
+	result = (gchar *)common_build_url (tc[0], tc[1]);
+	g_assert_cmpstr (result, ==, tc[2]);
 }
 
 int
@@ -80,6 +152,15 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/uri/sanitize3",	&tc_uri_sanitize3,	&tc_uri_sanitize);
 	g_test_add_data_func ("/uri/sanitize4",	&tc_uri_sanitize4,	&tc_uri_sanitize);
 	g_test_add_data_func ("/uri/sanitize5",	&tc_uri_sanitize5,	&tc_uri_sanitize);
+
+	g_test_add_data_func ("/uri/base1",	&tc_base_uri1,	&tc_base_uri);
+	g_test_add_data_func ("/uri/base2",	&tc_base_uri2,	&tc_base_uri);
+	g_test_add_data_func ("/uri/base3",	&tc_base_uri3,	&tc_base_uri);
+	g_test_add_data_func ("/uri/base4",	&tc_base_uri4,	&tc_base_uri);
+	g_test_add_data_func ("/uri/base5",	&tc_base_uri5,	&tc_base_uri);
+	g_test_add_data_func ("/uri/base6",	&tc_base_uri6,	&tc_base_uri);
+	g_test_add_data_func ("/uri/base7",	&tc_base_uri7,	&tc_base_uri);
+	g_test_add_data_func ("/uri/base8",	&tc_base_uri8,	&tc_base_uri);
 
 	result = g_test_run();
 

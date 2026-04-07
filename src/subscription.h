@@ -195,6 +195,14 @@ void subscription_reset_update_counter (subscriptionPtr subscription, guint64 *n
 void subscription_update_favicon (subscriptionPtr subscription);
 
 /**
+ * Sets the blogroll URL for a given subscription.
+ *
+ * @param subscription	the subscription
+ * @param blogroll	the new blogroll URL (can be relative)
+ */
+void subscription_set_blogroll (subscriptionPtr subscription, const gchar *blogroll);
+
+/**
  * subscription_set_discontinued:
  * 
  * Change discontinued state of subscription.
