@@ -5,6 +5,11 @@ To be released
 	* Add a new user.js which is automatically installed to ~/.config/liferea/user.js
 	  that provides hooks for data and rendering manipulation.
 	  (Lars Windolf)
+	
+	* Add blogroll support. For feeds with <source:blogroll> element or homepages
+	  with <link rel="blogroll"> blogroll URLs are detected and the blogroll is downloaded
+	  and shown in the feed view.
+	  (Lars Windolf)
 
 	* Change "Discover Feeds" to open in external browser. Due to
 	  rss-finder using ESM and Webkit enforcing CORS for ESM and 
@@ -16,6 +21,9 @@ To be released
 	  (Lars Windolf)
 
 	* Fixes #1494: Better contrast in light mode, a bit less in dark mode
+	  (Lars Windolf)
+	
+	* Fixes a memory leak when loading subscription metadata
 	  (Lars Windolf)
 
 
