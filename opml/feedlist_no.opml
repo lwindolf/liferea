@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <opml version="1.0">
 <head>
-	<title>Liferea eksempelkanaler</title>
+	<title>Liferea eksempelkanaler 🇳🇴</title>
 </head>
 <body>
 	<outline text="Eksempelkanaler">
-		<outline text="Norge">
+		<outline text="Norge 🇳🇴">
 			<outline title="Nyheter" text="Nyheter" description="Nyheter" type="folder">
 				<outline text="Aftenposten" htmlUrl="https://www.aftenposten.no/" xmlUrl="https://www.aftenposten.no/rss/" />
 				<outline text="NRK Nyheter" htmlUrl="https://www.nrk.no/" xmlUrl="https://www.nrk.no/toppsaker.rss" />
