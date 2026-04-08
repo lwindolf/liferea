@@ -61,7 +61,7 @@ static LifereaPluginsEngine *plugins = NULL;
 static void
 liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 {
-	g_autofree gchar	*typelib_dir;
+	g_autofree gchar	*typelib_dir = NULL;
 	const gchar		**names;
 	gsize			length;
 	GError			*error = NULL;

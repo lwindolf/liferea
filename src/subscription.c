@@ -121,7 +121,7 @@ subscription_can_be_updated (subscriptionPtr subscription)
 	// can be the case for newsbins
 	if (!subscription_get_source (subscription))
 		return FALSE;
-	
+
 	return TRUE;
 }
 

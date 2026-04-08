@@ -35,22 +35,22 @@ typedef struct tc {
         gchar           *testString;    // expected string in body
         UpdateJob       *job;
 } *tcPtr;
-struct tc tc_url                = { .url = "https://github.com/", .testString = "github" };
-//struct tc tc_dns_fail           = { .url = "https://doesnotexist.local", .emptyBody = TRUE };   // FIXME: cannot be tested due to missing error callback causing memory leak
-struct tc tc_port_fail          = { .url = "http://localhost:6666", .emptyBody = TRUE };
-struct tc tc_proto_fail         = { .url = "htps://localhost", .emptyBody = TRUE };
-struct tc tc_local_file         = { .url = "file:///etc/hosts", .testString = "localhost" };
-struct tc tc_http_301           = { .url = "https://lzone.de/http/301", .httpStatus = 200 };     // We expect HTTP 200 because the networking code is supposed to do the redirect
-struct tc tc_http_308           = { .url = "https://lzone.de/http/308", .httpStatus = 200 };     // We expect HTTP 200 because the networking code is supposed to do the redirect
-struct tc tc_http_404           = { .url = "https://lzone.de/http/404", .httpStatus = 404 };
-struct tc tc_http_410           = { .url = "https://lzone.de/http/410", .httpStatus = 410 };
-struct tc tc_script_ok          = { .url = "|./test-feed-script.sh",    .httpStatus = 200, .testString = "TEST STRING" }; // Run an existing script
-struct tc tc_script_fail        = { .url = "|./test-feed-script-fail.sh",  .emptyBody = TRUE, .httpStatus = 500 };        // Run an existing script that fails
-struct tc tc_script_missing     = { .url = "|./test-missing-script.sh",    .emptyBody = TRUE, .httpStatus = 500 };        // Run a missing script
-struct tc tc_script_notallowed  = { .url = "|./test-notallowed-script.sh", .emptyBody = TRUE, .httpStatus = 403 };        // Run a script where it is not allowed
-struct tc tc_filter_ok          = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script.sh", .httpStatus = 200, .testString = "TEST STRING" }; // Run a filter that works
-struct tc tc_filter_fail        = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script-fail.sh", .emptyBody = TRUE, .filterErrors = TRUE };      // Run a filter that fails
-struct tc tc_filter_missing     = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script-missing.sh", .emptyBody = TRUE, .filterErrors = TRUE };   // Run a filter that is missing
+static struct tc tc_url                = { .url = "https://github.com/", .testString = "github" };
+//static struct tc tc_dns_fail           = { .url = "https://doesnotexist.local", .emptyBody = TRUE };   // FIXME: cannot be tested due to missing error callback causing memory leak
+static struct tc tc_port_fail          = { .url = "http://localhost:6666", .emptyBody = TRUE };
+static struct tc tc_proto_fail         = { .url = "htps://localhost", .emptyBody = TRUE };
+static struct tc tc_local_file         = { .url = "file:///etc/hosts", .testString = "localhost" };
+static struct tc tc_http_301           = { .url = "https://lzone.de/http/301", .httpStatus = 200 };     // We expect HTTP 200 because the networking code is supposed to do the redirect
+static struct tc tc_http_308           = { .url = "https://lzone.de/http/308", .httpStatus = 200 };     // We expect HTTP 200 because the networking code is supposed to do the redirect
+static struct tc tc_http_404           = { .url = "https://lzone.de/http/404", .httpStatus = 404 };
+static struct tc tc_http_410           = { .url = "https://lzone.de/http/410", .httpStatus = 410 };
+static struct tc tc_script_ok          = { .url = "|./test-feed-script.sh",    .httpStatus = 200, .testString = "TEST STRING" }; // Run an existing script
+static struct tc tc_script_fail        = { .url = "|./test-feed-script-fail.sh",  .emptyBody = TRUE, .httpStatus = 500 };        // Run an existing script that fails
+static struct tc tc_script_missing     = { .url = "|./test-missing-script.sh",    .emptyBody = TRUE, .httpStatus = 500 };        // Run a missing script
+static struct tc tc_script_notallowed  = { .url = "|./test-notallowed-script.sh", .emptyBody = TRUE, .httpStatus = 403 };        // Run a script where it is not allowed
+static struct tc tc_filter_ok          = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script.sh", .httpStatus = 200, .testString = "TEST STRING" }; // Run a filter that works
+static struct tc tc_filter_fail        = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script-fail.sh", .emptyBody = TRUE, .filterErrors = TRUE };      // Run a filter that fails
+static struct tc tc_filter_missing     = { .url = "https://lzone.de/", .filtercmd = "./test-feed-script-missing.sh", .emptyBody = TRUE, .filterErrors = TRUE };   // Run a filter that is missing
 // FIXME: XSL filter test case
 
 // result is global because we run async and exit the main loop upon test end

@@ -23,7 +23,6 @@
 #include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
-#include <webkit2/webkit2.h>
 
 #include "common.h"
 #include "conf.h"

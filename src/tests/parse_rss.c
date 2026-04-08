@@ -20,6 +20,7 @@
 
 #include <glib.h>
 #include <string.h>
+#include <libxml/xmlversion.h>
 
 #include "debug.h"
 #include "node_providers/feed.h"
@@ -41,7 +42,15 @@ gchar *tc_rss_feed1[] = {
 	"<rss version=\"2.0\"><channel><title>T</title><link>http://localhost</link><item><title>i1</title><link>http://localhost/item1.html</link><description>D</description></item><item><title>i2</title><link>https://localhost/item2.html</link></item></channel></rss>",
 	"true",
 	"2",
-	"{\"id\":0,\"title\":\"i1\",\"description\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><p>D</p></div>\",\"source\":\"http://localhost/item1.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
+	"{\"id\":0,\"title\":\"i1\",\"description\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">"
+#if LIBXML_VERSION < 21400
+	"<p>"
+#endif
+	"D"
+#if LIBXML_VERSION < 21400
+	"</p>"
+#endif
+	"</div>\",\"source\":\"http://localhost/item1.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
 	"{\"id\":0,\"title\":\"i2\",\"description\":null,\"source\":\"https://localhost/item2.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
 	NULL
 };

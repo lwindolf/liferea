@@ -155,8 +155,9 @@ search_tag_link_dirty (const gchar* data, const gchar *tagName, gchar** tagEnd)
 static gchar *
 search_links_dirty (const gchar* data, gint linkType)
 {
+	g_autofree gchar *copy = g_strdup (data);
+	gchar	*tmp = copy;
 	gchar	*ptr;
-	const gchar	*tmp = data;
 	gchar	*result = NULL;
 	gchar	*res;
 	gchar	*tstr;
@@ -178,19 +179,6 @@ search_links_dirty (const gchar* data, gint linkType)
 		if (res) {
 			result = res;
 			break;
-/*		deactivated as long as we support only subscribing
-		to the first found link (BTW this code crashes on
-		sites like Groklaw!)
-
-			gchar* t;
-			if(result == NULL)
-				result = res;
-			else {
-				t = g_strdup_printf("%s\n%s", result, res);
-				g_free(res);
-				g_free(result);
-				result = t;
-			}*/
 		}
 		tmp = endptr;
 	}

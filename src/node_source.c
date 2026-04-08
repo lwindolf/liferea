@@ -301,6 +301,8 @@ feed_list_node_source_type_dialog (void)
 	GtkTreeIter		treeiter;
 	nodeSourceTypePtr	type;
 
+	g_assert (!nodeSourceTypes);
+
 	/* set up the dialog */
 	dialog = liferea_dialog_new ("node_source");
 

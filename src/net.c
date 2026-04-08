@@ -267,7 +267,7 @@ network_process_request (const UpdateJob *job)
 
 	/* Set the If-Modified-Since: header */
 	if (job->request->updateState && update_state_get_lastmodified (job->request->updateState)) {
-		g_autofree gchar *datestr;
+		g_autofree gchar *datestr = NULL;
 		g_autoptr(GDateTime) date;
 
 		date = g_date_time_new_from_unix_utc (update_state_get_lastmodified (job->request->updateState));

@@ -54,6 +54,12 @@ struct tcXPath tc_xpath[] = {
 		"/html/head/link[@rel='alternate' and @type='application/atom+xml']/@href",
 		TRUE
 	},
+	{
+		"/parse_xml/xpath_find_atom_link",
+		"<?xml version=\"1.0\" encoding=\"utf-8\"?><feed xmlns=\"http://www.w3.org/2005/Atom\"><title>T</title><link rel=\"alternate\" href=\"http://localhost\"/><entry><title>i1</title><link href=\"http://localhost/item1.html\"/><summary>D</summary></entry></feed>",
+		"//link[@rel='alternate']/@href",
+		TRUE
+	},
 	NULL
 };
 

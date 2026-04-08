@@ -129,8 +129,6 @@ async function load_node(data, baseURL, direction) {
 		const blogrollData = metadata_get(node, "blogrollData");
 		const blogrollParsed = blogrollData ? parse_opml(blogrollData) : null;
 
-		console.log(document.getElementById('template').innerHTML)
-		console.log(templateFix(document.getElementById('template').innerHTML))
 		prepare(baseURL, node.title);
 		render("body", templateFix(document.getElementById('template').innerHTML), {
 			node,
@@ -262,7 +260,6 @@ async function load_item(data, baseURL, direction) {
 			document.querySelector('#enclosureAudio audio').src = e.target.options[e.target.selectedIndex].value;
 			document.querySelector('#enclosureAudio audio').play();
 		});
-
 
 		// Gopher monospace rendering and link expansion
 		if (item.source?.startsWith('gopher://')) {
