@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0"?>
 <opml version="1.0">
   <head>
-    <title>Liferea Default Feed List - Hebrew</title>
+    <title>Liferea Default Feed List - Hebrew 🇮🇱</title>
   </head>
   <body>
 	<outline text="ערוצים לדוגמה">
-    <outline title="ישראליים" text="ישראליים" description="ישראליים" type="folder">
+    <outline title="ישראליים 🇮🇱" text="ישראליים" description="ישראליים" type="folder">
       <outline title="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5D4;&#x5D9;&#x5D5;&#x5DD;" text="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5D4;&#x5D9;&#x5D5;&#x5DD;" description="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5D4;&#x5D9;&#x5D5;&#x5DD;" type="rss" xmlUrl="http://www.ynet.co.il/Integration/StoryRss2.xml" htmlUrl="http://www.ynet.co.il"/>
       <outline title="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" text="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" description="ynet - &#x5D7;&#x5D3;&#x5E9;&#x5D5;&#x5EA; &#x5E1;&#x5E4;&#x5D5;&#x5E8;&#x5D8;" type="rss" xmlUrl="http://www.ynet.co.il/Integration/StoryRss3.xml" htmlUrl="http://www.ynet.co.il"/>
       <outline title="ynet - &#x5DE;&#x5D7;&#x5E9;&#x5D1;&#x5D9;&#x5DD;" text="ynet - &#x5DE;&#x5D7;&#x5E9;&#x5D1;&#x5D9;&#x5DD;" description="ynet - &#x5DE;&#x5D7;&#x5E9;&#x5D1;&#x5D9;&#x5DD;" type="rss" xmlUrl="http://www.ynet.co.il/Integration/StoryRss544.xml" htmlUrl="http://www.ynet.co.il"/>
