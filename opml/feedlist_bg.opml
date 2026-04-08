@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <opml version="1.0">
   <head>
-    <title>Liferea Default Feed List - Bulgarian</title>
+    <title>Liferea Default Feed List - Bulgarian 🇧🇬</title>
   </head>
   <body>
-    <outline title="&#x411;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x441;&#x43A;&#x438;">
+    <outline title="&#x411;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x441;&#x43A;&#x438; 🇧🇬">
       <outline text="&#x41D;&#x435;&#x442;&#x418;&#x43D;&#x444;&#x43E; - &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" title="&#x41D;&#x435;&#x442;&#x418;&#x43D;&#x444;&#x43E; - &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" description="&#x41D;&#x435;&#x442;&#x418;&#x43D;&#x444;&#x43E; - &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" type="rss" htmlUrl="http://news.netinfo.bg" xmlUrl="http://news.netinfo.bg/ni_gennews.php?p=2&amp;c=10&amp;last=1" updateInterval="-1"/>
       <outline text="GNOME &#x43D;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x441;&#x43A;&#x438;!: Timeline" title="GNOME &#x43D;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x441;&#x43A;&#x438;!: Timeline" description="GNOME &#x43D;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x441;&#x43A;&#x438;!: Timeline" type="rss" htmlUrl="http://fsa-bg.org/project/gtp/timeline" xmlUrl="http://fsa-bg.org/project/gtp/timeline?daysback=90&amp;max=50&amp;wiki=on&amp;ticket=on&amp;changeset=on&amp;milestone=on&amp;format=rss" updateInterval="-1"/>
       <outline text="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" title="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" description="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" type="rss" htmlUrl="http://www.linux-bg.org" xmlUrl="http://linux-bg.org/linux-bg-news.rdf" updateInterval="-1"/>
