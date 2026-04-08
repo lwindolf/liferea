@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <opml version="1.0">
   <head>
-    <title>Liste des flux par défaut de Liferea</title>
+    <title>Liste des flux par défaut de Liferea 🇫🇷</title>
   </head>
   <body>
     <outline text="Exemples de flux">
-     <outline text="Français">
+     <outline text="Français 🇫🇷">
        <outline text="Standblog" htmlUrl="http://standblog.org/blog/" xmlUrl="http://standblog.org/dotclear/rss.php" />
        <outline text="Formats Ouverts" htmlUrl="http://formats-ouverts.org/" xmlUrl="http://formats-ouverts.org/feed/atom" />
        <outline text="Liberation.fr" htmlUrl="http://www.liberation.fr/" xmlUrl="http://www.liberation.fr/rss.php" />
