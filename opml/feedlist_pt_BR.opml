@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <opml version="1.0">
 <head>
-	<title>Liferea Lista de Fontes de Notícias</title>
+	<title>Liferea Lista de Fontes de Notícias 🇧🇷</title>
 </head>
 <body>
 	<outline text="Exemplos de Canais de Notícias">
-		<outline text="Notícias">
+		<outline text="Notícias 🇧🇷">
 			<outline title="Revista Veja" htmlUrl="https://veja.abril.com.br" xmlUrl="https://veja.abril.com.br/feed/" />
 			<outline title="G1" htmlUrl="https://g1.globo.com/" xmlUrl="https://g1.globo.com/rss/g1/" />
 			<outline title="Jornal da USP" htmlUrl="https://jornal.usp.br" xmlUrl="https://jornal.usp.br/feed/" />
