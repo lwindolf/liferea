@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <opml version="1.0">
   <head>
-    <title>Liferea Default Feed List</title>
+    <title>Liferea Default Feed List - Swedish 🇸🇪</title>
   </head>
   <body>
     <outline title="Exempelkanaler" text="Exempelkanaler" description="Exempelkanaler" type="folder">
-      <outline title="Nyheter" text="Nyheter" description="Nyheter" type="folder">
+      <outline title="Nyheter 🇸🇪" text="Nyheter" description="Nyheter" type="folder">
         <outline text="Aftonbladet Nyheter" xmlUrl="http://www.aftonbladet.se/rss/nyheter.xml" />
         <outline text="IDG.se - Senaste nytt" htmlUrl="http://www.idg.se" xmlUrl="http://www.idg.se/rss/nyheter" />
         <outline text="linuxportalen.se - Det nya navet f&#xF6;r linuxanv&#xE4;ndare i Sverige" htmlUrl="http://www.linuxportalen.se" xmlUrl="http://www.linuxportalen.se/node/feed" />
