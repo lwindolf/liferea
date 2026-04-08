@@ -29,7 +29,7 @@
 			</outline>
 			<!-- end of default block -->
 			
-			<outline text="National">
+			<outline text="National 🇸🇰">
 				<outline text="SME ONLINE" type="rss" htmlUrl="http://www.sme.sk/" xmlUrl="http://rss.sme.sk/rss/export/smeonline.xml"/>
 				<outline text="Pravda.sk - Správy" type="rss" htmlUrl="http://www.pravda.sk/" xmlUrl="http://servis.pravda.sk/rss.asp"/>
 				<outline text="HNonline.sk" type="rss" htmlUrl="http://HNonline.sk" xmlUrl="http://hnonline.sk/?p=k00000_rss"/>
