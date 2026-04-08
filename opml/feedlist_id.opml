@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <opml version="1.0">
 <head>
-	<title>Daftar Feed Default Liferea</title>	<!-- translate this for localized feed list -->
+	<title>Daftar Feed Default Liferea 🇮🇩</title>	<!-- translate this for localized feed list -->
 </head>
 <body>
 	<!-- lets keep this default English block in sync over all feed lists! -->
@@ -31,7 +31,7 @@
 	</outline>
 	<!-- end of default block -->
 
-    <outline text="Berita Indonesia">
+    <outline text="Berita Indonesia 🇮🇩">
       <outline text="Kabar Linux">
         <outline text="Kabar Seputar Linux dan Open Source" htmlUrl="https://kabarlinux.id/" xmlUrl="https://kabarlinux.id/feed/" />
       </outline>
