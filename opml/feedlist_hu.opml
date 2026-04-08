@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <opml version="1.0">
 <head>
-	<title>Liferea alapértelmezett hírforráslista</title>	<!-- translate this for localized feed list -->
+	<title>Liferea alapértelmezett hírforráslista 🇭🇺</title>	<!-- translate this for localized feed list -->
 </head>
 <body>
 	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="Példa hírforrások">		<!-- translate this for localized feed list -->
-		<outline text="Magyar hírek">
+		<outline text="Magyar hírek 🇭🇺">
 			<outline text="[origo]" htmlUrl="http://www.origo.hu/" xmlUrl="http://www.origo.hu/contentpartner/rss/hircentrum/origo.xml" />
 			<outline text="Index" htmlUrl="https://index.hu/" xmlUrl="https://index.hu/24ora/rss/" />
 			<outline text="HWSW" htmlUrl="https://www.hwsw.hu/" xmlUrl="https://www.hwsw.hu/xml/latest_news_rss.xml" />
