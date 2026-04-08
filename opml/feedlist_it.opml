@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <opml version="1.0">
 <head>
-	<title>Liferea Elenco notiziari predefiniti</title>
+	<title>Liferea Elenco notiziari predefiniti 🇮🇹</title>
 </head>
 <body>
         <outline text="Notiziari d'esempio">
-                <outline text="Notizie dall'Italia">
+                <outline text="Notizie dall'Italia 🇮🇹">
                         <outline text="Corriere.it" htmlUrl="https://www.corriere.it/" xmlUrl="https://www.corriere.it/rss/homepage.xml" />
                         <outline text="Lo spazio bianco" htmlUrl="https://www.lospaziobianco.it/" xmlUrl="https://www.lospaziobianco.it/feed/" />
                         <outline text="Onda Cinema" htmlUrl="https://www.ondacinema.it/" xmlUrl="https://www.ondacinema.it/feed" />
