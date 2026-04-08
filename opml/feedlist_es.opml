@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <opml version="1.0">
   <head>
-    <title>Liferea Fuentes por defecto</title>
+    <title>Liferea Fuentes por defecto 🇪🇸</title>
   </head>
   <body>
-     <outline text="Fuentes de ejemplo (español)">
+     <outline text="Fuentes de ejemplo (español) 🇪🇸">
       <outline text="OSS">
 	   <outline text="Alcance Libre" htmlUrl="https://www.alcancelibre.org/" xmlUrl="https://www.alcancelibre.org/noticias.atom" />
 	   <outline text="Genbeta" htmlUrl="https://www.genbeta.com/" xmlUrl="https://www.genbeta.com/index.rss" />
