@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <opml version="1.0">
   <head>
-    <title>Liferea Default Feed List - Dutch</title>
+    <title>Liferea Default Feed List - Dutch 🇳🇱</title>
   </head>
   <body>
 	<!-- lets keep this default English block in sync over all feed lists! -->
@@ -27,7 +27,7 @@
 	</outline>
 	<!-- end of default block -->
 
-    <outline text="Nederlandse feeds">
+    <outline text="Nederlandse feeds 🇳🇱">
       <outline text="Nieuws">
         <outline text="nu.nl | Het laatste nieuws lees je het eerst op NU.nl" htmlUrl="http://www.nu.nl/" xmlUrl="http://www.nu.nl/rss" />
         <outline text="Tweakers.net" htmlUrl="http://tweakers.net/" xmlUrl="http://tweakers.net/feeds/mixed.xml" />
