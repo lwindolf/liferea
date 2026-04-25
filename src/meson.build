@@ -80,6 +80,7 @@ liferea_sources = files(
   'parsers/ns_itunes.c',
   'parsers/ns_media.c',
   'parsers/ns_slash.c',
+  'parsers/ns_source.c',
   'parsers/ns_syn.c',
   'parsers/ns_trackback.c',
   'parsers/ns_wfw.c',

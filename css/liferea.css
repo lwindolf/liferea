@@ -262,6 +262,14 @@ img.gravatar {
   margin-bottom: 0.2rem;
 }
 
+.blogroll .categories {
+  display: block;
+  float: right;
+}
+.blogroll .category {
+  display: inline !important;
+}
+
 .date {
 	white-space:nowrap;
 	text-align:right;

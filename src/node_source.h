@@ -1,7 +1,7 @@
 /*
  * @file node_source.h  generic node source interface
  *
- * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include <glib.h>
 #include <gmodule.h>
 
+#include "json.h"
 #include "node.h"
 #include "node_provider.h"
 #include "subscription_type.h"
@@ -400,6 +401,15 @@ void node_source_item_set_flag (Node *node, itemPtr item, gboolean newState);
  * Converts all subscriptions to default source subscriptions.
  */
 void node_source_convert_to_local (Node *node);
+
+/**
+ * node_source_to_json: (skip)
+ * @node:	the source node
+ * @b:		the json builder
+ *
+ * Add source specific data to the json builder.
+ */
+void node_source_to_json (Node *node, JsonBuilder *b);
 
 /**
  * node_source_type_register: (skip)

@@ -54,7 +54,7 @@ liferea_item_finalize (GObject *object)
 
 	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free (item->metadata);
-	
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 

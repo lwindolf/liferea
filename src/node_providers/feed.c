@@ -31,7 +31,6 @@
 #include "feedlist.h"
 #include "html.h"
 #include "itemlist.h"
-#include "metadata.h"
 #include "node.h"
 #include "update.h"
 #include "xml.h"

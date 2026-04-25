@@ -39,6 +39,7 @@
 #include "ns_itunes.h"
 #include "ns_media.h"
 #include "ns_slash.h"
+#include "ns_source.h"
 #include "ns_syn.h"
 #include "ns_trackback.h"
 #include "ns_wfw.h"
@@ -886,6 +887,7 @@ atom10_init_feed_handler (void)
 		atom10_add_ns_handler (ns_media_get_handler ());
 		atom10_add_ns_handler (ns_trackback_get_handler ());
 		atom10_add_ns_handler (ns_georss_get_handler ());
+		atom10_add_ns_handler (ns_source_get_handler ());
 	}
 	/* prepare feed handler structure */
 	fhp->typeStr = "atom";

@@ -177,11 +177,9 @@ update_apply_filter (UpdateJob *job)
 	else
 		filterResult = update_exec_filter_cmd (job);
 
-	if (filterResult) {
-		g_free (job->result->data);
-		job->result->data = filterResult;
-		job->result->size = strlen(filterResult);
-	}
+	g_free (job->result->data);
+	job->result->data = filterResult;
+	job->result->size = filterResult ? strlen(filterResult) : 0;
 }
 
 static void

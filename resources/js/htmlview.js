@@ -2,7 +2,7 @@
 /*
  * @file htmlview.js  html view for node + item display
  *
- * Copyright (C) 2021-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,11 +54,12 @@ function templateFix(str, data) {
 	// attribute escaping and thereby destroying template expressions
 	// in attributes, which we need to restore
 	return template(str
-					.replace(/"%7B%7B/g, "\"{{")
-					.replace(/%7D%7D"/g, "}}\"")
-					.replace(/%5B/g, "[")
-					.replace(/%5D/g, "]"),
-					data);
+		.replace(/"%7B%7B/g, "\"{{")
+		.replace(/%7D%7D"/g, "}}\"")
+		.replace(/{{&gt;/g, "{{>")
+		.replace(/%5B/g, "[")
+		.replace(/%5D/g, "]"),
+		data);
 }
 
 function escapeHTML(str){
@@ -73,6 +74,44 @@ function debug(text, obj) {
 			console.log(text);
 }
 
+function parse_opml(blogrollData) {
+	try {
+		const parser = new DOMParser();
+		const xmlDoc = parser.parseFromString(blogrollData, "application/xml");
+		const parseError = xmlDoc.querySelector("parsererror");
+		if (!parseError) {
+			const root = xmlDoc.documentElement;
+			// Transform OPML to JSON recursively
+			const parseOutline = (outline) => {
+				const result = {
+					title: outline.getAttribute('title') || outline.getAttribute('text') || outline.getAttribute('description'),
+					type: outline.getAttribute('type'),
+					xmlUrl: outline.getAttribute('xmlUrl'),
+					htmlUrl: outline.getAttribute('htmlUrl'),
+					categories: outline.getAttribute('category') ? outline.getAttribute('category').split(',').map(s => s.trim()) : []
+
+				};
+				const children = Array.from(outline.children).filter(el => el.tagName === 'outline');
+				if (children.length > 0) {
+					result.children = children.map(parseOutline);
+				}
+				return result;
+			};
+			const body = root.querySelector('body') || root;
+			const blogrollParsed = {
+				title: root.querySelector('head > title')?.textContent,
+				lastUpdated: root.querySelector('head > dateModified')?.textContent,
+				children: Array.from(body.children).filter(el => el.tagName === 'outline').map(parseOutline)
+			};
+			debug("Parsed blogroll OPML", blogrollParsed);
+			return blogrollParsed;
+		}
+	} catch (e) {
+		debug("Error parsing blogroll XML", e);
+	}
+	return null;
+}
+
 async function load_node(data, baseURL, direction) {
 	try {
 		if(window.hookPreNodeRendering) {
@@ -83,10 +122,12 @@ async function load_node(data, baseURL, direction) {
 	}
 
 	try {
-		let node = JSON.parse(decodeURIComponent(data));
-
-		// FIXME
+		const node = JSON.parse(decodeURIComponent(data));
 		debug("node", node);
+
+		// parse blogroll data
+		const blogrollData = metadata_get(node, "blogrollData");
+		const blogrollParsed = blogrollData ? parse_opml(blogrollData) : null;
 
 		prepare(baseURL, node.title);
 		render("body", templateFix(document.getElementById('template').innerHTML), {
@@ -96,10 +137,15 @@ async function load_node(data, baseURL, direction) {
 			author			: metadata_get(node, "author"),
 			copyright		: metadata_get(node, "copyright"),
 			description		: metadata_get(node, "description"),
-			homepage		: metadata_get(node, "homepage")
+			homepage		: metadata_get(node, "homepage"),
+			blogroll		: metadata_get(node, "blogroll"),
+			blogrollData		: blogrollParsed
 		});
 
 		contentCleanup ();
+
+		if(window.debugflags > 0)
+			document.body.innerHTML += '<pre>' + escapeHTML(JSON.stringify(node, null, 2)) + '</pre>';
 
 		if(window.hookPostNodeRendering)
 			window.hookPostNodeRendering();
@@ -119,11 +165,11 @@ async function load_item(data, baseURL, direction) {
 	}
 
 	try {
-		let item = JSON.parse(decodeURIComponent(data));
+		const item = JSON.parse(decodeURIComponent(data));
+		const richContent = metadata_get(item, "richContent");
+		const mediathumb = metadata_get(item, "mediathumbnail");
+		const mediadesc = metadata_get(item, "mediadescription");
 		let title = item.title;
-		let richContent = metadata_get(item, "richContent");
-		let mediathumb = metadata_get(item, "mediathumbnail");
-		let mediadesc = metadata_get(item, "mediadescription");
 		let article;
 		let debugfooter = `<hr/>DEBUG: item_id=${item?.id} `;
 

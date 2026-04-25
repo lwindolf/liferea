@@ -154,7 +154,6 @@ on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpoint
 	GtkWidget	*dialog;
 	GtkFileChooser	*chooser;
 	GtkFileFilter	*feed_files_filter, *all_files_filter;
-	gint		res;
         g_autoptr(GFile) file;
 	g_autofree gchar *curname = NULL;
 	const gchar	*title;

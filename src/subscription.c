@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  *
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,7 +131,48 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 		return;
 
 	subscription->updateState->lastPoll = *now;
-	debug (DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
+	debug(DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
+}
+
+static void
+subscription_process_update_blogroll_result(const UpdateResult *const result, gpointer user_data, guint32 flags)
+{
+	g_autofree gchar *now = g_strdup_printf("%ld", g_get_real_time());
+	subscriptionPtr subscription = (subscriptionPtr)user_data;
+
+	if (result->httpstatus >= 400 || !result->data)	{
+		debug(DEBUG_UPDATE, "Blogroll update failed for subscription %s: %d", subscription->source, result->httpstatus);
+		return;
+	}
+
+	// No parsing here, we just store the blogroll XML
+	metadata_list_set(&(subscription->metadata), "blogrollData", result->data);
+
+	// FIXME
+	/*itemview_update_node_info (subscription->node);
+	itemview_update ();*/
+	db_subscription_update (subscription);
+
+	debug(DEBUG_UPDATE, "Blogroll update success for subscription %s", subscription->source);
+}
+
+void
+subscription_set_blogroll (subscriptionPtr subscription, const gchar *blogroll)
+{
+	UpdateRequest *request;
+
+	// Expand relative URL if needed
+	g_autofree gchar *url = (gchar *)common_build_url (blogroll, subscription->source);
+
+	debug (DEBUG_UPDATE, "Blogroll update started for subscription %s : blogroll URL %s", subscription->source, url);
+	metadata_list_set (&(subscription->metadata), "blogroll", url);
+
+	request = update_request_new(
+	    url,
+	    NULL,
+	    NULL // do not pass subscription update options as it is to dangerous (see Github #678)!
+	);
+	update_job_new (subscription, request, subscription_process_update_blogroll_result, subscription, 0 /* flags */);
 }
 
 /**
@@ -231,11 +272,11 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	/* 2. call subscription type specific processing */
 	if (processing)
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
+                                  
+	/* 3. Update favicon monthly. Update only after subscription processing
+	      to ensure we have valid baseUrl for searching... 
 
-	/* 3. call favicon updating only after subscription processing
-	      to ensure we have valid baseUrl for feed nodes...
-
-	      check creation date and update favicon if older than one month */
+	      Note: During favicon discovery blogrolls are also discovered and updated. */
 	if (g_get_real_time() > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
 		subscription_icon_update (subscription);
 
@@ -243,7 +284,7 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
-	subscription->updateState->lastPoll = g_get_real_time();
+	subscription->updateState->lastPoll = g_get_real_time ();
 
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);

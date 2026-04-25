@@ -2,7 +2,7 @@
  * @file html.h HTML parsing
  *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2017-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2017-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +36,18 @@
  * Returns:	a list of feed URLs or NULL. Must be freed by caller.
  */
 GSList * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
+
+/**
+ * html_auto_discover_blogroll:
+ *
+ * HTML blogroll auto discovery function. Searches the
+ * passed HTML document for the first blogroll link.
+ *
+ * @data:	HTML source
+ * @baseUri:	URI that relative links will be based off of
+ * Returns:	a blogroll URL or NULL. Must be freed by caller.
+ */
+gchar * html_auto_discover_blogroll(const gchar* data, const gchar *baseUri);
 
 /**
  * html_discover_favicon:

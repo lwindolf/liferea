@@ -1,7 +1,7 @@
 /**
  * @file subscription.h  common subscription handling interface
  *
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -193,6 +193,14 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
 void subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now);
 
 void subscription_update_favicon (subscriptionPtr subscription);
+
+/**
+ * Sets the blogroll URL for a given subscription.
+ *
+ * @param subscription	the subscription
+ * @param blogroll	the new blogroll URL (can be relative)
+ */
+void subscription_set_blogroll (subscriptionPtr subscription, const gchar *blogroll);
 
 /**
  * subscription_set_discontinued:
