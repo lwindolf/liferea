@@ -42,18 +42,9 @@ liferea_deps = [
   dependency('webkitgtk-web-process-extension-6.0', version: '>= 2.43.4'),
   dependency('libpeas-2'),
   dependency('pango', version: '>= 1.56'),
-  dependency('fribidi', version: '>= 0.19.7')
+  dependency('fribidi', version: '>= 0.19.7'),
+  dependency('girepository-2.0')
 ]
-
-# Check pygobject version to select matching girepository
-pygobject_dep = dependency('pygobject-3.0', required : false, version: '>= 3.52.3')
-if pygobject_dep.found() == false
-  conf.set('USE_GI_REPOSITORY_VERSION', 1)
-  liferea_deps += dependency('gobject-introspection-1.0')
-else
-  conf.set('USE_GI_REPOSITORY_VERSION', 2)
-  liferea_deps += dependency('girepository-2.0')
-endif
 
 configure_file(
   input: 'config.h.in',

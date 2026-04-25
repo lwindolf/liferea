@@ -30,11 +30,7 @@
 #include <gio/gio.h>
 #include <libpeas.h>
 
-#if USE_GI_REPOSITORY_VERSION == 1
-#include <girepository.h>
-#else
 #include <girepository/girepository.h>
-#endif
 
 #include "auth_activatable.h"
 #include "debug.h"
@@ -104,21 +100,12 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 	/* Require Lifereas's typelib. */
 	typelib_dir = g_build_filename (PACKAGE_LIB_DIR, "girepository-1.0", NULL);
 	debug (DEBUG_GUI, "Plugin typelib path %s\n", typelib_dir);
-#if USE_GI_REPOSITORY_VERSION == 1
-	if (!g_irepository_require_private (g_irepository_get_default (),
-		typelib_dir, "Liferea", "3.0", 0, &error)) {
-		g_warning ("Could not load Liferea repository: %s", error->message);
-		g_error_free (error);
-		error = NULL;
-	}
-#else
 	if (!gi_repository_require_private (gi_repository_dup_default (),
 		typelib_dir, "Liferea", "3.0", 0, &error)) {
 		g_warning ("Could not load Liferea repository: %s", error->message);
 		g_error_free (error);
 		error = NULL;
 	}
-#endif
 
 	g_autofree gchar *userdata = g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL);
 	g_autofree gchar *data = g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL);
