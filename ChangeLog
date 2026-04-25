@@ -1,12 +1,15 @@
-To be released
+2026-04-25  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.8
+
+	* Reimplements category display, improves metadata display by
+	  displaying all in a wrapped line to optimize vertical space usage
 
 	* Add a new user.js which is automatically installed to ~/.config/liferea/user.js
 	  that provides hooks for data and rendering manipulation.
 	  (Lars Windolf)
 	
-	* Add blogroll support. For feeds with <source:blogroll> element or homepages
+	* #1490: Add blogroll support. For feeds with <source:blogroll> element or homepages
 	  with <link rel="blogroll"> blogroll URLs are detected and the blogroll is downloaded
 	  and shown in the feed view.
 	  (Lars Windolf)
@@ -22,9 +25,19 @@ To be released
 
 	* Fixes #1494: Better contrast in light mode, a bit less in dark mode
 	  (Lars Windolf)
+
+	* Fixes #1482: Extraneous white space in item header
+	  (Lars Windolf)
+
+	* Fixes #1481: Updating feeds satuarates the main look making
+	  interaction difficult
+	  (Lars Windolf)
 	
 	* Fixes a memory leak when loading subscription metadata
 	  (Lars Windolf)
+
+	* Update of Spanish translation
+	  (Cristian Othón Martínez Vera)
 
 
 2025-12-27  Lars Windolf <lars.windolf@gmx.de>
