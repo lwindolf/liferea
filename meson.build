@@ -62,6 +62,7 @@ liferea = executable('liferea',
   dependencies: liferea_deps,
   include_directories: include_directories('.', 'src')
 )
+memcheck = find_program('src/tests/memcheck.sh')
 
 # Note: the 'update' test is explicitly skipped as it's gsettings dependency breaks CI build (missing X11/DBUS)
 foreach name: [
@@ -74,7 +75,9 @@ foreach name: [
   'social'
 ]
   test(name, liferea, args: ['--test', name])
+  test('memcheck-' + name, memcheck, args: [name])
 endforeach
+
 
 install_subdir('plugins', install_dir: libdir)
 install_subdir('css', install_dir: datadir)
