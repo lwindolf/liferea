@@ -179,7 +179,7 @@ on_default_update_interval_value_changed (GtkSpinButton *spinbutton, gpointer us
 		updateInterval *= 60;		/* hours */
 	else if (intervalUnit == 2)
 		updateInterval *= 1440;		/* days */
-g_print("updateInterval %d unit %d\n", updateInterval, intervalUnit);
+
 	conf_set_int_value (DEFAULT_UPDATE_INTERVAL, updateInterval);
 }
 
