@@ -1,23 +1,24 @@
 Thanks for testing the unstable branch of Liferea. This will become Liferea v1.99/2.0.
-Right now a lot of stuff is broken due to the GTK4 porting.
+Right now there are still features broken due to the GTK4 porting. Still more and more
+is being fixed.
 
 To be fixed next:
 =================
 
-1. favicon size in wide mode
+1. itemlist more spacing for icons
 2. replace "make update-po"
+3. item list middle click only works if item is already selected
+4. show floating links in LifereaBrowser view
+5. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
 
 To be fixed later:
 ==================
 
-- item list middle click only works if item is already selected
 - feed list DnD
 - Decide on whether to drop deferred removal in favour of keeping read items visible
 - strange selection behaviour on read filtered itemlist
 - restore ATK taggings
-- show floating links in LifereaBrowser view
 - fix select next unread by skim hotkey
-
 - remaining GTK4 FIXMES:
 
 ../src/ui/ui_dnd.c:    (FIXME: implement the last part)

@@ -1,7 +1,7 @@
 /*
  * @file item_list_view.c  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -91,6 +91,7 @@ struct _ItemListView {
 	GtkTreeStore	*batch_itemstore;	/*<< GtkTreeStore prepared unattached and to be set on update() */
 
 	GHashTable	*columns;               /*<< Named GtkTreeViewColumns */
+	GtkCellRenderer *faviconRenderer;	/*<< Renderer for the favicon column */
 	GtkCellRenderer *headlineRenderer;	/*<< Renderer for the headline column */
 
 	gboolean	wideView;		/*<< TRUE for wide view mode */
@@ -169,9 +170,11 @@ item_list_view_set_property (GObject *object, guint prop_id, const GValue *value
 				gtk_tree_view_column_set_sizing (state, GTK_TREE_VIEW_COLUMN_FIXED);
 				gtk_tree_view_column_set_sizing (date, GTK_TREE_VIEW_COLUMN_FIXED);
 				gtk_tree_view_column_set_sizing (favicon, GTK_TREE_VIEW_COLUMN_FIXED);
-				gtk_tree_view_column_set_sizing (headline, GTK_TREE_VIEW_COLUMN_FIXED);			
+				gtk_tree_view_column_set_sizing (headline, GTK_TREE_VIEW_COLUMN_FIXED);
 
-				gtk_tree_view_column_set_sort_column_id (headline, IS_TIME);				
+				gtk_tree_view_column_set_sort_column_id (headline, IS_TIME);
+
+				g_object_set (ilv->faviconRenderer, "icon-size", GTK_ICON_SIZE_LARGE, NULL);
 				g_object_set (ilv->headlineRenderer, "ellipsize", PANGO_ELLIPSIZE_NONE, NULL);
 				g_object_set (ilv->headlineRenderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
 				g_object_set (ilv->headlineRenderer, "wrap-width", 300, NULL);
@@ -182,7 +185,8 @@ item_list_view_set_property (GObject *object, guint prop_id, const GValue *value
 				gtk_tree_view_column_set_sizing (headline, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 
 				gtk_tree_view_column_set_sort_column_id (headline, IS_LABEL);
-				
+
+				g_object_set (ilv->faviconRenderer, "icon-size", GTK_ICON_SIZE_NORMAL, NULL);
 				g_object_set (ilv->headlineRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 				g_object_set (ilv->headlineRenderer, "wrap-mode", PANGO_WRAP_NONE, NULL);
 			}
@@ -1031,7 +1035,6 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
 	ilv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
-g_print("ilv->treeview = %p\n", ilv->treeview);
 	gtk_tree_view_set_enable_search (ilv->treeview, FALSE);
 	gtk_tree_view_set_show_expanders (ilv->treeview, FALSE);
 	gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_WIDGET (ilv->treeview));
@@ -1043,13 +1046,11 @@ g_print("ilv->treeview = %p\n", ilv->treeview);
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
 	
-	//g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
 	g_hash_table_insert (ilv->columns, "state", column);
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 
-	renderer = gtk_cell_renderer_pixbuf_new ();
-	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
-	//g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
+	ilv->faviconRenderer = gtk_cell_renderer_pixbuf_new ();
+	column = gtk_tree_view_column_new_with_attributes ("", ilv->faviconRenderer, "gicon", IS_FAVICON, NULL);
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	g_hash_table_insert (ilv->columns, "favicon", column);
 
