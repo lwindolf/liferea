@@ -16,13 +16,17 @@ Many distributions have packaged Liferea:
 
 Compile with
 
-    meson setup builddir
-    meson compile -C builddir
-    meson test    -C builddir
+    meson setup builddir && cd builddir
+    meson compile
+    meson test
 
-To install
+Update translations
 
-    meson install -C builddir
+    meson compile liferea-update-po
+
+Install
+
+    meson install
 
 If you compile with a --prefix directory which does not match $XDG_DATA_DIRS
 you will get a runtime error about the schema not being found. To workaround

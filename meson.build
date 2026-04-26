@@ -8,6 +8,7 @@ i18n = import('i18n')
 
 gettext_package = 'liferea'
 add_project_arguments('-DGETTEXT_PACKAGE=' + gettext_package, language: 'c')
+
 subdir('po')
 
 prefix = get_option('prefix')

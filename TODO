@@ -5,10 +5,9 @@ is being fixed.
 To be fixed next:
 =================
 
-1. replace "make update-po"
-2. item list middle click only works if item is already selected
-3. show floating links in LifereaBrowser view
-4. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
+1. item list middle click only works if item is already selected
+2. show floating links in LifereaBrowser view
+3. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
 
 To be fixed later:
 ==================

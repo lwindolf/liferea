@@ -30,7 +30,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-03 03:21+0100\n"
+"POT-Creation-Date: 2026-04-26 21:53+0200\n"
 "PO-Revision-Date: 2026-01-19 20:55-0600\n"
 "Last-Translator: Cristian Othón Martínez Vera <cfuga@cfuga.mx>\n"
 "Language-Team: Spanish <es@tp.es.org>\n"
@@ -40,438 +40,261 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:338
-#: ../resources/mainwindow.ui.h:1
+#: data/net.sourceforge.liferea.desktop.in:2 src/liferea_application.c:326
+#: resources/ui/mainwindow.ui:11
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../net.sourceforge.liferea.desktop.in.h:2
+#: data/net.sourceforge.liferea.desktop.in:3
 msgid "Feed Reader"
 msgstr "Lector de noticias"
 
-#: ../net.sourceforge.liferea.desktop.in.h:3
-msgid "Liferea Feed Reader"
-msgstr "Lector de noticias Liferea"
-
-#: ../net.sourceforge.liferea.desktop.in.h:4
+#: data/net.sourceforge.liferea.desktop.in:5
 msgid "Read news feeds and blogs"
 msgstr "Lector de canales de noticias y blogs"
 
-#: ../net.sourceforge.liferea.desktop.in.h:5
+#: data/net.sourceforge.liferea.desktop.in:6
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr "noticias;canal;agregador;blog;podcast;sindicación;rss;atom"
 
-#: ../plugins/getfocus.py:95
-msgid "Opacity:"
-msgstr "Opacidad:"
+#: plugins/add-bookmark-site.ui:7
+msgid "Add Bookmark Service"
+msgstr ""
 
-#: ../plugins/getfocus.py:96
-msgid "Opacity"
-msgstr "Opacidad"
+#: plugins/add-bookmark-site.ui:50
+msgid "Configure a custom social bookmarking site. "
+msgstr ""
 
-#: ../plugins/getfocus.py:106
-msgid "Min"
-msgstr "Min"
+#: plugins/add-bookmark-site.ui:75
+#, fuzzy
+msgid "Service _Name"
+msgstr "_Nombre de la búsqueda:"
 
-#: ../plugins/getfocus.py:111
-msgid "Max"
-msgstr "Máx"
+#: plugins/add-bookmark-site.ui:88 resources/ui/properties.ui:233
+msgid "_URL"
+msgstr "_URL"
 
-#: ../plugins/getfocus.py:117
+#: plugins/add-bookmark-site.ui:121
+msgid "_Apply custom bookmark site"
+msgstr ""
+
+#. Feed update interval hint in preference dialog.
+#: plugins/add-bookmark-site.ui:158
+msgid ""
+"Note: The URL needs to contain a mandatory \"{url}\" \n"
+"placeholder and may contain a \"{title}\" placeholder.\n"
+"\n"
+"Example: \n"
+"https://bookmarks.org/add?u={url}&t={title}"
+msgstr ""
+
+#: plugins/getfocus.ui:13
+msgid "Configure Plugin"
+msgstr ""
+
+#: plugins/getfocus.ui:26
 msgid "Save"
 msgstr "Guardar"
 
-#: ../plugins/headerbar.py:67 ../resources/liferea_menu.ui.h:20
-msgid "Previous Item"
-msgstr "Artículo anterior"
+#: plugins/getfocus.ui:52
+msgid "Opacity"
+msgstr "Opacidad"
 
-#: ../plugins/headerbar.py:73 ../resources/liferea_menu.ui.h:21
-msgid "Next Item"
-msgstr "Siguiente artículo"
+#: plugins/getfocus.ui:53
+msgid "Opacity:"
+msgstr "Opacidad:"
 
-#: ../plugins/headerbar.py:81 ../resources/liferea_menu.ui.h:19
-msgid "_Next Unread Item"
-msgstr "Siguiente artículo _nuevo"
-
-#: ../plugins/headerbar.py:89 ../resources/liferea_menu.ui.h:14
-msgid "_Mark Items Read"
-msgstr "_Marcar como leído"
-
-#: ../plugins/headerbar.py:113 ../resources/liferea_menu.ui.h:39
-msgid "Search All Feeds..."
-msgstr "Buscar en todos los canales..."
-
-#: ../plugins/libnotify.py:41
+#: plugins/libnotify.py:41
 msgid "Feed Updates"
 msgstr "Actualización de canales"
 
-#: ../plugins/plugin-installer.py:55
-msgid "Plugins"
-msgstr "Complementos"
-
-#: ../plugins/plugin-installer.py:72
-msgid "Plugin Installer"
-msgstr "Instalador de complementos"
-
-#: ../plugins/plugin-installer.py:86
-msgid "Activate Plugins"
-msgstr "Activar complementos"
-
-#: ../plugins/plugin-installer.py:87
-msgid "Download Plugins"
-msgstr "Descargar complementos"
-
-#: ../plugins/plugin-installer.py:105
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr "Campos erróneos para la entrada del complemento %s"
-
-#: ../plugins/plugin-installer.py:128
-msgid "All"
-msgstr "Todos"
-
-#: ../plugins/plugin-installer.py:128 ../resources/properties.ui.h:39
-msgid "Advanced"
-msgstr "Avanzado"
-
-#: ../plugins/plugin-installer.py:128
-msgid "Menu"
-msgstr "Menú"
-
-#: ../plugins/plugin-installer.py:128
-msgid "Notifications"
-msgstr "Notificaciones"
-
-#: ../plugins/plugin-installer.py:136
-msgid "Filter by category"
-msgstr "Filtrar por categoría"
-
-#: ../plugins/plugin-installer.py:143
-msgid "_Install"
-msgstr "_Instalar"
-
-#: ../plugins/plugin-installer.py:147
-msgid "_Uninstall"
-msgstr "_Desinstalar"
-
-#: ../plugins/plugin-installer.py:252
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-"Falta el instalador de paquetes '%s'. ¡No se pueden comprobar ni instalar "
-"las dependencias necesarias!"
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr "Falta el paquete '%s'. ¿Desea instalarlo? (Se ejecutará '%s')"
-
-#: ../plugins/plugin-installer.py:275
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-"¡Fallo al instalar el paquete (%s)! ¡Verifique la salida de la consola para "
-"obtener más detalles del problema!"
-
-#: ../plugins/plugin-installer.py:278
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr "¡Fallo al verificar las dependencias del complemento (%s)!"
-
-#: ../plugins/plugin-installer.py:287
-msgid "Command \"git\" not found, please install it!"
-msgstr "No se encontró la orden \"git\". ¡Por favor instálelo!"
-
-#: ../plugins/plugin-installer.py:296
-#, python-format
-msgid "Copying %s to %s"
-msgstr "Se copia %s a %s"
-
-#: ../plugins/plugin-installer.py:299
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr "¡Fallo al copiar la carpeta de complementos (%s)!"
-
-#: ../plugins/plugin-installer.py:308
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr "¡Fallo al copiar el archivo de complemento .py (%s)!"
-
-#: ../plugins/plugin-installer.py:318
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr "¡Fallo al copiar el archivo .plugin (%s)!"
-
-#: ../plugins/plugin-installer.py:329
-#, python-format
-msgid "Creating schema directory %s"
-msgstr "Se crea la carpeta de esquema %s"
-
-#: ../plugins/plugin-installer.py:331
-#, python-format
-msgid "Installing schema %s"
-msgstr "Se instala el esquema %s"
-
-#: ../plugins/plugin-installer.py:335
-msgid "Compiling schemas..."
-msgstr "Compilando esquemas..."
-
-#: ../plugins/plugin-installer.py:340
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr "¡Fallo al instalar el archivo de esquema (%s)!"
-
-#: ../plugins/plugin-installer.py:350
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr "¡Fallo al activar el complemento (%s)!"
-
-#: ../plugins/plugin-installer.py:356
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr "El complemento «%s» está instalado. ¡Asegúrese de reiniciar Liferea!"
-
-#: ../plugins/plugin-installer.py:370
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr "¡Fallo al desactivar el complemento (%s)!"
-
-#: ../plugins/plugin-installer.py:377 ../plugins/plugin-installer.py:397
-#, python-format
-msgid "Deleting '%s'"
-msgstr "Eliminando «%s»"
-
-#: ../plugins/plugin-installer.py:380
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr "¡Fallo al borrar la carpeta «%s» (%s)!"
-
-#: ../plugins/plugin-installer.py:390
-msgid "Failed to remove .py file!"
-msgstr "¡Fallo al borrar el archivo .py!"
-
-#: ../plugins/plugin-installer.py:400
-msgid "Failed to remove .plugin file!"
-msgstr "¡Fallo al borrar el archivo .plugin!"
-
-#: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!"
-msgstr "¡Lo siento! ¡Falló la eliminación del complemento!"
-
-#: ../plugins/plugin-installer.py:411
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!"
-msgstr ""
-"Se borró el complemento. ¡Por favor reinicie Liferea de una vez para que "
-"tome efecto!"
-
-#: ../plugins/trayicon.py:168
-msgid "Liferea unread icon"
-msgstr "Icono sin leer de Liferea"
-
-#: ../plugins/trayicon.py:186
-msgid "Show / Hide"
-msgstr "Mostrar / Ocultar"
-
-#: ../plugins/trayicon.py:187
-msgid "Minimize to tray on close"
-msgstr "Minimizar a la bandeja al salir"
-
-#: ../plugins/trayicon.py:188
-msgid "Quit"
-msgstr "Salir"
-
-#: ../src/actions/item_actions.c:120
-msgid "You must select a feed to delete its items!"
-msgstr "¡Debe elegir un canal para eliminar sus artículos!"
-
-#: ../src/actions/item_actions.c:136 ../src/ui/item_list_view.c:991
-#: ../src/ui/item_list_view.c:1006
+#: src/actions/item_actions.c:121 src/ui/item_list_view.c:1168
+#: src/ui/item_list_view.c:1183
 msgid "No item has been selected"
 msgstr "No se ha seleccionado ningún artículo"
 
-#: ../src/actions/item_actions.c:187
+#: src/actions/item_actions.c:170
 #, c-format
 msgid "Email command failed: %s"
 msgstr "Falló la orden de email: %s"
 
-#: ../src/actions/item_actions.c:190 ../src/browser.c:101
+#: src/actions/item_actions.c:173 src/browser.c:104
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Iniciando: «%s»"
 
-#: ../src/actions/node_actions.c:55 ../src/actions/shell_actions.c:60
+#: src/actions/node_actions.c:54 src/actions/shell_actions.c:60
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea está trabajando sin conexión. No se puede realizar una actualización."
 
-#: ../src/actions/node_actions.c:165
+#: src/actions/node_actions.c:163
 msgid "Save items to file"
 msgstr "Guardar artículos a un archivo"
 
-#: ../src/actions/node_actions.c:168 ../src/ui/feed_list_view.c:776
-#: ../src/ui/feed_list_view.c:820
+#: src/actions/node_actions.c:166 src/ui/feed_list_view.c:957
+#: src/ui/feed_list_view.c:1000 resources/ui/mark_read_dialog.ui:35
+#: resources/ui/new_folder.ui:61 resources/ui/new_newsbin.ui:73
+#: resources/ui/node_source.ui:69 resources/ui/opml_source.ui:73
+#: resources/ui/properties.ui:664 resources/ui/rename_node.ui:62
+#: resources/ui/search_folder.ui:136 resources/ui/simple_subscription.ui:81
+#: resources/ui/theoldreader_source.ui:96 resources/ui/ttrss_source.ui:116
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: ../src/actions/node_actions.c:170
+#: src/actions/node_actions.c:168
 msgid "_Save"
 msgstr "_Guardar"
 
-#: ../src/actions/node_actions.c:179
+#: src/actions/node_actions.c:177
 msgid "RSS 2.0 files"
 msgstr "Archivos RSS 2.0"
 
-#: ../src/actions/node_actions.c:185
+#: src/actions/node_actions.c:183
 msgid "All files"
 msgstr "Todos los archivos"
 
-#: ../src/actions/node_actions.c:190 ../src/ui/browser_tabs.c:266
+#: src/actions/node_actions.c:188 src/ui/browser_tabs.c:88
 msgid "Untitled"
 msgstr "Sin título"
 
-#: ../src/actions/shell_actions.c:113
+#: src/actions/shell_actions.c:95
 msgid "all feeds"
 msgstr "todos los canales"
 
-#: ../src/actions/shell_actions.c:114
+#: src/actions/shell_actions.c:96
 #, c-format
 msgid "Mark %s as read ?"
 msgstr "¿Marcar %s como leído?"
 
-#: ../src/actions/shell_actions.c:118
+#: src/actions/shell_actions.c:100
 #, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "¿Realmente desea marcar todos los artículos en «%s» como leídos?"
 
-#: ../src/actions/shell_actions.c:177
+#: src/actions/shell_actions.c:121
+msgid "You must select a feed to delete its items!"
+msgstr "¡Debe elegir un canal para eliminar sus artículos!"
+
+#: src/actions/shell_actions.c:179
 msgid "Help Topics"
 msgstr "Temas de ayuda"
 
-#: ../src/actions/shell_actions.c:183
-msgid "Quick Reference"
-msgstr "Manual de referencia"
-
-#: ../src/actions/shell_actions.c:189
-msgid "FAQ"
-msgstr "Preguntas frecuentes"
-
-#: ../src/browser.c:81 ../src/browser.c:98
+#: src/browser.c:84 src/browser.c:101
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Fallo al iniciar el navegador: %s"
 
+#: src/browser.c:169
+msgid "This item has no link specified!"
+msgstr "¡Este artículo no tiene un enlace asignado!"
+
 #. unauthorized
-#: ../src/comments.c:116
+#: src/comments.c:115
 msgid "Authorization Error"
 msgstr "Error de autorización"
 
-#: ../src/common.c:68
+#: src/common.c:66
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "¡No se puede crear la carpeta de almacenamiento temporal «%s»!"
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/date.c:135
+#: src/date.c:135
 msgid "Today %l:%M %p"
 msgstr "Hoy, %l:%M %p"
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/date.c:144
+#: src/date.c:144
 msgid "Yesterday %l:%M %p"
 msgstr "Ayer, %l:%M %p"
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/date.c:156
+#: src/date.c:156
 msgid "%a %l:%M %p"
 msgstr "%a., %l:%M %p"
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/date.c:164
+#: src/date.c:164
 msgid "%b %d %l:%M %p"
 msgstr "%d de %b., %l:%M %p"
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/date.c:167
+#: src/date.c:167
 msgid "%b %d %Y"
 msgstr "%d/%b/%Y"
 
-#: ../src/export.c:172
+#: src/export.c:168
 #, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "Error al renombrar %s a %s: %s\n"
 
-#: ../src/export.c:371 ../src/export.c:373
+#: src/export.c:368 src/export.c:370
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "¡Error de XML en el documento OPML. No se pudo importar «%s»!"
 
-#: ../src/export.c:379 ../src/export.c:381
+#: src/export.c:376 src/export.c:378
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "El documento OPML «%s», que se quería importar, está vacío."
 
-#: ../src/export.c:402 ../src/export.c:404
+#: src/export.c:399 src/export.c:401
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "¡«%s» no es un documento OPML válido. Liferea no pudo importar el archivo!"
 
-#: ../src/export.c:423
+#: src/export.c:420
 msgid "Imported feed list"
 msgstr "Lista de canales importados"
 
-#: ../src/export.c:435
+#: src/export.c:432
 msgid "Import Feed List"
 msgstr "Importar lista de canales"
 
-#: ../src/export.c:435
+#: src/export.c:432
 msgid "Import"
 msgstr "Importar"
 
-#: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:366
+#: src/export.c:432 src/export.c:449 src/node_sources/opml_source.c:365
 msgid "OPML Files"
 msgstr "Archivos OPML"
 
-#: ../src/export.c:443
+#: src/export.c:440
 msgid "Error while exporting feed list!"
 msgstr "¡Ocurrió un error mientras se exportaba la lista de canales!"
 
-#: ../src/export.c:445
+#: src/export.c:442
 msgid "Feed List exported!"
 msgstr "¡La lista de canales se ha exportado con éxito!"
 
-#: ../src/export.c:452
+#: src/export.c:449
 msgid "Export Feed List"
 msgstr "Exportar lista de canales"
 
-#: ../src/export.c:452
+#: src/export.c:449
 msgid "Export"
 msgstr "Exportar"
 
-#: ../src/feed_parser.c:201
+#: src/feed_parser.c:203
 msgid "Empty document!"
 msgstr "¡El documento está vacío!"
 
-#: ../src/feed_parser.c:210
+#: src/feed_parser.c:212
 msgid "Invalid XML!"
 msgstr "¡XML no válido!"
 
-#: ../src/node_source.c:113
+#: src/node_source.c:113
 msgid "Miniflux"
 msgstr "Miniflux"
 
-#: ../src/node_source.c:342
+#: src/node_source.c:340
 msgid "Source Type"
 msgstr "Tipo de fuente"
 
-#: ../src/node_source.c:393
+#: src/node_source.c:391
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
@@ -479,65 +302,62 @@ msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:559
+#: src/node_source.c:557
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "¡La suscripción «%s» se convirtió correctamente en canales locales!"
 
-#: ../src/node_sources/default_source.c:135
-#: ../resources/new_subscription.ui.h:1 ../resources/simple_subscription.ui.h:1
+#: src/node_sources/default_source.c:135 resources/ui/simple_subscription.ui:11
 msgid "New Subscription"
 msgstr "Suscripción nueva"
 
-#: ../src/node_sources/google_source.c:192
-#: ../src/node_sources/reedah_source.c:120
-#: ../src/node_sources/theoldreader_source.c:122
+#: src/node_sources/google_source.c:192 src/node_sources/reedah_source.c:120
+#: src/node_sources/theoldreader_source.c:122
 msgid "Login failed!"
 msgstr "¡Falló el acceso!"
 
-#: ../src/node_sources/google_source.c:402
+#: src/node_sources/google_source.c:402
 msgid "Google Reader API"
 msgstr "API de Google Reader"
 
-#: ../src/node_sources/google_source_feed.c:159
+#: src/node_sources/google_source_feed.c:159
 msgid "Could not parse JSON returned by Google Reader API!"
 msgstr "¡No se pudo procesar el JSON devuelto por la API de Google Reader!"
 
-#: ../src/node_sources/opml_source.c:313
+#: src/node_sources/opml_source.c:312
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/node_sources/opml_source.c:366
+#: src/node_sources/opml_source.c:365
 msgid "Choose OPML File"
 msgstr "Elija el archivo OPML"
 
-#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:285
-#: ../src/ui/subscription_dialog.c:292
+#: src/node_sources/opml_source.c:365 src/ui/subscription_dialog.c:302
+#: src/ui/subscription_dialog.c:309
 msgid "_Open"
 msgstr "_Abrir"
 
-#: ../src/node_sources/opml_source.h:28
+#: src/node_sources/opml_source.h:28
 msgid "New OPML Subscription"
 msgstr "Suscripción OPML nueva"
 
-#: ../src/node_sources/reedah_source.c:331
+#: src/node_sources/reedah_source.c:331
 msgid "Reedah"
 msgstr "Reedah"
 
-#: ../src/node_sources/reedah_source_feed.c:154
+#: src/node_sources/reedah_source_feed.c:154
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "¡No se pudo procesar el JSON devuelto por la API de Reedah!"
 
-#: ../src/node_sources/theoldreader_source.c:360
+#: src/node_sources/theoldreader_source.c:360
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
-#: ../src/node_sources/ttrss_source.c:227
-#: ../src/node_sources/ttrss_source.c:293
+#: src/node_sources/ttrss_source.c:227 src/node_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr "¡No se puede acceder a la API HTTP de TinyTinyRSS!"
 
-#: ../src/node_sources/ttrss_source.c:234
+#: src/node_sources/ttrss_source.c:234
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
@@ -545,11 +365,11 @@ msgstr ""
 "¡Falló la suscripción al canal de TinyTinyRSS. Compruebe que el URL "
 "proporcionado pertenece a un canal!"
 
-#: ../src/node_sources/ttrss_source.c:300
+#: src/node_sources/ttrss_source.c:300
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr "¡Falló la cancelación de suscripción de TinyTinyRSS!"
 
-#: ../src/node_sources/ttrss_source.c:318
+#: src/node_sources/ttrss_source.c:318
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
@@ -558,82 +378,77 @@ msgstr ""
 "Esta versión de TinyTinyRSS no admite la eliminación de canales. ¡Actualice, "
 "como mínimo, a la versión %s!"
 
-#: ../src/node_sources/ttrss_source.c:468
+#: src/node_sources/ttrss_source.c:468
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
-#: ../src/node_sources/ttrss_source_feed.c:150
+#: src/node_sources/ttrss_source_feed.c:150
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "¡No se pudo procesar el JSON devuelto por la API de TinyTinyRSS!"
 
-#: ../src/node_providers/newsbin.c:132
+#: src/node_providers/newsbin.c:100
 msgid "News Bin Properties"
 msgstr "Propiedades de la bandeja de noticias"
 
-#: ../src/node_providers/newsbin.c:136 ../resources/new_newsbin.ui.h:1
+#: src/node_providers/newsbin.c:104 resources/ui/new_newsbin.ui:8
 msgid "Create News Bin"
 msgstr "Crear una bandeja de noticias"
 
-#: ../src/node_providers/vfolder.c:52
+#: src/node_providers/vfolder.c:52
 msgid "New Search Folder"
 msgstr "Nueva carpeta virtual"
 
-#. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:409
-msgid "There are no unread items"
-msgstr "No hay artículos sin leer"
-
-#: ../src/liferea_application.c:271
+#: src/liferea_application.c:257
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Iniciar Liferea con la ventana principal en un ESTADO, que puede ser «shown» "
 "para mostrarla o «hidden» para ocultarla"
 
-#: ../src/liferea_application.c:271
+#: src/liferea_application.c:257
 msgid "STATE"
 msgstr "ESTADO"
 
-#: ../src/liferea_application.c:272
+#: src/liferea_application.c:258
 msgid "Show version information and exit"
 msgstr "Mostrar la versión de Liferea y salir"
 
-#: ../src/liferea_application.c:273
+#: src/liferea_application.c:259
 msgid "Add a new subscription"
 msgstr "Añadir una suscripción nueva"
 
-#: ../src/liferea_application.c:273
+#: src/liferea_application.c:259
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:274
+#: src/liferea_application.c:260
 msgid "Start with all plugins disabled"
 msgstr "Iniciar con todos los complementos desactivados"
 
-#: ../src/liferea_application.c:279
+#: src/liferea_application.c:265
 msgid "Print debugging messages of all types"
 msgstr "Mostrar todos los mensajes de depuración"
 
-#: ../src/liferea_application.c:280
+#: src/liferea_application.c:266
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "Mostrar mensajes de depuración sobre el manejo del almacenamiento temporal"
 
-#: ../src/liferea_application.c:281
+#: src/liferea_application.c:267
 msgid "Print debugging messages for the configuration handling"
 msgstr "Mostrar mensajes de depuración sobre el manejo de configuración"
 
-#: ../src/liferea_application.c:282
+#: src/liferea_application.c:268
 msgid "Print debugging messages of the database handling"
 msgstr "Mostrar mensajes de depuración sobre el manejo de la base de datos"
 
-#: ../src/liferea_application.c:283
+#: src/liferea_application.c:269
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "Mostrar mensajes de depuración sobre todas las funciones de la interfaz "
 "gráfica"
 
-#: ../src/liferea_application.c:284
+#: src/liferea_application.c:270
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -641,42 +456,42 @@ msgstr ""
 "Activa la depuración de la generación de HTML. Cada que Liferea genere HTML "
 "lo guardará a ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:285
+#: src/liferea_application.c:271
 msgid "Print debugging messages of all network activity"
 msgstr "Mostrar mensajes de depuración sobre la actividad de red"
 
-#: ../src/liferea_application.c:286
+#: src/liferea_application.c:272
 msgid "Print debugging messages of all parsing functions"
 msgstr ""
 "Mostrar mensajes de depuración sobre todas las funciones de procesamiento"
 
-#: ../src/liferea_application.c:287
+#: src/liferea_application.c:273
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "Mostrar mensajes de depuración sobre el procesamiento de actualización de "
 "canales"
 
-#: ../src/liferea_application.c:288
+#: src/liferea_application.c:274
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "Mostrar mensajes de depuración sobre el cotejo mediante carpetas virtuales"
 
-#: ../src/liferea_application.c:293 ../src/liferea_application.c:294
+#: src/liferea_application.c:279 src/liferea_application.c:280
 msgid "Print debugging messages for the given topic"
 msgstr "Mostrar mensajes de depuración sobre el tema especificado"
 
 #. Some libsoup transport errors
-#: ../src/net.c:431
+#: src/net.c:475
 msgid "The update request was cancelled"
 msgstr "La actualización fue cancelada"
 
 #. http 3xx redirection
-#: ../src/net.c:434
+#: src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr "El recurso cambió permanentemente de ubicación"
 
 #. http 4xx client error
-#: ../src/net.c:437
+#: src/net.c:481
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -684,35 +499,35 @@ msgstr ""
 "No tiene autorización para ver este canal. Especifique el nombre de usuario "
 "y la contraseña en el cuadro de propiedades del canal"
 
-#: ../src/net.c:439
+#: src/net.c:483
 msgid "Payment required"
 msgstr "Es necesario pagar"
 
-#: ../src/net.c:440
+#: src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr "No tiene permiso para acceder a este recurso"
 
-#: ../src/net.c:441
+#: src/net.c:485
 msgid "Resource Not Found"
 msgstr "Recurso no encontrado"
 
-#: ../src/net.c:442
+#: src/net.c:486
 msgid "Method Not Allowed"
 msgstr "Método no permitido"
 
-#: ../src/net.c:443
+#: src/net.c:487
 msgid "Not Acceptable"
 msgstr "No aceptable"
 
-#: ../src/net.c:444
+#: src/net.c:488
 msgid "Proxy authentication required"
 msgstr "Necesita identificarse ante el proxy"
 
-#: ../src/net.c:445
+#: src/net.c:489
 msgid "Request timed out"
 msgstr "Expiró el tiempo de respuesta"
 
-#: ../src/net.c:446
+#: src/net.c:490
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -722,199 +537,264 @@ msgstr ""
 "disponible. Liferea ya no lo actualizará pero puede seguir accediendo a los "
 "titulares almacenados."
 
+#: src/net.c:491
+msgid "Too many requests. Liferea has to wait a while before trying again."
+msgstr ""
+
 #. http 5xx server errors
-#: ../src/net.c:449
+#: src/net.c:494
 msgid "Internal Server Error"
 msgstr "Error interno del servidor"
 
-#: ../src/net.c:450
+#: src/net.c:495
 msgid "Not Implemented"
 msgstr "Sin implementar"
 
-#: ../src/net.c:451
+#: src/net.c:496
 msgid "Bad Gateway"
 msgstr "Puerta de enlace errónea"
 
-#: ../src/net.c:452
+#: src/net.c:497
 msgid "Service Unavailable"
 msgstr "El servicio no está disponible"
 
-#: ../src/net.c:453
+#: src/net.c:498
 msgid "Gateway Timeout"
 msgstr "Se agotó el tiempo de espera para la puerta de enlace"
 
-#: ../src/net.c:454
+#: src/net.c:499
 msgid "HTTP Version Not Supported"
 msgstr "No se admite la versión de HTTP"
 
-#: ../src/net.c:458
+#: src/net.c:503
 msgid "An unknown networking error happened!"
 msgstr "¡Ocurrió un error de red desconocido!"
 
-#: ../src/node.c:640
+#: src/node.c:651
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr "Falló al crear el archivo de canal: %s"
 
-#: ../src/node.c:659
+#: src/node.c:670
 msgid "Feed file exported from Liferea"
 msgstr "Archivo de canales exportado de Liferea"
 
-#: ../src/node.c:674
+#: src/node.c:685
 #, c-format
 msgid "Error while saving feed file"
 msgstr "Error al guardar el archivo de canales"
 
-#: ../src/parsers/atom10.c:240
+#: src/parsers/atom10.c:241
 msgid "Website"
 msgstr "Sitio web"
 
-#: ../src/parsers/ns_ag.c:70
+#: src/parsers/ns_ag.c:70
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:272
+#: src/rule.c:272
 msgid "Item"
 msgstr "El artículo"
 
-#: ../src/rule.c:272 ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275
-#: ../src/rule.c:281 ../src/rule.c:282 ../src/rule.c:283
+#: src/rule.c:272 src/rule.c:273 src/rule.c:274 src/rule.c:275 src/rule.c:281
+#: src/rule.c:282 src/rule.c:283
 msgid "does contain"
 msgstr "contiene"
 
-#: ../src/rule.c:272 ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275
-#: ../src/rule.c:281 ../src/rule.c:282 ../src/rule.c:283
+#: src/rule.c:272 src/rule.c:273 src/rule.c:274 src/rule.c:275 src/rule.c:281
+#: src/rule.c:282 src/rule.c:283
 msgid "does not contain"
 msgstr "no contiene"
 
-#: ../src/rule.c:273
+#: src/rule.c:273
 msgid "Item title"
 msgstr "El título"
 
-#: ../src/rule.c:274
+#: src/rule.c:274
 msgid "Item body"
 msgstr "El cuerpo del artículo"
 
-#: ../src/rule.c:275
+#: src/rule.c:275
 msgid "Item author"
 msgstr "El autor"
 
-#: ../src/rule.c:276
+#: src/rule.c:276
 msgid "Read status"
 msgstr "El estado de lectura"
 
-#: ../src/rule.c:276
+#: src/rule.c:276
 msgid "is unread"
 msgstr "es «nuevo»"
 
-#: ../src/rule.c:276
+#: src/rule.c:276
 msgid "is read"
 msgstr "es «leído»"
 
-#: ../src/rule.c:277
+#: src/rule.c:277
 msgid "Flag status"
 msgstr "La marca"
 
-#: ../src/rule.c:277
+#: src/rule.c:277
 msgid "is flagged"
 msgstr "está activada"
 
-#: ../src/rule.c:277
+#: src/rule.c:277
 msgid "is unflagged"
 msgstr "está desactivada"
 
-#: ../src/rule.c:278
+#: src/rule.c:278
 msgid "Enclosure"
 msgstr "Adjunto"
 
-#: ../src/rule.c:278 ../src/rule.c:279
+#: src/rule.c:278 src/rule.c:279
 msgid "included"
 msgstr "incluido"
 
-#: ../src/rule.c:278 ../src/rule.c:279
+#: src/rule.c:278 src/rule.c:279
 msgid "not included"
 msgstr "no incluido"
 
-#: ../src/rule.c:279
+#: src/rule.c:279
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:280
+#: src/rule.c:280
 msgid "Category"
 msgstr "Categoría"
 
-#: ../src/rule.c:280
+#: src/rule.c:280
 msgid "is set"
 msgstr "es"
 
-#: ../src/rule.c:280
+#: src/rule.c:280
 msgid "is not set"
 msgstr "no es"
 
-#: ../src/rule.c:281
+#: src/rule.c:281
 msgid "Feed title"
 msgstr "El título del canal"
 
-#: ../src/rule.c:282
+#: src/rule.c:282
 msgid "Feed source"
 msgstr "Fuente del canal"
 
-#: ../src/rule.c:283
+#: src/rule.c:283
 msgid "Parent folder title"
 msgstr "Título de la carpeta superior"
 
-#: ../src/subscription.c:108
+#: src/subscription.c:111
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "¡El canal «%s» ya se está actualizando!"
 
-#: ../src/subscription.c:113
+#: src/subscription.c:116
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "¡El canal «%s» ya no existe. Liferea no volverá a actualizarlo!"
 
-#: ../src/subscription.c:188
+#: src/subscription.c:232
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "El URL de «%s» cambió permanentemente y se actualizó"
 
-#: ../src/subscription.c:194
+#: src/subscription.c:238
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "El contenido de «%s» no ha cambiado desde la última actualización"
 
-#: ../src/subscription.c:207
+#: src/subscription.c:251
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "«%s» fue abandonado. ¡Liferea ya no la actualizará!"
 
-#: ../src/subscription.c:221 ../src/subscription.c:297
+#: src/subscription.c:265 src/subscription.c:335
 #, c-format
 msgid "Updating (%d / %d) ..."
 msgstr "Actualizando (%d / %d) ..."
 
-#: ../src/subscription.c:299
+#: src/subscription.c:337
 #, c-format
 msgid "Updating '%s'..."
 msgstr "Actualizando «%s»..."
 
-#: ../src/ui/auth_dialog.c:110
+#: src/ui/auth_dialog.c:83
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Escriba el nombre de usuario y la contraseña para «%s» (%s):"
 
-#: ../src/ui/auth_dialog.c:112
+#: src/ui/auth_dialog.c:85
 msgid "Unknown source"
 msgstr "Fuente desconocida"
 
-#: ../src/ui/feed_list_view.c:495
+#: src/ui/feed_list_view.c:127
 msgid "(Empty)"
 msgstr "(Vacío)"
 
-#: ../src/ui/feed_list_view.c:704
+#: src/ui/feed_list_view.c:263 resources/ui/mainwindow.ui:310
+msgid "_Update"
+msgstr "_Actualizar"
+
+#: src/ui/feed_list_view.c:265
+msgid "_Update Folder"
+msgstr "_Actualizar carpeta"
+
+#: src/ui/feed_list_view.c:275
+msgid "New _Subscription..."
+msgstr "_Suscripción nueva..."
+
+#: src/ui/feed_list_view.c:278 resources/ui/mainwindow.ui:273
+msgid "New _Folder..."
+msgstr "_Carpeta nueva..."
+
+#: src/ui/feed_list_view.c:281 resources/ui/mainwindow.ui:277
+msgid "New S_earch Folder..."
+msgstr "Carpeta _virtual nueva..."
+
+#: src/ui/feed_list_view.c:282
+msgid "New S_ource..."
+msgstr "_Fuente nueva..."
+
+#: src/ui/feed_list_view.c:283 resources/ui/mainwindow.ui:285
+msgid "New _News Bin..."
+msgstr "Ba_ndeja nueva..."
+
+#: src/ui/feed_list_view.c:286
+msgid "_New"
+msgstr "_Nueva"
+
+#: src/ui/feed_list_view.c:295
+#, fuzzy
+msgid "Sort Feeds"
+msgstr "_Ordenar canales"
+
+#: src/ui/feed_list_view.c:303
+msgid "_Mark All As Read"
+msgstr "_Marcar todos como leídos"
+
+#: src/ui/feed_list_view.c:305
+msgid "_Export Items To File"
+msgstr "_Exportar elementos a un archivo"
+
+#: src/ui/feed_list_view.c:313
+msgid "_Rebuild"
+msgstr "_Reconstruir"
+
+#: src/ui/feed_list_view.c:321 src/ui/feed_list_view.c:958
+msgid "_Delete"
+msgstr "_Eliminar"
+
+#: src/ui/feed_list_view.c:322 resources/ui/mainwindow.ui:330
+msgid "_Properties"
+msgstr "_Propiedades"
+
+#: src/ui/feed_list_view.c:329
+msgid "Convert To Local Subscriptions..."
+msgstr "Convertir a suscripciones locales..."
+
+#: src/ui/feed_list_view.c:612
 #, c-format
 msgid ""
 "%s\n"
@@ -923,29 +803,21 @@ msgstr ""
 "%s\n"
 "<i>Reconstruyendo</i>"
 
-#: ../src/ui/feed_list_view.c:766
-msgid "Deleting entry"
-msgstr "Eliminando la entrada"
-
-#: ../src/ui/feed_list_view.c:767
+#: src/ui/feed_list_view.c:948
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "¿Realmente desea eliminar «%s» y todo su contenido?"
 
-#: ../src/ui/feed_list_view.c:767
+#: src/ui/feed_list_view.c:948
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "¿Realmente desea eliminar «%s»?"
 
-#: ../src/ui/feed_list_view.c:777
-msgid "_Delete"
-msgstr "_Eliminar"
-
-#: ../src/ui/feed_list_view.c:779
+#: src/ui/feed_list_view.c:960
 msgid "Deletion Confirmation"
 msgstr "Confirmar eliminación"
 
-#: ../src/ui/feed_list_view.c:808
+#: src/ui/feed_list_view.c:988
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
@@ -954,116 +826,141 @@ msgstr ""
 "¿Está seguro que quiere añadir una nueva suscripción con URL «%s»? Ya existe "
 "otra suscripción con mismo URL («%s»)."
 
-#: ../src/ui/feed_list_view.c:821
+#: src/ui/feed_list_view.c:1001 resources/ui/google_source.ui:154
+#: resources/ui/search_folder.ui:59
 msgid "_Add"
 msgstr "_Agregar"
 
-#: ../src/ui/feed_list_view.c:823
+#: src/ui/feed_list_view.c:1003
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Confirmar adición de suscripcion duplicada"
 
-#: ../src/ui/icons.c:54
+#: src/ui/icons.c:54
 #, c-format
 msgid "Couldn't find pixmap file: %s"
 msgstr "No se pudo encontrar la imagen: %s"
 
-#: ../src/ui/item_list_view.c:456
-msgid " <span background='red' color='black'> important </span> "
+#: src/ui/item_list_view.c:601
+#, fuzzy
+msgid " <span background='red' color='white'> important </span> "
 msgstr " <span background='red' color='black'> importante </span> "
 
-#: ../src/ui/item_list_view.c:819
+#: src/ui/item_list_view.c:736 resources/ui/mainwindow.ui:369
+msgid "Open In _Tab"
+msgstr "Abrir en una _pestaña"
+
+#: src/ui/item_list_view.c:740 resources/ui/mainwindow.ui:373
+msgid "_Open In Browser"
+msgstr "_Abrir en el navegador"
+
+#: src/ui/item_list_view.c:744 resources/ui/mainwindow.ui:377
+msgid "Open In _External Browser"
+msgstr "Abrir en un navegador _externo"
+
+#: src/ui/item_list_view.c:749
+msgid "Email The Author"
+msgstr "Enviar email al autor"
+
+#: src/ui/item_list_view.c:774
+msgid "Copy to News Bin"
+msgstr "Copiar a una bandeja"
+
+#: src/ui/item_list_view.c:782
+#, c-format
+msgid "_Bookmark at %s"
+msgstr "Crear un _marcador en %s"
+
+#: src/ui/item_list_view.c:788
+msgid "Copy Item _Location"
+msgstr "Copiar la _dirección del artículo"
+
+#: src/ui/item_list_view.c:797 resources/ui/mainwindow.ui:355
+msgid "Toggle _Read Status"
+msgstr "Cambiar entre _leído y no leído"
+
+#: src/ui/item_list_view.c:801 resources/ui/mainwindow.ui:359
+msgid "Toggle Item _Flag"
+msgstr "Colocar o quitar ma_rca"
+
+#: src/ui/item_list_view.c:805
+msgid "R_emove Item"
+msgstr "_Eliminar artículo"
+
+#: src/ui/item_list_view.c:1062
 msgid "Headline"
 msgstr "Titular"
 
-#: ../src/ui/item_list_view.c:837
+#: src/ui/item_list_view.c:1071
 msgid "Date"
 msgstr "Fecha"
 
-#: ../src/ui/itemview.c:511
-msgid "This item has no link specified!"
-msgstr "¡Este artículo no tiene un enlace asignado!"
-
-#: ../src/ui/liferea_browser.c:482
-msgid "Content download failed! Try disabling reader mode."
-msgstr ""
-"¡Falló la descarga de contenido! Pruebe desactivando el modo de lectura."
-
-#: ../src/ui/liferea_browser.c:495
-msgid "Content extraction failed! Try disabling reader mode."
-msgstr ""
-"¡Falló la extracción de contenido! Pruebe desactivando el modo de lectura."
-
-#: ../src/ui/liferea_shell.c:328
-#, c-format
-msgid " (%d new)"
-msgid_plural " (%d new)"
-msgstr[0] " (%d nuevo)"
-msgstr[1] " (%d nuevos)"
-
-#: ../src/ui/liferea_shell.c:333
-#, c-format
-msgid "%d unread%s"
-msgid_plural "%d unread%s"
-msgstr[0] "%d sin leer%s"
-msgstr[1] "%d sin leer%s"
-
-#: ../src/ui/preferences_dialog.c:67 ../src/ui/subscription_dialog.c:43
+#: src/ui/preferences_dialog.c:68 src/ui/subscription_dialog.c:51
 msgid "minutes"
 msgstr "minutos"
 
-#: ../src/ui/preferences_dialog.c:68 ../src/ui/subscription_dialog.c:44
+#: src/ui/preferences_dialog.c:69 src/ui/subscription_dialog.c:52
 msgid "hours"
 msgstr "horas"
 
-#: ../src/ui/preferences_dialog.c:69 ../src/ui/subscription_dialog.c:45
+#: src/ui/preferences_dialog.c:70 src/ui/subscription_dialog.c:53
 msgid "days"
 msgstr "días"
 
-#: ../src/ui/preferences_dialog.c:74
+#: src/ui/preferences_dialog.c:75
 msgid "Space"
 msgstr "Espacio"
 
-#: ../src/ui/preferences_dialog.c:75
+#: src/ui/preferences_dialog.c:76
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Espacio"
 
-#: ../src/ui/preferences_dialog.c:76
+#: src/ui/preferences_dialog.c:77
 msgid "<Alt> Space"
 msgstr "<Alt> Espacio"
 
-#: ../src/ui/preferences_dialog.c:81
+#: src/ui/preferences_dialog.c:82
 msgid "Normal View"
 msgstr "Vista normal"
 
-#: ../src/ui/preferences_dialog.c:82
+#: src/ui/preferences_dialog.c:83
 msgid "Wide View"
 msgstr "Vista amplia"
 
-#: ../src/ui/preferences_dialog.c:83
+#: src/ui/preferences_dialog.c:84
 msgid "Automatic"
 msgstr "Automático"
 
-#: ../src/ui/preferences_dialog.c:374
+#: src/ui/preferences_dialog.c:89
 msgid "Default Browser"
 msgstr "Navegador predeterminado"
 
-#: ../src/ui/preferences_dialog.c:376
+#: src/ui/preferences_dialog.c:90
 msgid "Manual"
 msgstr "Manual"
 
-#: ../src/ui/rule_editor.c:261
+#: src/ui/preferences_dialog.c:383
+#, fuzzy
+msgid "Enable or disable this plugin"
+msgstr "¡Fallo al desactivar el complemento (%s)!"
+
+#: src/ui/preferences_dialog.c:389
+msgid "Configure this plugin"
+msgstr ""
+
+#. add remove button
+#: src/ui/rule_editor.c:180
 msgid "Remove"
 msgstr "Eliminar"
 
-#: ../src/ui/search_dialog.c:120
+#: src/ui/search_dialog.c:127
 msgid "Saved Search"
 msgstr "Búsqueda guardada"
 
-#: ../src/ui/subscription_dialog.c:285 ../src/ui/subscription_dialog.c:292
+#: src/ui/subscription_dialog.c:302 src/ui/subscription_dialog.c:309
 msgid "Choose File"
 msgstr "Elija un archivo"
 
-#: ../src/ui/subscription_dialog.c:357
+#: src/ui/subscription_dialog.c:378
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1071,143 +968,149 @@ msgid_plural ""
 msgstr[0] "Este canal sugiere un intervalo de actualización de %d minuto."
 msgstr[1] "Este canal sugiere un intervalo de actualización de %d minutos."
 
-#: ../src/ui/subscription_dialog.c:361
+#: src/ui/subscription_dialog.c:382
 msgid "This feed specifies no default update interval."
 msgstr "Este canal no especifica un intervalo de actualización recomendado."
 
-#: ../src/ui/ui_common.c:204
+#: src/ui/ui_common.c:204
 msgid "All Files"
 msgstr "Todos los archivos"
 
-#: ../src/update_job.c:67
+#: src/update_job.c:68
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "¡Se produjo un error al abrir el archivo temporal %s para filtrar!"
 
-#: ../src/update_job.c:89
+#: src/update_job.c:90
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s terminó con estado %d"
 
-#: ../src/update_job.c:95 ../src/update_job.c:318
+#: src/update_job.c:96 src/update_job.c:317
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "No se pudo abrir la tubería «%s»"
 
-#: ../src/update_job.c:99
+#: src/update_job.c:100
 msgid "Error: Could not write temporary file!"
 msgstr "Error: ¡No se pudo abrir el archivo temporal!"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update_job.c:349
+#: src/update_job.c:348
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Error: No se pudo abrir el archivo «%s»"
 
-#: ../src/update_job.c:355
+#: src/update_job.c:354
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Error: No existe el archivo «%s»"
 
-#: ../src/webkit/liferea_web_view.c:165
-msgid "Open Link In _Tab"
-msgstr "Abrir el enlace en una _pestaña"
-
-#: ../src/webkit/liferea_web_view.c:166
-msgid "Open Link In Browser"
-msgstr "Abrir el enlace en el navegador"
-
-#: ../src/webkit/liferea_web_view.c:167
-msgid "Open Link In External Browser"
-msgstr "Abrir el enlace en un navegador externo"
-
-#: ../src/webkit/liferea_web_view.c:173
+#: src/webkit/liferea_web_view.c:174
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Crear un _marcador del enlace en %s"
 
-#: ../src/webkit/liferea_web_view.c:180
+#: src/webkit/liferea_web_view.c:177
+msgid "Open Link In _Tab"
+msgstr "Abrir el enlace en una _pestaña"
+
+#: src/webkit/liferea_web_view.c:178
+msgid "Open Link In Browser"
+msgstr "Abrir el enlace en el navegador"
+
+#: src/webkit/liferea_web_view.c:179
+msgid "Open Link In External Browser"
+msgstr "Abrir el enlace en un navegador externo"
+
+#. menu_add_item(context_menu, bookmarkLabel, linkActionMap, "social-bookmark-link", bookmarkParams);
+#: src/webkit/liferea_web_view.c:184
 msgid "_Copy Link Location"
 msgstr "_Copiar la dirección del enlace"
 
-#: ../src/webkit/liferea_web_view.c:183
+#: src/webkit/liferea_web_view.c:187
 msgid "_View Image"
 msgstr "_Guardar la imagen como"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: src/webkit/liferea_web_view.c:188
 msgid "_Copy Image Location"
 msgstr "_Copiar la dirección de la imagen"
 
-#: ../src/webkit/liferea_web_view.c:187
+#: src/webkit/liferea_web_view.c:191
 msgid "S_ave Link As"
 msgstr "_Guardar el enlace como"
 
-#: ../src/webkit/liferea_web_view.c:190
+#: src/webkit/liferea_web_view.c:194
 msgid "S_ave Image As"
 msgstr "_Guardar la imagen como"
 
-#: ../src/webkit/liferea_web_view.c:197
+#: src/webkit/liferea_web_view.c:199
 msgid "_Subscribe..."
 msgstr "_Suscribirse..."
 
-#: ../src/webkit/liferea_web_view.c:201
+#: src/webkit/liferea_web_view.c:203
 msgid "_Copy"
 msgstr "_Copiar"
 
-#: ../src/webkit/liferea_web_view.c:207
+#: src/webkit/liferea_web_view.c:207
 msgid "_Increase Text Size"
 msgstr "_Aumentar el tamaño del texto"
 
-#: ../src/webkit/liferea_web_view.c:208
+#: src/webkit/liferea_web_view.c:208
 msgid "_Decrease Text Size"
 msgstr "_Reducir el tamaño del texto"
 
-#: ../src/webkit/liferea_web_view.c:215
-msgid "_Reader Mode"
-msgstr "Modo de _lectura"
-
-#: ../src/xml.c:427
+#: src/xml.c:427
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Hay más errores. La salida se ha truncado]"
 
-#: ../src/xml.c:595
+#: src/xml.c:593
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML Parser: No se pudo procesar el documento:\n"
 
-#: ../resources/about.ui.h:1
-msgid "About"
-msgstr "Acerca de"
-
-#: ../resources/about.ui.h:2
+#: resources/ui/about.ui:62
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea es un lector de noticias para GTK+"
 
-#: ../resources/about.ui.h:3
+#: resources/ui/about.ui:68
+msgid "About"
+msgstr "Acerca de"
+
+#: resources/ui/about.ui:125
 msgid "Liferea Homepage"
 msgstr "Sitio web de Liferea"
 
-#: ../resources/auth.ui.h:1
+#: resources/ui/auth.ui:10
 msgid "Authentication"
 msgstr "Autenticación"
 
-#: ../resources/auth.ui.h:3
-#, no-c-format
+#: resources/ui/auth.ui:32
 msgid "Enter the username and password for \"%s\" (%s)"
 msgstr "Escriba el nombre de usuario y la contraseña para «%s» (%s)"
 
-#: ../resources/auth.ui.h:4 ../resources/properties.ui.h:31
+#: resources/ui/auth.ui:49 resources/ui/properties.ui:513
 msgid "User_name:"
 msgstr "_Nombre de usuario:"
 
-#: ../resources/auth.ui.h:5 ../resources/properties.ui.h:32
+#: resources/ui/auth.ui:73 resources/ui/properties.ui:535
 msgid "_Password:"
 msgstr "_Contraseña:"
 
-#: ../resources/google_source.ui.h:1
+#: resources/ui/auth.ui:111 resources/ui/google_source.ui:148
+#: resources/ui/reedah_source.ui:100
+#, fuzzy
+msgid "Cancel"
+msgstr "_Cancelar"
+
+#: resources/ui/auth.ui:117 resources/ui/reedah_source.ui:106
+msgid "OK"
+msgstr ""
+
+#: resources/ui/google_source.ui:7
 msgid "Add Google Reader API Account"
 msgstr "Añadir cuenta de API de Google Reader"
 
-#: ../resources/google_source.ui.h:2
+#: resources/ui/google_source.ui:23
 msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
@@ -1215,509 +1118,397 @@ msgstr ""
 "Por favor ingrese los detalles de la nueva suscripción compatible con la API "
 "de Google Reader."
 
-#: ../resources/google_source.ui.h:3 ../resources/reedah_source.ui.h:3
-#: ../resources/theoldreader_source.ui.h:3 ../resources/ttrss_source.ui.h:4
-msgid "_Password"
-msgstr "_Contraseña"
-
-#: ../resources/google_source.ui.h:4 ../resources/reedah_source.ui.h:4
-#: ../resources/theoldreader_source.ui.h:4
-msgid "_Username (Email)"
-msgstr "Nombre de _usuario (email)"
-
-#: ../resources/google_source.ui.h:5
-msgid "_Server"
-msgstr "_Servidor"
-
-#: ../resources/google_source.ui.h:6
+#: resources/ui/google_source.ui:38
 msgid "_Name"
 msgstr "_Nombre"
 
-#: ../resources/liferea_menu.ui.h:1
-msgid "_Subscriptions"
-msgstr "_Suscripciones"
+#: resources/ui/google_source.ui:64 resources/ui/reedah_source.ui:71
+#: resources/ui/theoldreader_source.ui:67
+msgid "_Username (Email)"
+msgstr "Nombre de _usuario (email)"
 
-#: ../resources/liferea_menu.ui.h:2
-msgid "Update _All"
-msgstr "_Actualizar todas"
+#: resources/ui/google_source.ui:89 resources/ui/reedah_source.ui:59
+#: resources/ui/theoldreader_source.ui:55 resources/ui/ttrss_source.ui:75
+msgid "_Password"
+msgstr "_Contraseña"
 
-#: ../resources/liferea_menu.ui.h:3
-msgid "Mark All As _Read"
-msgstr "_Marcar todas como leídos"
+#: resources/ui/google_source.ui:115
+msgid "_Server"
+msgstr "_Servidor"
 
-#: ../resources/liferea_menu.ui.h:4
-msgid "_New Subscription..."
-msgstr "Suscripción _nueva..."
-
-#: ../resources/liferea_menu.ui.h:5
-msgid "New _Folder..."
-msgstr "_Carpeta nueva..."
-
-#: ../resources/liferea_menu.ui.h:6
-msgid "New S_earch Folder..."
-msgstr "Carpeta _virtual nueva..."
-
-#: ../resources/liferea_menu.ui.h:7
-msgid "New _Source..."
-msgstr "_Fuente nueva..."
-
-#: ../resources/liferea_menu.ui.h:8
-msgid "New _News Bin..."
-msgstr "Ba_ndeja nueva..."
-
-#: ../resources/liferea_menu.ui.h:9
-msgid "_Import Feed List..."
-msgstr "_Importar lista de canales..."
-
-#: ../resources/liferea_menu.ui.h:10
-msgid "_Export Feed List..."
-msgstr "E_xportar lista de canales..."
-
-#: ../resources/liferea_menu.ui.h:11
-msgid "_Quit"
-msgstr "_Salir"
-
-#: ../resources/liferea_menu.ui.h:12
-msgid "_Feed"
-msgstr "_Canal"
-
-#: ../resources/liferea_menu.ui.h:13
-msgid "_Update"
-msgstr "_Actualizar"
-
-#: ../resources/liferea_menu.ui.h:15
-msgid "Remove _All Items"
-msgstr "E_liminar los artículos"
-
-#: ../resources/liferea_menu.ui.h:16
-msgid "_Remove"
-msgstr "_Eliminar"
-
-#: ../resources/liferea_menu.ui.h:17
-msgid "_Properties"
-msgstr "_Propiedades"
-
-#: ../resources/liferea_menu.ui.h:18
-msgid "_Item"
-msgstr "_Artículo"
-
-#: ../resources/liferea_menu.ui.h:22
-msgid "Toggle _Read Status"
-msgstr "Cambiar entre _leído y no leído"
-
-#: ../resources/liferea_menu.ui.h:23
-msgid "Toggle Item _Flag"
-msgstr "Colocar o quitar ma_rca"
-
-#: ../resources/liferea_menu.ui.h:24
-msgid "R_emove"
-msgstr "_Eliminar"
-
-#: ../resources/liferea_menu.ui.h:25
-msgid "Open In _Tab"
-msgstr "Abrir en una _pestaña"
-
-#: ../resources/liferea_menu.ui.h:26
-msgid "_Open In Browser"
-msgstr "_Abrir en el navegador"
-
-#: ../resources/liferea_menu.ui.h:27
-msgid "Open In _External Browser"
-msgstr "Abrir en un navegador _externo"
-
-#: ../resources/liferea_menu.ui.h:28
-msgid "_View"
-msgstr "_Ver"
-
-#: ../resources/liferea_menu.ui.h:29
-msgid "_Fullscreen"
-msgstr "_Pantalla completa"
-
-#: ../resources/liferea_menu.ui.h:30
-msgid "Zoom _In"
-msgstr "_Acercarse"
-
-#: ../resources/liferea_menu.ui.h:31
-msgid "Zoom _Out"
-msgstr "Ale_jarse"
-
-#: ../resources/liferea_menu.ui.h:32
-msgid "_Normal size"
-msgstr "Tamaño _normal"
-
-#: ../resources/liferea_menu.ui.h:33
-msgid "_Reduced Feed List"
-msgstr "Lista de canales _reducida"
-
-#: ../resources/liferea_menu.ui.h:34
-msgid "_Tools"
-msgstr "_Herramientas"
-
-#: ../resources/liferea_menu.ui.h:35
-msgid "_Update Monitor"
-msgstr "_Monitor de actualizaciones"
-
-#: ../resources/liferea_menu.ui.h:36
-msgid "_Preferences"
-msgstr "_Preferencias"
-
-#: ../resources/liferea_menu.ui.h:37
-msgid "_Sort Feeds"
-msgstr "_Ordenar canales"
-
-#: ../resources/liferea_menu.ui.h:38
-msgid "S_earch"
-msgstr "_Buscar"
-
-#: ../resources/liferea_menu.ui.h:40
-msgid "_Help"
-msgstr "A_yuda"
-
-#: ../resources/liferea_menu.ui.h:41
-msgid "_Contents"
-msgstr "_Contenidos"
-
-#: ../resources/liferea_menu.ui.h:42
-msgid "_Quick Reference"
-msgstr "_Referencia rápida"
-
-#: ../resources/liferea_menu.ui.h:43
-msgid "_FAQ"
-msgstr "_Preguntas frecuentes"
-
-#: ../resources/liferea_menu.ui.h:44
-msgid "_About"
-msgstr "_Acerca de"
-
-#: ../resources/mainwindow.ui.h:2
+#: resources/ui/mainwindow.ui:160
 msgid "page 1"
 msgstr "página 1"
 
-#: ../resources/mainwindow.ui.h:3
+#: resources/ui/mainwindow.ui:195
 msgid "page 2"
 msgstr "página 2"
 
-#: ../resources/mainwindow.ui.h:4 ../resources/prefs.ui.h:25
+#: resources/ui/mainwindow.ui:204 resources/ui/prefs.ui:437
 msgid "Headlines"
 msgstr "Titulares"
 
-#: ../resources/mark_read_dialog.ui.h:1
+#: resources/ui/mainwindow.ui:255
+msgid "_Subscriptions"
+msgstr "_Suscripciones"
+
+#: resources/ui/mainwindow.ui:259
+msgid "Update _All"
+msgstr "_Actualizar todas"
+
+#: resources/ui/mainwindow.ui:263
+msgid "Mark All As _Read"
+msgstr "_Marcar todas como leídos"
+
+#: resources/ui/mainwindow.ui:269
+msgid "_New Subscription..."
+msgstr "Suscripción _nueva..."
+
+#: resources/ui/mainwindow.ui:281
+msgid "New _Source..."
+msgstr "_Fuente nueva..."
+
+#: resources/ui/mainwindow.ui:291
+msgid "_Import Feed List..."
+msgstr "_Importar lista de canales..."
+
+#: resources/ui/mainwindow.ui:295
+msgid "_Export Feed List..."
+msgstr "E_xportar lista de canales..."
+
+#: resources/ui/mainwindow.ui:301
+msgid "_Quit"
+msgstr "_Salir"
+
+#: resources/ui/mainwindow.ui:306
+msgid "_Feed"
+msgstr "_Canal"
+
+#: resources/ui/mainwindow.ui:314
+msgid "_Mark Items Read"
+msgstr "_Marcar como leído"
+
+#: resources/ui/mainwindow.ui:320
+msgid "Remove _All Items"
+msgstr "E_liminar los artículos"
+
+#: resources/ui/mainwindow.ui:324
+msgid "_Remove"
+msgstr "_Eliminar"
+
+#: resources/ui/mainwindow.ui:335
+msgid "_Item"
+msgstr "_Artículo"
+
+#: resources/ui/mainwindow.ui:339
+msgid "_Next Unread Item"
+msgstr "Siguiente artículo _nuevo"
+
+#: resources/ui/mainwindow.ui:345
+msgid "Previous Item"
+msgstr "Artículo anterior"
+
+#: resources/ui/mainwindow.ui:349
+msgid "Next Item"
+msgstr "Siguiente artículo"
+
+#: resources/ui/mainwindow.ui:363
+msgid "R_emove"
+msgstr "_Eliminar"
+
+#: resources/ui/mainwindow.ui:382
+msgid "_View"
+msgstr "_Ver"
+
+#: resources/ui/mainwindow.ui:386
+msgid "_Fullscreen"
+msgstr "_Pantalla completa"
+
+#: resources/ui/mainwindow.ui:392
+msgid "Zoom _In"
+msgstr "_Acercarse"
+
+#: resources/ui/mainwindow.ui:396
+msgid "Zoom _Out"
+msgstr "Ale_jarse"
+
+#: resources/ui/mainwindow.ui:400
+msgid "_Normal size"
+msgstr "Tamaño _normal"
+
+#: resources/ui/mainwindow.ui:406
+msgid "_Reduced Feed List"
+msgstr "Lista de canales _reducida"
+
+#: resources/ui/mainwindow.ui:411
+msgid "_Tools"
+msgstr "_Herramientas"
+
+#: resources/ui/mainwindow.ui:419
+msgid "_Update Monitor"
+msgstr "_Monitor de actualizaciones"
+
+#: resources/ui/mainwindow.ui:423
+msgid "_Sort Feeds"
+msgstr "_Ordenar canales"
+
+#: resources/ui/mainwindow.ui:429
+msgid "_Preferences"
+msgstr "_Preferencias"
+
+#: resources/ui/mainwindow.ui:440
+msgid "S_earch"
+msgstr "_Buscar"
+
+#: resources/ui/mainwindow.ui:444
+msgid "Search All Feeds..."
+msgstr "Buscar en todos los canales..."
+
+#: resources/ui/mainwindow.ui:449
+msgid "_Help"
+msgstr "A_yuda"
+
+#: resources/ui/mainwindow.ui:453
+msgid "_Contents"
+msgstr "_Contenidos"
+
+#: resources/ui/mainwindow.ui:457
+msgid "_Shortcuts"
+msgstr ""
+
+#: resources/ui/mainwindow.ui:463
+msgid "_About"
+msgstr "_Acerca de"
+
+#: resources/ui/mark_read_dialog.ui:11
 msgid "Mark all as read ?"
 msgstr "¿Marcar todo como leído?"
 
-#: ../resources/mark_read_dialog.ui.h:2
-msgid "Mark all as read"
+#: resources/ui/mark_read_dialog.ui:27
+#, fuzzy
+msgid "_Mark all as read"
 msgstr "Marcar todo como leído"
 
-#: ../resources/mark_read_dialog.ui.h:3
+#: resources/ui/mark_read_dialog.ui:46
 msgid "Do not ask again"
 msgstr "No preguntar de nuevo"
 
-#: ../resources/new_folder.ui.h:1
+#: resources/ui/new_folder.ui:8
 msgid "New Folder"
 msgstr "Carpeta nueva"
 
-#: ../resources/new_folder.ui.h:2
+#: resources/ui/new_folder.ui:23
 msgid "_Folder name:"
 msgstr "Nombre de la _carpeta:"
 
-#: ../resources/new_newsbin.ui.h:2
+#: resources/ui/new_folder.ui:69 resources/ui/new_newsbin.ui:81
+#: resources/ui/node_source.ui:77 resources/ui/opml_source.ui:80
+#: resources/ui/properties.ui:671 resources/ui/rename_node.ui:70
+#: resources/ui/search_folder.ui:143 resources/ui/simple_subscription.ui:95
+#: resources/ui/theoldreader_source.ui:103 resources/ui/ttrss_source.ui:123
+msgid "_OK"
+msgstr ""
+
+#: resources/ui/new_newsbin.ui:23
 msgid "_News Bin Name:"
 msgstr "_Nombre de la bandeja:"
 
-#: ../resources/new_newsbin.ui.h:3
+#: resources/ui/new_newsbin.ui:47
 msgid "_Always show in Reduced Feed List"
 msgstr "_Siempre mostrar en la lista de canales reducida"
 
-#: ../resources/new_subscription.ui.h:2 ../resources/properties.ui.h:11
-msgid "Feed Source"
-msgstr "Fuente del canal"
-
-#: ../resources/new_subscription.ui.h:3 ../resources/properties.ui.h:12
-msgid "Source Type:"
-msgstr "Tipo de fuente:"
-
-#: ../resources/new_subscription.ui.h:4 ../resources/properties.ui.h:13
-msgid "_URL"
-msgstr "_URL"
-
-#: ../resources/new_subscription.ui.h:5 ../resources/properties.ui.h:14
-msgid "_Command"
-msgstr "_Programa"
-
-#: ../resources/new_subscription.ui.h:6 ../resources/properties.ui.h:15
-msgid "_Local File"
-msgstr "Archivo _local"
-
-#: ../resources/new_subscription.ui.h:7 ../resources/properties.ui.h:16
-msgid "Select File..."
-msgstr "Seleccionar archivo..."
-
-#: ../resources/new_subscription.ui.h:8 ../resources/properties.ui.h:17
-msgid "_Source:"
-msgstr "_Fuente:"
-
-#: ../resources/new_subscription.ui.h:9
-msgid "Download / Postprocessing"
-msgstr "Descarga/posprocesamiento"
-
-#: ../resources/new_subscription.ui.h:10 ../resources/properties.ui.h:30
-msgid "_Don't use proxy for download"
-msgstr "No usar «proxy» para _descargas"
-
-#: ../resources/new_subscription.ui.h:11 ../resources/properties.ui.h:18
-msgid "Use conversion _filter"
-msgstr "Usar _filtro de conversión"
-
-#: ../resources/new_subscription.ui.h:12
-msgid ""
-"Liferea can use external filter plugins in order to access feeds and "
-"directories in non-supported formats.  See the documentation for more "
-"information."
-msgstr ""
-"Liferea puede usar filtros externos para acceder a canales y carpetas en "
-"formatos no compatibles. Consulte la documentación para mayor información."
-
-#: ../resources/new_subscription.ui.h:13 ../resources/properties.ui.h:20
-msgid "Convert _using:"
-msgstr "Convertir _usando:"
-
-#: ../resources/node_source.ui.h:1
+#: resources/ui/node_source.ui:11
 msgid "Source Selection"
 msgstr "Selección de fuente"
 
-#: ../resources/node_source.ui.h:2
+#: resources/ui/node_source.ui:28
 msgid "_Select the source type you want to add..."
 msgstr "_Seleccione el tipo de fuente que quiera añadir..."
 
-#: ../resources/opml_source.ui.h:1
-msgid "Add OPML/Planet"
+#: resources/ui/opml_source.ui:7
+#, fuzzy
+msgid "Add OPML"
 msgstr "Añadir OPML/Planet"
 
-#: ../resources/opml_source.ui.h:2
+#: resources/ui/opml_source.ui:23
 msgid ""
 "Please specify a local file or an URL pointing to a valid OPML feed list."
 msgstr ""
 "Indique un archivo local o un URL que apunte a una lista de canales en "
 "formato OPML."
 
-#: ../resources/opml_source.ui.h:3
+#: resources/ui/opml_source.ui:35
 msgid "_Location"
 msgstr "_Ubicación"
 
-#: ../resources/opml_source.ui.h:4
+#: resources/ui/opml_source.ui:50
 msgid "_Select File"
 msgstr "_Elegir archivo"
 
-#: ../resources/prefs.ui.h:1
+#: resources/ui/plugins.ui:9
+#, fuzzy
+msgid "Plugin Manager"
+msgstr "Instalador de complementos"
+
+#: resources/ui/plugins.ui:43
+msgid "Con_figure"
+msgstr ""
+
+#: resources/ui/plugins.ui:51 resources/ui/prefs.ui:786
+msgid "_Close"
+msgstr ""
+
+#: resources/ui/prefs.ui:19
 msgid "Liferea Preferences"
 msgstr "Preferencias"
 
-#: ../resources/prefs.ui.h:2
+#: resources/ui/prefs.ui:45
 msgid "Feed Cache Handling"
 msgstr "Manejo de almacenamiento temporal de canales"
 
-#: ../resources/prefs.ui.h:3
+#: resources/ui/prefs.ui:59
 msgid "Default _number of items per feed to save:"
 msgstr "_Número de artículos que almacenar por canal:"
 
-#: ../resources/prefs.ui.h:4 ../resources/properties.ui.h:27
+#: resources/ui/prefs.ui:76 resources/ui/properties.ui:456
 msgid "0"
 msgstr "0"
 
-#: ../resources/prefs.ui.h:5
+#: resources/ui/prefs.ui:97
 msgid "Feed Update Settings"
 msgstr "Opciones de actualización de canales"
 
-#. Feed update interval hint in preference dialog.
-#: ../resources/prefs.ui.h:7
-msgid ""
-"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
-"waste of bandwidth to poll feeds more often than each hour.</i>"
-msgstr ""
-"Nota: <i>Establezca un tiempo razonable. Buscar actualizaciones más de una "
-"vez por hora es, casi siempre, un desperdicio de ancho de banda.</i>"
-
-#: ../resources/prefs.ui.h:8
+#: resources/ui/prefs.ui:113
 msgid "_Update all subscriptions at startup."
 msgstr "Act_ualizar todas las suscripciones al iniciar."
 
-#: ../resources/prefs.ui.h:9
+#: resources/ui/prefs.ui:125
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Intervalo de actualización predeterminado:"
 
-#: ../resources/prefs.ui.h:10 ../resources/properties.ui.h:6
+#: resources/ui/prefs.ui:140 resources/ui/properties.ui:128
 msgid "1"
 msgstr "1"
 
-#: ../resources/prefs.ui.h:11
+#: resources/ui/prefs.ui:169
 msgid "Feeds"
 msgstr "Canales"
 
-#: ../resources/prefs.ui.h:12
+#: resources/ui/prefs.ui:189
 msgid "Folder Display Settings"
 msgstr "Opciones de presentación de carpetas"
 
-#: ../resources/prefs.ui.h:13
+#: resources/ui/prefs.ui:204
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr ""
 "Mo_strar los artículos de los canales contenidos al seleccionar una carpeta."
 
-#: ../resources/prefs.ui.h:14
+#: resources/ui/prefs.ui:218
 msgid "_Hide read items."
 msgstr "_Ocultar artículos leídos."
 
-#: ../resources/prefs.ui.h:15
+#: resources/ui/prefs.ui:239
 msgid "Feed Icons (Favicons)"
 msgstr "Iconos de canales («favicons»)"
 
-#: ../resources/prefs.ui.h:16
+#: resources/ui/prefs.ui:253
 msgid "_Update all favicons now"
 msgstr "Act_ualizar todos los iconos ahora"
 
-#: ../resources/prefs.ui.h:17
+#: resources/ui/prefs.ui:273
 msgid "Folders"
 msgstr "Carpetas"
 
-#: ../resources/prefs.ui.h:18
+#: resources/ui/prefs.ui:295
 msgid "Reading Headlines"
 msgstr "Lectura de titulares"
 
-#: ../resources/prefs.ui.h:19
+#: resources/ui/prefs.ui:309
 msgid "_Skim through articles with:"
 msgstr "_Avanzar por los artículos con:"
 
-#: ../resources/prefs.ui.h:20
+#: resources/ui/prefs.ui:321
 msgid "_Default View Mode:"
 msgstr "Modo de vista pre_determinado:"
 
-#: ../resources/prefs.ui.h:21
+#: resources/ui/prefs.ui:335
 msgid "_Defer removing read items from folders and search folders."
 msgstr ""
 "_Postergar el borrado de artículos leídos de carpetas y carpetas de búsqueda."
 
-#: ../resources/prefs.ui.h:22
+#: resources/ui/prefs.ui:349
 msgid "Ask for confirmation when marking all items as read."
 msgstr "Pedir confirmación al marcar todos los artículos como leídos."
 
-#: ../resources/prefs.ui.h:23
+#: resources/ui/prefs.ui:393
 msgid "Web Integration"
 msgstr "Integración web"
 
-#: ../resources/prefs.ui.h:24
+#: resources/ui/prefs.ui:407
 msgid "_Post Bookmarks to"
 msgstr "_Enviar los marcadores a"
 
-#: ../resources/prefs.ui.h:26
+#: resources/ui/prefs.ui:458
 msgid "Internal Browser Settings"
 msgstr "Opciones del navegador interno"
 
-#: ../resources/prefs.ui.h:27
+#: resources/ui/prefs.ui:473
 msgid "Open links in Liferea's _window."
 msgstr "Abrir los enlaces en la _ventana de Liferea."
 
-#: ../resources/prefs.ui.h:28
+#: resources/ui/prefs.ui:486
 msgid "_Never run external Javascript."
 msgstr "_Nunca ejecutar Javascript externo."
 
-#: ../resources/prefs.ui.h:29
-msgid "_Enable browser plugins."
-msgstr "Activar los _complementos del navegador."
-
-#: ../resources/prefs.ui.h:30
+#: resources/ui/prefs.ui:508
 msgid "External Browser Settings"
 msgstr "Opciones del navegador externo"
 
-#: ../resources/prefs.ui.h:31
+#: resources/ui/prefs.ui:522
 msgid "_Browser:"
 msgstr "_Navegador:"
 
-#: ../resources/prefs.ui.h:32
+#: resources/ui/prefs.ui:534
 msgid "_Manual:"
 msgstr "_Manual:"
 
-#: ../resources/prefs.ui.h:34
-#, no-c-format
-msgid "<small>(%s for URL)</small>"
-msgstr "<small>(%s para URL)</small>"
-
-#: ../resources/prefs.ui.h:35
+#: resources/ui/prefs.ui:578
 msgid "Browser"
 msgstr "Navegador"
 
-#: ../resources/prefs.ui.h:36
-msgid "Toolbar Settings"
-msgstr "Opciones de la barra de herramientas"
-
-#: ../resources/prefs.ui.h:37
-msgid "_Hide toolbar."
-msgstr "_Ocultar la barra de herramientas."
-
-#: ../resources/prefs.ui.h:38
-msgid "Toolbar _button labels:"
-msgstr "Etiquetas de la _barra de herramientas:"
-
-#: ../resources/prefs.ui.h:39
-msgid "Desktop"
-msgstr "Escritorio"
-
-#: ../resources/prefs.ui.h:40
+#: resources/ui/prefs.ui:594
 msgid "HTTP Proxy Server"
 msgstr "Servidor «proxy» HTTP"
 
-#: ../resources/prefs.ui.h:41
+#: resources/ui/prefs.ui:609
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "Detectar _automáticamente (de GNOME o las variables de entorno)"
 
-#: ../resources/prefs.ui.h:42
+#: resources/ui/prefs.ui:622
 msgid "_No Proxy"
 msgstr "_No usar «proxy»"
 
-#: ../resources/prefs.ui.h:43
-msgid "_Manual Setting:"
-msgstr "Configuración _manual:"
-
-#: ../resources/prefs.ui.h:44
-msgid "Proxy _Host:"
-msgstr "_Servidor «proxy»:"
-
-#: ../resources/prefs.ui.h:45
-msgid "Proxy _Port:"
-msgstr "_Puerto del «proxy»:"
-
-#: ../resources/prefs.ui.h:46
-msgid "Use Proxy Au_thentication"
-msgstr "_Identificarse ante el «proxy»"
-
-#: ../resources/prefs.ui.h:47
-msgid "Proxy _Username:"
-msgstr "Nombre de _usuario en el «proxy»:"
-
-#: ../resources/prefs.ui.h:48
-msgid "Proxy Pass_word:"
-msgstr "_Contraseña del «proxy»:"
-
-#: ../resources/prefs.ui.h:49
+#: resources/ui/prefs.ui:636
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../resources/prefs.ui.h:50
+#: resources/ui/prefs.ui:654
 msgid "Privacy Settings"
 msgstr "Opciones de privacidad"
 
-#: ../resources/prefs.ui.h:51
+#: resources/ui/prefs.ui:669
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "Indicar a los sitios que _no quiere ser rastreado."
 
-#: ../resources/prefs.ui.h:52
+#: resources/ui/prefs.ui:682
 msgid "Tell websites not to _sell or share my data."
 msgstr "Indicar a los sitios que no quiere _vender o compartir sus datos."
 
-#: ../resources/prefs.ui.h:53
+#: resources/ui/prefs.ui:697
 msgid "_Intelligent Tracking Prevention. "
 msgstr "Prevención _inteligente de rastreo. "
 
-#: ../resources/prefs.ui.h:54
+#: resources/ui/prefs.ui:705
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
@@ -1725,58 +1516,77 @@ msgstr ""
 "Activa la característica de Webkit descrita <a href=\"https://webkit.org/"
 "tracking-prevention/\">aquí</a>."
 
-#: ../resources/prefs.ui.h:55
-msgid "Use _Reader mode."
-msgstr "Usar el modo de _lectura."
-
-#: ../resources/prefs.ui.h:56
-msgid ""
-"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
-"a> all non-content elements (like scripts, fonts, tracking)"
-msgstr ""
-"Activa la <a href=\"https://github.com/mozilla/readability\">eliminación</a> "
-"de todos los elementos sin contenido (como guiones, tipografía, rastreo)"
-
-#: ../resources/prefs.ui.h:57
+#: resources/ui/prefs.ui:721
 msgid "Privacy"
 msgstr "Privacidad"
 
-#: ../resources/properties.ui.h:1
+#: resources/ui/prefs.ui:767
+msgid "Plugins"
+msgstr "Complementos"
+
+#: resources/ui/properties.ui:23
 msgid "Subscription Properties"
 msgstr "Propiedades de la suscripción"
 
-#: ../resources/properties.ui.h:2
+#: resources/ui/properties.ui:48
 msgid "Feed _Name"
 msgstr "_Nombre del canal"
 
-#: ../resources/properties.ui.h:3
+#: resources/ui/properties.ui:84
 msgid "Update _Interval"
 msgstr "_Intervalo de actualización"
 
-#: ../resources/properties.ui.h:4
+#: resources/ui/properties.ui:101
 msgid "_Use global default update interval."
 msgstr "_Usar el intervalo establecido globalmente."
 
-#: ../resources/properties.ui.h:5
+#: resources/ui/properties.ui:114
 msgid "_Feed specific update interval of"
 msgstr "Establecer un intervalo especí_fico de"
 
-#: ../resources/properties.ui.h:7
+#: resources/ui/properties.ui:155
 msgid "_Don't update this feed automatically."
 msgstr "No actualizar _automáticamente este canal."
 
-#: ../resources/properties.ui.h:9
-#, no-c-format
+#: resources/ui/properties.ui:167
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
 "El proveedor de este canal sugiere un intervalo de actualización de %d "
 "minutos."
 
-#: ../resources/properties.ui.h:10
+#: resources/ui/properties.ui:188
 msgid "General"
 msgstr "General"
 
-#: ../resources/properties.ui.h:19
+#: resources/ui/properties.ui:205
+msgid "Feed Source"
+msgstr "Fuente del canal"
+
+#: resources/ui/properties.ui:219
+msgid "Source Type:"
+msgstr "Tipo de fuente:"
+
+#: resources/ui/properties.ui:245
+msgid "_Command"
+msgstr "_Programa"
+
+#: resources/ui/properties.ui:257
+msgid "_Local File"
+msgstr "Archivo _local"
+
+#: resources/ui/properties.ui:268 resources/ui/properties.ui:354
+msgid "Select File..."
+msgstr "Seleccionar archivo..."
+
+#: resources/ui/properties.ui:278
+msgid "_Source:"
+msgstr "_Fuente:"
+
+#: resources/ui/properties.ui:302
+msgid "Use conversion _filter"
+msgstr "Usar _filtro de conversión"
+
+#: resources/ui/properties.ui:314
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
 "directories in non-supported formats."
@@ -1784,11 +1594,15 @@ msgstr ""
 "Liferea puede usar filtros externos para acceder a canales y directorios en "
 "formatos no compatibles."
 
-#: ../resources/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: resources/ui/properties.ui:332
+msgid "Convert _using:"
+msgstr "Convertir _usando:"
+
+#: resources/ui/properties.ui:374
 msgid "Source"
 msgstr "Fuente"
 
-#: ../resources/properties.ui.h:22
+#: resources/ui/properties.ui:391
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -1797,157 +1611,130 @@ msgstr ""
 "disco cuando Liferea termina. Sin importar las opciones, los artículos con "
 "marca siempre se almacenan."
 
-#: ../resources/properties.ui.h:23
+#: resources/ui/properties.ui:405
 msgid "_Default cache settings"
 msgstr "Usar la configuración _general"
 
-#: ../resources/properties.ui.h:24
+#: resources/ui/properties.ui:417
 msgid "Di_sable cache"
 msgstr "_Desactivar almacenamiento"
 
-#: ../resources/properties.ui.h:25
+#: resources/ui/properties.ui:429
 msgid "_Unlimited cache"
 msgstr "Almacenamiento _ilimitado"
 
-#: ../resources/properties.ui.h:26
+#: resources/ui/properties.ui:441
 msgid "_Number of items to save:"
 msgstr "_Número de artículos a almacenar:"
 
-#: ../resources/properties.ui.h:28
+#: resources/ui/properties.ui:468
 msgid "Archive"
 msgstr "Almacenar"
 
-#: ../resources/properties.ui.h:29
+#: resources/ui/properties.ui:486
 msgid "Use HTTP _authentication"
 msgstr "Usar _autenticación HTTP"
 
-#: ../resources/properties.ui.h:33
+#: resources/ui/properties.ui:497
+msgid "_Don't use proxy for download"
+msgstr "No usar «proxy» para _descargas"
+
+#: resources/ui/properties.ui:567
 msgid "Download"
 msgstr "Descargar"
 
-#: ../resources/properties.ui.h:34
+#: resources/ui/properties.ui:585
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Descargar _automáticamente todos los adjuntos de este canal."
 
-#: ../resources/properties.ui.h:35
+#: resources/ui/properties.ui:596
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Cargar automáticamente en el navegador el en_lace de los artículos que se "
 "seleccionen."
 
-#: ../resources/properties.ui.h:36
+#: resources/ui/properties.ui:607
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Ignorar los canales de _comentarios de esta suscripción."
 
-#: ../resources/properties.ui.h:37
+#: resources/ui/properties.ui:618
 msgid "_Mark downloaded items as read."
 msgstr "_Marcar artículos descargados como leídos."
 
-#: ../resources/properties.ui.h:38
+#: resources/ui/properties.ui:629
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr "Extraer el contenido completo del HTML5 y Google AMP"
 
-#: ../resources/reedah_source.ui.h:1
+#: resources/ui/properties.ui:642
+msgid "Advanced"
+msgstr "Avanzado"
+
+#: resources/ui/reedah_source.ui:7
 msgid "Add Reedah Account"
 msgstr "Añadir cuenta de Reedah"
 
-#: ../resources/reedah_source.ui.h:2
+#: resources/ui/reedah_source.ui:23
 msgid "Please enter your Reedah account settings."
 msgstr "Proporcione los datos de su cuenta de Reedah."
 
-#: ../resources/rename_node.ui.h:1
+#: resources/ui/rename_node.ui:9
 msgid "Rename"
 msgstr "Renombrar"
 
-#: ../resources/rename_node.ui.h:2
+#: resources/ui/rename_node.ui:25
 msgid "_New Name:"
 msgstr "_Nuevo nombre:"
 
-#: ../resources/search_folder.ui.h:1
+#: resources/ui/search_folder.ui:9
 msgid "Search Folder Properties"
 msgstr "Propiedades de la carpeta virtual"
 
-#: ../resources/search_folder.ui.h:2
+#: resources/ui/search_folder.ui:30
 msgid "Search _Name:"
 msgstr "_Nombre de la búsqueda:"
 
-#: ../resources/search_folder.ui.h:3
+#: resources/ui/search_folder.ui:45
 msgid "Search Rules"
 msgstr "Reglas de búsqueda"
 
-#: ../resources/search_folder.ui.h:4
-msgid "Rules"
-msgstr "Reglas"
-
-#: ../resources/search_folder.ui.h:5
-msgid "All rules for this search folder"
-msgstr "Todas las reglas para esta carpeta de búsqueda"
-
-#: ../resources/search_folder.ui.h:6
+#: resources/ui/search_folder.ui:81
 msgid "Rule Matching"
 msgstr "Cumplimiento de reglas"
 
-#: ../resources/search_folder.ui.h:7 ../resources/search.ui.h:4
+#: resources/ui/search_folder.ui:96 resources/ui/search.ui:49
 msgid "A_ny Rule Matches"
 msgstr "Se cumple _cualquier regla"
 
-#: ../resources/search_folder.ui.h:8 ../resources/search.ui.h:5
+#: resources/ui/search_folder.ui:104 resources/ui/search.ui:57
 msgid "_All Rules Must Match"
 msgstr "Se cumplen _todas las reglas"
 
-#: ../resources/search_folder.ui.h:9
+#: resources/ui/search_folder.ui:114
 msgid "Hide read items"
 msgstr "Ocultar artículos leídos"
 
-#: ../resources/search.ui.h:1
+#: resources/ui/search.ui:9
 msgid "Advanced Search"
 msgstr "Búsqueda avanzada"
 
-#: ../resources/search.ui.h:2
-msgid "_Search Folder..."
-msgstr "Carpeta _virtual..."
-
-#: ../resources/search.ui.h:3
-msgid "Find Items that meet the following criteria"
+#: resources/ui/search.ui:26
+#, fuzzy
+msgid "Find items that meet the following criteria"
 msgstr "Encontrar artículos con los criterios siguientes"
 
-#: ../resources/simple_search.ui.h:1
-msgid "Search All Feeds"
-msgstr "Buscar en todos los canales"
-
-#: ../resources/simple_search.ui.h:2
-msgid "_Advanced..."
-msgstr "_Avanzado..."
-
-#: ../resources/simple_search.ui.h:3
-msgid ""
-"Starts searching for the specified text in all feeds. The search result will "
-"appear in the item list."
+#: resources/ui/search.ui:100 resources/ui/update_monitor.ui:111
+msgid "Close"
 msgstr ""
-"Busca el texto especificado en todos los canales. El resultado aparecerá en "
-"la lista de artículos."
 
-#: ../resources/simple_search.ui.h:4
-msgid "_Search for:"
-msgstr "Bu_scar:"
-
-#: ../resources/simple_search.ui.h:5
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
+#: resources/ui/search.ui:113
+msgid "Find"
 msgstr ""
-"Escriba un texto. Liferea lo buscará tanto en los títulos de los artículos "
-"como en los contenidos."
 
-#: ../resources/simple_subscription.ui.h:2
-msgid "Advanced..."
-msgstr "Avanzado..."
-
-#: ../resources/simple_subscription.ui.h:3
+#: resources/ui/simple_subscription.ui:26
 msgid "Feed _Source"
 msgstr "Fuente del _canal"
 
-#: ../resources/simple_subscription.ui.h:4
+#: resources/ui/simple_subscription.ui:41
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
@@ -1955,210 +1742,505 @@ msgstr ""
 "Escriba la dirección de un sitio web para usar el autodescubrimiento o, si "
 "la conoce, la dirección exacta del canal."
 
-#: ../resources/theoldreader_source.ui.h:1
+#: resources/ui/simple_subscription.ui:88
+msgid "_Advanced..."
+msgstr "_Avanzado..."
+
+#: resources/ui/theoldreader_source.ui:7
 msgid "Add TheOldReader Account"
 msgstr "Añadir cuenta de TheOldReader"
 
-#: ../resources/theoldreader_source.ui.h:2
+#: resources/ui/theoldreader_source.ui:22
 msgid "Please enter your TheOldReader account settings."
 msgstr "Proporcione los datos de su cuenta de TheOldReader."
 
-#: ../resources/ttrss_source.ui.h:1
+#: resources/ui/ttrss_source.ui:7
 msgid "Add Tiny Tiny RSS Account"
 msgstr "Añadir cuenta de Tiny Tiny RSS"
 
-#: ../resources/ttrss_source.ui.h:2
+#: resources/ui/ttrss_source.ui:22
 msgid "Please enter your TinyTinyRSS account settings."
 msgstr "Proporcione los datos de su cuenta de TinyTinyRSS."
 
-#: ../resources/ttrss_source.ui.h:3
+#: resources/ui/ttrss_source.ui:63
 msgid "_Server URL"
 msgstr "URL del _servidor"
 
-#: ../resources/ttrss_source.ui.h:5
+#: resources/ui/ttrss_source.ui:87
 msgid "_Username"
 msgstr "Nombre de _usuario"
 
-#: ../resources/update_monitor.ui.h:1
+#: resources/ui/update_monitor.ui:10
 msgid "Update Monitor"
 msgstr "Monitor de actualizaciones"
 
-#: ../resources/update_monitor.ui.h:2
-msgid "Stop All"
-msgstr "Detener todo"
-
-#: ../resources/update_monitor.ui.h:3
+#: resources/ui/update_monitor.ui:66
 msgid "_Pending Requests"
 msgstr "Solicitudes _pendientes"
 
-#: ../resources/update_monitor.ui.h:4
+#: resources/ui/update_monitor.ui:81
 msgid "_Downloading Now"
 msgstr "En _descarga"
 
-#: ../xslt/feed.xml.in.h:1
-msgid "Feed:"
-msgstr "Canal:"
+#: resources/ui/update_monitor.ui:104
+msgid "Stop All"
+msgstr "Detener todo"
 
-#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Fuente:"
+#, fuzzy
+#~ msgid "HeOdlines"
+#~ msgstr "Titulares"
 
-#: ../xslt/feed.xml.in.h:3
-msgid "Publisher"
-msgstr "Editorial"
+#~ msgid "Distinguishing features:"
+#~ msgstr "Funcionalidades distintivas:"
 
-#: ../xslt/feed.xml.in.h:4
-msgid "Copyright"
-msgstr "Derechos de autor"
+#~ msgid "Read articles when offline"
+#~ msgstr "Lectura de artículos sin conexión"
 
-#: ../xslt/feed.xml.in.h:5
-msgid "There was a problem when fetching this subscription!"
-msgstr "!Hubo un problema al descargar esta suscripción!"
+#~ msgid "Synchronizes with Reedah"
+#~ msgstr "Sincronización con Reedah"
 
-#: ../xslt/feed.xml.in.h:6
-msgid "1. Authentication"
-msgstr "1. Autenticación"
+#~ msgid "Synchronizes with TinyTinyRSS"
+#~ msgstr "Sincronización con TinyTinyRSS"
 
-#: ../xslt/feed.xml.in.h:7
-msgid "2. Download"
-msgstr "2. Descarga"
+#~ msgid "Permanently save headlines in news bins"
+#~ msgstr "Guardado permanente de titulares en bandejas de noticias"
 
-#: ../xslt/feed.xml.in.h:8
-msgid "3. Feed Discovery"
-msgstr "3. Descubrimiento de canal"
+#~ msgid "Match items using search folders"
+#~ msgstr "Correspondencia de artículos mediante carpetas virtuales"
 
-#: ../xslt/feed.xml.in.h:9
-msgid "4. Parsing"
-msgstr "4. Decodificación"
+#~ msgid "Play Podcasts"
+#~ msgstr "Reproducción de podcasts"
 
-#: ../xslt/feed.xml.in.h:10
-msgid "Details:"
-msgstr "Detalles:"
+#, fuzzy
+#~ msgid "Play and download podcasts"
+#~ msgstr "Reproducción de podcasts"
 
-#: ../xslt/feed.xml.in.h:11
-msgid "Authentication failed. Please check the credentials and try again!"
-msgstr ""
-"Falló la autenticación. ¡Por favor verifique las credenciales e intente de "
-"nuevo!"
+#, fuzzy
+#~ msgid "Preferences window"
+#~ msgstr "_Preferencias"
 
-#: ../xslt/feed.xml.in.h:12
-msgid "There was an error when downloading the feed source:"
-msgstr "Hubo un error al descargar la fuente del canal:"
+#, fuzzy
+#~ msgid "Add various feed sources"
+#~ msgstr "Agrega una nueva fuente de listas de canales."
 
-#: ../xslt/feed.xml.in.h:13
-msgid "There was an error when running the feed filter command:"
-msgstr "Hubo un error al ejecutar la orden de filtro del canal:"
+#, fuzzy
+#~ msgid "New search folder rule to match podcasts"
+#~ msgstr "Añade una carpeta virtual a la lista de canales."
 
-#: ../xslt/feed.xml.in.h:14
-msgid ""
-"The source does not point directly to a feed or a webpage with a link to a "
-"feed!"
-msgstr ""
-"¡La fuente no apunta directamete a un canal o a un siio web con un enlace a "
-"un canal!"
+#, fuzzy
+#~ msgid "New search folder rule to match headline authors"
+#~ msgstr "Añade una carpeta virtual a la lista de canales."
 
-#: ../xslt/feed.xml.in.h:15
-msgid "Sorry, the feed could not be parsed!"
-msgstr "¡Lo siento, no se puede decodificar el canal!"
+#, fuzzy
+#~ msgid "New hot key Ctrl-D for 'Open in External Browser'"
+#~ msgstr "Abrir en un navegador _externo"
 
-#: ../xslt/feed.xml.in.h:16
-msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr ""
-"¡Si lo desea, póngase en contacto con el autor del canal para informarle de "
-"este problema!"
+#, fuzzy
+#~ msgid "Deprecations:"
+#~ msgstr "Sección"
 
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Carpeta:"
+#~ msgid "Liferea Feed Reader"
+#~ msgstr "Lector de noticias Liferea"
 
-#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
-msgid "children with"
-msgstr "hijos con"
+#~ msgid "Min"
+#~ msgstr "Min"
 
-#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "titulares no leídos"
+#~ msgid "Max"
+#~ msgstr "Máx"
 
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Canal"
+#~ msgid "Activate Plugins"
+#~ msgstr "Activar complementos"
 
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Archivado en"
+#~ msgid "Download Plugins"
+#~ msgstr "Descargar complementos"
 
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Autor"
+#, python-format
+#~ msgid "Bad fields for plugin entry %s"
+#~ msgstr "Campos erróneos para la entrada del complemento %s"
 
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Compartido por"
+#~ msgid "All"
+#~ msgstr "Todos"
 
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Vía"
+#~ msgid "Menu"
+#~ msgstr "Menú"
 
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Relacionado"
+#~ msgid "Notifications"
+#~ msgstr "Notificaciones"
 
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Publicada también en"
+#~ msgid "Filter by category"
+#~ msgstr "Filtrar por categoría"
 
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Creador"
+#~ msgid "_Install"
+#~ msgstr "_Instalar"
 
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr "Coordenadas"
+#~ msgid "_Uninstall"
+#~ msgstr "_Desinstalar"
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
-msgstr "Mapa"
+#, python-format
+#~ msgid ""
+#~ "Missing package manager '%s'. Cannot check nor install necessary "
+#~ "dependencies!"
+#~ msgstr ""
+#~ "Falta el instalador de paquetes '%s'. ¡No se pueden comprobar ni instalar "
+#~ "las dependencias necesarias!"
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr "Cuenta de vista"
+#, python-format
+#~ msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+#~ msgstr "Falta el paquete '%s'. ¿Desea instalarlo? (Se ejecutará '%s')"
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr "Calificación"
+#, python-format
+#~ msgid ""
+#~ "Package installation failed (%s)! Check console output for further "
+#~ "problem details!"
+#~ msgstr ""
+#~ "¡Fallo al instalar el paquete (%s)! ¡Verifique la salida de la consola "
+#~ "para obtener más detalles del problema!"
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Comentarios"
+#, python-format
+#~ msgid "Failed to check plugin dependencies (%s)!"
+#~ msgstr "¡Fallo al verificar las dependencias del complemento (%s)!"
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Actualizando..."
+#~ msgid "Command \"git\" not found, please install it!"
+#~ msgstr "No se encontró la orden \"git\". ¡Por favor instálelo!"
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Sección"
+#, python-format
+#~ msgid "Copying %s to %s"
+#~ msgstr "Se copia %s a %s"
 
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Departamento"
+#, python-format
+#~ msgid "Failed to copy plugin directory (%s)!"
+#~ msgstr "¡Fallo al copiar la carpeta de complementos (%s)!"
 
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Bandeja de noticias:"
+#, python-format
+#~ msgid "Failed to copy plugin .py file (%s)!"
+#~ msgstr "¡Fallo al copiar el archivo de complemento .py (%s)!"
 
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Añada artículos a esta bandeja de noticias eligiendo «Copiar a bandeja» del "
-"menú contextual de la lista de artículos."
+#, python-format
+#~ msgid "Failed to copy .plugin file (%s)!"
+#~ msgstr "¡Fallo al copiar el archivo .plugin (%s)!"
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Carpeta virtual:"
+#, python-format
+#~ msgid "Creating schema directory %s"
+#~ msgstr "Se crea la carpeta de esquema %s"
+
+#, python-format
+#~ msgid "Installing schema %s"
+#~ msgstr "Se instala el esquema %s"
+
+#~ msgid "Compiling schemas..."
+#~ msgstr "Compilando esquemas..."
+
+#, python-format
+#~ msgid "Failed to install schema files (%s)!"
+#~ msgstr "¡Fallo al instalar el archivo de esquema (%s)!"
+
+#, python-format
+#~ msgid "Failed to enable plugin (%s)!"
+#~ msgstr "¡Fallo al activar el complemento (%s)!"
+
+#, python-format
+#~ msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+#~ msgstr ""
+#~ "El complemento «%s» está instalado. ¡Asegúrese de reiniciar Liferea!"
+
+#, python-format
+#~ msgid "Deleting '%s'"
+#~ msgstr "Eliminando «%s»"
+
+#, python-format
+#~ msgid "Failed to remove directory '%s' (%s)!"
+#~ msgstr "¡Fallo al borrar la carpeta «%s» (%s)!"
+
+#~ msgid "Failed to remove .py file!"
+#~ msgstr "¡Fallo al borrar el archivo .py!"
+
+#~ msgid "Failed to remove .plugin file!"
+#~ msgstr "¡Fallo al borrar el archivo .plugin!"
+
+#~ msgid "Sorry! Plugin removal failed!"
+#~ msgstr "¡Lo siento! ¡Falló la eliminación del complemento!"
+
+#~ msgid ""
+#~ "Plugin was removed. Please restart Liferea once for it to take full "
+#~ "effect!"
+#~ msgstr ""
+#~ "Se borró el complemento. ¡Por favor reinicie Liferea de una vez para que "
+#~ "tome efecto!"
+
+#~ msgid "Liferea unread icon"
+#~ msgstr "Icono sin leer de Liferea"
+
+#~ msgid "Show / Hide"
+#~ msgstr "Mostrar / Ocultar"
+
+#~ msgid "Minimize to tray on close"
+#~ msgstr "Minimizar a la bandeja al salir"
+
+#~ msgid "Quit"
+#~ msgstr "Salir"
+
+#~ msgid "Quick Reference"
+#~ msgstr "Manual de referencia"
+
+#~ msgid "FAQ"
+#~ msgstr "Preguntas frecuentes"
+
+#~ msgid "There are no unread items"
+#~ msgstr "No hay artículos sin leer"
+
+#~ msgid "Deleting entry"
+#~ msgstr "Eliminando la entrada"
+
+#~ msgid "Content download failed! Try disabling reader mode."
+#~ msgstr ""
+#~ "¡Falló la descarga de contenido! Pruebe desactivando el modo de lectura."
+
+#~ msgid "Content extraction failed! Try disabling reader mode."
+#~ msgstr ""
+#~ "¡Falló la extracción de contenido! Pruebe desactivando el modo de lectura."
+
+#, c-format
+#~ msgid " (%d new)"
+#~ msgid_plural " (%d new)"
+#~ msgstr[0] " (%d nuevo)"
+#~ msgstr[1] " (%d nuevos)"
+
+#, c-format
+#~ msgid "%d unread%s"
+#~ msgid_plural "%d unread%s"
+#~ msgstr[0] "%d sin leer%s"
+#~ msgstr[1] "%d sin leer%s"
+
+#~ msgid "_Reader Mode"
+#~ msgstr "Modo de _lectura"
+
+#~ msgid "_Quick Reference"
+#~ msgstr "_Referencia rápida"
+
+#~ msgid "_FAQ"
+#~ msgstr "_Preguntas frecuentes"
+
+#~ msgid "Download / Postprocessing"
+#~ msgstr "Descarga/posprocesamiento"
+
+#~ msgid ""
+#~ "Liferea can use external filter plugins in order to access feeds and "
+#~ "directories in non-supported formats.  See the documentation for more "
+#~ "information."
+#~ msgstr ""
+#~ "Liferea puede usar filtros externos para acceder a canales y carpetas en "
+#~ "formatos no compatibles. Consulte la documentación para mayor información."
+
+#~ msgid ""
+#~ "Note: <i>Please remember to set a reasonable refresh time. Usually it is "
+#~ "a waste of bandwidth to poll feeds more often than each hour.</i>"
+#~ msgstr ""
+#~ "Nota: <i>Establezca un tiempo razonable. Buscar actualizaciones más de "
+#~ "una vez por hora es, casi siempre, un desperdicio de ancho de banda.</i>"
+
+#~ msgid "_Enable browser plugins."
+#~ msgstr "Activar los _complementos del navegador."
+
+#, no-c-format
+#~ msgid "<small>(%s for URL)</small>"
+#~ msgstr "<small>(%s para URL)</small>"
+
+#~ msgid "Toolbar Settings"
+#~ msgstr "Opciones de la barra de herramientas"
+
+#~ msgid "_Hide toolbar."
+#~ msgstr "_Ocultar la barra de herramientas."
+
+#~ msgid "Toolbar _button labels:"
+#~ msgstr "Etiquetas de la _barra de herramientas:"
+
+#~ msgid "Desktop"
+#~ msgstr "Escritorio"
+
+#~ msgid "_Manual Setting:"
+#~ msgstr "Configuración _manual:"
+
+#~ msgid "Proxy _Host:"
+#~ msgstr "_Servidor «proxy»:"
+
+#~ msgid "Proxy _Port:"
+#~ msgstr "_Puerto del «proxy»:"
+
+#~ msgid "Use Proxy Au_thentication"
+#~ msgstr "_Identificarse ante el «proxy»"
+
+#~ msgid "Proxy _Username:"
+#~ msgstr "Nombre de _usuario en el «proxy»:"
+
+#~ msgid "Proxy Pass_word:"
+#~ msgstr "_Contraseña del «proxy»:"
+
+#~ msgid "Use _Reader mode."
+#~ msgstr "Usar el modo de _lectura."
+
+#~ msgid ""
+#~ "This enables <a href=\"https://github.com/mozilla/"
+#~ "readability\">stripping</a> all non-content elements (like scripts, "
+#~ "fonts, tracking)"
+#~ msgstr ""
+#~ "Activa la <a href=\"https://github.com/mozilla/readability\">eliminación</"
+#~ "a> de todos los elementos sin contenido (como guiones, tipografía, "
+#~ "rastreo)"
+
+#~ msgid "Rules"
+#~ msgstr "Reglas"
+
+#~ msgid "All rules for this search folder"
+#~ msgstr "Todas las reglas para esta carpeta de búsqueda"
+
+#~ msgid "_Search Folder..."
+#~ msgstr "Carpeta _virtual..."
+
+#~ msgid "Search All Feeds"
+#~ msgstr "Buscar en todos los canales"
+
+#~ msgid ""
+#~ "Starts searching for the specified text in all feeds. The search result "
+#~ "will appear in the item list."
+#~ msgstr ""
+#~ "Busca el texto especificado en todos los canales. El resultado aparecerá "
+#~ "en la lista de artículos."
+
+#~ msgid "_Search for:"
+#~ msgstr "Bu_scar:"
+
+#~ msgid ""
+#~ "Enter a search string Liferea should find either in a items title or in "
+#~ "its content."
+#~ msgstr ""
+#~ "Escriba un texto. Liferea lo buscará tanto en los títulos de los "
+#~ "artículos como en los contenidos."
+
+#~ msgid "Advanced..."
+#~ msgstr "Avanzado..."
+
+#~ msgid "Feed:"
+#~ msgstr "Canal:"
+
+#~ msgid "Source:"
+#~ msgstr "Fuente:"
+
+#~ msgid "Publisher"
+#~ msgstr "Editorial"
+
+#~ msgid "Copyright"
+#~ msgstr "Derechos de autor"
+
+#~ msgid "There was a problem when fetching this subscription!"
+#~ msgstr "!Hubo un problema al descargar esta suscripción!"
+
+#~ msgid "1. Authentication"
+#~ msgstr "1. Autenticación"
+
+#~ msgid "2. Download"
+#~ msgstr "2. Descarga"
+
+#~ msgid "3. Feed Discovery"
+#~ msgstr "3. Descubrimiento de canal"
+
+#~ msgid "4. Parsing"
+#~ msgstr "4. Decodificación"
+
+#~ msgid "Details:"
+#~ msgstr "Detalles:"
+
+#~ msgid "Authentication failed. Please check the credentials and try again!"
+#~ msgstr ""
+#~ "Falló la autenticación. ¡Por favor verifique las credenciales e intente "
+#~ "de nuevo!"
+
+#~ msgid "There was an error when downloading the feed source:"
+#~ msgstr "Hubo un error al descargar la fuente del canal:"
+
+#~ msgid "There was an error when running the feed filter command:"
+#~ msgstr "Hubo un error al ejecutar la orden de filtro del canal:"
+
+#~ msgid ""
+#~ "The source does not point directly to a feed or a webpage with a link to "
+#~ "a feed!"
+#~ msgstr ""
+#~ "¡La fuente no apunta directamete a un canal o a un siio web con un enlace "
+#~ "a un canal!"
+
+#~ msgid "Sorry, the feed could not be parsed!"
+#~ msgstr "¡Lo siento, no se puede decodificar el canal!"
+
+#~ msgid "You may want to contact the author/webmaster of the feed about this!"
+#~ msgstr ""
+#~ "¡Si lo desea, póngase en contacto con el autor del canal para informarle "
+#~ "de este problema!"
+
+#~ msgid "Folder:"
+#~ msgstr "Carpeta:"
+
+#~ msgid "children with"
+#~ msgstr "hijos con"
+
+#~ msgid "unread headlines"
+#~ msgstr "titulares no leídos"
+
+#~ msgid "Feed"
+#~ msgstr "Canal"
+
+#~ msgid "Filed under"
+#~ msgstr "Archivado en"
+
+#~ msgid "Author"
+#~ msgstr "Autor"
+
+#~ msgid "Shared by"
+#~ msgstr "Compartido por"
+
+#~ msgid "Via"
+#~ msgstr "Vía"
+
+#~ msgid "Related"
+#~ msgstr "Relacionado"
+
+#~ msgid "Also posted in"
+#~ msgstr "Publicada también en"
+
+#~ msgid "Creator"
+#~ msgstr "Creador"
+
+#~ msgid "Coordinates"
+#~ msgstr "Coordenadas"
+
+#~ msgid "Map"
+#~ msgstr "Mapa"
+
+#~ msgid "View count"
+#~ msgstr "Cuenta de vista"
+
+#~ msgid "Rating"
+#~ msgstr "Calificación"
+
+#~ msgid "Comments"
+#~ msgstr "Comentarios"
+
+#~ msgid "Updating..."
+#~ msgstr "Actualizando..."
+
+#~ msgid "Department"
+#~ msgstr "Departamento"
+
+#~ msgid "News Bin:"
+#~ msgstr "Bandeja de noticias:"
+
+#~ msgid ""
+#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
+#~ "item list context menu."
+#~ msgstr ""
+#~ "Añada artículos a esta bandeja de noticias eligiendo «Copiar a bandeja» "
+#~ "del menú contextual de la lista de artículos."
+
+#~ msgid "Search Folder:"
+#~ msgstr "Carpeta virtual:"
 
 #, c-format
 #~ msgid "\"%s\" is not a valid enclosure type config file!"
@@ -2174,46 +2256,6 @@ msgstr "Carpeta virtual:"
 
 #~ msgid "No feed list source types found!"
 #~ msgstr "¡No se han encontrado tipos de fuentes de listas de canales!"
-
-#~ msgid "Email The Author"
-#~ msgstr "Enviar email al autor"
-
-#~ msgid "Copy to News Bin"
-#~ msgstr "Copiar a una bandeja"
-
-#, c-format
-#~ msgid "_Bookmark at %s"
-#~ msgstr "Crear un _marcador en %s"
-
-#~ msgid "Copy Item _Location"
-#~ msgstr "Copiar la _dirección del artículo"
-
-#~ msgid "R_emove Item"
-#~ msgstr "_Eliminar artículo"
-
-#~ msgid "_Update Folder"
-#~ msgstr "_Actualizar carpeta"
-
-#~ msgid "New _Subscription..."
-#~ msgstr "_Suscripción nueva..."
-
-#~ msgid "New S_ource..."
-#~ msgstr "_Fuente nueva..."
-
-#~ msgid "_New"
-#~ msgstr "_Nueva"
-
-#~ msgid "_Mark All As Read"
-#~ msgstr "_Marcar todos como leídos"
-
-#~ msgid "_Export Items To File"
-#~ msgstr "_Exportar elementos a un archivo"
-
-#~ msgid "_Rebuild"
-#~ msgstr "_Reconstruir"
-
-#~ msgid "Convert To Local Subscriptions..."
-#~ msgstr "Convertir a suscripciones locales..."
 
 #~ msgid "GNOME default"
 #~ msgstr "Navegador de GNOME"
@@ -2449,32 +2491,11 @@ msgstr "Carpeta virtual:"
 #~ "adicionales para funcionar. Liferea trata de llenar ese vacío con un "
 #~ "agregador rápido y fácil de usar y de instalar para GTK/GNOME."
 
-#~ msgid "Distinguishing features:"
-#~ msgstr "Funcionalidades distintivas:"
-
-#~ msgid "Read articles when offline"
-#~ msgstr "Lectura de artículos sin conexión"
-
 #~ msgid "Synchronizes with TheOldReader"
 #~ msgstr "Sincronización con TheOldReader"
 
-#~ msgid "Synchronizes with TinyTinyRSS"
-#~ msgstr "Sincronización con TinyTinyRSS"
-
 #~ msgid "Synchronizes with InoReader"
 #~ msgstr "Sincronización con InoReader"
-
-#~ msgid "Synchronizes with Reedah"
-#~ msgstr "Sincronización con Reedah"
-
-#~ msgid "Permanently save headlines in news bins"
-#~ msgstr "Guardado permanente de titulares en bandejas de noticias"
-
-#~ msgid "Match items using search folders"
-#~ msgstr "Correspondencia de artículos mediante carpetas virtuales"
-
-#~ msgid "Play Podcasts"
-#~ msgstr "Reproducción de podcasts"
 
 #, c-format
 #~ msgid "\"%s\" updated..."
@@ -2486,9 +2507,9 @@ msgstr "Carpeta virtual:"
 #~ msgstr "Ocurrió un error de red, o el servidor remoto cerró la conexión"
 
 #~ msgid ""
-#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
-#~ "></b>"
+#~ "The last update of this subscription failed!<br/><b>HTTP error code "
+#~ "<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+#~ "select=\"httpError\"/></b>"
 #~ msgstr ""
 #~ "Falló la última actualización de esta fuente<br><br>Error HTTP <xsl:value-"
 #~ "of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
@@ -2601,12 +2622,6 @@ msgstr "Carpeta virtual:"
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Añade una carpeta a la lista de canales."
-
-#~ msgid "Adds a new search folder to the feed list."
-#~ msgstr "Añade una carpeta virtual a la lista de canales."
-
-#~ msgid "Adds a new feed list source."
-#~ msgstr "Agrega una nueva fuente de listas de canales."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Agrega una nueva bandeja de noticias."

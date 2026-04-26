@@ -1,16 +1,11 @@
-[encoding: UTF-8]
 # List of source files containing translatable strings.
-net.sourceforge.liferea.appdata.xml.in
-net.sourceforge.liferea.desktop.in
+data/net.sourceforge.liferea.desktop.in
 plugins/add-bookmark-site.ui
 plugins/add-bookmark-site.py
 plugins/download-manager.py
 plugins/getfocus.ui
 plugins/getfocus.py
-plugins/headerbar.py
 plugins/libnotify.py
-plugins/plugin-installer.py
-plugins/trayicon.py
 src/actions/item_actions.c
 src/actions/item_actions.h
 src/actions/link_actions.c
@@ -158,8 +153,6 @@ src/ui/icons.c
 src/ui/icons.h
 src/ui/item_list_view.c
 src/ui/item_list_view.h
-src/ui/itemview.c
-src/ui/itemview.h
 src/ui/liferea_browser.c
 src/ui/liferea_browser.h
 src/ui/liferea_dialog.c
@@ -197,28 +190,26 @@ src/webkit/liferea_webkit.c
 src/webkit/liferea_webkit.h
 src/xml.c
 src/xml.h
-[type: gettext/glade]resources/about.ui
-[type: gettext/glade]resources/auth.ui
-[type: gettext/glade]resources/google_source.ui
-[type: gettext/glade]resources/liferea_menu.ui
-[type: gettext/glade]resources/liferea_headerbar.ui
-[type: gettext/glade]resources/mainwindow.ui
-[type: gettext/glade]resources/mark_read_dialog.ui
-[type: gettext/glade]resources/new_folder.ui
-[type: gettext/glade]resources/new_newsbin.ui
-[type: gettext/glade]resources/node_source.ui
-[type: gettext/glade]resources/opml_source.ui
-[type: gettext/glade]resources/plugins.ui
-[type: gettext/glade]resources/prefs.ui
-[type: gettext/glade]resources/properties.ui
-[type: gettext/glade]resources/reedah_source.ui
-[type: gettext/glade]resources/rename_node.ui
-[type: gettext/glade]resources/search_folder.ui
-[type: gettext/glade]resources/search.ui
-[type: gettext/glade]resources/shortcuts.ui
-[type: gettext/glade]resources/simple_subscription.ui
-[type: gettext/glade]resources/theoldreader_source.ui
-[type: gettext/glade]resources/ttrss_source.ui
-[type: gettext/glade]resources/update_monitor.ui
-js/item.xml.in
-js/node.xml.in
+resources/ui/about.ui
+resources/ui/auth.ui
+resources/ui/google_source.ui
+resources/ui/mainwindow.ui
+resources/ui/mark_read_dialog.ui
+resources/ui/new_folder.ui
+resources/ui/new_newsbin.ui
+resources/ui/node_source.ui
+resources/ui/opml_source.ui
+resources/ui/plugins.ui
+resources/ui/prefs.ui
+resources/ui/properties.ui
+resources/ui/reedah_source.ui
+resources/ui/rename_node.ui
+resources/ui/search_folder.ui
+resources/ui/search.ui
+resources/ui/shortcuts.ui
+resources/ui/simple_subscription.ui
+resources/ui/theoldreader_source.ui
+resources/ui/ttrss_source.ui
+resources/ui/update_monitor.ui
+resources/item.xml.in
+resources/node.xml.in
