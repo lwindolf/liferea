@@ -175,9 +175,11 @@ item_list_view_set_property (GObject *object, guint prop_id, const GValue *value
 				gtk_tree_view_column_set_sort_column_id (headline, IS_TIME);
 
 				g_object_set (ilv->faviconRenderer, "icon-size", GTK_ICON_SIZE_LARGE, NULL);
+				g_object_set (ilv->faviconRenderer, "xpad", 6, NULL);
 				g_object_set (ilv->headlineRenderer, "ellipsize", PANGO_ELLIPSIZE_NONE, NULL);
 				g_object_set (ilv->headlineRenderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
 				g_object_set (ilv->headlineRenderer, "wrap-width", 300, NULL);
+				g_object_set (ilv->headlineRenderer, "ypad", 6, NULL);
 			} else {
 				
 				gtk_tree_view_set_grid_lines (ilv->treeview, GTK_TREE_VIEW_GRID_LINES_NONE);
@@ -187,8 +189,10 @@ item_list_view_set_property (GObject *object, guint prop_id, const GValue *value
 				gtk_tree_view_column_set_sort_column_id (headline, IS_LABEL);
 
 				g_object_set (ilv->faviconRenderer, "icon-size", GTK_ICON_SIZE_NORMAL, NULL);
+				g_object_set (ilv->faviconRenderer, "xpad", 0, NULL);
 				g_object_set (ilv->headlineRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 				g_object_set (ilv->headlineRenderer, "wrap-mode", PANGO_WRAP_NONE, NULL);
+				g_object_set (ilv->headlineRenderer, "ypad", 0, NULL);
 			}
 
 			gtk_tree_view_set_fixed_height_mode (ilv->treeview, ilv->wideView);

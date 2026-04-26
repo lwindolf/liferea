@@ -5,15 +5,15 @@ is being fixed.
 To be fixed next:
 =================
 
-1. itemlist more spacing for icons
-2. replace "make update-po"
-3. item list middle click only works if item is already selected
-4. show floating links in LifereaBrowser view
-5. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
+1. replace "make update-po"
+2. item list middle click only works if item is already selected
+3. show floating links in LifereaBrowser view
+4. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
 
 To be fixed later:
 ==================
 
+- auto switch normal/wide layout does not work
 - feed list DnD
 - Decide on whether to drop deferred removal in favour of keeping read items visible
 - strange selection behaviour on read filtered itemlist
