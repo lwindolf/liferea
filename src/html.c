@@ -266,7 +266,7 @@ html_auto_discover_blogroll (const gchar * data, const gchar * defaultBaseUri)
 {
 	// Use simple regex to match <link rel="blogroll" href="...">
 	g_autoptr(GRegex) regex = g_regex_new ("<link[^>]+rel=['\"]blogroll['\"][^>]+href=['\"]([^\"']+)['\"]", 0, 0, NULL);
-	GMatchInfo *match_info;
+	g_autoptr(GMatchInfo) match_info = NULL;
 
 	if (g_regex_match(regex, data, 0, &match_info)) {
 		g_autofree gchar *url = g_match_info_fetch (match_info, 1);
