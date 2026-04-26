@@ -30,7 +30,7 @@
 #define MAX_GOPHER_ITEMS 25
 
 void
-gopher_process_request (const UpdateJob *job)
+gopher_process_request (UpdateJob *job)
 {
         g_autofree gchar *host = NULL;
         g_autofree gchar *port = NULL;

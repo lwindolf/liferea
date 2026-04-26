@@ -23,7 +23,7 @@
 
 #include "feed_parser.h"
 
-void gopher_process_request (const UpdateJob *job);
+void gopher_process_request (UpdateJob *job);
 
 feedHandlerPtr	gopher_init_feed_handler(void);
 
