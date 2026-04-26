@@ -397,7 +397,8 @@ node_to_json (Node *node)
 		metadata_list_to_json (node->subscription->metadata, b);
 	}
 
-	node_source_to_json (node, b);
+	if (node->source)
+		node_source_to_json (node, b);
 
 	if(node->subscription && node->subscription->parseErrors && (strlen(node->subscription->parseErrors->str) > 0)) {
 		json_builder_set_member_name (b, "parseError");
