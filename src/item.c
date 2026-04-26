@@ -362,6 +362,7 @@ item_to_json (LifereaItem *item)
 			json_builder_set_member_name (b, "mime");
 			json_builder_add_string_value (b, enclosure->mime);
 			json_builder_end_object (b);
+			enclosure_free (enclosure);
 		}
 
 		list = g_slist_next (list);
