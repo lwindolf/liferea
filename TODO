@@ -4,10 +4,8 @@ Right now a lot of stuff is broken due to the GTK4 porting.
 To be fixed next:
 =================
 
-1. some preferences do not yet work
-2. favicon size in wide mode
-3. replace "make update-po"
-4. memory leak in html_auto_discover_blogroll()
+1. favicon size in wide mode
+2. replace "make update-po"
 
 To be fixed later:
 ==================

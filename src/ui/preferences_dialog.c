@@ -2,7 +2,7 @@
  * @file preferences_dialog.c Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -142,18 +142,6 @@ on_browser_changed (GtkDropDown *dropdown, gpointer user_data)
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "urlhintlabel"), num != 0);
 }
 
-/*
-static void
-on_socialsite_changed (GtkComboBox *optionmenu, gpointer user_data)
-{
-	GtkTreeIter iter;
-	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
-		gchar * site;
-		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 0, &site, -1);
-		social_set_bookmark_site (site);
-	}
-}*/
-
 void
 on_itemCountBtn_value_changed (GtkSpinButton *spinbutton, gpointer user_data)
 {
@@ -206,15 +194,25 @@ on_drop_down_changed (GtkDropDown *dropdown, guint selected, gpointer user_data)
 {
 	PreferencesDialog *pd = PREFERENCES_DIALOG (user_data);
 	const gchar * settingName;
-	g_print("on_drop_down_changed %s selected %d\n", gtk_widget_get_name (GTK_WIDGET (dropdown)), selected);
+
 	if (dropdown == GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "skimKey"))) {
 		settingName = BROWSE_KEY_SETTING;
 	} else if (dropdown == GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "defaultViewMode"))) {
 		settingName = DEFAULT_VIEW_MODE;
 	} else if (dropdown == GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "browserpopup"))) {
 		settingName = BROWSER_ID;
-		// extra handling
+		// special handling as value is a string
 		on_browser_changed (dropdown, pd);
+		GtkStringObject *obj = GTK_STRING_OBJECT (gtk_drop_down_get_selected_item (dropdown));
+		const gchar *text = gtk_string_object_get_string (obj);
+		conf_set_str_value (BROWSER_ID, text);
+		return;
+	} else if (dropdown == GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "social"))) {
+		// special handling as value is a string
+		GtkStringObject *obj = GTK_STRING_OBJECT (gtk_drop_down_get_selected_item (dropdown));
+		const gchar *text = gtk_string_object_get_string (obj);
+		social_set_bookmark_site (text);
+		return;
 	} else if (dropdown == GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "globalRefreshIntervalUnit"))) {
 		// special handling and no standard conf_set_int_value()!
 		on_default_update_interval_value_changed (NULL, pd);
@@ -301,25 +299,26 @@ preferences_dialog_init (PreferencesDialog *pd)
 	conf_bind (DEFER_DELETE_MODE, liferea_dialog_lookup (pd->dialog, "deferdeletebtn"), "active", G_SETTINGS_BIND_DEFAULT);
 
 	/* Setup social bookmarking list */
-	/*i = 0;
+	g_autofree gchar *name = NULL;
 	conf_get_str_value (SOCIAL_BM_SITE, &name);
-	store = gtk_list_store_new (1, G_TYPE_STRING);
-	list = bookmarkSites;
+
+	g_autoptr(GtkStringList) list_model = gtk_string_list_new (NULL);
+	i = 0;
+	tmp = 0;
+	GSList *list = bookmarkSites;
 	while (list) {
 		socialSitePtr siter = list->data;
 		if (name && !strcmp (siter->name, name))
 			tmp = i;
-		gtk_list_store_append (store, &treeiter);
-		gtk_list_store_set (store, &treeiter, 0, siter->name, -1);
+		gtk_string_list_append (list_model, siter->name);
 		list = g_slist_next (list);
 		i++;
 	}
 
-	combo = GTK_COMBO_BOX (liferea_dialog_lookup (pd->dialog, "socialpopup"));
-	g_signal_connect (G_OBJECT (combo), "changed", G_CALLBACK (on_socialsite_changed), pd);
-	gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
-	ui_common_setup_combo_text (combo, 0);
-	gtk_combo_box_set_active (combo, tmp);*/
+	GtkDropDown *dropdown = GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "social"));
+	gtk_drop_down_set_model (dropdown, G_LIST_MODEL (list_model));
+	gtk_drop_down_set_selected (dropdown, (guint)tmp);
+	g_signal_connect (G_OBJECT (dropdown), "notify::selected", G_CALLBACK (on_drop_down_changed), pd);
 
 	/* ================== panel 4 "browser" ==================== */
 
