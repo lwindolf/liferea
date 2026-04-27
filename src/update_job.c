@@ -428,7 +428,9 @@ update_job_execute (UpdateJob *job)
 		return;
 	}
 
-	if (strncmp (job->request->source, "file://", 7) == 0) {
+	/* file request can come with file:// e.g. from browser or just with leading "/" */
+	if ((strncmp (job->request->source, "file://", 7) == 0) ||
+	    (job->request->source[0] == '/')) {
 		debug (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
 		update_load_file (job);
 		return;
@@ -440,13 +442,13 @@ update_job_execute (UpdateJob *job)
 		return;
 	}
 
-	/* if it has a protocol "://" prefix, but not "file://" it is an URI */
+	/* if it includes "://", but not "file://" it is an URI */
 	if (strstr (job->request->source, "://")) {
 		network_process_request (job);
 		return;
 	}
 
-	g_warning ("Invalid protocol requested with URI \"%s\"!", job->request->source);
+	g_warning ("FATAL: This should not happen. Unhandled URI type \"%s\"!", job->request->source);
 }
 
 UpdateJob *
