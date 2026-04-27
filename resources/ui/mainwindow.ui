@@ -12,24 +12,12 @@
     <property name="titlebar">
       <object class="GtkHeaderBar" id="headerbar">
         <property name="title-widget">
-          <object class="GtkLabel" id="headerbartitle"/>
+          <object class="GtkLabel" id="headerbartitle">
+            <property name="label">Liferea</property>
+          </object>
         </property>
-        <child type="end">
-          <object class="GtkMenuButton">
-            <property name="icon-name">open-menu-symbolic</property>
-            <property name="menu-model">menubar</property>
-            <property name="tooltip-text">Open Menu</property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkButton">
-            <property name="action-name">app.search-feeds</property>
-            <property name="icon-name">edit-find-symbolic</property>
-            <property name="tooltip-text">Search All Feeds ...</property>
-          </object>
-        </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="headerbarLeft">
             <child>
               <object class="GtkButton">
                 <property name="action-name">app.prev-read-item</property>
@@ -61,6 +49,25 @@
             <style>
               <class name="linked"/>
             </style>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkBox" id="headerbarRight">
+            <property name="spacing">6</property>
+            <child type="end">
+              <object class="GtkButton">
+                <property name="action-name">app.search-feeds</property>
+                <property name="icon-name">edit-find-symbolic</property>
+                <property name="tooltip-text">Search All Feeds ...</property>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkMenuButton">
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="menu-model">menubar</property>
+                <property name="tooltip-text">Open Menu</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>

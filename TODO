@@ -7,13 +7,12 @@ To be fixed next:
 
 1. item list middle click only works if item is already selected
 2. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
-3. Liferea title in headerbar
+3. auto switch normal/wide layout does not work
 
 To be fixed later:
 ==================
 
-- Show update progress in headerbar subtitle
-- auto switch normal/wide layout does not work
+- Show update progress / info in feedlist gtkoverlay
 - feed list DnD
 - Decide on whether to drop deferred removal in favour of keeping read items visible
 - strange selection behaviour on read filtered itemlist
