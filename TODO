@@ -6,8 +6,8 @@ To be fixed next:
 =================
 
 1. item list middle click only works if item is already selected
-2. show floating links in LifereaBrowser view
-3. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
+2. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
+3. fix subscribing to local files (currently causes protocol error)
 
 To be fixed later:
 ==================

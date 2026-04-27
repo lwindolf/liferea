@@ -1,7 +1,7 @@
 /*
  * @file liferea_browser.c  Liferea embedded browser
  *
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -45,7 +45,6 @@
 #include "net_monitor.h"
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
-#include "ui/liferea_shell.h"
 #include "webkit/liferea_webkit.h"
 
 /* LifereaBrowser is a bit complex widget used to present both internally
@@ -81,7 +80,7 @@ static gboolean
 on_liferea_browser_url_entry_activate (GtkWidget *widget, gpointer user_data)
 {
 	LifereaBrowser	*browser = LIFEREA_BROWSER (user_data);
-	const gchar		*url = gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (widget)));
+	const gchar	*url = gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (widget)));
 
 	liferea_browser_launch_URL_internal (browser, url);
 
@@ -133,6 +132,12 @@ static void
 liferea_browser_finalize (GObject *object)
 {
 	LifereaBrowser *browser = LIFEREA_BROWSER (object);
+
+	// Remove timeout if active
+	if (browser->urlHoverTimeout) {
+		g_source_remove (browser->urlHoverTimeout);
+		browser->urlHoverTimeout = 0;
+	}
 
 	browser_history_free (browser->history);
 	g_clear_object (&browser->container);
@@ -271,11 +276,41 @@ liferea_browser_update_stylesheet (LifereaBrowser *browser)
 	liferea_webkit_reload_style (browser->renderWidget, userCSS, defaultCSS);
 }
 
+static gboolean
+liferea_browser_hide_url_hover (gpointer user_data)
+{
+	LifereaBrowser *browser = LIFEREA_BROWSER (user_data);
+
+	gtk_widget_set_visible (browser->urlHoverLabel, FALSE);
+	browser->urlHoverTimeout = 0;
+
+	return G_SOURCE_REMOVE;
+}
+
 static void
 liferea_browser_statusbar_changed (gpointer obj, gchar *url)
 {
-	if (strstr (url, "liferea://") != url)
-		liferea_shell_set_important_status_bar ("%s", url);
+	LifereaBrowser *browser = LIFEREA_BROWSER (obj);
+
+	// Remove existing timeout if any
+	if (browser->urlHoverTimeout) {
+		g_source_remove (browser->urlHoverTimeout);
+		browser->urlHoverTimeout = 0;
+	}
+
+	if (url && strlen (url) > 0 && strstr (url, "liferea://") != url) {
+		// Show the URL in the overlay
+		gtk_label_set_text (GTK_LABEL (browser->urlHoverLabel), url);
+		gtk_widget_set_visible (browser->urlHoverLabel, TRUE);
+
+		// Set timeout to auto-hide after 2 seconds
+		browser->urlHoverTimeout = g_timeout_add (2000, 
+							liferea_browser_hide_url_hover, 
+							browser);
+	} else {
+		// Empty URL means mouse left the link - hide immediately
+		gtk_widget_set_visible (browser->urlHoverLabel, FALSE);
+	}
 }
 
 LifereaBrowser *
@@ -592,58 +627,65 @@ liferea_browser_init (LifereaBrowser *browser)
 	browser->url = NULL;
 	browser->renderWidget = liferea_webkit_new (browser);
 	browser->history = browser_history_new ();
+	browser->urlHoverTimeout = 0;
 
 	const gchar *ui_xml = 
-		"<interface>"
-		"  <object class='GtkBox' id='container'>"
-		"    <property name='orientation'>vertical</property>"
-		"    <child>"
-		"      <object class='GtkBox' id='toolbar'>"
-		"        <property name='orientation'>horizontal</property>"
-		"        <property name='margin-top'>3</property>"
-		"        <property name='margin-bottom'>3</property>"
-		"        <property name='margin-start'>3</property>"
-		"        <property name='margin-end'>3</property>"
-		"        <property name='spacing'>3</property>"
-		"        <property name='vexpand'>0</property>"
-		"        <property name='hexpand'>0</property>"
-		"        <child>"
-		"          <object class='GtkButton' id='back'>"
-		"            <property name='icon-name'>go-previous</property>"
-		"            <property name='sensitive'>0</property>"
-		"            <style>"
-		"              <class name='flat'/>"
-		"            </style>"
-		"          </object>"
-		"        </child>"
-		"        <child>"
-		"          <object class='GtkButton' id='forward'>"
-		"            <property name='icon-name'>go-next</property>"
-		"            <property name='sensitive'>0</property>"
-		"            <style>"
-		"              <class name='flat'/>"
-		"            </style>"
-		"          </object>"
-		"        </child>"
-		"        <child>"
-		"          <object class='GtkEntry' id='urlentry'>"
-		"            <property name='vexpand'>1</property>"
-		"            <property name='hexpand'>1</property>"
-		"          </object>"
-		"        </child>"
-		"      </object>"
-		"    </child>"
-		"    <child>"
-		"      <object class='GtkFrame' id='webframe'>"
-		"        <property name='vexpand'>1</property>"
-		"        <property name='hexpand'>1</property>"
-		"        <style>"
-		"          <class name='sunken'/>"
-		"        </style>"
-		"      </object>"
-		"    </child>"
-		"  </object>"
-		"</interface>";
+	"<interface>"
+	"  <object class='GtkBox' id='container'>"
+	"    <property name='orientation'>vertical</property>"
+	"    <child>"
+	"      <object class='GtkBox' id='toolbar'>"
+	"        <property name='orientation'>horizontal</property>"
+	"        <property name='margin-top'>3</property>"
+	"        <property name='margin-bottom'>3</property>"
+	"        <property name='margin-start'>3</property>"
+	"        <property name='margin-end'>3</property>"
+	"        <property name='spacing'>3</property>"
+	"        <property name='vexpand'>0</property>"
+	"        <property name='hexpand'>0</property>"
+	"        <child>"
+	"          <object class='GtkButton' id='back'>"
+	"            <property name='icon-name'>go-previous</property>"
+	"            <property name='sensitive'>0</property>"
+	"            <style>"
+	"              <class name='flat'/>"
+	"            </style>"
+	"          </object>"
+	"        </child>"
+	"        <child>"
+	"          <object class='GtkButton' id='forward'>"
+	"            <property name='icon-name'>go-next</property>"
+	"            <property name='sensitive'>0</property>"
+	"            <style>"
+	"              <class name='flat'/>"
+	"            </style>"
+	"          </object>"
+	"        </child>"
+	"        <child>"
+	"          <object class='GtkEntry' id='urlentry'>"
+	"            <property name='vexpand'>1</property>"
+	"            <property name='hexpand'>1</property>"
+	"          </object>"
+	"        </child>"
+	"      </object>"
+	"    </child>"
+	"    <child>"
+	"      <object class='GtkOverlay' id='overlay'>"
+	"        <property name='vexpand'>1</property>"
+	"        <property name='hexpand'>1</property>"
+	"        <child>"
+	"          <object class='GtkFrame' id='webframe'>"
+	"            <property name='vexpand'>1</property>"
+	"            <property name='hexpand'>1</property>"
+	"            <style>"
+	"              <class name='sunken'/>"
+	"            </style>"
+	"          </object>"
+	"        </child>"
+	"      </object>"
+	"    </child>"
+	"  </object>"
+	"</interface>";
 
 	GtkBuilder *builder = gtk_builder_new_from_string (ui_xml, -1);
 	browser->container = GTK_WIDGET (gtk_builder_get_object (builder, "container"));
@@ -651,8 +693,47 @@ liferea_browser_init (LifereaBrowser *browser)
 	browser->back = GTK_WIDGET (gtk_builder_get_object (builder, "back"));
 	browser->forward = GTK_WIDGET (gtk_builder_get_object (builder, "forward"));
 	browser->urlentry = GTK_WIDGET (gtk_builder_get_object (builder, "urlentry"));
+	browser->overlay = GTK_WIDGET (gtk_builder_get_object (builder, "overlay"));
 
 	g_object_ref_sink (browser->container);
+
+	// Create URL hover label
+	browser->urlHoverLabel = gtk_label_new (NULL);
+	gtk_widget_set_halign (browser->urlHoverLabel, GTK_ALIGN_START);
+	gtk_widget_set_valign (browser->urlHoverLabel, GTK_ALIGN_END);
+	gtk_widget_set_margin_end (browser->urlHoverLabel, 6);
+	gtk_widget_set_margin_top (browser->urlHoverLabel, 6);
+   
+	// Prevent URL hover label text overflow
+	gtk_label_set_ellipsize (GTK_LABEL (browser->urlHoverLabel), PANGO_ELLIPSIZE_END);
+	gtk_label_set_single_line_mode (GTK_LABEL (browser->urlHoverLabel), TRUE);
+	gtk_label_set_max_width_chars (GTK_LABEL (browser->urlHoverLabel), 90);
+	gtk_widget_set_hexpand (browser->urlHoverLabel, FALSE);
+    
+	// URL hover label styling
+	gtk_widget_set_css_classes (browser->urlHoverLabel, 
+		(const char *[]){"background", "frame", "url-hover", NULL});
+	g_autofree gchar *css = g_strdup_printf (
+		"label.url-hover { "
+		"  padding: 3px 6px; "
+		"  font-size: 0.9em; "
+		"  box-shadow: 0 2px 4px alpha(@window_fg_color, 0.15); "
+		"}"
+	);
+
+	GtkCssProvider *provider = gtk_css_provider_new ();
+	gtk_css_provider_load_from_string (provider, css);
+	gtk_style_context_add_provider_for_display (
+	gtk_widget_get_display (browser->urlHoverLabel),
+	GTK_STYLE_PROVIDER (provider),
+	GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref (provider);
+    
+	// Initially hide the label
+	gtk_widget_set_visible (browser->urlHoverLabel, FALSE);
+
+	// Add label as overlay
+	gtk_overlay_add_overlay (GTK_OVERLAY (browser->overlay), browser->urlHoverLabel);
 
 	// Connect signals
 	g_signal_connect (browser->back, "clicked", G_CALLBACK (on_liferea_browser_history_back), browser);
@@ -669,15 +750,14 @@ liferea_browser_init (LifereaBrowser *browser)
 	liferea_browser_clear (browser);
 
 	g_signal_connect (network_monitor_get (), "proxy-changed",
-	                  G_CALLBACK (liferea_browser_proxy_changed),
-	                  browser);
+			G_CALLBACK (liferea_browser_proxy_changed),
+			browser);
 
 	g_signal_connect (browser, "statusbar-changed",
-	                  G_CALLBACK (liferea_browser_statusbar_changed), NULL);
+			G_CALLBACK (liferea_browser_statusbar_changed), browser);
 
 	debug (DEBUG_NET, "Setting initial HTML widget proxy...");
 	liferea_browser_proxy_changed (network_monitor_get (), browser);
 
 	liferea_browser_update_stylesheet (browser);
-
 }

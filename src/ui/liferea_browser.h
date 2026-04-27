@@ -43,6 +43,10 @@ struct _LifereaBrowser {
 	GtkWidget	*urlentry;		/*<< The URL entry widget */
 	browserHistory	*history;		/*<< The browser history */
 
+	GtkWidget	*overlay;         	/*<< The overlay container */
+	GtkWidget	*urlHoverLabel;   	/*<< Label showing hovered URL */
+	guint		urlHoverTimeout;	/*<< Timeout ID for auto-hide */
+
 	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
 
 	gchar		*url;			/*<< the URL of the content rendered right now */
