@@ -845,7 +845,8 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 					}
 					break;
 				case GDK_BUTTON_MIDDLE:
-					/* Middle mouse click toggles read status... */
+					/* Middle mouse click toggles read status (and does not select)... */
+					gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 					itemlist_toggle_read_status (item);
 					result = TRUE;
 					break;
@@ -1091,6 +1092,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 	g_signal_connect (G_OBJECT (ilv->treeview), "row_activated", G_CALLBACK (on_item_list_row_activated), ilv);
 
 	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (ilv->middle_gesture), GDK_BUTTON_MIDDLE);
+	gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (ilv->middle_gesture), GTK_PHASE_CAPTURE);
 	g_signal_connect (ilv->middle_gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
 	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (ilv->popup_gesture), GDK_BUTTON_SECONDARY);
 	g_signal_connect (ilv->popup_gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
