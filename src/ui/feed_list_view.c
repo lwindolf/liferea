@@ -378,7 +378,8 @@ feed_list_view_pressed_cb (GtkGestureClick *gesture, gdouble x, gdouble y, guint
 				g_object_unref(menu);
 				return TRUE;
 			case GDK_BUTTON_MIDDLE:
-				/* Middle mouse click toggles read status... */
+				/* Middle mouse click toggles read status (but do not select)... */
+				gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 				g_action_group_activate_action (G_ACTION_GROUP (g_application_get_default ()), "mark-feed-as-read", g_variant_new_string (node->id));
 				return TRUE;
 		}
@@ -779,6 +780,7 @@ feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 	g_signal_connect (G_OBJECT (flv->treeview), "row-activated",   G_CALLBACK (feed_list_view_row_activated_cb), flv);
 	g_signal_connect (controller, "key-pressed", G_CALLBACK (feed_list_view_key_pressed_cb), flv);
 	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (middle_gesture), GDK_BUTTON_MIDDLE);
+	gtk_event_controller_set_propagation_phase (GTK_EVENT_CONTROLLER (middle_gesture), GTK_PHASE_CAPTURE);
 	g_signal_connect (middle_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
 	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (popup_gesture), GDK_BUTTON_SECONDARY);
 	g_signal_connect (popup_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
