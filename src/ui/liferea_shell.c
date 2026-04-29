@@ -282,7 +282,7 @@ liferea_shell_update_layout (nodeViewType newMode)
 	const gchar	*htmlWidgetName, *ilWidgetName;
 	Node		*node;
 	nodeViewType	effectiveMode;
-
+	g_print("liferea_shell_update_layout\n");
 	browser_tabs_show_headlines ();
 
 	if (NODE_VIEW_MODE_AUTO == newMode) {
@@ -297,8 +297,10 @@ liferea_shell_update_layout (nodeViewType newMode)
 		effectiveMode = newMode;
 	}
 
-	if (effectiveMode == shell->currentLayoutMode)
+	if (effectiveMode == shell->currentLayoutMode) {
+		debug (DEBUG_GUI, "Setting item list layout mode: no change");
 		return;
+	}
 
 	shell->autoLayout = (NODE_VIEW_MODE_AUTO == newMode);
 	shell->currentLayoutMode = effectiveMode;
@@ -711,7 +713,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (shell->window, "notify::default-width", G_CALLBACK (on_window_resize_cb), NULL);
 	g_signal_connect (shell->window, "notify::default-height", G_CALLBACK (on_window_resize_cb), NULL);
 	g_signal_connect (shell->window, "notify::maximized", G_CALLBACK (on_window_resize_cb), NULL);
-	g_signal_connect (shell->window, "notify::fullscreen", G_CALLBACK (on_window_resize_cb), NULL);
+	g_signal_connect (shell->window, "notify::fullscreened", G_CALLBACK (on_window_resize_cb), NULL);
 
 	keypress = gtk_event_controller_key_new ();
 	gtk_widget_add_controller (GTK_WIDGET (shell->window), keypress);
