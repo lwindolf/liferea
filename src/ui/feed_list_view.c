@@ -117,7 +117,7 @@ feed_list_view_add_iter (const gchar *nodeId, GtkTreeIter *iter)
 
 /* Folder expansion workaround using "empty" nodes */
 
-static void
+void
 feed_list_view_add_empty_node (GtkTreeIter *parent)
 {
 	GtkTreeIter	iter;
@@ -131,7 +131,7 @@ feed_list_view_add_empty_node (GtkTreeIter *parent)
 	                    -1);
 }
 
-static void
+void
 feed_list_view_remove_empty_node (GtkTreeIter *parent)
 {
 	GtkTreeIter	iter;

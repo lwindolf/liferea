@@ -2,7 +2,7 @@
  * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,20 +105,22 @@ void liferea_shell_show_window (void);
 void liferea_shell_toggle_visibility (void);
 
 /**
- * liferea_shell_set_status_bar:
+ * liferea_shell_toast:
  *
- * Sets the status bar text. Takes printf() like parameters.
+ * Show a toast. Takes printf() like parameters.
  */
-void liferea_shell_set_status_bar (const char *format, ...);
+void liferea_shell_toast (const char *format, ...);
+
+#define liferea_shell_set_status_bar liferea_shell_toast
+#define liferea_shell_set_important_status_bar liferea_shell_toast
 
 /**
- * liferea_shell_set_important_status_bar:
+ * liferea_shell_set_header_bar:
  *
- * Similar to liferea_shell_set_status_message(), but ensures
- * that messages stay visible and avoids that those messages
- * are overwritten by unimportant ones.
+ * Similar to liferea_shell_toast(), but sets the headerbar subtitle.
+ * Should be used only for mass update status.
  */
-void liferea_shell_set_important_status_bar (const char *format, ...);
+void liferea_shell_set_header_bar (const char *format, ...);
 
 /**
  * liferea_shell_copy_to_clipboard:

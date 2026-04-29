@@ -219,23 +219,21 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	Node		*node = subscription->node;
 	gboolean	processing = FALSE;
 	guint		count, maxcount;
-	gchar		*statusbar;
 
 	/* 1. preprocessing */
-	statusbar = g_strdup ("");
 
 	g_assert (subscription->updateJob);
 	/* update the subscription URL on permanent redirects */
 	if ((301 == result->httpstatus || 308 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
 		debug (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
-		statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+		liferea_shell_toast (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title (node));
 	}
 
 	/* consider everything that prevents processing the data we got */
 	if (304 == result->httpstatus) {
 		node->available = TRUE;
-		statusbar = g_strdup_printf (_("\"%s\" has not changed since last update"), node_get_title(node));
+		liferea_shell_toast (_("\"%s\" has not changed since last update"), node_get_title (node));
 	} else if (result->httpstatus >= 400 || !result->data) {
 		/* Default */
 		subscription->error = FETCH_ERROR_NET;
@@ -248,7 +246,7 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 		}
 		if (410 == result->httpstatus) { /* gone */
 			subscription_set_discontinued (subscription, TRUE);
-			statusbar = g_strdup_printf (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+			liferea_shell_toast (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 		}
 	} else if (result->filterErrors) {
 		node->available = FALSE;
@@ -259,11 +257,10 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 
 	/* Clear status bar if we are last update in progress */
 	update_job_queue_get_count (&count, &maxcount);
-	if (1 >= count)
-		liferea_shell_set_status_bar (statusbar);
+	if (count > 1)
+		liferea_shell_set_header_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
 	else
-		liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
-	g_free (statusbar);
+		liferea_shell_set_header_bar (NULL);
 
 	subscription_update_error_status (subscription, result->httpstatus, result->filterErrors);
 
@@ -332,9 +329,9 @@ subscription_update (subscriptionPtr subscription, guint flags)
 
 		update_job_queue_get_count (&count, &maxcount);
 		if (count > 1)
-			liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
+			liferea_shell_set_header_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
 		else
-			liferea_shell_set_status_bar (_("Updating '%s'..."), node_get_title (subscription->node));
+			liferea_shell_toast (_("Updating '%s'..."), node_get_title (subscription->node));
 	}
 }
 

@@ -12,8 +12,26 @@
     <property name="titlebar">
       <object class="GtkHeaderBar" id="headerbar">
         <property name="title-widget">
-          <object class="GtkLabel" id="headerbartitle">
-            <property name="label">Liferea</property>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="headerbartitle">
+                <property name="css-classes">title</property>
+                <property name="label">Liferea</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+                <property name="vexpand-set">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="headerbarsubtitle">
+                <property name="css-classes">subtitle</property>
+                <property name="label"> </property>
+                <property name="vexpand">True</property>
+                <property name="vexpand-set">True</property>
+                <property name="visible">False</property>
+              </object>
+            </child>
           </object>
         </property>
         <child>
@@ -74,82 +92,86 @@
     </property>
     <property name="visible">True</property>
     <child>
-      <object class="GtkGrid" id="vbox1">
-        <property name="hexpand">1</property>
-        <property name="orientation">vertical</property>
-        <property name="vexpand">1</property>
+      <object class="GtkOverlay" id="toastOverlay">
         <child>
-          <object class="GtkPaned" id="leftpane">
-            <property name="end-child">
-              <object class="GtkNotebook" id="browsertabs">
-                <property name="focusable">1</property>
-                <property name="scrollable">1</property>
-                <property name="show-border">0</property>
-                <child>
-                  <object class="GtkNotebookPage">
-                    <property name="child">
-                      <object class="GtkNotebook" id="itemtabs">
-                        <property name="focusable">1</property>
-                        <property name="show-border">0</property>
-                        <property name="show-tabs">0</property>
-                        <child>
-                          <object class="GtkNotebookPage">
-                            <property name="child">
-                              <object class="GtkPaned" id="normalViewPane">
-                                <property name="end-child">
-                                  <object class="GtkGrid" id="normalViewVBox">
-                                    <property name="orientation">vertical</property>
-                                    <child>
-                                      <object class="GtkViewport" id="normalViewHtml">
-                                        <property name="hexpand">1</property>
-                                        <property name="vexpand">1</property>
+          <object class="GtkGrid" id="vbox1">
+            <property name="hexpand">1</property>
+            <property name="orientation">vertical</property>
+            <property name="vexpand">1</property>
+            <child>
+              <object class="GtkPaned" id="leftpane">
+                <property name="end-child">
+                  <object class="GtkNotebook" id="browsertabs">
+                    <property name="focusable">1</property>
+                    <property name="scrollable">1</property>
+                    <property name="show-border">0</property>
+                    <child>
+                      <object class="GtkNotebookPage">
+                        <property name="child">
+                          <object class="GtkNotebook" id="itemtabs">
+                            <property name="focusable">1</property>
+                            <property name="show-border">0</property>
+                            <property name="show-tabs">0</property>
+                            <child>
+                              <object class="GtkNotebookPage">
+                                <property name="child">
+                                  <object class="GtkPaned" id="normalViewPane">
+                                    <property name="end-child">
+                                      <object class="GtkGrid" id="normalViewVBox">
+                                        <property name="orientation">vertical</property>
                                         <child>
-                                          <object class="GtkMenuButton"/>
+                                          <object class="GtkViewport" id="normalViewHtml">
+                                            <property name="hexpand">1</property>
+                                            <property name="vexpand">1</property>
+                                            <child>
+                                              <object class="GtkMenuButton"/>
+                                            </child>
+                                            <layout>
+                                              <property name="column">0</property>
+                                              <property name="row">0</property>
+                                            </layout>
+                                          </object>
                                         </child>
-                                        <layout>
-                                          <property name="column">0</property>
-                                          <property name="row">0</property>
-                                        </layout>
                                       </object>
-                                    </child>
-                                  </object>
-                                </property>
-                                <property name="focusable">1</property>
-                                <property name="orientation">vertical</property>
-                                <property name="position">199</property>
-                                <property name="position-set">1</property>
-                                <property name="resize-start-child">0</property>
-                                <property name="start-child">
-                                  <object class="GtkBox">
+                                    </property>
+                                    <property name="focusable">1</property>
                                     <property name="orientation">vertical</property>
-                                    <property name="spacing">6</property>
-                                    <child>
-                                      <object class="GtkViewport" id="normalViewItems">
-                                        <property name="vexpand">True</property>
+                                    <property name="position">199</property>
+                                    <property name="position-set">1</property>
+                                    <property name="resize-start-child">0</property>
+                                    <property name="start-child">
+                                      <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">6</property>
                                         <child>
-                                          <object class="GtkBox" id="itemListViewContainer">
-                                            <property name="orientation">vertical</property>
+                                          <object class="GtkViewport" id="normalViewItems">
                                             <property name="vexpand">True</property>
                                             <child>
-                                              <object class="GtkBox" id="searchbox">
-                                                <property name="margin-bottom">3</property>
-                                                <property name="margin-end">6</property>
-                                                <property name="margin-start">6</property>
-                                                <property name="margin-top">6</property>
-                                                <property name="spacing">6</property>
-                                                <property name="visible">False</property>
+                                              <object class="GtkBox" id="itemListViewContainer">
+                                                <property name="orientation">vertical</property>
+                                                <property name="vexpand">True</property>
                                                 <child>
-                                                  <object class="GtkSearchEntry" id="searchentry">
-                                                    <property name="hexpand">True</property>
-                                                    <property name="placeholder-text">Search item content</property>
-                                                    <signal name="activate" handler="on_searchentry_activated"/>
-                                                  </object>
-                                                </child>
-                                                <child>
-                                                  <object class="GtkButton">
-                                                    <property name="label">Advanced</property>
-                                                    <signal name="activate" handler="on_advancedsearch_activated"/>
-                                                    <signal name="clicked" handler="on_advancedsearch_activated"/>
+                                                  <object class="GtkBox" id="searchbox">
+                                                    <property name="margin-bottom">3</property>
+                                                    <property name="margin-end">6</property>
+                                                    <property name="margin-start">6</property>
+                                                    <property name="margin-top">6</property>
+                                                    <property name="spacing">6</property>
+                                                    <property name="visible">False</property>
+                                                    <child>
+                                                      <object class="GtkSearchEntry" id="searchentry">
+                                                        <property name="hexpand">True</property>
+                                                        <property name="placeholder-text">Search item content</property>
+                                                        <signal name="activate" handler="on_searchentry_activated"/>
+                                                      </object>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkButton">
+                                                        <property name="label">Advanced</property>
+                                                        <signal name="activate" handler="on_advancedsearch_activated"/>
+                                                        <signal name="clicked" handler="on_advancedsearch_activated"/>
+                                                      </object>
+                                                    </child>
                                                   </object>
                                                 </child>
                                               </object>
@@ -157,101 +179,101 @@
                                           </object>
                                         </child>
                                       </object>
-                                    </child>
+                                    </property>
+                                  </object>
+                                </property>
+                                <property name="tab">
+                                  <object class="GtkLabel">
+                                    <property name="label" translatable="yes">page 1</property>
                                   </object>
                                 </property>
                               </object>
-                            </property>
-                            <property name="tab">
-                              <object class="GtkLabel">
-                                <property name="label" translatable="yes">page 1</property>
-                              </object>
-                            </property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkNotebookPage">
-                            <property name="child">
-                              <object class="GtkPaned" id="wideViewPane">
-                                <property name="end-child">
-                                  <object class="GtkGrid" id="wideViewVBox">
-                                    <child>
-                                      <object class="GtkViewport" id="wideViewHtml">
-                                        <property name="hexpand">1</property>
-                                        <property name="vexpand">1</property>
-                                        <layout>
-                                          <property name="column">0</property>
-                                          <property name="row">0</property>
-                                        </layout>
+                            </child>
+                            <child>
+                              <object class="GtkNotebookPage">
+                                <property name="child">
+                                  <object class="GtkPaned" id="wideViewPane">
+                                    <property name="end-child">
+                                      <object class="GtkGrid" id="wideViewVBox">
+                                        <child>
+                                          <object class="GtkViewport" id="wideViewHtml">
+                                            <property name="hexpand">1</property>
+                                            <property name="vexpand">1</property>
+                                            <layout>
+                                              <property name="column">0</property>
+                                              <property name="row">0</property>
+                                            </layout>
+                                          </object>
+                                        </child>
                                       </object>
-                                    </child>
+                                    </property>
+                                    <property name="focusable">1</property>
+                                    <property name="position">100</property>
+                                    <property name="position-set">1</property>
+                                    <property name="resize-start-child">0</property>
+                                    <property name="start-child">
+                                      <object class="GtkViewport" id="wideViewItems"/>
+                                    </property>
                                   </object>
                                 </property>
-                                <property name="focusable">1</property>
-                                <property name="position">100</property>
-                                <property name="position-set">1</property>
-                                <property name="resize-start-child">0</property>
-                                <property name="start-child">
-                                  <object class="GtkViewport" id="wideViewItems"/>
+                                <property name="position">1</property>
+                                <property name="tab">
+                                  <object class="GtkLabel">
+                                    <property name="label" translatable="yes">page 2</property>
+                                  </object>
                                 </property>
                               </object>
-                            </property>
-                            <property name="position">1</property>
-                            <property name="tab">
-                              <object class="GtkLabel">
-                                <property name="label" translatable="yes">page 2</property>
-                              </object>
-                            </property>
+                            </child>
                           </object>
-                        </child>
+                        </property>
+                        <property name="tab">
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Headlines</property>
+                          </object>
+                        </property>
                       </object>
-                    </property>
-                    <property name="tab">
-                      <object class="GtkLabel">
-                        <property name="label" translatable="yes">Headlines</property>
-                      </object>
-                    </property>
-                  </object>
-                </child>
-              </object>
-            </property>
-            <property name="focusable">1</property>
-            <property name="hexpand">1</property>
-            <property name="position">170</property>
-            <property name="resize-start-child">0</property>
-            <property name="start-child">
-              <object class="GtkScrolledWindow" id="scrolledwindow3">
-                <property name="child">
-                  <object class="GtkTreeView" id="feedlist">
-                    <property name="enable-search">False</property>
-                    <property name="focusable">1</property>
-                    <property name="headers-visible">0</property>
-                    <property name="reorderable">1</property>
-                    <child internal-child="selection">
-                      <object class="GtkTreeSelection"/>
                     </child>
                   </object>
                 </property>
                 <property name="focusable">1</property>
-                <property name="hscrollbar-policy">never</property>
+                <property name="hexpand">1</property>
+                <property name="position">170</property>
+                <property name="resize-start-child">0</property>
+                <property name="start-child">
+                  <object class="GtkScrolledWindow" id="scrolledwindow3">
+                    <property name="child">
+                      <object class="GtkTreeView" id="feedlist">
+                        <property name="enable-search">False</property>
+                        <property name="focusable">1</property>
+                        <property name="headers-visible">0</property>
+                        <property name="reorderable">1</property>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection"/>
+                        </child>
+                      </object>
+                    </property>
+                    <property name="focusable">1</property>
+                    <property name="hscrollbar-policy">never</property>
+                  </object>
+                </property>
+                <property name="vexpand">1</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">0</property>
+                </layout>
               </object>
-            </property>
-            <property name="vexpand">1</property>
-            <layout>
-              <property name="column">0</property>
-              <property name="row">0</property>
-            </layout>
-          </object>
-        </child>
-        <child>
-          <object class="GtkStatusbar" id="statusbar">
-            <property name="margin-end">6</property>
-            <property name="margin-start">6</property>
-            <property name="visible">False</property>
-            <layout>
-              <property name="column">0</property>
-              <property name="row">1</property>
-            </layout>
+            </child>
+            <child>
+              <object class="GtkStatusbar" id="statusbar">
+                <property name="margin-end">6</property>
+                <property name="margin-start">6</property>
+                <property name="visible">False</property>
+                <layout>
+                  <property name="column">0</property>
+                  <property name="row">1</property>
+                </layout>
+              </object>
+            </child>
           </object>
         </child>
       </object>

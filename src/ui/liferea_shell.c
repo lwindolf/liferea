@@ -86,6 +86,11 @@ struct _LifereaShell {
 
 	LifereaBrowser	*htmlview;		/*<< the primary browser instance to render node/item info to */
 	BrowserTabs	*tabs;
+
+	GtkWidget	*toastOverlay;		/*<< Toast overlay for notifications */
+	GtkWidget	*toastRevealer;		/*<< Revealer for toast animation */
+	GtkWidget	*toastLabel;		/*<< Label showing toast message */
+	guint		toastTimeout;		/*<< Timeout ID for auto-hide */
 };
 
 enum {
@@ -114,6 +119,11 @@ static void
 liferea_shell_finalize (GObject *object)
 {
 	LifereaShell *ls = LIFEREA_SHELL (object);
+
+	if (ls->toastTimeout) {
+		g_source_remove (ls->toastTimeout);
+		ls->toastTimeout = 0;
+	}
 
 	g_object_unref (ls->plugins);
 	g_object_unref (ls->tabs);
@@ -263,18 +273,68 @@ liferea_shell_init (LifereaShell *ls)
 	gtk_builder_add_from_resource (shell->xml, "/org/gnome/liferea/ui/itemlist.ui", NULL);
 }
 
-void
-liferea_shell_set_status_bar (const char *format, ...)
+static gboolean
+liferea_shell_hide_toast (gpointer user_data)
 {
-	// FIXME: implement a modern GTK4 solution
+    g_return_val_if_fail (shell != NULL, G_SOURCE_REMOVE);
+    
+    gtk_revealer_set_reveal_child (GTK_REVEALER (shell->toastRevealer), FALSE);
+    shell->toastTimeout = 0;
+    
+    return G_SOURCE_REMOVE;
 }
 
 void
-liferea_shell_set_important_status_bar (const char *format, ...)
+liferea_shell_toast (const char *format, ...)
 {
-	// FIXME: implement a modern GTK4 solution
+	va_list args;
+	g_autofree gchar *msg = NULL;
+
+	g_return_if_fail (shell != NULL);
+	g_return_if_fail (shell->toastLabel != NULL);
+
+	if (!format)
+		return;
+
+	va_start (args, format);
+	msg = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	if (shell->toastTimeout)
+		g_source_remove (shell->toastTimeout);
+	shell->toastTimeout = g_timeout_add (5000, liferea_shell_hide_toast, NULL);
+
+	gtk_label_set_text (GTK_LABEL (shell->toastLabel), msg);
+	gtk_revealer_set_reveal_child (GTK_REVEALER (shell->toastRevealer), TRUE);
 }
 
+void
+liferea_shell_set_header_bar (const char *format, ...)
+{
+	va_list args;
+	GtkWidget *subtitle, *title;
+	g_autofree gchar *msg = NULL;
+
+	g_return_if_fail (shell != NULL);
+
+	title = liferea_shell_lookup ("headerbartitle");
+	subtitle = liferea_shell_lookup ("headerbarsubtitle");
+
+	if (!format) {
+		gtk_widget_set_visible (subtitle, FALSE);
+		gtk_widget_set_valign (title, GTK_ALIGN_CENTER);
+		return;
+	} else {
+		gtk_widget_set_visible (subtitle, TRUE);
+		gtk_widget_set_valign (title, GTK_ALIGN_END);
+	}
+
+	va_start (args, format);
+	msg = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	gtk_label_set_text (GTK_LABEL (subtitle), msg);
+}
 
 static void
 liferea_shell_update_layout (nodeViewType newMode)
@@ -622,6 +682,70 @@ liferea_shell_find_next_unread (gulong startId)
 	return result;
 }
 
+static GtkWidget *
+liferea_shell_create_toast_widget (void)
+{
+	GtkWidget *revealer, *box, *label;
+	GtkCssProvider *provider;
+
+	// Create revealer for slide-in animation
+	revealer = gtk_revealer_new ();
+	gtk_revealer_set_transition_type (GTK_REVEALER (revealer), GTK_REVEALER_TRANSITION_TYPE_SLIDE_DOWN);
+	gtk_revealer_set_transition_duration (GTK_REVEALER (revealer), 200);
+	gtk_widget_set_halign (revealer, GTK_ALIGN_CENTER);
+	gtk_widget_set_valign (revealer, GTK_ALIGN_END);
+	gtk_widget_set_vexpand (revealer, TRUE);
+	gtk_widget_set_margin_top (revealer, 12);
+
+	// Create box container
+	box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+	gtk_widget_set_margin_start (box, 12);
+	gtk_widget_set_margin_end (box, 12);
+	gtk_widget_set_margin_top (box, 6);
+	gtk_widget_set_margin_bottom (box, 6);
+
+	// Create label
+	label = gtk_label_new (NULL);
+	gtk_label_set_wrap (GTK_LABEL (label), TRUE);
+	gtk_label_set_max_width_chars (GTK_LABEL (label), 60);
+	gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+	gtk_widget_set_hexpand (GTK_WIDGET (label), TRUE);
+	gtk_box_append (GTK_BOX (box), label);
+
+	// Create close button
+	GtkWidget *close_button = gtk_button_new_from_icon_name ("window-close-symbolic");
+	gtk_widget_set_valign (close_button, GTK_ALIGN_CENTER);
+	gtk_widget_add_css_class (close_button, "flat");
+	gtk_widget_add_css_class (close_button, "circular");
+	g_signal_connect_swapped (close_button, "clicked", G_CALLBACK (liferea_shell_hide_toast), NULL);
+	gtk_box_append (GTK_BOX (box), close_button);
+
+	gtk_revealer_set_child (GTK_REVEALER (revealer), box);
+
+	// Add CSS styling
+	gtk_widget_add_css_class (box, "osd");
+	gtk_widget_add_css_class (box, "frame");
+	gtk_widget_add_css_class (box, "app-notification");
+
+	provider = gtk_css_provider_new ();
+	// FIXME: what about dark theme?
+	gtk_css_provider_load_from_string (provider,
+        ".app-notification {"
+        "  background-color: rgba(0, 0, 0, 0.8);"
+        "  color: white;"
+        "  border-radius: 6px;"
+        "  padding: 6px 12px;"
+        "  font-size: 90%;"
+        "}");
+	gtk_style_context_add_provider_for_display (
+	gdk_display_get_default (),
+	GTK_STYLE_PROVIDER (provider),
+	GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+	g_object_unref (provider);
+
+	return revealer;
+}
+
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
@@ -642,6 +766,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* 1.) stuff where order does not matter */
 	shell->currentLayoutMode = 10000;	// something invalid
 	shell->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
+	shell->toastOverlay = liferea_shell_lookup ("toastOverlay");
+	shell->toastRevealer = liferea_shell_create_toast_widget ();
+	shell->toastLabel = gtk_widget_get_first_child (
+		gtk_revealer_get_child (GTK_REVEALER (shell->toastRevealer))
+	);
+	gtk_overlay_add_overlay (GTK_OVERLAY (shell->toastOverlay), shell->toastRevealer);
 	shell->plugins = liferea_plugins_engine_get ();
 	shell->itemlist = ITEMLIST (g_object_new (ITEMLIST_TYPE, NULL));
 	shell->feedlist = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));

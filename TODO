@@ -4,22 +4,18 @@ A first release candidate is close.
 To be fixed next:
 =================
 
-1. Reimplement feed list DnD reordering
-2. restore ATK taggings
-3. ./src/actions/shell_actions.c: // FIXME: action group state init
-4. Duplicate subscription dialog does now appear (but check works)
+1. restore ATK taggings
+2. ./src/actions/shell_actions.c: // FIXME: action group state init
+3. Duplicate subscription dialog does not appear (but check works)
 
 To be fixed later:
 ==================
 
+- new_source dialog crashes
 - random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
-- Show update progress / info in feedlist gtkoverlay
 - dialog warnings with "Trying to measure GtkDialog 0x55a10107f990 for height of 183, but it needs at least 282" (e.g. pref dialog)
 - remaining GTK4 FIXMES:
 
-../src/ui/ui_dnd.c:    (FIXME: implement the last part)
-../src/ui/liferea_shell.c:      // 6.) Restore selection (FIXME: Move to feed list code?)
-../src/ui/liferea_shell.c:      // FIXME GTK4
 ../src/actions/shell_actions.c:// FIXME replace this with a bind!
 ../src/actions/shell_actions.c: // FIXME: this looks wrong here
 .

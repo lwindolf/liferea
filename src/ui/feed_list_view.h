@@ -129,4 +129,7 @@ void feed_list_view_set_reduce_mode (gboolean newReduceMode);
  */
 void feed_list_view_reparent (Node *node);
 
+void feed_list_view_remove_empty_node (GtkTreeIter *parent);
+void feed_list_view_add_empty_node (GtkTreeIter *parent);
+
 #endif
