@@ -86,14 +86,15 @@ GtkWidget *
 liferea_dialog_new (const gchar *name)
 {
 	LifereaDialog	*ld;
+	g_autoptr(GError) error = NULL;
 	g_autofree gchar *path = g_strdup_printf ("/org/gnome/liferea/ui/%s.ui", name);
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 	LifereaDialogPrivate *priv = liferea_dialog_get_instance_private (ld);
 	priv->xml = gtk_builder_new ();
 
-	if (!gtk_builder_add_from_resource (priv->xml, path, NULL)) {
-		g_warning ("Could not load dialog UI file '%s'", path);
+	if (!gtk_builder_add_from_resource (priv->xml, path, &error)) {
+		g_warning ("Could not load dialog UI file '%s': %s", path, error->message);
 		g_object_unref (ld);
 		return NULL;
 	}

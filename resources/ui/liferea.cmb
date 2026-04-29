@@ -1481,6 +1481,7 @@
 	(29,6,"GtkWidget","valign","center",0,None,None,None,None,None,None,None,None),
 	(29,7,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
 	(29,7,"GtkButton","label","_Cancel",1,None,None,None,None,None,None,None,None),
+	(29,7,"GtkButton","receives-default","False",None,None,None,None,None,None,None,None,None),
 	(29,7,"GtkButton","use-underline","True",None,None,None,None,None,None,None,None,None),
 	(29,8,"GtkButton","focusable","1",0,None,None,None,None,None,None,None,None),
 	(29,8,"GtkButton","label","_OK",1,None,None,None,None,None,None,None,None),
@@ -2154,9 +2155,6 @@
 	(18,24,88,"GtkButton","clicked","gtk_widget_hide",None,3,1,0,None),
 	(19,26,9,"GtkButton","clicked","gtk_widget_destroy",None,1,1,0,None),
 	(20,28,8,"GtkButton","clicked","gtk_widget_destroy",None,1,1,0,None),
-	(21,29,7,"GtkButton","clicked","gtk_widget_hide",None,1,1,0,None),
-	(22,29,8,"GtkButton","clicked","gtk_widget_hide",None,1,1,1,None),
-	(23,29,8,"GtkButton","clicked","on_newfolderbtn_clicked",None,None,0,0,None),
 	(34,34,106,"GtkSearchEntry","activate","on_searchentry_activated",None,None,0,0,None),
 	(35,34,107,"GtkButton","activate","on_advancedsearch_activated",None,None,0,0,None),
 	(36,34,107,"GtkButton","clicked","on_advancedsearch_activated",None,None,0,0,None)

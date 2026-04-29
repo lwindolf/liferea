@@ -59,8 +59,8 @@
           <object class="GtkButton" id="button3">
             <property name="focusable">1</property>
             <property name="label" translatable="yes">_Cancel</property>
+            <property name="receives-default">False</property>
             <property name="use-underline">True</property>
-            <signal name="clicked" handler="gtk_widget_hide" object="new_folder" swapped="yes"/>
           </object>
         </child>
         <child>
@@ -68,8 +68,6 @@
             <property name="focusable">1</property>
             <property name="label" translatable="yes">_OK</property>
             <property name="use-underline">True</property>
-            <signal name="clicked" handler="gtk_widget_hide" object="new_folder" swapped="yes" after="yes"/>
-            <signal name="clicked" handler="on_newfolderbtn_clicked"/>
           </object>
         </child>
       </object>

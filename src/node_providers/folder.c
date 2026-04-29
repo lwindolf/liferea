@@ -107,9 +107,13 @@ folder_remove (Node *node)
 }
 
 static void
-on_newfolder_clicked (GtkButton *button, gpointer user_data)
-{	
-	feedlist_add_folder (liferea_dialog_entry_get (GTK_WIDGET (user_data), "foldertitleentry"));
+on_newfolder_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+	if (response_id == GTK_RESPONSE_OK) {
+		feedlist_add_folder (liferea_dialog_entry_get (GTK_WIDGET (dialog), "foldertitleentry"));
+	}
+
+	gtk_window_close (GTK_WINDOW (dialog));
 }
 
 static gboolean
@@ -117,8 +121,9 @@ folder_add_dialog (void)
 {
 	GtkWidget *dialog = liferea_dialog_new ("new_folder");
 	liferea_dialog_entry_set (dialog, "foldertitleentry", "");
-	g_signal_connect (liferea_dialog_lookup (dialog, "newfolderbtn"), "clicked", G_CALLBACK (on_newfolder_clicked), dialog);
-	
+	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_newfolder_response), NULL);
+	gtk_window_present (GTK_WINDOW (dialog));
+
 	return TRUE;
 }
 
