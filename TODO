@@ -4,18 +4,19 @@ A first release candidate is close.
 To be fixed next:
 =================
 
-1. fix select next unread by skim hotkey
-2. auto switch normal/wide layout does not work
-3. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
+1. auto switch normal/wide layout does not work
+2. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
+3. feed list DnD
+
 
 To be fixed later:
 ==================
 
 - Show update progress / info in feedlist gtkoverlay
-- feed list DnD
 - Decide on whether to drop deferred removal in favour of keeping read items visible
 - strange selection behaviour on read filtered itemlist
 - restore ATK taggings
+- dialog warnings with "Trying to measure GtkDialog 0x55a10107f990 for height of 183, but it needs at least 282" (e.g. pref dialog)
 - remaining GTK4 FIXMES:
 
 ../src/ui/ui_dnd.c:    (FIXME: implement the last part)

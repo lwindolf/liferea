@@ -433,8 +433,6 @@ itemlist_select_next_unread (void)
 
 	itemlist->priv->loading++;	/* prevent unwanted selections */
 
-	g_warning("FIXME itemlist_select_next_unread");
-
 	result = liferea_shell_find_next_unread (itemlist->priv->selectedId);
 
 	itemlist->priv->loading--;
