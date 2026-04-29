@@ -151,7 +151,7 @@ on_about_activate (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 
 	dialog = liferea_dialog_new ("about");
 	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), VERSION);
-	// FIXME GTK4 g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_set_visible), NULL);
+	gtk_window_present (GTK_WINDOW (dialog));
 }
 
 static gchar *

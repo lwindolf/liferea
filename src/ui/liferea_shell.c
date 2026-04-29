@@ -282,7 +282,7 @@ liferea_shell_update_layout (nodeViewType newMode)
 	const gchar	*htmlWidgetName, *ilWidgetName;
 	Node		*node;
 	nodeViewType	effectiveMode;
-	g_print("liferea_shell_update_layout\n");
+
 	browser_tabs_show_headlines ();
 
 	if (NODE_VIEW_MODE_AUTO == newMode) {
