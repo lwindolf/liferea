@@ -4,13 +4,15 @@ A first release candidate is close.
 To be fixed next:
 =================
 
-1. random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
-2. feed list DnD
-3. restore ATK taggings
+1. Reimplement feed list DnD reordering
+2. restore ATK taggings
+3. ./src/actions/shell_actions.c: // FIXME: action group state init
+4. Duplicate subscription dialog does now appear (but check works)
 
 To be fixed later:
 ==================
 
+- random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
 - Show update progress / info in feedlist gtkoverlay
 - dialog warnings with "Trying to measure GtkDialog 0x55a10107f990 for height of 183, but it needs at least 282" (e.g. pref dialog)
 - remaining GTK4 FIXMES:
@@ -19,9 +21,8 @@ To be fixed later:
 ../src/ui/liferea_shell.c:      // 6.) Restore selection (FIXME: Move to feed list code?)
 ../src/ui/liferea_shell.c:      // FIXME GTK4
 ../src/actions/shell_actions.c:// FIXME replace this with a bind!
-../src/actions/shell_actions.c: // FIXME GTK4 g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_set_visible), NULL);
 ../src/actions/shell_actions.c: // FIXME: this looks wrong here
-../src/actions/shell_actions.c: // FIXME: action group state init
+.
 ../src/actions/node_actions.c:  // FIXME
 ../src/actions/node_actions.c:        ui_common_action_enable (ag, "node-rebuild-vfolder", TRUE);     // FIXME
 ../src/actions/node_actions.c:        ui_common_action_enable (ag, "node-convert-to-local", TRUE);    // FIXME

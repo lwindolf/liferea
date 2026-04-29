@@ -1,7 +1,7 @@
 /**
  * @file ui_dnd.c everything concerning Drag&Drop
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
 
      -> Because parts of the feed list might be un-draggable.
      -> Because drag source and target might be different node sources
-	with even incompatible subscription types.
+        with even incompatible subscription types.
      -> Because removal at drag source and insertion at drop target
         must be atomic to avoid subscription losses.
 
@@ -46,8 +46,25 @@
     (FIXME: implement the last part)
  */
 
+static gboolean
+on_drop (GtkDropTarget *target,
+         const GValue *value,
+         double x,
+         double y,
+         gpointer data)
+{
+	feedlist_add_subscription_check_duplicate (subscription_new (g_value_get_string (value), NULL, NULL));
+	return TRUE;
+}
+
 void
 ui_dnd_setup_feedlist (GtkTreeStore *feedstore)
 {
-	g_warning ("FIXME GTK4: drag and drop not yet implemented");
+	GtkDropTarget *target = gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY);
+
+	gtk_drop_target_set_gtypes (target, (GType[1]) { G_TYPE_STRING }, 1);
+
+	g_signal_connect (target, "drop", G_CALLBACK (on_drop), NULL);
+
+	gtk_widget_add_controller (GTK_WIDGET (liferea_shell_lookup ("feedlist")), GTK_EVENT_CONTROLLER (target));
 }
