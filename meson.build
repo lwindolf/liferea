@@ -62,7 +62,8 @@ liferea = executable('liferea',
   liferea_sources + files('src/main.c'),
   liferea_resources,
   dependencies: liferea_deps,
-  include_directories: include_directories('.', 'src')
+  include_directories: include_directories('.', 'src'),
+  install: true
 )
 memcheck = find_program('src/tests/memcheck.sh')
 
