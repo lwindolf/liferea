@@ -4,13 +4,14 @@ A first release candidate is close.
 To be fixed next:
 =================
 
-1. restore ATK taggings
-2. ./src/actions/shell_actions.c: // FIXME: action group state init
-3. all source dialogs start too small in the left corner
+1. ./src/actions/shell_actions.c: // FIXME: action group state init
+2. all source dialogs start too small in the left corner
+3. flat look of rule editor: buttons and entries look identical
 
 To be fixed later:
 ==================
 
+- all GtkTreeView rows in dialogs have no/small spacing
 - random GUI freezes when opening GtkDialog (e.g. preferences / update monitor)
   - does seem to happen more with modal GtkDialog
   - does not seem to happen with modal AdwDialog
