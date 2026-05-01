@@ -56,15 +56,19 @@
           <object class="GtkNotebook" id="subscriptionPropNotebook">
             <property name="focusable">1</property>
             <child>
-              <object class="GtkNotebookPage">
+              <object class="GtkNotebookPage" id="tab1">
                 <property name="child">
                   <object class="GtkGrid">
+                    <property name="accessible-role">generic</property>
                     <property name="margin-bottom">12</property>
                     <property name="margin-end">12</property>
                     <property name="margin-start">12</property>
                     <property name="margin-top">12</property>
                     <property name="orientation">vertical</property>
                     <property name="row-spacing">18</property>
+                    <accessibility>
+                      <relation name="labelled-by">tab1Label</relation>
+                    </accessibility>
                     <child>
                       <object class="GtkGrid">
                         <property name="column-spacing">12</property>
@@ -75,6 +79,9 @@
                             <property name="mnemonic-widget">feedNameEntry</property>
                             <property name="use-underline">1</property>
                             <property name="xalign">0.0</property>
+                            <accessibility>
+                              <property name="orientation">horizontal</property>
+                            </accessibility>
                             <attributes>
                               <attribute name="weight" value="bold"/>
                             </attributes>
@@ -153,6 +160,9 @@
                             <property name="focusable">1</property>
                             <property name="text" translatable="yes">1</property>
                             <property name="value">1</property>
+                            <accessibility>
+                              <relation name="labelled-by">updateIntervalSpecific</relation>
+                            </accessibility>
                             <layout>
                               <property name="column">1</property>
                               <property name="row">2</property>
@@ -162,6 +172,9 @@
                         <child>
                           <object class="GtkComboBox" id="refreshIntervalUnitComboBox">
                             <property name="model">liststore6</property>
+                            <accessibility>
+                              <relation name="labelled-by">updateIntervalSpecific</relation>
+                            </accessibility>
                             <child>
                               <object class="GtkCellRendererText" id="cellrenderertext1"/>
                               <!-- Custom child fragments -->
@@ -210,7 +223,7 @@
                   </object>
                 </property>
                 <property name="tab">
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="tab1Label">
                     <property name="label" translatable="yes">General</property>
                   </object>
                 </property>
@@ -599,12 +612,16 @@
               <object class="GtkNotebookPage">
                 <property name="child">
                   <object class="GtkGrid">
+                    <property name="accessible-role">form</property>
                     <property name="column-spacing">12</property>
                     <property name="margin-bottom">12</property>
                     <property name="margin-end">12</property>
                     <property name="margin-start">12</property>
                     <property name="margin-top">12</property>
                     <property name="row-spacing">6</property>
+                    <accessibility>
+                      <relation name="labelled-by">enctablabel</relation>
+                    </accessibility>
                     <child>
                       <object class="GtkCheckButton" id="enclosureDownloadCheck">
                         <property name="focusable">1</property>
@@ -666,6 +683,10 @@
                 <property name="tab">
                   <object class="GtkLabel" id="enctablabel">
                     <property name="label" translatable="yes">Advanced</property>
+                    <accessibility>
+                      <property name="orientation">vertical</property>
+                      <property name="value-max">-0.1</property>
+                    </accessibility>
                   </object>
                 </property>
               </object>

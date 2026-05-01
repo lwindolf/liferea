@@ -6,7 +6,7 @@
   <ui filename="auth.ui" sha256="4c87551e71c4b7a817d20e5840c902f4af6ac92c0f0bf27dcb995528b4db71d4"/>
   <ui filename="google_source.ui" sha256="05bf521759943a824c9a05fc2a52654049cfa453cee1cad78805e6bf1c5d11d4"/>
   <ui filename="update_monitor.ui" sha256="c1ab80b66415458e03188ec1b19531bbe3776bbbae2c3c6e815fc0d23a7bcc68"/>
-  <ui filename="search.ui" sha256="943387802156814d4df9ad3c838b24eab38e7e4434e2bbc521fe22b110ba3cb9">
+  <ui filename="search.ui" sha256="17859583a4784ad90288cf83969cabf157b3e9e98b28fba07ef08d8e127a96aa">
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
   <ui filename="reedah_source.ui" sha256="ff6ef27cafc1d32d7f2ba98ac086ebe49bc1903f87786c253109ea2a1c34583a"/>
@@ -15,12 +15,12 @@
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
   <ui filename="rename_node.ui" sha256="b0d77ee75d41bf681ce4d0a2f9d4f9947f97fcfbf5222ed49cfd0cf3415c2def"/>
-  <ui filename="properties.ui" sha256="c24adaa2c5a9c487be1e23581d9dd5061ee4ca7c64adb18403651ae8146e0d14"/>
+  <ui filename="properties.ui" sha256="d2c80b4d2f0fbf674dc3c7e9230bafdda7a054033a25232957b4786c96b42268"/>
   <ui filename="prefs.ui" sha256="ac4047b3a0424ce986363eb625b09967211bef723d48acda4c8149cbf2b1e486"/>
   <ui filename="opml_source.ui" sha256="e5d8c09f541b753d8bf7c3f72d6d4a96c818f931e2c6c18b8fd04c384ef09c6b"/>
   <ui filename="node_source.ui" sha256="9cadcaf00da97d09b9fee8776d500ca77fa653105cb7331672e3e8ea5a9a9512"/>
   <ui filename="new_newsbin.ui" sha256="27a7285dca21d90010e3925c211145178e139d1fa22e6e1a082c5fbad25ac1e9"/>
-  <ui filename="new_folder.ui" sha256="31ce9a093c24962b85aa9a22bf7967ecd9b40f8cdb820f50c3f5af0eed631f43"/>
+  <ui filename="new_folder.ui" sha256="b31e95e40f01915fa5c0e40f04619c6a10c047341a7ea98b8e41f9ea6948fa58"/>
   <ui filename="mark_read_dialog.ui" sha256="34b96a4e8b99660d441b678d009e977ee0dec9e3304246eedf8cef8aa56422a2"/>
   <ui filename="about.ui" sha256="acb9ae69305d3c1efc81b0450b2f6b0d4875208b162f220ad1c696906822dfdc"/>
   <ui filename="theoldreader_source.ui" sha256="d6f4838d1f656d8c02377b280e32d6403bff392368fc560f47773268c0449e0f"/>
