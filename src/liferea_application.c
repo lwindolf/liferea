@@ -31,6 +31,7 @@
 #endif
 
 #include <string.h>
+#include <girepository/girepository.h>
 
 #include "conf.h"
 #include "common.h"
@@ -45,17 +46,15 @@
 #include "ui/liferea_shell.h"
 #include "tests/test.h"
 
-#include <girepository/girepository.h>
-
 struct _LifereaApplication {
-	GtkApplication	parent;
+	AdwApplication	parent;
 	gchar		*initialStateOption;
 	gint		pluginsDisabled;
 	LifereaDBus	*dbus;
 	gulong		debug_flags;
 };
 
-G_DEFINE_TYPE (LifereaApplication, liferea_application, GTK_TYPE_APPLICATION)
+G_DEFINE_TYPE (LifereaApplication, liferea_application, ADW_TYPE_APPLICATION)
 
 static LifereaApplication *liferea_app = NULL;
 
@@ -117,16 +116,16 @@ on_app_open (GApplication *application,
 
 /* GApplication "activate" callback emitted on the primary instance.  */
 static void
-on_app_activate (GtkApplication *gtk_app, gpointer user_data)
+on_app_activate (AdwApplication *adw_app, gpointer user_data)
 {
 	GList				*list;
-	LifereaApplication 		*app = LIFEREA_APPLICATION (gtk_app);
+	LifereaApplication 		*app = LIFEREA_APPLICATION (adw_app);
 
-	list = gtk_application_get_windows (gtk_app);
+	list = gtk_application_get_windows (GTK_APPLICATION (app));
 	if (list) {
 		liferea_shell_show_window ();
 	} else {
-		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
+		liferea_shell_create (GTK_APPLICATION (app), app->initialStateOption, app->pluginsDisabled);
 	}
 }
 

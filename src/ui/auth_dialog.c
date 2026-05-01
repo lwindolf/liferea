@@ -21,29 +21,31 @@
 #include "ui/auth_dialog.h"
 
 #include <libxml/uri.h>
+#include <libadwaita-1/adwaita.h>
 
 #include "common.h"
 #include "debug.h"
 #include "update.h"
 #include "ui/liferea_dialog.h"
+#include "ui/liferea_shell.h"
 
 static void
-on_authdialog_response (GtkDialog *dialog,
-                        gint response_id,
+on_authdialog_response (AdwDialog *dialog,
+                        gchar *response_id,
 			gpointer userdata)
 {
 
 	subscriptionPtr subscription = (subscriptionPtr)userdata;
 	subscription->activeAuth = FALSE;
 
-	if (response_id == GTK_RESPONSE_OK) {
+	if (g_strcmp0 (response_id, "ok") == 0) {
 		subscription_set_auth_info (subscription,
 		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "usernameEntry"),
 		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "passwordEntry"));
 		subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
-	gtk_window_close (GTK_WINDOW (dialog));
+	adw_dialog_close (dialog);
 }
 
 void
@@ -59,7 +61,11 @@ auth_dialog_new (subscriptionPtr subscription, gint unused)
 	subscription->activeAuth = TRUE;
 
 	dialog = liferea_dialog_new ("auth");
-	gtk_window_present (GTK_WINDOW (dialog));
+	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "cancel",  _("_Cancel"));
+	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "ok",  _("_OK"));
+	adw_alert_dialog_set_response_appearance (ADW_ALERT_DIALOG (dialog), "ok", ADW_RESPONSE_SUGGESTED);
+	adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
+
 	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_authdialog_response), subscription);
 
 	uri = xmlParseURI (subscription_get_source (subscription));
@@ -80,11 +86,13 @@ auth_dialog_new (subscriptionPtr subscription, gint unused)
 		xmlFreeURI (uri);
 	}
 
-	promptStr = g_strdup_printf ( _("Enter the username and password for \"%s\" (%s):"),
+	promptStr = g_strdup_printf ( _("Credentials requested by \"%s\" (%s):"),
 	                             node_get_title (subscription->node),
 	                             source?source:_("Unknown source"));
 	gtk_label_set_text (GTK_LABEL (liferea_dialog_lookup (dialog, "prompt")), promptStr);
 	g_free (promptStr);
 	if (source)
 		xmlFree (source);
+
+	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
 }

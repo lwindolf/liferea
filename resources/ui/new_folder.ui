@@ -1,11 +1,38 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.94.1 -->
+<!-- Created with Cambalache 1.0 -->
 <interface>
   <!-- interface-name new_folder.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="new_folder">
     <property name="modal">1</property>
     <property name="title" translatable="yes">New Folder</property>
+    <child internal-child="action_area">
+      <object class="GtkBox" id="dialog-action_area6">
+        <property name="homogeneous">false</property>
+        <property name="margin-bottom">5</property>
+        <property name="margin-end">5</property>
+        <property name="margin-start">5</property>
+        <property name="margin-top">5</property>
+        <property name="orientation">horizontal</property>
+        <property name="spacing">6</property>
+        <property name="valign">center</property>
+        <child>
+          <object class="GtkButton" id="button3">
+            <property name="focusable">1</property>
+            <property name="label" translatable="yes">_Cancel</property>
+            <property name="receives-default">False</property>
+            <property name="use-underline">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="button2">
+            <property name="focusable">1</property>
+            <property name="label" translatable="yes">_OK</property>
+            <property name="use-underline">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox6">
         <property name="margin-bottom">12</property>
@@ -41,33 +68,6 @@
                 </layout>
               </object>
             </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child internal-child="action_area">
-      <object class="GtkBox" id="dialog-action_area6">
-        <property name="homogeneous">false</property>
-        <property name="margin-bottom">5</property>
-        <property name="margin-end">5</property>
-        <property name="margin-start">5</property>
-        <property name="margin-top">5</property>
-        <property name="orientation">horizontal</property>
-        <property name="spacing">6</property>
-        <property name="valign">center</property>
-        <child>
-          <object class="GtkButton" id="button3">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_Cancel</property>
-            <property name="receives-default">False</property>
-            <property name="use-underline">True</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="button2">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_OK</property>
-            <property name="use-underline">True</property>
           </object>
         </child>
       </object>

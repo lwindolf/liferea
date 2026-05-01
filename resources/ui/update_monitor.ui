@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.94.1 -->
+<!-- Created with Cambalache 1.0 -->
 <interface>
   <!-- interface-name update_monitor.ui -->
   <requires lib="gtk" version="4.0"/>
@@ -27,9 +27,6 @@
                   <object class="GtkTreeView" id="left">
                     <property name="focusable">1</property>
                     <property name="headers-visible">0</property>
-                    <child internal-child="selection">
-                      <object class="GtkTreeSelection"/>
-                    </child>
                   </object>
                 </property>
                 <property name="focusable">1</property>
@@ -47,9 +44,6 @@
                   <object class="GtkTreeView" id="right">
                     <property name="focusable">1</property>
                     <property name="headers-visible">0</property>
-                    <child internal-child="selection">
-                      <object class="GtkTreeSelection"/>
-                    </child>
                   </object>
                 </property>
                 <property name="focusable">1</property>
@@ -93,32 +87,11 @@
             </child>
           </object>
         </child>
-        <child internal-child="action_area">
-          <object class="GtkBox" id="dialog-action_area18">
-            <property name="spacing">6</property>
-            <property name="valign">center</property>
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkButton" id="button4">
-                <property name="focusable">1</property>
-                <property name="label" translatable="yes">Stop All</property>
-                <signal name="clicked" handler="on_cancel_all_requests_clicked"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="button5">
-                <property name="focusable">1</property>
-                <property name="label" translatable="yes">Close</property>
-                <signal name="clicked" handler="on_close_update_monitor_clicked"/>
-              </object>
-            </child>
-          </object>
-        </child>
       </object>
     </child>
     <action-widgets>
-      <action-widget response="0">button4</action-widget>
-      <action-widget response="-7">button5</action-widget>
+      <action-widget response="0"/>
+      <action-widget response="-7"/>
     </action-widgets>
   </object>
 </interface>

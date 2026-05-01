@@ -22,12 +22,12 @@
 #define _LIFEREA_APPLICATION_H
 
 #include <glib-object.h>
-#include <gtk/gtk.h>
+#include <libadwaita-1/adwaita.h>
 
 G_BEGIN_DECLS
 
 #define LIFEREA_APPLICATION_TYPE (liferea_application_get_type ())
-G_DECLARE_FINAL_TYPE (LifereaApplication, liferea_application, LIFEREA, APPLICATION, GtkApplication)
+G_DECLARE_FINAL_TYPE (LifereaApplication, liferea_application, LIFEREA, APPLICATION, AdwApplication)
 
 /**
  * liferea_application_new: (skip)

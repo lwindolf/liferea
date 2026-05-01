@@ -1,129 +1,54 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.94.1 -->
+<!-- Created with Cambalache 0.96.0 -->
 <interface>
   <!-- interface-name auth.ui -->
   <requires lib="gtk" version="4.0"/>
-  <object class="GtkDialog" id="auth">
-    <property name="default-height">100</property>
-    <property name="default-width">400</property>
+  <requires lib="libadwaita" version="1.5"/>
+  <object class="AdwAlertDialog" id="auth">
     <property name="focus-widget">usernameEntry</property>
-    <property name="title" translatable="yes">Authentication</property>
-    <property name="width-request">500</property>
-    <child internal-child="content_area">
-      <object class="GtkBox" id="dialog-vbox14">
-        <property name="hexpand">True</property>
-        <property name="hexpand-set">True</property>
-        <property name="margin-bottom">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-start">12</property>
-        <property name="margin-top">12</property>
+    <child>
+      <object class="GtkBox">
         <property name="orientation">vertical</property>
-        <property name="spacing">6</property>
+        <property name="spacing">12</property>
         <child>
-          <object class="GtkGrid">
+          <object class="GtkLabel">
+            <property name="css-classes">title-3</property>
             <property name="hexpand">True</property>
             <property name="hexpand-set">True</property>
-            <property name="orientation">vertical</property>
-            <property name="row-spacing">12</property>
-            <child>
-              <object class="GtkLabel" id="prompt">
-                <property name="hexpand">True</property>
-                <property name="hexpand-set">True</property>
-                <property name="label" translatable="yes">Enter the username and password for "%s" (%s)</property>
-                <property name="wrap">1</property>
-                <property name="xalign">0</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">0</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="GtkGrid">
-                <property name="column-spacing">6</property>
-                <property name="hexpand">True</property>
-                <property name="hexpand-set">True</property>
-                <property name="row-spacing">6</property>
-                <child>
-                  <object class="GtkLabel" id="label107">
-                    <property name="label" translatable="yes">User_name:</property>
-                    <property name="mnemonic-widget">usernameEntry</property>
-                    <property name="use-underline">1</property>
-                    <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="row">0</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="usernameEntry">
-                    <property name="activates-default">1</property>
-                    <property name="focusable">1</property>
-                    <property name="hexpand">True</property>
-                    <property name="hexpand-set">True</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="row">0</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label108">
-                    <property name="label" translatable="yes">_Password:</property>
-                    <property name="mnemonic-widget">passwordEntry</property>
-                    <property name="use-underline">1</property>
-                    <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="row">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="passwordEntry">
-                    <property name="activates-default">1</property>
-                    <property name="focusable">1</property>
-                    <property name="hexpand">True</property>
-                    <property name="hexpand-set">True</property>
-                    <property name="visibility">0</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="row">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">1</property>
-                </layout>
-              </object>
-            </child>
+            <property name="label" translatable="yes">Authentication required</property>
+            <property name="wrap">1</property>
+            <property name="xalign">0</property>
           </object>
         </child>
         <child>
-          <object class="GtkBox">
-            <property name="halign">end</property>
-            <property name="spacing">6</property>
-            <child type="action">
-              <object class="GtkButton" id="cancelbutton">
-                <property name="focusable">1</property>
-                <property name="label" translatable="yes">Cancel</property>
-              </object>
-            </child>
-            <child type="action">
-              <object class="GtkButton" id="okbutton">
-                <property name="focusable">1</property>
-                <property name="label" translatable="yes">OK</property>
-              </object>
-            </child>
+          <object class="GtkLabel" id="prompt">
+            <property name="hexpand">True</property>
+            <property name="hexpand-set">True</property>
+            <property name="label" translatable="yes">LABEL</property>
+            <property name="wrap">1</property>
+            <property name="xalign">0</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkEntry" id="usernameEntry">
+            <property name="activates-default">1</property>
+            <property name="focusable">1</property>
+            <property name="hexpand">True</property>
+            <property name="hexpand-set">True</property>
+            <property name="placeholder-text">Username</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkEntry" id="passwordEntry">
+            <property name="activates-default">1</property>
+            <property name="focusable">1</property>
+            <property name="hexpand">True</property>
+            <property name="hexpand-set">True</property>
+            <property name="placeholder-text">Password</property>
+            <property name="visibility">0</property>
           </object>
         </child>
       </object>
     </child>
-    <action-widgets>
-      <action-widget response="cancel">cancelbutton</action-widget>
-      <action-widget response="ok">okbutton</action-widget>
-    </action-widgets>
   </object>
 </interface>

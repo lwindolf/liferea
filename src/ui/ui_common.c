@@ -1,7 +1,7 @@
 /**
  * @file ui_common.c  UI helper functions
  *
- * Copyright (C) 2008-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,8 +21,11 @@
  
 #include "ui/ui_common.h"
 
+#include <libadwaita-1/adwaita.h>
+
 #include "common.h"
 #include "conf.h"
+#include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 
 void
@@ -74,6 +77,54 @@ ui_common_treeview_move_cursor_to_first (GtkTreeView *treeview)
 	path = gtk_tree_path_new_first ();
 	gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
 	gtk_tree_path_free(path);
+}
+
+static void
+on_confirm_dialog_response (AdwDialog *dialog, gchar *response_id, gpointer user_data)
+{
+	ConfirmCallback acceptCb = g_object_get_data (G_OBJECT (dialog), "accept");
+	ConfirmCallback cancelCb = g_object_get_data (G_OBJECT (dialog), "cancel");
+
+	if (g_strcmp0 (response_id, "accept") == 0)
+		acceptCb (user_data);
+	else if (cancelCb)
+		cancelCb (user_data);
+
+	adw_dialog_close (dialog);
+}
+
+void
+ui_confirm_box (const gchar *title, const gchar *message, const gchar *acceptButtonText, ConfirmCallback acceptCb, ConfirmCallback cancelCb, gpointer userdata)
+{
+	AdwDialog *dialog;
+
+	dialog = adw_alert_dialog_new (title, NULL);
+
+	adw_alert_dialog_format_body (ADW_ALERT_DIALOG (dialog), "%s", message);
+
+	adw_alert_dialog_add_responses (ADW_ALERT_DIALOG (dialog),
+					"cancel",  _("_Cancel"),
+					"accept", acceptButtonText,
+					NULL);
+
+	if (strstr (acceptButtonText, _("Delete"))) {
+		adw_alert_dialog_set_response_appearance (ADW_ALERT_DIALOG (dialog),
+		                                          "accept",
+		                                          ADW_RESPONSE_DESTRUCTIVE);
+	} else {
+		adw_alert_dialog_set_response_appearance (ADW_ALERT_DIALOG (dialog),
+		                                          "accept",
+		                                          ADW_RESPONSE_SUGGESTED);
+	}
+
+	adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "accept");
+	adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "cancel");
+
+	g_object_set_data (G_OBJECT (dialog), "accept", acceptCb);
+	g_object_set_data (G_OBJECT (dialog), "cancel", cancelCb);
+	g_signal_connect (dialog, "response", G_CALLBACK (on_confirm_dialog_response), userdata);
+
+	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
 }
 
 void
@@ -129,7 +180,6 @@ static void
 ui_choose_file_save_cb (GtkNativeDialog *dialog, gint response_id, gpointer user_data)
 {
 	struct file_chooser_tuple *tuple = (struct file_chooser_tuple*)user_data;
-	gchar *filename;
 
 	if (response_id == GTK_RESPONSE_ACCEPT) {
 		g_autoptr(GFile) file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));

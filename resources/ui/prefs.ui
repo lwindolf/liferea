@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.94.1 -->
+<!-- Created with Cambalache 1.0 -->
 <interface>
   <!-- interface-name prefs.ui -->
   <requires lib="gtk" version="4.0"/>
@@ -18,6 +18,23 @@
     <property name="default-width">300</property>
     <property name="title" translatable="yes">Liferea Preferences</property>
     <property name="visible">1</property>
+    <child internal-child="action_area">
+      <object class="GtkBox">
+        <property name="margin-bottom">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-start">6</property>
+        <property name="margin-top">6</property>
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkButton" id="prefclosebtn">
+            <property name="focusable">1</property>
+            <property name="label" translatable="yes">_Close</property>
+            <property name="use-underline">True</property>
+            <signal name="clicked" handler="gtk_widget_hide" object="prefs"/>
+          </object>
+        </child>
+      </object>
+    </child>
     <child internal-child="content_area">
       <object class="GtkBox">
         <property name="orientation">vertical</property>
@@ -769,23 +786,6 @@
                 </property>
               </object>
             </child>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child internal-child="action_area">
-      <object class="GtkBox">
-        <property name="margin-bottom">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-start">6</property>
-        <property name="margin-top">6</property>
-        <property name="visible">True</property>
-        <child>
-          <object class="GtkButton" id="prefclosebtn">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_Close</property>
-            <property name="use-underline">True</property>
-            <signal name="clicked" handler="gtk_widget_hide" object="prefs" swapped="yes"/>
           </object>
         </child>
       </object>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.94.1 -->
+<!-- Created with Cambalache 0.96.0 -->
 <interface>
   <!-- interface-name mainwindow.ui -->
   <requires lib="gio" version="2.0"/>
@@ -247,9 +247,6 @@
                         <property name="focusable">1</property>
                         <property name="headers-visible">0</property>
                         <property name="reorderable">1</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection"/>
-                        </child>
                       </object>
                     </property>
                     <property name="focusable">1</property>

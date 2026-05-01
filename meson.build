@@ -35,6 +35,7 @@ liferea_deps = [
   dependency('glib-2.0', version: '>= 2.74.0'),
   dependency('gsettings-desktop-schemas'),
   dependency('gtk4', version: '>= 4.12.0'),
+  dependency('libadwaita-1', version: '>=1.9'),
   dependency('json-glib-1.0', version: '>= 1.6'),
   dependency('libxml-2.0', version: '>= 2.6.12'),
   dependency('libxslt', version: '>= 1.1.19'),

@@ -6,13 +6,15 @@ To be fixed next:
 
 1. restore ATK taggings
 2. ./src/actions/shell_actions.c: // FIXME: action group state init
-3. Duplicate subscription dialog does not appear (but check works)
+3. new_source dialog crashes
 
 To be fixed later:
 ==================
 
-- new_source dialog crashes
-- random GUI freezes when opening dialogs (e.g. auth / preferences / update monitor)
+- gtk_css_node_insert_after: assertion 'previous_sibling == NULL || previous_sibling->parent == parent' failed
+- random GUI freezes when opening GtkDialog (e.g. preferences / update monitor)
+  - does seem to happen more with modal GtkDialog
+  - does not seem to happen with modal AdwDialog
 - dialog warnings with "Trying to measure GtkDialog 0x55a10107f990 for height of 183, but it needs at least 282" (e.g. pref dialog)
 - remaining GTK4 FIXMES:
 

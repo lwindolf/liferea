@@ -106,13 +106,8 @@ liferea_dialog_new (const gchar *name)
 		return NULL;
 	}
 
-	gtk_window_set_transient_for (GTK_WINDOW (priv->dialog), GTK_WINDOW (liferea_shell_get_window ()));
-	g_return_val_if_fail (priv->dialog != NULL, NULL);
-
 	g_object_set_data (G_OBJECT (priv->dialog), "LifereaDialog", ld);
-
-	g_signal_connect_swapped (priv->dialog, "destroy", 
-							  G_CALLBACK (g_object_unref), ld);
+	g_signal_connect_swapped (priv->dialog, "destroy", G_CALLBACK (g_object_unref), ld);
 
 	return priv->dialog;
 }

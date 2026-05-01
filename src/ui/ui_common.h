@@ -75,18 +75,35 @@ void ui_common_treeview_move_cursor (GtkTreeView *treeview, gint step);
  */
 void ui_common_treeview_move_cursor_to_first (GtkTreeView *treeview);
 
+typedef void (*ConfirmCallback) (gpointer user_data);
+
 /**
+ * ui_confirm_box:
+ * Presents a "Cancel" / "OK" dialog with the given message.
+ *
+ * @title:              title of the dialog
+ * @message:            message to display
+ * @acceptButtonText:   text for the accept button
+ * @acceptCb:           callback
+ * @cancelCb:           callback
+ * @userdata:           user data to pass to the callback
+ */
+void ui_confirm_box (const gchar *title, const gchar *message, const gchar *acceptButtonText, ConfirmCallback acceptCb, ConfirmCallback cancelCb, gpointer userdata);
+
+/**
+ * ui_show_info_box:
  * Presents an "Info" type box with the given message.
  *
- * @param printf like format
+ * @format: vaargs
  */
 void ui_show_info_box (const char *format, ...);
 
 /**
+ * ui_show_error_box:
  * Presents an "Error" type box with the given message.
  * Does not do error tracing or console output.
  *
- * @param printf like format
+ * @format: vaargs
  */
 void ui_show_error_box (const char *format, ...);
 
@@ -95,17 +112,18 @@ void ui_show_error_box (const char *format, ...);
 typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
 
 /**
+ * ui_choose_file:
  * Open up a file selector
  *
- * @param title		window title
- * @param buttonName	Text to be used as the name of the accept button
- * @param saving	TRUE if saving, FALSE if opening
- * @param callback	that will be passed the filename (in the system's locale (NOT UTF-8), and some user data
- * @param currentPath	This file or directory will be selected in the chooser
- * @param filename	When saving, this is the suggested filename
- * @param filterstring 	a pattern for a GtkFileFilter or NULL
- * @param filtername	a human readable name for the pattern or NULL (if pattern is NULL)
- * @param user_data	user data passed to the callback
+ * @title:		window title
+ * @buttonName:	        Text to be used as the name of the accept button
+ * @saving:	        TRUE if saving, FALSE if opening
+ * @callback:           that will be passed the filename (in the system's locale (NOT UTF-8), and some user data
+ * @currentPath:        This file or directory will be selected in the chooser
+ * @filename:   	When saving, this is the suggested filename
+ * @filterstring: 	a pattern for a GtkFileFilter or NULL
+ * @filtername:	        a human readable name for the pattern or NULL (if pattern is NULL)
+ * @user_data:	        user data passed to the callback
  */
 void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data);
 

@@ -37,6 +37,7 @@
 #include "node_providers/vfolder.h"
 #include "node_source.h"
 #include "ui/browser_tabs.h"
+#include "ui/ui_common.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -924,91 +925,47 @@ feed_list_view_rename_node (Node *node)
 	liferea_dialog_entry_set (dialog, "nameentry", node_get_title (node));
 	g_signal_connect (G_OBJECT (dialog), "response",
 	                  G_CALLBACK (on_nodenamedialog_response), node);
-	gtk_widget_show (dialog);
+	gtk_window_present (GTK_WINDOW (dialog));
 }
 
 /* node deletion dialog */
 
-static void
-feed_list_view_remove_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
-{
-	if (GTK_RESPONSE_ACCEPT == response_id)
-		feedlist_remove_node ((Node *)user_data);
-
-	gtk_window_close (GTK_WINDOW (dialog));
-}
-
 void
 feed_list_view_remove (Node *node)
 {
-	GtkWidget	*dialog;
-	GtkWindow	*mainwindow;
-	g_autofree gchar	*text = NULL;
+	g_autofree gchar *text = NULL;
 
 	g_assert (node == feedlist_get_selected ());
 
 	text = g_strdup_printf (IS_FOLDER (node)?_("Are you sure that you want to delete \"%s\" and its contents?"):_("Are you sure that you want to delete \"%s\"?"), node_get_title (node));
 
-	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
-	dialog = gtk_message_dialog_new (mainwindow,
-	                                 GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
-	                                 GTK_MESSAGE_QUESTION,
-	                                 GTK_BUTTONS_NONE,
-	                                 "%s", text);
-	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-	                        _("_Cancel"), GTK_RESPONSE_CANCEL,
-	                        _("_Delete"), GTK_RESPONSE_ACCEPT,
-	                        NULL);
-	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
-	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
-	gtk_window_present (GTK_WINDOW (dialog));
-
-	g_signal_connect (G_OBJECT (dialog), "response",
-	                  G_CALLBACK (feed_list_view_remove_cb), node);
-}
-
-static void
-feed_list_view_add_duplicate_url_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
-{
-	subscriptionPtr tempSubscription = (subscriptionPtr) user_data;
-
-	if (response_id == GTK_RESPONSE_ACCEPT)
-		feedlist_add_subscription (tempSubscription);
-	else
-		subscription_free (tempSubscription);
+	ui_confirm_box (
+		_("Deletion Confirmation"),
+		text,
+		_("_Delete"),
+		(ConfirmCallback)feedlist_remove_node,
+		NULL,
+		node
+	);
 }
 
 void
 feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription, Node *exNode)
 {
-	GtkWidget	*dialog;
-	GtkWindow	*mainwindow;
-	gchar		*text;
-
-	text = g_strdup_printf (
-			_("Are you sure that you want to add a new subscription with URL \"%s\"? Another subscription with the same URL already exists (\"%s\")."),
-			tempSubscription->source,
-			node_get_title (exNode)
+	g_autofree gchar *text = g_strdup_printf (
+		_("Are you sure that you want to add a new subscription with URL \"%s\"? Another subscription with the same URL already exists (\"%s\")."),
+		tempSubscription->source,
+		node_get_title (exNode)
 	);
 
-	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
-	dialog = gtk_message_dialog_new (mainwindow,
-									 GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
-									 GTK_MESSAGE_QUESTION,
-									 GTK_BUTTONS_NONE,
-									 "%s", text);
-	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-							_("_Cancel"), GTK_RESPONSE_CANCEL,
-							_("_Add"), GTK_RESPONSE_ACCEPT,
-							NULL);
-	gtk_window_set_title (GTK_WINDOW (dialog), _("Adding Duplicate Subscription Confirmation"));
-	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
-
-	g_free (text);
-
-	g_signal_connect (G_OBJECT (dialog), "response",
-					  G_CALLBACK (feed_list_view_add_duplicate_url_cb), tempSubscription);
+	ui_confirm_box (
+		_("Duplicate Subscription"),
+		text,
+		_("_Add"),
+		(ConfirmCallback)feedlist_add_subscription,
+		(ConfirmCallback)subscription_free,
+		tempSubscription
+	);
 }
 
 void
