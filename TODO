@@ -6,11 +6,12 @@ To be fixed next:
 
 1. restore ATK taggings
 2. ./src/actions/shell_actions.c: // FIXME: action group state init
-3. new_source dialog crashes
+3. empty popover shown on start
 
 To be fixed later:
 ==================
 
+- all source dialogs start too small in the left corner
 - random GUI freezes when opening GtkDialog (e.g. preferences / update monitor)
   - does seem to happen more with modal GtkDialog
   - does not seem to happen with modal AdwDialog

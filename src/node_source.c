@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  *
- * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 #include <gmodule.h>
 #include <gtk/gtk.h>
+#include <libadwaita-1/adwaita.h>
 #include <string.h>
 
 #include "common.h"
@@ -270,38 +271,37 @@ node_source_set_auth_token (Node *node, gchar *token)
 /* source instance creation dialog */
 
 static void
-on_node_source_type_selected (GtkTreeSelection *selection, gpointer user_data)
+on_node_source_type_selected (GtkTreeSelection *selection, gpointer userdata)
 {
 	GtkTreeIter	iter;
 	GtkTreeModel	*model;
+	GtkWidget	*button = liferea_dialog_lookup (GTK_WIDGET (userdata), "applyBtn");
 
-	if (gtk_tree_selection_get_selected (selection, &model, &iter))
-		gtk_widget_set_sensitive (GTK_WIDGET (user_data), TRUE);
-	else
-		gtk_widget_set_sensitive (GTK_WIDGET (user_data), FALSE);
+	gtk_widget_set_sensitive (button, gtk_tree_selection_get_selected (selection, &model, &iter));
 }
 
 static void
-on_node_source_type_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+on_node_source_type_response (GtkButton *btn, gpointer user_data)
 {
+	AdwDialog		*dialog = ADW_DIALOG (user_data);
 	GtkTreeSelection	*selection;
 	GtkTreeModel		*model;
 	GtkTreeIter		iter;
 	nodeSourceTypePtr	type;
 
-	if (response_id == GTK_RESPONSE_OK) {
-		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (GTK_WIDGET (dialog), "type_list")));
-		g_assert (NULL != selection);
-		if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-			gtk_tree_model_get (model, &iter, 1, &type, -1);
-			if (type)
-				type->source_new ();
-		}
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (GTK_WIDGET (dialog), "type_list")));
+	g_assert (NULL != selection);
+	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+		gtk_tree_model_get (model, &iter, 1, &type, -1);
+		if (type)
+			type->source_new ();
 	}
+
+	adw_dialog_close (dialog);
 }
 
 static gboolean
-feed_list_node_source_type_dialog (void)
+feed_list_node_source_type_dialog_idle (gpointer unused)
 {
 	GSList 			*iter = nodeSourceTypes;
 	GtkWidget 		*dialog, *treeview;
@@ -310,7 +310,7 @@ feed_list_node_source_type_dialog (void)
 	GtkTreeIter		treeiter;
 	nodeSourceTypePtr	type;
 
-	g_assert (!nodeSourceTypes);
+	g_assert (nodeSourceTypes);
 
 	/* set up the dialog */
 	dialog = liferea_dialog_new ("node_source");
@@ -344,14 +344,25 @@ feed_list_node_source_type_dialog (void)
 	gtk_tree_selection_set_mode (gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview)),
 	                             GTK_SELECTION_SINGLE);
 
-	g_signal_connect (G_OBJECT (dialog), "response",
+	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
 			  G_CALLBACK (on_node_source_type_response),
-			  NULL);
+			  dialog);
+	g_signal_connect_swapped (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked",
+			  G_CALLBACK (adw_dialog_close),
+			  dialog);
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview))), "changed",
 	                  G_CALLBACK (on_node_source_type_selected),
-	                  liferea_dialog_lookup (dialog, "ok_button"));
+	                  dialog);
 
+	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
 
+	return FALSE;
+}
+
+static gboolean
+feed_list_node_source_type_dialog (void)
+{
+	g_idle_add (feed_list_node_source_type_dialog_idle, NULL);
 	return TRUE;
 }
 
