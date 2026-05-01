@@ -139,7 +139,6 @@ on_browser_changed (GtkDropDown *dropdown, gpointer user_data)
 
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "browsercmd"), num != 0);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "manuallabel"), num != 0);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "urlhintlabel"), num != 0);
 }
 
 void
@@ -231,11 +230,20 @@ preferences_dialog_setup_drop_down (PreferencesDialog *pd, const gchar *widget_n
 {
 	GtkDropDown *dropdown = GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, widget_name));
 	g_autoptr(GtkStringList) list = gtk_string_list_new (options);
-
-	gint selected;
-	conf_get_int_value (setting_name, &selected);
 	gtk_drop_down_set_model (dropdown, G_LIST_MODEL (list));
-	gtk_drop_down_set_selected (dropdown, (guint)selected);
+
+	if (dropdown == GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "browserpopup"))) {
+		// special handling as value is a string
+		g_autofree gchar *value = NULL;
+		conf_get_str_value (BROWSER_ID, &value);
+		gtk_drop_down_set_selected (dropdown, g_str_equal(value, "Default")?0:1);
+	} else {
+		// Standard integer values
+		gint selected;
+		conf_get_int_value (setting_name, &selected);
+		gtk_drop_down_set_selected (dropdown, (guint)selected);
+	}
+
 	g_signal_connect (G_OBJECT (dropdown), "notify::selected", G_CALLBACK (on_drop_down_changed), pd);
 }
 
@@ -327,6 +335,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	conf_bind (BROWSER_COMMAND, liferea_dialog_lookup (pd->dialog, "browsercmd"), "text", G_SETTINGS_BIND_DEFAULT);
 	
 	preferences_dialog_setup_drop_down (pd, "browserpopup", browser_id_options, BROWSER_ID);
+
 	// call on_browser_changed() to conditionally enable dependant widgets
 	on_browser_changed (GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "browserpopup")), pd);
 

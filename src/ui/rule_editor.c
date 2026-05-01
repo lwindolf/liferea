@@ -1,7 +1,7 @@
 /**
  * @file rule_editor.c  rule editing dialog
  *
- * Copyright (C) 2008-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -193,7 +193,7 @@ rule_editor_new (itemSetPtr itemset)
 	re = RULE_EDITOR (g_object_new (RULE_EDITOR_TYPE, NULL));
 
 	/* Set up rule list vbox */
-	re->root = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	re->root = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 
 	/* load rules into dialog */
 	iter = itemset->rules;

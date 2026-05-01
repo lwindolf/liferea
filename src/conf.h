@@ -121,7 +121,7 @@ gboolean conf_get_bool_value_from_schema (GSettings *gsettings, const gchar *key
  *
  * @returns TRUE if the configuration key was found
  */
-gboolean conf_get_str_value_from_schema (GSettings *gsettings,const gchar *key, gchar **value);
+gboolean conf_get_str_value_from_schema (GSettings *gsettings, const gchar *key, gchar **value);
 
 /**
  * Retrieves the value of the given string array configuration key.
@@ -133,7 +133,7 @@ gboolean conf_get_str_value_from_schema (GSettings *gsettings,const gchar *key, 
  *
  * @returns TRUE if the configuration key was found
  */
-gboolean conf_get_strv_value_from_schema (GSettings *gsettings,const gchar *key, gchar ***value);
+gboolean conf_get_strv_value_from_schema (GSettings *gsettings, const gchar *key, gchar ***value);
 
 /**
  * Retrieves the value of the given integer configuration key.

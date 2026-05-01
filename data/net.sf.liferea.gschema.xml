@@ -23,7 +23,7 @@
       <description>Selects the browser command to use when browser_module is set to manual.</description>
     </key>
     <key name="browser-id" type="s">
-      <default>'gnome'</default>
+      <default>'default'</default>
       <summary>Selects which browser to use to open external links</summary>
       <description>Selects which browser to use to open external links. The choices include "default" and "manual".</description>
     </key>
