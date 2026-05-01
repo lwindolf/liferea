@@ -20,11 +20,11 @@
   <ui filename="opml_source.ui" sha256="e5d8c09f541b753d8bf7c3f72d6d4a96c818f931e2c6c18b8fd04c384ef09c6b"/>
   <ui filename="node_source.ui" sha256="67d7a7916ef6bf15cab24f49a6003d8677611fd362ed96289970bc425c787e5c"/>
   <ui filename="new_newsbin.ui" sha256="27a7285dca21d90010e3925c211145178e139d1fa22e6e1a082c5fbad25ac1e9"/>
-  <ui filename="new_folder.ui" sha256="dcda2b868f88a4866ade62273ec4f8faa30a820703de07787b8e975030f61f34"/>
+  <ui filename="new_folder.ui" sha256="31ce9a093c24962b85aa9a22bf7967ecd9b40f8cdb820f50c3f5af0eed631f43"/>
   <ui filename="mark_read_dialog.ui" sha256="34b96a4e8b99660d441b678d009e977ee0dec9e3304246eedf8cef8aa56422a2"/>
   <ui filename="about.ui" sha256="acb9ae69305d3c1efc81b0450b2f6b0d4875208b162f220ad1c696906822dfdc"/>
   <ui filename="theoldreader_source.ui" sha256="d6f4838d1f656d8c02377b280e32d6403bff392368fc560f47773268c0449e0f"/>
   <ui filename="ttrss_source.ui" sha256="66064e94d312bc2d53422c6aad7e2fac83c21ed42228c95a87ba51ae39b2b2dd"/>
-  <ui filename="mainwindow.ui" sha256="cd9bf5ca5ec639d650959309d0b419c79048c6717bffdb6694988fe0aa946e31"/>
+  <ui filename="mainwindow.ui" sha256="b40af3db2fa56dbe63827b4a25049a8c196b4742a5bd51708ef5525876c732e3"/>
   <ui filename="shortcuts.ui" sha256="6235bca30daa703ea5ee43166a609f54443c1d40cbdf116c74107345fe3a73ae"/>
 </cambalache-project>

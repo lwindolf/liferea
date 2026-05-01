@@ -30,6 +30,25 @@ G_BEGIN_DECLS
 #define LIFEREA_DIALOG_TYPE (liferea_dialog_get_type ())
 G_DECLARE_FINAL_TYPE (LifereaDialog, liferea_dialog, LIFEREA, DIALOG, GObject)
 
+typedef void (*LifereaDialogCallback) (GtkWidget *dialog, gpointer user_data);
+
+/**
+ * liferea_dialog_run:
+ * @name:		the dialog name
+ * @applyCb:		callback when applyBtn was clicked
+ * @cancelCb:		callback when cancelBtn was clicked (optional)
+ * @userdata:		user data to pass to the callbacks
+ *
+ * Convenience wrapper to create a new AdwDialog action dialog.
+ * Such a dialog needs to have a 'cancelBtn' and a 'applyBtn' to
+ * trigger the passed callbacks.
+ * 
+ * For more complex scenarios and AdwAlertDialogs use liferea_dialog_new()
+ * 
+ * Returns: the dialog widget
+ */
+GtkWidget * liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata);
+
 /**
  * liferea_dialog_new:
  * @name:		the dialog name

@@ -19,6 +19,7 @@
  */
 
 #include <gtk/gtk.h>
+#include <libadwaita-1/adwaita.h>
 
 #include "ui/liferea_dialog.h"
 
@@ -111,6 +112,46 @@ liferea_dialog_new (const gchar *name)
 
 	return priv->dialog;
 }
+
+static void
+on_liferea_dialog_run_cancel_cb (GtkButton *btn, gpointer userdata)
+{
+	GtkWidget *dialog = GTK_WIDGET (userdata);
+	LifereaDialogCallback cb = g_object_get_data (G_OBJECT (dialog), "cancel");
+	if (cb)
+		(*cb)(GTK_WIDGET (dialog), g_object_get_data (G_OBJECT (dialog), "userdata"));
+	adw_dialog_close (ADW_DIALOG (dialog));
+}
+
+static void
+on_liferea_dialog_run_apply_cb (GtkButton *btn, gpointer userdata)
+{
+	GtkWidget *dialog = GTK_WIDGET (userdata);
+	LifereaDialogCallback cb = g_object_get_data (G_OBJECT (dialog), "apply");
+	(*cb)(GTK_WIDGET (dialog), g_object_get_data (G_OBJECT (dialog), "userdata"));
+	adw_dialog_close (ADW_DIALOG (dialog));
+}
+
+GtkWidget *
+liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata)
+{
+	GtkWidget *dialog = liferea_dialog_new (name);
+
+	if (!dialog)
+		return NULL;
+
+	g_object_set_data (G_OBJECT (dialog), "apply", applyCb);
+	g_object_set_data (G_OBJECT (dialog), "cancel", cancelCb);
+	g_object_set_data (G_OBJECT (dialog), "userdata", userdata);
+	g_assert (applyCb);
+	g_signal_connect_data (liferea_dialog_lookup (dialog, "applyBtn"), "clicked", G_CALLBACK (on_liferea_dialog_run_apply_cb), dialog, NULL, 0);
+	if (cancelCb)
+		g_signal_connect_data (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked", G_CALLBACK (on_liferea_dialog_run_cancel_cb), dialog, NULL, 0);
+
+	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
+	return dialog;
+}
+
 
 const gchar *
 liferea_dialog_entry_get (GtkWidget *dialog, const gchar *name)

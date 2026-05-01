@@ -1,7 +1,7 @@
 /**
  * @file folder.c  sub folders for hierarchic node sources
  *
- * Copyright (C) 2006-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
+#include "ui/liferea_shell.h"
 
 /* Note: The folder node type implements the behaviour of a folder like
    node in the feed list. The two most important features are viewing the
@@ -107,23 +108,15 @@ folder_remove (Node *node)
 }
 
 static void
-on_newfolder_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+on_newfolder_response (GtkWidget *dialog, gpointer user_data)
 {
-	if (response_id == GTK_RESPONSE_OK) {
-		feedlist_add_folder (liferea_dialog_entry_get (GTK_WIDGET (dialog), "foldertitleentry"));
-	}
-
-	gtk_window_close (GTK_WINDOW (dialog));
+	feedlist_add_folder (liferea_dialog_entry_get (dialog, "foldertitleentry"));
 }
 
 static gboolean
 folder_add_dialog (void)
 {
-	GtkWidget *dialog = liferea_dialog_new ("new_folder");
-	liferea_dialog_entry_set (dialog, "foldertitleentry", "");
-	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_newfolder_response), NULL);
-	gtk_window_present (GTK_WINDOW (dialog));
-
+	(void) liferea_dialog_run ("new_folder", on_newfolder_response, NULL, NULL);
 	return TRUE;
 }
 
