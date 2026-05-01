@@ -300,6 +300,9 @@ liferea_shell_toast (const char *format, ...)
 	msg = g_strdup_vprintf (format, args);
 	va_end (args);
 
+	if (strlen (msg) == 0)
+		return;
+
 	if (shell->toastTimeout)
 		g_source_remove (shell->toastTimeout);
 	shell->toastTimeout = g_timeout_add (5000, liferea_shell_hide_toast, NULL);
