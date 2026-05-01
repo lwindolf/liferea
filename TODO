@@ -11,9 +11,6 @@ To be fixed next:
 To be fixed later:
 ==================
 
-- gtk_css_node_insert_after: assertion 'previous_sibling == NULL || previous_sibling->parent == parent' failed
-  - feedlist: DONE
-  - itemlist: tbd
 - random GUI freezes when opening GtkDialog (e.g. preferences / update monitor)
   - does seem to happen more with modal GtkDialog
   - does not seem to happen with modal AdwDialog

@@ -240,8 +240,8 @@ feed_list_view_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeView
 
 }
 
-static void
-feed_list_view_popup_menu (Node *node, gdouble x, gdouble y, GtkWidget *parent)
+static GMenu *
+feed_list_view_popup_menu (Node *node)
 {
 	GMenu		*menu_model = g_menu_new ();
 	GMenu		*section = g_menu_new ();
@@ -334,17 +334,7 @@ feed_list_view_popup_menu (Node *node, gdouble x, gdouble y, GtkWidget *parent)
 	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 	g_object_unref (section);
 
-	/* Create a context menu */
-	GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL (menu_model));
-	gtk_widget_set_parent (popover, liferea_shell_lookup ("feedlistScrolledwindow"));	// use feedlist wrapper to avoid gtk_css_node_insert_after critical
-	GdkRectangle rect;
-	rect.x = (int)x;
-	rect.y = (int)y;
-	rect.width = 1;
-	rect.height = 1;
-	gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
-	gtk_popover_popup (GTK_POPOVER (popover));
-	g_object_unref (menu_model);
+	return menu_model;
 }
 
 static gboolean
@@ -375,9 +365,18 @@ feed_list_view_pressed_cb (GtkGestureClick *gesture, gdouble x, gdouble y, guint
 	if (n_press == 1) {
 		switch (gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture))) {
 			case GDK_BUTTON_SECONDARY:
-			  	if (gdk_event_triggers_context_menu (gtk_event_controller_get_current_event (GTK_EVENT_CONTROLLER (gesture)))) {
-					feed_list_view_popup_menu (node, x, y, gtk_event_controller_get_widget (GTK_EVENT_CONTROLLER (gesture)));
-				}
+				/* Create a context menu */
+				GMenu *menu = feed_list_view_popup_menu (node);
+				GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL (menu));
+				gtk_widget_set_parent (popover, gtk_widget_get_parent (GTK_WIDGET (flv->treeview)));	// use feedlist wrapper to avoid gtk_css_node_insert_after critical
+				GdkRectangle rect;
+				rect.x = (int)x;
+				rect.y = (int)y;
+				rect.width = 1;
+				rect.height = 1;
+				gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
+				gtk_popover_popup (GTK_POPOVER (popover));
+				g_object_unref (menu);
 				return TRUE;
 			case GDK_BUTTON_MIDDLE:
 				/* Middle mouse click toggles read status (but do not select)... */

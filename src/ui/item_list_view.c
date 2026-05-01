@@ -854,7 +854,7 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 					/* Create a context menu */
 					GMenu *menu = item_list_view_popup_menu (ilv, item);
 					GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL(menu));
-					gtk_widget_set_parent (popover, GTK_WIDGET (ilv->treeview));
+					gtk_widget_set_parent (popover, gtk_widget_get_parent (GTK_WIDGET (ilv->treeview)));		// use itemlist wrapper to avoid gtk_css_node_insert_after critical
 					GdkRectangle rect;
 					rect.x = (int)x;
 					rect.y = (int)y;
