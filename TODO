@@ -4,15 +4,12 @@ A first release candidate is now very close.
 To be fixed next:
 =================
 
-1.
-- download manager: save image/save link as does not work (vbox.pack_start 'Box' object has no attribute 'pack_start')
-- download manager: download location does not work
-2. all source dialogs start too small in the left corner
-3. shell_actions: // FIXME: g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
+1. all source dialogs start too small in the left corner
+2. shell_actions: // FIXME: g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
+3. shell_actions.c:// FIXME replace this with a bind!
 
 To be fixed later:
 ==================
 
-- shell_actions.c:// FIXME replace this with a bind!
 - node_actions.c:  // FIXME
 - node_actions.c:  // FIXME: g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));

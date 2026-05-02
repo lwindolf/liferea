@@ -1,7 +1,7 @@
 """
 Download Manager Plugin
 
-Copyright (C) 2024 Lars Windolf <lars.lindner@gmx.de>
+Copyright (C) 2024-2026 Lars Windolf <lars.lindner@gmx.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -77,6 +77,10 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
 
         self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.vbox.set_spacing(0)
+        self.vbox.set_margin_top(6)
+        self.vbox.set_margin_bottom(6)
+        self.vbox.set_margin_start(6)
+        self.vbox.set_margin_end(6)
         self.vbox.set_name("download-manager-vbox")
 
         self.scrollable_area = Gtk.ScrolledWindow()
@@ -85,7 +89,8 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
 
         self.window.set_child(self.scrollable_area)
         self.window.set_default_size(640, 400)
-        self.window.connect("close-request", self.on_window_close)
+        self.window.connect("close-request", lambda w: (w.hide(), True)[1])
+
 
         # Create action and "Tools" menu bar item
         action = Gio.SimpleAction.new('DownloadManager', None)
@@ -121,21 +126,18 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
             del self.downloads[key]
 
     def on_choose_directory(self, button):
-        dialog = Gtk.FileChooserDialog(
-            title="Select Download Directory",
-            parent=self.window,
-            action=Gtk.FileChooserAction.SELECT_FOLDER,
-            buttons=(
-            Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
-            Gtk.STOCK_OPEN, Gtk.ResponseType.OK
-            )
-        )
-        dialog.set_current_folder(self.download_dir)
+        dialog = Gtk.FileDialog()
+        dialog.set_initial_folder(Gio.File.new_for_path(self.download_dir))
+        dialog.select_folder(self.window, None, self.on_folder_selected)
         
-        response = dialog.run()
-        if response == Gtk.ResponseType.OK:
-            self.download_dir = dialog.get_filename()
-        dialog.destroy()
+    def on_folder_selected(self, dialog, result):
+        try:
+            folder = dialog.select_folder_finish(result)
+            if folder:
+                self.download_dir = folder.get_path()
+        except GLib.Error as e:
+            # User cancelled or error occurred
+            pass
 
     def on_open_file(self, button, download):
         os.system(f"xdg-open {download.get('filename')}")
@@ -154,23 +156,30 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
         label = Gtk.Label(label=url)
         label.set_xalign(0)
         label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
-        
+        label.set_hexpand(True)
+
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        vbox.set_spacing(0)
-        vbox.pack_start(label, False, False, 6)
-        vbox.pack_start(progress_bar, False, False, 6)
+        vbox.append(label)
+        vbox.set_spacing(6)
+        vbox.set_valign(Gtk.Align.CENTER)
+        vbox.append(progress_bar)
+        vbox.set_margin_end(6)
 
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        hbox.pack_end(vbox, True, True, 0)
+        hbox.append(vbox)
+        hbox.set_margin_bottom(6)
 
         separator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        separator
         outerVBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        outerVBox.set_margin_top(6)
+        outerVBox.set_margin_bottom(6)
+        outerVBox.set_margin_start(6)
+        outerVBox.set_margin_end(6)
         outerVBox.set_spacing(0)
-        outerVBox.pack_start(hbox, False, False, 3)
-        outerVBox.pack_start(separator, False, False, 3)
+        outerVBox.append(hbox)
+        outerVBox.append(separator)
 
-        self.vbox.pack_start(outerVBox, False, False, 0)
+        self.vbox.append(outerVBox)
         outerVBox.set_visible(True)
         
         filename = self.safe_filename(url)
@@ -258,17 +267,18 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
         download.get('progress_bar').set_text("Failed")
         download['finished'] = True
 
-        icon = Gtk.Image.new_from_icon_name("dialog-error", Gtk.IconSize.LARGE_TOOLBAR)
-        download.get('container').pack_start(icon, False, False, 5)
+        icon = Gtk.Image.new_from_icon_name("dialog-error")
+        icon.set_icon_size(Gtk.IconSize.LARGE)
+        download.get('container').append(icon)
         icon.show()
 
     def download_complete(self, download):
-        download.get('progress_bar').destroy()
+        download.get('progress_bar').get_parent().remove(download.get('progress_bar'))
         download['finished'] = True
         download['success'] = True
         
         open_button = Gtk.Button()
-        open_button.set_image(Gtk.Image.new_from_icon_name("folder-symbolic", Gtk.IconSize.BUTTON))
+        open_button.set_child(Gtk.Image.new_from_icon_name("folder-symbolic"))
         open_button.connect("clicked", self.on_open_file, download)
-        download.get('container').pack_start(open_button, False, False, 5)
-        open_button.show()
+        download.get('container').append(open_button)
+        open_button.set_visible(True)
