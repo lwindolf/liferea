@@ -245,19 +245,20 @@ feed_list_view_popup_menu (Node *node)
 {
 	GMenu		*menu_model = g_menu_new ();
 	GMenu		*section = g_menu_new ();
-	gboolean	writeableFeedlist, isRoot, addChildren, validSelection;
+	gboolean	writeableFeedlist, isRootSource, canAddChildren, validSelection;
 
-	if (node->parent) {
-		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
-		isRoot = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
-		addChildren = NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
-	} else {
-		/* if we have no parent then we have the root node... */
-		writeableFeedlist = TRUE;
-		isRoot = TRUE;
-		addChildren = TRUE;
-	}
 	validSelection = (node != NULL);
+	if (!node)
+		node = feedlist_get_root ();
+
+	if (node->parent)
+		// FIXME: why do we check the parent's source and not the nodes own source?
+		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
+	else
+		writeableFeedlist = TRUE; // because root node
+
+	isRootSource = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
+	canAddChildren = NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
 
 	if (validSelection) {
 		if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE)
@@ -267,28 +268,20 @@ feed_list_view_popup_menu (Node *node)
 	}
 
 	if (writeableFeedlist) {
-		if (addChildren) {
+		if (canAddChildren) {
 			GMenu *submenu;
 
 			submenu = g_menu_new ();
-
-			if (node_can_add_child_feed (node))
-				g_menu_append (submenu, _("New _Subscription..."), "app.new-subscription");
-
-			if (node_can_add_child_folder (node))
-				g_menu_append (submenu, _("New _Folder..."), "app.new-folder");
-
-			if (isRoot) {
-				g_menu_append (submenu, _("New S_earch Folder..."), "app.new-vfolder");
-				g_menu_append (submenu, _("New S_ource..."), "app.new-source");
-				g_menu_append (submenu, _("New _News Bin..."), "app.new-newsbin");
-			}
-
+			g_menu_append (submenu, _("New _Subscription..."), "app.new-subscription");
+			g_menu_append (submenu, _("New _Folder..."), "app.new-folder");
+			g_menu_append (submenu, _("New S_earch Folder..."), "app.new-vfolder");
+			g_menu_append (submenu, _("New S_ource..."), "app.new-source");
+			g_menu_append (submenu, _("New _News Bin..."), "app.new-newsbin");
 			g_menu_append_submenu (section, _("_New"), G_MENU_MODEL (submenu));
 			g_object_unref (submenu);
 		}
 
-		if (isRoot && node->children) {
+		if (isRootSource && node->children) {
 			/* Ending section and starting a new one to get a separator : */
 			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 			g_object_unref (section);
@@ -323,6 +316,10 @@ feed_list_view_popup_menu (Node *node)
 			g_menu_append (section, _("_Properties"), "app.node-properties");
 		}
 
+		
+		g_print("%s is a node provider %s\n", node->title, node->provider->id);
+		if (IS_NODE_SOURCE (node))
+			g_print(" __SOURCWE!\n");
 		if (IS_NODE_SOURCE (node) && NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL) {
 			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 			g_object_unref (section);
@@ -340,50 +337,41 @@ feed_list_view_popup_menu (Node *node)
 static gboolean
 feed_list_view_pressed_cb (GtkGestureClick *gesture, gdouble x, gdouble y, guint n_press, gpointer data)
 {
-	GtkTreeView *treeview = GTK_TREE_VIEW (flv->treeview);
-	GtkTreePath *path;
-	GtkTreeIter iter;
-	Node *node;
+	GtkTreeView		*treeview = GTK_TREE_VIEW (flv->treeview);
+	g_autoptr(GtkTreePath)	path = NULL;
+	GtkTreeIter		iter;
+	Node			*node;
 
 	if (n_press != 1)
 		return FALSE;
 
-	if (!gtk_tree_view_get_path_at_pos (treeview, (int)x, (int)y, &path, NULL, NULL, NULL))
-		return FALSE;
+	// try to resolve clicked node (but clicks on empty space are also allowed)
+	if (gtk_tree_view_get_path_at_pos (treeview, (int)x, (int)y, &path, NULL, NULL, NULL) &&
+	    gtk_tree_model_get_iter (gtk_tree_view_get_model (treeview), &iter, path))
+		gtk_tree_model_get (gtk_tree_view_get_model (treeview), &iter, FS_PTR, &node, -1);
 
-	if (!gtk_tree_model_get_iter (gtk_tree_view_get_model (treeview), &iter, path)) {
-		gtk_tree_path_free (path);
-		return FALSE;
-	}
-
-	gtk_tree_model_get (gtk_tree_view_get_model (treeview), &iter, FS_PTR, &node, -1);
-	gtk_tree_path_free (path);
-
-	if (!node)
-		return FALSE;
-
-	if (n_press == 1) {
-		switch (gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture))) {
-			case GDK_BUTTON_SECONDARY:
-				/* Create a context menu */
-				GMenu *menu = feed_list_view_popup_menu (node);
-				GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL (menu));
-				gtk_widget_set_parent (popover, gtk_widget_get_parent (GTK_WIDGET (flv->treeview)));	// use feedlist wrapper to avoid gtk_css_node_insert_after critical
-				GdkRectangle rect;
-				rect.x = (int)x;
-				rect.y = (int)y;
-				rect.width = 1;
-				rect.height = 1;
-				gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
-				gtk_popover_popup (GTK_POPOVER (popover));
-				g_object_unref (menu);
-				return TRUE;
-			case GDK_BUTTON_MIDDLE:
+	switch (gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture))) {
+		case GDK_BUTTON_SECONDARY:
+			/* Create a context menu */
+			GMenu *menu = feed_list_view_popup_menu (node);
+			GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL (menu));
+			gtk_widget_set_parent (popover, gtk_widget_get_parent (GTK_WIDGET (flv->treeview)));	// use feedlist wrapper to avoid gtk_css_node_insert_after critical
+			GdkRectangle rect;
+			rect.x = (int)x;
+			rect.y = (int)y;
+			rect.width = 1;
+			rect.height = 1;
+			gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
+			gtk_popover_popup (GTK_POPOVER (popover));
+			g_object_unref (menu);
+			return TRUE;
+		case GDK_BUTTON_MIDDLE:
+			if (node) {
 				/* Middle mouse click toggles read status (but do not select)... */
 				gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 				g_action_group_activate_action (G_ACTION_GROUP (g_application_get_default ()), "mark-feed-as-read", g_variant_new_string (node->id));
 				return TRUE;
-		}
+			}
 	}
 
 	return FALSE;

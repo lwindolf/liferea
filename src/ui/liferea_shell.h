@@ -80,6 +80,15 @@ void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState
 void liferea_shell_destroy (void);
 
 /**
+ * liferea_shell_enable_action:
+ * @name: the action name
+ * @enable: whether to enable or disable the action
+ *
+ * Enables or disables a specific action by name.
+ */
+void liferea_shell_action_enable (const gchar *name, gboolean enable);
+
+/**
  * liferea_shell_add_actions: (skip)
  * @entries:	array of actions to add
  * @count:	the number of actions

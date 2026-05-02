@@ -275,9 +275,3 @@ ui_common_action_group_enable (GActionGroup *group, gboolean enabled)
 	}
 	g_strfreev (actions_list);
 }
-
-void
-ui_common_action_enable (GActionGroup *group, const gchar *name, gboolean enabled)
-{
-	g_action_group_action_enabled_changed (group, name, enabled);
-}

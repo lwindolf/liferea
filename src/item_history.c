@@ -1,7 +1,7 @@
 /**
  * @file item_history.c tracking recently viewed items
  *
- * Copyright (C) 2012-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2026 Lars Windolf <lars.windolf@gmx.de>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 
 #include "item_history.h"
 
+#include "ui/liferea_shell.h"
+
 #include <glib.h>
 
 #define MAX_HISTORY_SIZE	250
@@ -35,12 +37,39 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
+static void
+on_itemlist_selection_changed (gpointer obj, gint id, gpointer userdata)
+{
+	/* Duplicate add by some selection effect */
+	if (itemHistory->lastId == (guint)id)
+		return;
+
+	/* Duplicate add by history navigation */
+	if (itemHistory->current && GPOINTER_TO_UINT (itemHistory->current->data) == (guint)id)
+		return;
+
+	itemHistory->items = g_list_append (itemHistory->items, GUINT_TO_POINTER (id));
+	itemHistory->current = g_list_last (itemHistory->items);
+	itemHistory->lastId = (guint)id;
+
+	/* if list has reached max size remove first element */
+	if (g_list_length (itemHistory->items) > MAX_HISTORY_SIZE)
+		itemHistory->items = g_list_remove (itemHistory->items, itemHistory->items);
+
+	g_signal_emit_by_name (itemHistory, "changed");
+}
+
 ItemHistory *
 item_history_get_instance (void)
 {
-	if (!itemHistory)
+	GObject *itemlist;
+
+	if (!itemHistory) {
 		itemHistory = g_object_new (ITEM_HISTORY_TYPE, NULL);
-		
+		g_object_get (G_OBJECT (liferea_shell_get_instance ()), "itemlist", &itemlist, NULL);
+		g_signal_connect (G_OBJECT (itemlist), "item-selected", G_CALLBACK (on_itemlist_selection_changed), NULL);
+	}
+
 	return itemHistory;
 }
 
@@ -83,28 +112,6 @@ item_history_init (ItemHistory *self)
 	self->items = NULL;
 	self->current = NULL;
 	self->lastId = 0;
-}
-
-void
-item_history_add (guint id)
-{
-	/* Duplicate add by some selection effect */
-	if (itemHistory->lastId == id)
-		return;
-
-	/* Duplicate add by history navigation */
-	if (itemHistory->current && GPOINTER_TO_UINT (itemHistory->current->data) == id)
-		return;
-
-	itemHistory->items = g_list_append (itemHistory->items, GUINT_TO_POINTER (id));
-	itemHistory->current = g_list_last (itemHistory->items);
-	itemHistory->lastId = id;
-
-	/* if list has reached max size remove first element */
-	if (g_list_length (itemHistory->items) > MAX_HISTORY_SIZE)
-		itemHistory->items = g_list_remove (itemHistory->items, itemHistory->items);
-
-	g_signal_emit_by_name (itemHistory, "changed");
 }
 
 itemPtr

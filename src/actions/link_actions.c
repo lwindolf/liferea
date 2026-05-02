@@ -25,7 +25,6 @@
 #include "common.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
-#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 
 static void
@@ -74,17 +73,12 @@ static const GActionEntry gaction_entries[] = {
 	{"copy-link-to-clipboard", on_copy_link_to_clipboard, "s", NULL, NULL}
 };
 
-static GActionGroup *ag;
-
 GActionGroup *
-link_actions_get_group (void)
+link_actions_create (LifereaShell *shell)
 {
-        if (!ag) {
-		ag = G_ACTION_GROUP (g_simple_action_group_new ());
-		g_action_map_add_action_entries (G_ACTION_MAP (ag), gaction_entries, G_N_ELEMENTS(gaction_entries), NULL);
+        GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
-		
-	}
+	// no updating for link actions needed (we expect items to always have a link)
 
 	return ag;
 }

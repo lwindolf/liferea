@@ -2,7 +2,7 @@
  * @file item_actions.c  item actions
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -181,6 +181,12 @@ email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	}
 }
 
+static void
+on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpointer user_data)
+{
+	itemlist_select_next_unread ();	
+}
+
 static const GActionEntry gaction_entries[] = {
 	// menu actions
 	{"toggle-selected-item-read-status", on_toggle_unread_status, NULL, NULL, NULL},
@@ -190,6 +196,8 @@ static const GActionEntry gaction_entries[] = {
 	{"launch-selected-item-in-browser", on_launch_item_in_browser, NULL, NULL, NULL},
 	{"launch-selected-item-in-external-browser", on_launch_item_in_external_browser, NULL, NULL, NULL},
 	{"copy-item-to-newsbin", on_copy_to_newsbin, "(ut)", NULL, NULL},
+	{"next-unread-item", on_next_unread_item_activate, NULL, NULL, NULL},
+
 	// popup menu actions
 	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
 	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
@@ -206,14 +214,9 @@ item_actions_item_updated (gpointer obj, gint unused, gpointer user_data)
         GActionGroup *ag = G_ACTION_GROUP (user_data);
 
         ui_common_action_group_enable (ag, itemlist_get_selected () != NULL);
-}
 
-static void
-item_actions_node_updated (gpointer obj, gchar *unused, gpointer user_data)
-{
-        GActionGroup *ag = G_ACTION_GROUP (user_data);
-
-        ui_common_action_group_enable (ag, itemlist_get_selected () != NULL);
+	Node *root = feedlist_get_root ();
+	liferea_shell_action_enable ("next-unread-item", root->unreadCount > 0);
 }
 
 GActionGroup *
@@ -228,10 +231,10 @@ item_actions_create (LifereaShell *shell)
 	              "itemlist", &itemlist, NULL);
 
 	g_signal_connect (itemlist, "item-selected", G_CALLBACK (item_actions_item_updated), ag);
-        g_signal_connect (feedlist, "items-updated", G_CALLBACK (item_actions_node_updated), ag);
-	g_signal_connect (feedlist, "node-selected", G_CALLBACK (item_actions_node_updated), ag);
+        g_signal_connect (feedlist, "items-updated", G_CALLBACK (item_actions_item_updated), ag);
+	g_signal_connect (feedlist, "node-selected", G_CALLBACK (item_actions_item_updated), ag);
 
-	ui_common_action_group_enable (ag, FALSE);
+	item_actions_item_updated (NULL, 0, ag);
 
 	return ag;
 }

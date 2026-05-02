@@ -70,6 +70,7 @@ struct _LifereaShell {
 	GActionGroup	*shellActions;
 	GActionGroup	*feedlistActions;
 	GActionGroup	*itemlistActions;
+	GActionGroup	*linkActions;
 
 	LifereaPluginsEngine *plugins;
 
@@ -626,6 +627,17 @@ liferea_shell_restore_layout (void)
 	liferea_shell_update_layout (viewMode);
 }
 
+void
+liferea_shell_action_enable (const gchar *name, gboolean enable)
+{
+	GtkApplication	*app = gtk_window_get_application (GTK_WINDOW (shell->window));
+	GAction		*act = g_action_map_lookup_action (G_ACTION_MAP (app), name);
+
+	g_assert (act);
+	g_assert (G_IS_SIMPLE_ACTION (act));
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (act), enable);
+}
+
 static void
 liferea_shell_add_action_group_to_map (GActionGroup *group, GActionMap *map)
 {
@@ -860,6 +872,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->shellActions = shell_actions_create (shell);
 	shell->feedlistActions = node_actions_create (shell);
 	shell->itemlistActions = item_actions_create (shell);
+	shell->linkActions = link_actions_create (shell);
 
 	/* 9. Setup plugins that all LifereaShell child objects already created */
 	if (!pluginsDisabled)

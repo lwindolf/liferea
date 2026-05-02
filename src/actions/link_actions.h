@@ -2,7 +2,7 @@
  * @file link_actions.h  link actions
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,15 +22,17 @@
 #ifndef LINK_ACTIONS_H
 #define LINK_ACTIONS_H
 
-#include <gtk/gtk.h>
+#include "ui/liferea_shell.h"
 
 /**
- * link_actions_get_group:
+ * link_actions_create:
  * 
- * Returns a static link action group
+ * @shell: the Liferea shell
  * 
- * Returns: a new action group
+ * Create a new action group for link actions.
+ * 
+ * Returns: a new action group, to be freed by caller
  */
-GActionGroup * link_actions_get_group (void);
+GActionGroup * link_actions_create (LifereaShell *shell);
 
 #endif /* LINK_ACTIONS_H */

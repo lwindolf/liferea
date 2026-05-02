@@ -25,6 +25,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "itemlist.h"
 #include "net_monitor.h"
 #include "node.h"
 #include "node_provider.h"
@@ -38,12 +39,6 @@
 #include "ui/ui_common.h"
 
 /* action callbacks */
-
-static void
-on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	node_mark_all_read (feedlist_get_selected ());
-}
 
 static void
 do_menu_update (Node *node)
@@ -193,7 +188,61 @@ on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpoint
         g_signal_connect (dialog, "response", G_CALLBACK (on_menu_export_items_to_file_cb), user_data);
 }
 
+static void
+on_mark_all_read_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+	if (response_id == GTK_RESPONSE_OK)
+		feedlist_mark_all_read ((Node *) user_data);
+}
+
+static void
+on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	Node		*node;
+	gboolean 	confirm_mark_read;
+
+	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
+		node = feedlist_get_root ();
+	else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-feed-as-read"))
+		node = node_from_id (g_variant_get_string (parameter, NULL));
+	else
+		node = feedlist_get_selected ();
+
+	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
+
+	if (confirm_mark_read) {
+		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
+		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
+		const gchar *feed_title = (feedlist_get_root () == node) ? _("all feeds"):node_get_title (node);
+		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
+
+		g_object_set (confirm_dialog, "text", primary_message, NULL);
+		g_free (primary_message);
+		gtk_message_dialog_format_secondary_text (confirm_dialog, _("Are you sure you want to mark all items in %s as read ?"), feed_title);
+
+		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
+
+		g_signal_connect (G_OBJECT (confirm_dialog), "response",
+	                  G_CALLBACK (on_mark_all_read_response), (gpointer)node);
+	} else {
+		feedlist_mark_all_read (node);
+	}
+}
+
+static void
+on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	Node *node = feedlist_get_selected ();
+
+	// FIXME: use node type capability check
+	if (node && (IS_FEED (node) || IS_NEWSBIN (node)))
+		itemlist_remove_all_items (node);
+	else
+		ui_show_error_box (_("You must select a feed to delete its items!"));
+}
+
 static const GActionEntry gaction_entries[] = {
+	// feedlist menu node actions
 	{"update-selected", on_menu_update, NULL, NULL, NULL},
 	{"node-mark-all-read", on_mark_all_read, NULL, NULL, NULL},
 	{"node-rebuild-vfolder", ui_popup_rebuild_vfolder, NULL, NULL, NULL},
@@ -208,7 +257,13 @@ static const GActionEntry gaction_entries[] = {
 	{"new-folder", on_menu_folder_new, NULL, NULL, NULL},
 	{"new-vfolder", on_new_vfolder_activate, NULL, NULL, NULL},
 	{"new-source", on_new_plugin_activate, NULL, NULL, NULL},
-	{"new-newsbin", on_new_newsbin_activate, NULL, NULL, NULL}
+	{"new-newsbin", on_new_newsbin_activate, NULL, NULL, NULL},
+
+	// headerbar node actions
+	{"mark-all-feeds-read", on_mark_all_read, NULL, NULL, NULL},
+
+	{"mark-feed-as-read", on_mark_all_read, "s", NULL, NULL},
+	{"remove-selected-feed-items", on_remove_items_activate, NULL, NULL, NULL}
 };
 
 static void
@@ -218,7 +273,7 @@ node_actions_item_updated (gpointer obj, gint itemId, gpointer user_data)
 }
 
 static void
-node_actions_node_updated (gpointer obj, gchar *nodeId, gpointer user_data)
+node_actions_node_selected (gpointer obj, gchar *nodeId, gpointer user_data)
 {
         GActionGroup *ag = G_ACTION_GROUP (user_data);
 
@@ -231,38 +286,36 @@ node_actions_node_updated (gpointer obj, gchar *nodeId, gpointer user_data)
 		ui_common_action_group_enable (ag, FALSE);
 
                 // Allow adding stuff, as it would get added to root node, which is always allowed
-	        ui_common_action_enable (ag, "new-subscription", TRUE);
-                ui_common_action_enable (ag, "new-folder", TRUE);
-                ui_common_action_enable (ag, "new-vfolder", TRUE);
-                ui_common_action_enable (ag, "new-source", TRUE);
-                ui_common_action_enable (ag, "new-newsbin", TRUE);
-		return;
+	        liferea_shell_action_enable ("new-subscription", TRUE);
+                liferea_shell_action_enable ("new-folder", TRUE);
+                liferea_shell_action_enable ("new-vfolder", TRUE);
+                liferea_shell_action_enable ("new-source", TRUE);
+                liferea_shell_action_enable ("new-newsbin", TRUE);
+	} else {
+		liferea_shell_action_enable ("remove-selected-feed-items", TRUE);
+
+		gboolean allowModify = 0 < (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
+		gboolean allowUpdate = 0 < ((NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
+				            (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
+
+		liferea_shell_action_enable ("update-selected", allowUpdate);
+		liferea_shell_action_enable ("node-mark-all-read", node->unreadCount > 0);
+		liferea_shell_action_enable ("node-rebuild-vfolder", IS_VFOLDER(node));
+		liferea_shell_action_enable ("node-properties", allowModify);
+		liferea_shell_action_enable ("node-delete", allowModify);
+		liferea_shell_action_enable ("node-convert-to-local", IS_NODE_SOURCE (node));
+		liferea_shell_action_enable ("node-update", allowUpdate);
+		liferea_shell_action_enable ("node-export-items-to-file", TRUE);
+
+		liferea_shell_action_enable ("new-subscription", allowModify && node_can_add_child_feed (node));
+		liferea_shell_action_enable ("new-folder", allowModify && node_can_add_child_folder (node));
+		liferea_shell_action_enable ("new-vfolder", allowModify && NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT);
+		liferea_shell_action_enable ("new-source",  allowModify && NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT);
+		liferea_shell_action_enable ("new-newsbin", allowModify && NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT);
 	}
 
-	gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
-        gboolean allowUpdate = ((NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
-                                (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
-
-
-	ui_common_action_enable (ag, "mark-selected-feed-as-read", node->unreadCount > 0);
-	ui_common_action_enable (ag, "update-selected", allowUpdate);
-	ui_common_action_enable (ag, "node-mark-all-read", node->unreadCount > 0);
-        ui_common_action_enable (ag, "node-rebuild-vfolder", TRUE);     // FIXME
-        ui_common_action_enable (ag, "node-properties", allowModify);
-	ui_common_action_enable (ag, "node-delete", allowModify);
-        ui_common_action_enable (ag, "node-convert-to-local", TRUE);    // FIXME
-        ui_common_action_enable (ag, "node-update", allowUpdate);
-        ui_common_action_enable (ag, "node-export-items-to-file", TRUE);
-
-        ui_common_action_enable (ag, "new-subscription", allowModify);
-        ui_common_action_enable (ag, "new-folder", allowModify);
-        ui_common_action_enable (ag, "new-vfolder", allowModify);
-        ui_common_action_enable (ag, "new-source", allowModify);
-        ui_common_action_enable (ag, "new-newsbin", allowModify);
-
-        // FIXME: those look like duplicates
-        ui_common_action_enable (ag, "selected-node-properties", allowModify);
-        ui_common_action_enable (ag, "delete-selected", allowModify);
+	liferea_shell_action_enable ("mark-all-feeds-read", feedlist_get_root ()->unreadCount > 0);
+	liferea_shell_action_enable ("mark-feed-as-read", TRUE); // always true because selection-less
 }
 
 GActionGroup *
@@ -278,14 +331,15 @@ node_actions_create (LifereaShell *shell)
 	              "itemlist", &itemlist, NULL);
 
 	g_signal_connect (itemlist, "item-updated", G_CALLBACK (node_actions_item_updated), ag);
-	g_signal_connect (feedlist, "items-updated", G_CALLBACK (node_actions_node_updated), ag);
-	g_signal_connect (feedlist, "node-selected", G_CALLBACK (node_actions_node_updated), ag);
+	g_signal_connect (feedlist, "items-updated", G_CALLBACK (node_actions_node_selected), ag);
+	g_signal_connect (feedlist, "node-selected", G_CALLBACK (node_actions_node_selected), ag);
 
-	// FIXME: initialization with disabled actions!
+	node_actions_item_updated (NULL, 0, ag);
+	node_actions_node_selected (NULL, NULL, ag);
 
 	/* Prepare some toggle button states */
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
-	// FIXME: g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
+	// FIXME GTK4 g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
 
         return ag;
 }

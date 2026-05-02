@@ -46,13 +46,6 @@ struct _ItemHistory {
 ItemHistory * item_history_get_instance (void);
 
 /**
- * Add a new item to the item history stack.
- *
- * @param id	the id of the item to add
- */
-void item_history_add (guint id);
-
-/**
  * Returns the previous item in the item history.
  *
  * @returns an item (or NULL) to be free'd with item_unload()

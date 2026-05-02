@@ -40,7 +40,6 @@ struct _LifereaWebView {
 	WebKitWebView		parent;
 
 	GActionGroup            *menu_action_group;
-	GActionGroup            *link_action_group;
 	GDBusConnection 	*dbus_connection;
 };
 
@@ -136,7 +135,7 @@ liferea_web_view_on_menu (WebKitWebView *view,
 {
     LifereaWebView *self = LIFEREA_WEB_VIEW(view);
     GActionMap *actionMap = G_ACTION_MAP(self->menu_action_group);
-    GActionMap *linkActionMap = G_ACTION_MAP(self->link_action_group);
+    GActionMap *linkActionMap = G_ACTION_MAP (gtk_window_get_application (GTK_WINDOW (liferea_shell_get_window ())));
     g_autofree gchar	*image_uri = NULL;
     g_autofree gchar	*link_uri = NULL;
     g_autofree gchar	*link_title = NULL;
@@ -587,11 +586,9 @@ liferea_web_view_init(LifereaWebView *self)
 
 	/* Context menu actions */
 	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
-	self->link_action_group = link_actions_get_group ();
 
 	g_action_map_add_action_entries (G_ACTION_MAP (self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
 	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
-	gtk_widget_insert_action_group (GTK_WIDGET (self), "link_actions", self->link_action_group);
 
 	/* Register context menu signal */
 	g_signal_connect (

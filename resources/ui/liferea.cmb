@@ -25,6 +25,6 @@
   <ui filename="about.ui" sha256="acb9ae69305d3c1efc81b0450b2f6b0d4875208b162f220ad1c696906822dfdc"/>
   <ui filename="theoldreader_source.ui" sha256="d6f4838d1f656d8c02377b280e32d6403bff392368fc560f47773268c0449e0f"/>
   <ui filename="ttrss_source.ui" sha256="66064e94d312bc2d53422c6aad7e2fac83c21ed42228c95a87ba51ae39b2b2dd"/>
-  <ui filename="mainwindow.ui" sha256="b40af3db2fa56dbe63827b4a25049a8c196b4742a5bd51708ef5525876c732e3"/>
+  <ui filename="mainwindow.ui" sha256="1dd74357cc02d3a4e3539884530dea15df2fa229040ab594f1fd910b2988e350"/>
   <ui filename="shortcuts.ui" sha256="6235bca30daa703ea5ee43166a609f54443c1d40cbdf116c74107345fe3a73ae"/>
 </cambalache-project>

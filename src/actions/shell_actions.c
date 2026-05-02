@@ -32,7 +32,6 @@
 #include "feedlist.h"
 #include "item.h"
 #include "item_history.h"
-#include "itemlist.h"
 #include "liferea_application.h"
 #include "net_monitor.h"
 #include "social.h"
@@ -65,60 +64,6 @@ static void
 on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	do_menu_update (feedlist_get_root ());
-}
-
-static void
-on_mark_all_read_response (GtkDialog *dialog, gint response_id, gpointer user_data)
-{
-	if (response_id == GTK_RESPONSE_OK)
-		feedlist_mark_all_read ((Node *) user_data);
-}
-
-static void
-on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node		*node;
-	gboolean 	confirm_mark_read;
-
-	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
-		node = feedlist_get_root ();
-	else if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-feed-as-read"))
-		node = node_from_id (g_variant_get_string (parameter, NULL));
-	else
-		node = feedlist_get_selected ();
-
-	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
-
-	if (confirm_mark_read) {
-		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
-		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
-		const gchar *feed_title = (feedlist_get_root () == node) ? _("all feeds"):node_get_title (node);
-		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
-
-		g_object_set (confirm_dialog, "text", primary_message, NULL);
-		g_free (primary_message);
-		gtk_message_dialog_format_secondary_text (confirm_dialog, _("Are you sure you want to mark all items in %s as read ?"), feed_title);
-
-		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
-
-		g_signal_connect (G_OBJECT (confirm_dialog), "response",
-	                  G_CALLBACK (on_mark_all_read_response), (gpointer)node);
-	} else {
-		feedlist_mark_all_read (node);
-	}
-}
-
-static void
-on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node		*node;
-
-	node = feedlist_get_selected ();
-	// FIXME: use node type capability check
-	if (node && (IS_FEED (node) || IS_NEWSBIN (node)))
-		itemlist_remove_all_items (node);
-	else
-		ui_show_error_box (_("You must select a feed to delete its items!"));
 }
 
 // FIXME replace this with a bind!
@@ -249,12 +194,6 @@ ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_d
 }
 
 static void
-on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpointer user_data)
-{
-	itemlist_select_next_unread ();	
-}
-
-static void
 on_print_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	LifereaBrowser *browser;
@@ -270,17 +209,11 @@ on_print_activate (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 
 static const GActionEntry gaction_entries[] = {
 	{"update-all", on_menu_update_all, NULL, NULL, NULL},
-	{"mark-feed-as-read", on_mark_all_read, "s", NULL, NULL},
-	{"mark-selected-feed-as-read", on_mark_all_read, NULL, NULL, NULL},
-	{"mark-all-feeds-read", on_mark_all_read, NULL, NULL, NULL},
 	{"import-feed-list", on_menu_import, NULL, NULL, NULL},
 	{"export-feed-list", on_menu_export, NULL, NULL, NULL},
 	{"quit", on_menu_quit, NULL, NULL, NULL},
-	// FIXME: this looks wrong here
-	{"remove-selected-feed-items", on_remove_items_activate, NULL, NULL, NULL},
 	{"prev-read-item", on_prev_read_item_activate, NULL, NULL, NULL},
 	{"next-read-item", on_next_read_item_activate, NULL, NULL, NULL},
-	{"next-unread-item", on_next_unread_item_activate, NULL, NULL, NULL},
 	{"zoom-in", on_zoomin_activate, NULL, NULL, NULL},
 	{"zoom-out", on_zoomout_activate, NULL, NULL, NULL},
 	{"zoom-reset", on_zoomreset_activate, NULL, NULL, NULL},
@@ -301,12 +234,10 @@ static const GActionEntry gaction_entries[] = {
 };
 
 static void
-shell_actions_update_history (gpointer obj, gchar *unused, gpointer user_data)
+shell_actions_update_history (gpointer obj, gpointer user_data)
 {
-	GActionGroup *ag = G_ACTION_GROUP (user_data);
-	
-	ui_common_action_enable (ag, "prev-read-item", item_history_has_previous ());
-	ui_common_action_enable (ag, "next-read-item", item_history_has_next ());
+	liferea_shell_action_enable ("prev-read-item", item_history_has_previous ());
+	liferea_shell_action_enable ("next-read-item", item_history_has_next ());
 }
 
 GActionGroup *
@@ -314,9 +245,9 @@ shell_actions_create (LifereaShell *shell)
 {
 	GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
-	// FIXME: action group state init
+	g_signal_connect (G_OBJECT (item_history_get_instance ()), "changed", G_CALLBACK (shell_actions_update_history), NULL);
 
-	g_signal_connect (G_OBJECT (item_history_get_instance ()), "changed", G_CALLBACK (shell_actions_update_history), ag);
+	shell_actions_update_history (NULL, NULL);
 
 	return ag;
 }

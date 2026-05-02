@@ -59,7 +59,7 @@
             </child>
             <child>
               <object class="GtkButton">
-                <property name="action-name">app.mark-selected-feed-as-read</property>
+                <property name="action-name">app.node-mark-all-read</property>
                 <property name="icon-name">object-select-symbolic</property>
                 <property name="tooltip-text">Mark Items Read</property>
               </object>
@@ -328,82 +328,6 @@
         </item>
       </section>
     </submenu>
-    <submenu id="feed_menu">
-      <attribute name="label" translatable="yes">_Feed</attribute>
-      <section>
-        <item>
-          <attribute name="action">app.update-selected</attribute>
-          <attribute name="label" translatable="yes">_Update</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.mark-selected-feed-as-read</attribute>
-          <attribute name="label" translatable="yes">_Mark Items Read</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="action">app.remove-selected-feed-items</attribute>
-          <attribute name="label" translatable="yes">Remove _All Items</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.delete-selected</attribute>
-          <attribute name="label" translatable="yes">_Remove</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="action">app.selected-node-properties</attribute>
-          <attribute name="label" translatable="yes">_Properties</attribute>
-        </item>
-      </section>
-    </submenu>
-    <submenu id="item_menu">
-      <attribute name="label" translatable="yes">_Item</attribute>
-      <section>
-        <item>
-          <attribute name="action">app.next-unread-item</attribute>
-          <attribute name="label" translatable="yes">_Next Unread Item</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="action">app.prev-read-item</attribute>
-          <attribute name="label" translatable="yes">Previous Item</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.next-read-item</attribute>
-          <attribute name="label" translatable="yes">Next Item</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="action">app.toggle-selected-item-read-status</attribute>
-          <attribute name="label" translatable="yes">Toggle _Read Status</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.toggle-selected-item-flag</attribute>
-          <attribute name="label" translatable="yes">Toggle Item _Flag</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.remove-selected-item</attribute>
-          <attribute name="label" translatable="yes">R_emove</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="action">app.launch-selected-item-in-tab</attribute>
-          <attribute name="label" translatable="yes">Open In _Tab</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.launch-selected-item-in-browser</attribute>
-          <attribute name="label" translatable="yes">_Open In Browser</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.launch-selected-item-in-external-browser</attribute>
-          <attribute name="label" translatable="yes">Open In _External Browser</attribute>
-        </item>
-      </section>
-    </submenu>
     <submenu id="view_menu">
       <attribute name="label" translatable="yes">_View</attribute>
       <section>
@@ -459,15 +383,6 @@
         <item>
           <attribute name="action">app.print</attribute>
           <attribute name="label">Print</attribute>
-        </item>
-      </section>
-    </submenu>
-    <submenu>
-      <attribute name="label" translatable="yes">S_earch</attribute>
-      <section>
-        <item>
-          <attribute name="action">app.search-feeds</attribute>
-          <attribute name="label" translatable="yes">Search All Feeds...</attribute>
         </item>
       </section>
     </submenu>
