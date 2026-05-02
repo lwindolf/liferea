@@ -1,3 +1,17 @@
+2026-05-02  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16.9
+
+	* Fixes a regression that breaks using online accounts
+	  (Lars Windolf)
+
+	* Fixes a regression when subscribing to local files
+	  (Lars Windolf)
+
+	* Fixes some memory leaks
+	  (Lars Windolf)
+
+
 2026-04-25  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.8
