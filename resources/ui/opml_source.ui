@@ -6,6 +6,7 @@
   <object class="GtkDialog" id="opml_source">
     <property name="title" translatable="yes">Add OPML</property>
     <property name="visible">1</property>
+    <property name="width-request">500</property>
     <child internal-child="action_area">
       <object class="GtkBox" id="dialog-action_area1">
         <property name="homogeneous">false</property>

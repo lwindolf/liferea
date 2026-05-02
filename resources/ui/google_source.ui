@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.96.0 -->
+<!-- Created with Cambalache 1.0 -->
 <interface>
   <!-- interface-name google_source.ui -->
   <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="google_source">
     <property name="title" translatable="yes">Add Google Reader API Account</property>
     <property name="visible">1</property>
+    <property name="width-request">500</property>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox1">
         <property name="margin-bottom">12</property>

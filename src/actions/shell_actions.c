@@ -67,7 +67,7 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 }
 
 static void
-on_feedlist_reduced_activate (GSimpleAction *action, GParamSpec *pspec, gpointer user_data)
+on_feedlist_reduced_activate (GAction *action, GParamSpec *pspec, gpointer user_data)
 {
 	GVariant *state = g_action_get_state (G_ACTION (action));
 	feed_list_view_set_reduce_mode (g_variant_get_boolean (state));
@@ -249,7 +249,7 @@ shell_actions_create (LifereaShell *shell)
 	GAction *action = g_settings_create_action (conf_get_settings (), "reduced-feedlist");
 	g_action_map_add_action (G_ACTION_MAP (app), action);
 	g_signal_connect (action, "notify::state", G_CALLBACK (on_feedlist_reduced_activate), action);
-	on_feedlist_reduced_activate (G_SIMPLE_ACTION (action), NULL, NULL);
+	on_feedlist_reduced_activate (G_ACTION (action), NULL, NULL);
 
 	return ag;
 }
