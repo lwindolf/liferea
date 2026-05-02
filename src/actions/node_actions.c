@@ -337,9 +337,5 @@ node_actions_create (LifereaShell *shell)
 	node_actions_item_updated (NULL, 0, ag);
 	node_actions_node_selected (NULL, NULL, ag);
 
-	/* Prepare some toggle button states */
-	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
-	// FIXME GTK4 g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
-
         return ag;
 }

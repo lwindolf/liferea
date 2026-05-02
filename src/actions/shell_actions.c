@@ -66,15 +66,11 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 	do_menu_update (feedlist_get_root ());
 }
 
-// FIXME replace this with a bind!
 static void
-on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_feedlist_reduced_activate (GSimpleAction *action, GParamSpec *pspec, gpointer user_data)
 {
 	GVariant *state = g_action_get_state (G_ACTION (action));
-	gboolean val = !g_variant_get_boolean (state);
-	feed_list_view_set_reduce_mode (val);
-	g_simple_action_set_state (action, g_variant_new_boolean (val));
-	g_object_unref (state);
+	feed_list_view_set_reduce_mode (g_variant_get_boolean (state));
 }
 
 static void
@@ -228,7 +224,6 @@ static const GActionEntry gaction_entries[] = {
 
 	/* Parameter type must be NULL for toggle. */
 	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
-	{"reduced-feed-list", NULL, NULL, "@b false", on_feedlist_reduced_activate},
 
 	{"node-sort-feeds", ui_popup_sort_feeds, NULL, NULL, NULL}
 };
@@ -248,6 +243,13 @@ shell_actions_create (LifereaShell *shell)
 	g_signal_connect (G_OBJECT (item_history_get_instance ()), "changed", G_CALLBACK (shell_actions_update_history), NULL);
 
 	shell_actions_update_history (NULL, NULL);
+
+	/* Prepare some toggle button states */
+	GtkApplication *app = gtk_window_get_application (GTK_WINDOW (liferea_shell_get_window ()));
+	GAction *action = g_settings_create_action (conf_get_settings (), "reduced-feedlist");
+	g_action_map_add_action (G_ACTION_MAP (app), action);
+	g_signal_connect (action, "notify::state", G_CALLBACK (on_feedlist_reduced_activate), action);
+	on_feedlist_reduced_activate (G_SIMPLE_ACTION (action), NULL, NULL);
 
 	return ag;
 }

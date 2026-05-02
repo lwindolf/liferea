@@ -551,28 +551,6 @@ on_shell_key_pressed_event (GtkEventControllerKey *controller, guint keyval, gui
 	return FALSE;
 }
 
-static gboolean
-on_drop_received (GtkDropTarget *target, const GValue *value, double x, double y, gpointer user_data)
-{
-	if (G_VALUE_HOLDS(value, G_TYPE_STRING)) {
-		const gchar *text = g_value_get_string (value);
-		if (text)
-			feedlist_add_subscription_by_url (text);
-
-		return TRUE;
-	}
-	return FALSE;
-}
-
-static void
-liferea_shell_setup_URL_receiver (void)
-{
-	GtkDropTarget *drop_target = gtk_drop_target_new (G_TYPE_STRING, GDK_ACTION_COPY);
-	g_signal_connect (drop_target, "drop", G_CALLBACK (on_drop_received), NULL);
-	gtk_widget_add_controller (GTK_WIDGET (shell->window), GTK_EVENT_CONTROLLER (drop_target));
-	
-}
-
 void
 liferea_shell_copy_to_clipboard (const gchar *str)
 {
@@ -845,16 +823,13 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	debug (DEBUG_GUI, "Setting up feed list");
 	shell->feedListView = feed_list_view_create (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist")), shell->feedlist);
 
-	/* 5.) update and restore all menu elements */
-	liferea_shell_setup_URL_receiver ();
-
-	// 6.) Restore selection (FIXME: Move to feed list code?)
+	// 5.) Restore selection (FIXME: Move to feed list code?)
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {
 		feedlist_set_selected (node_from_id (id));
 		g_free (id);
 	}
 
-	/* 7. Setup shell window signals, only after all widgets are ready */
+	/* 6. Setup shell window signals, only after all widgets are ready */
 	g_signal_connect (shell->window, "notify::default-width", G_CALLBACK (on_window_resize_cb), NULL);
 	g_signal_connect (shell->window, "notify::default-height", G_CALLBACK (on_window_resize_cb), NULL);
 	g_signal_connect (shell->window, "notify::maximized", G_CALLBACK (on_window_resize_cb), NULL);
@@ -868,26 +843,22 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_widget_add_controller (liferea_shell_lookup ("searchentry"), keypress);
 	g_signal_connect (keypress, "key-pressed", G_CALLBACK (on_searchentry_key_pressed), shell);
 
-	/* 8. setup actions */
+	/* 7. setup actions */
 	shell->shellActions = shell_actions_create (shell);
 	shell->feedlistActions = node_actions_create (shell);
 	shell->itemlistActions = item_actions_create (shell);
 	shell->linkActions = link_actions_create (shell);
 
-	/* 9. Setup plugins that all LifereaShell child objects already created */
+	/* 8. Setup plugins that all LifereaShell child objects already created */
 	if (!pluginsDisabled)
 		liferea_plugins_engine_register_shell_plugins (shell);
 
-	/* 10. Rebuild search folders if needed */
+	/* 9. Rebuild search folders if needed */
 	if (searchFolderRebuild)
 		vfolder_foreach (vfolder_rebuild);
 
-	/* 11. Load feedlist and enable signals for feedListView */
-	feed_list_view_set_reduce_mode (FALSE);	// FIXME: this would be better triggered by a GAction init somewhere
+	/* 10. Load feedlist and enable signals for feedListView */
 	gtk_widget_set_sensitive (liferea_shell_lookup ("feedlist"), TRUE);
-
-	/* 12. Unstable branch only: show current work in progress */
-	browser_tabs_add_new ("https://raw.githubusercontent.com/lwindolf/liferea/refs/heads/main/TODO", "Current TODOs", TRUE);
 }
 
 void liferea_shell_show_window (void)

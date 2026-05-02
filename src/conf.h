@@ -82,6 +82,7 @@
 /* initializing methods */
 void	conf_init (void);
 void	conf_deinit (void);
+GSettings *   conf_get_settings (void);
 
 /* preferences access methods */
 

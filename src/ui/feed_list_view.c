@@ -469,7 +469,6 @@ void
 feed_list_view_set_reduce_mode (gboolean newReduceMode)
 {
 	flv->feedlist_reduced_unread = newReduceMode;
-	conf_set_bool_value (REDUCED_FEEDLIST, flv->feedlist_reduced_unread);
 	feed_list_view_reduce_mode_changed ();
 	feed_list_view_reload_feedlist ();
 }
@@ -780,10 +779,6 @@ feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 	g_signal_connect (G_OBJECT (select), "changed",
 	                  G_CALLBACK (feed_list_view_selection_changed_cb),
                 	  flv);
-
-	conf_get_bool_value (REDUCED_FEEDLIST, &flv->feedlist_reduced_unread);
-	if (flv->feedlist_reduced_unread)
-		feed_list_view_reduce_mode_changed ();	/* before menu setup for reduced mode check box to be correct */
 
 	ui_dnd_setup_feedlist (flv->feedstore);
 

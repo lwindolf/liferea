@@ -352,7 +352,7 @@
       </section>
       <section>
         <item>
-          <attribute name="action">app.reduced-feed-list</attribute>
+          <attribute name="action">app.reduced-feedlist</attribute>
           <attribute name="label" translatable="yes">_Reduced Feed List</attribute>
         </item>
       </section>
