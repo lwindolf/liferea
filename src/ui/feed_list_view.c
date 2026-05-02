@@ -316,10 +316,6 @@ feed_list_view_popup_menu (Node *node)
 			g_menu_append (section, _("_Properties"), "app.node-properties");
 		}
 
-		
-		g_print("%s is a node provider %s\n", node->title, node->provider->id);
-		if (IS_NODE_SOURCE (node))
-			g_print(" __SOURCWE!\n");
 		if (IS_NODE_SOURCE (node) && NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL) {
 			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 			g_object_unref (section);

@@ -4,18 +4,15 @@ A first release candidate is now very close.
 To be fixed next:
 =================
 
-1. new folder: cancel does not work
+1.
+- download manager: save image/save link as does not work (vbox.pack_start 'Box' object has no attribute 'pack_start')
+- download manager: download location does not work
 2. all source dialogs start too small in the left corner
 3. shell_actions: // FIXME: g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
 
 To be fixed later:
 ==================
 
-- download manager: save image/save link as does not work (vbox.pack_start 'Box' object has no attribute 'pack_start')
-- download manager: download location does not work
 - shell_actions.c:// FIXME replace this with a bind!
 - node_actions.c:  // FIXME
-- node_actions.c:        ui_common_action_enable (ag, "node-rebuild-vfolder", TRUE);     // FIXME
-- node_actions.c:        ui_common_action_enable (ag, "node-convert-to-local", TRUE);    // FIXME
-- node_actions.c:        // FIXME: those look like duplicates
 - node_actions.c:  // FIXME: g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));

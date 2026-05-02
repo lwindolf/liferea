@@ -29,7 +29,7 @@
               </object>
             </property>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="cancelBtn">
                 <property name="label">_Cancel</property>
                 <property name="use-underline">True</property>
               </object>
