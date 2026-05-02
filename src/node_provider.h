@@ -116,7 +116,7 @@ gboolean node_provider_is (Node *node, const gchar *name);
 #define IS_FOLDER(node)      node_provider_is (node, "folder")
 #define IS_NEWSBIN(node)     node_provider_is (node, "newsbin")
 #define IS_VFOLDER(node)     node_provider_is (node, "vfolder")
-#define IS_NODE_SOURCE(node) node_provider_is (node, "node_source")
+#define IS_NODE_SOURCE(node) node_provider_is (node, "source")
 
 /**
  * node_provider_request_add:
