@@ -16,6 +16,9 @@
 
 	Changes:
 
+	* Build system switched from autotools to meson. Tarballs are now .tar.xz
+	  (Lars Windolf)
+
 	* All message dialogs and auth dialog are now modal.
 	  (Lars Windolf)
 
