@@ -47,18 +47,19 @@
 #include "ui/item_list_view.h"
 #include "webkit/liferea_webkit.h"
 
-/* LifereaBrowser is a bit complex widget used to present both internally
-   rendered feed content as well as serving as a browser widget. It automatically
+/* The LifereaBrowser is a complex widget used to present both internally
+   rendered content as well as serving as a browser widget. It automatically
    switches on a toolbar for history and URL navigation when browsing
    external content.
 
    This causes quite some complexity outlined in below table
 
-   Use Case             Intern Rendering    Pre-Download       URL bar
-   -------------------------------------------------------------------
-   item/node view       yes                 yes (feed-cache)   off
-   special URLs (help)  no                  no                 off
-   internet URL         no                  no                 on
+   Use Case           Intern Rendering    Pre-Download       URL bar
+   ---------------------------------------------------------------------
+   item/node view     yes                 yes (feed-cache)   off
+   item/node view     yes                 yes (feed-cache)   off
+   local help files   no                  no                 off
+   internet URL       no                  no                 on
  */
 
 enum {
@@ -609,7 +610,7 @@ liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gcha
 
 	/* escape JSON and create a JS command */
 	encoded_json = g_uri_escape_string (json, NULL, TRUE);
-	script = g_strdup_printf ("load_%s('%s', '%s', '%s');\n", name, encoded_json, baseURL, direction);
+	script = g_strdup_printf ("window.debugflags=%ld; load_%s('%s', '%s', '%s');\n", debug_get_flags(), name, encoded_json, baseURL, direction);
 
 	/* Each template has a script insertion marker which we need to replace */
 	tmp = g_string_new (liferea_browser_get_template (browser, name));
