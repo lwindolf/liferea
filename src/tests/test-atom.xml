@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+    <id>https://lzone.de/liferea/test-atom.xml</id>
+    <title>Liferea Render Atom Test Cases</title>
+    <updated>2026-05-02T12:24:04.632Z</updated>
+    <link rel="alternate" href="https://lzone.de/liferea/"/>
+    <link rel="self" href="https://lzone.de/liferea/test-atom.xml"/>
+    <subtitle>Helpful for manual visual tests and npm test</subtitle>
+    <icon>https://lzone.de/favicon.ico</icon>
+    <entry>
+        <title type="html">images/TC1: no image</title>
+        <id>https://lzone.de/liferea/test-atom/images/TC1</id>
+        <link href="https://lzone.de/liferea/"/>
+        <updated>2026-04-30T00:00:00.001Z</updated>
+        <author><name>Test Author</name></author>
+        <summary type="html"><![CDATA[<p>HTML text without images. No image should be visible</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html">images/TC2: one inline image</title>
+        <id>https://lzone.de/liferea/test-atom/images/TC2</id>
+        <link href="https://lzone.de/liferea/"/>
+        <updated>2024-02-28T00:00:00.002Z</updated>
+        <author><name>Test Author</name></author>
+        <summary type="html"><![CDATA[<p>HTML text with exactly one image. <img src="https://lzone.de/liferea/favicon.svg"/> Ensure you see 1 image.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html">images/TC3: one inline image + enclosure images</title>
+        <id>https://lzone.de/liferea/test-atom/images/TC3</id>
+        <link rel="enclosure" type="image/svg+xml" href="https://lzone.de/liferea/favicon.svg"/>
+        <link href="https://lzone.de/liferea/"/>
+        <updated>2024-02-28T00:00:00.003Z</updated>
+        <author><name>Test Author</name></author>
+        <summary type="html"><![CDATA[<p>HTML text with exactly one image. <img src="https://lzone.de/liferea/favicon.svg"/> Ensure you see 1 image. Enclosure images are to be ignored.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html">images/TC4: no inline image + 2 enclosure images</title>
+        <id>https://lzone.de/liferea/test-atom/images/TC4</id>
+        <link rel="enclosure" type="image/svg+xml" href="https://lzone.de/liferea/favicon.svg"/>
+        <link rel="enclosure" type="image/svg+xml" href="https://lzone.de/liferea/favicon.svg"/>
+        <link href="https://lzone.de/liferea/"/>
+        <updated>2024-02-28T00:00:00.004Z</updated>
+        <author><name>Test Author</name></author>
+        <summary type="html"><![CDATA[<p>HTML text without images. Exactly one (the first) enclosure image should be visible above the text.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html">images/TC5: no inline image + gravatar</title>
+        <id>https://lzone.de/liferea/test-atom/images/TC5</id>
+        <media:content medium="image" url="https://www.gravatar.com/avatar/00000000000000000000000000000000?s=80&amp;d=identicon"/>
+        <link href="https://lzone.de/liferea/"/>
+        <updated>2024-02-28T00:00:00.005Z</updated>
+        <author><name>Test Author</name></author>
+        <summary type="html"><![CDATA[<p>HTML text without images. A gravatar image should be visible above the text.</p>]]></summary>
+    </entry>
+    <entry>
+        <title type="html">images/TC6: no inline image + media:content type image + gravatar</title>
+        <id>https://lzone.de/liferea/test-atom/images/TC6</id>
+        <media:content medium="image" url="https://lzone.de/liferea/favicon.svg" type="image/svg+xml"/>
+        <media:content medium="image" url="https://www.gravatar.com/avatar/00000000000000000000000000000000?s=80&amp;d=identicon"/>
+        <link href="https://lzone.de/liferea/"/>
+        <updated>2024-02-28T00:00:00.006Z</updated>
+        <author><name>Test Author</name></author>
+        <summary type="html"><![CDATA[<p>HTML text without images. An image should be visible above the text. The gravatar should not be shown. Idea is to always only get one image from metadata.</p>]]></summary>
+    </entry>
+</feed>
