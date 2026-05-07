@@ -1,0 +1,2095 @@
+# Georgian translation for liferea.
+# Copyright (C) 2026 liferea's authors.
+# This file is distributed under the same license as the liferea package.
+# Ekaterine Papava <papava.e@gtu.ge>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: liferea\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-29 10:50+0100\n"
+"PO-Revision-Date: 2026-05-07 15:23+0200\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
+"Language-Team: Georgian <(nothing)>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.9\n"
+
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:347
+#: ../glade/mainwindow.ui.h:1
+msgid "Liferea"
+msgstr "Liferea"
+
+#: ../net.sourceforge.liferea.desktop.in.h:2
+msgid "Feed Reader"
+msgstr "ლენტის მკითხველი"
+
+#: ../net.sourceforge.liferea.desktop.in.h:3
+msgid "Liferea Feed Reader"
+msgstr "სიახლეების ლენტის პროგრამა Liferea"
+
+#: ../net.sourceforge.liferea.desktop.in.h:4
+msgid "Read news feeds and blogs"
+msgstr "წაიკითხეთ სიახლეები და ბლოგები"
+
+#: ../net.sourceforge.liferea.desktop.in.h:5
+msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
+msgstr "news;feed;aggregator;blog;podcast;syndication;rss;atom;სიახლეები;ლენტა;ბლოგები"
+
+#: ../plugins/getfocus.py:95
+msgid "Opacity:"
+msgstr "გაუმჭირვალობა:"
+
+#: ../plugins/getfocus.py:96
+msgid "Opacity"
+msgstr "გაუმჭირვალობა"
+
+#: ../plugins/getfocus.py:106
+msgid "Min"
+msgstr "მინ"
+
+#: ../plugins/getfocus.py:111
+msgid "Max"
+msgstr "მაქს"
+
+#: ../plugins/getfocus.py:117
+msgid "Save"
+msgstr "შენახვა"
+
+#: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "წინა ელემენტი"
+
+#: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "შემდეგი ელემენტი"
+
+#: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "შემდეგი წაუკითხავი ელემე_ნტი"
+
+#: ../plugins/headerbar.py:89 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "წაკითხულად _მონშვნა"
+
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:38
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "ყველა ლენტის ძებნა..."
+
+#: ../plugins/libnotify.py:41
+msgid "Feed Updates"
+msgstr "ლენტის განახლებები"
+
+#: ../plugins/plugin-installer.py:55
+msgid "Plugins"
+msgstr "დამატებები"
+
+#: ../plugins/plugin-installer.py:72
+msgid "Plugin Installer"
+msgstr "დამატებების დამყენებელი"
+
+#: ../plugins/plugin-installer.py:86
+msgid "Activate Plugins"
+msgstr "დამატებების გააქტიურება"
+
+#: ../plugins/plugin-installer.py:87
+msgid "Download Plugins"
+msgstr "დამატებების გადმოწერა"
+
+#: ../plugins/plugin-installer.py:105
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr "არასწორი ველები დამატების ჩანაწერისთვის %s"
+
+#: ../plugins/plugin-installer.py:128
+msgid "All"
+msgstr "ყველა"
+
+#: ../plugins/plugin-installer.py:128 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "დამატებით"
+
+#: ../plugins/plugin-installer.py:128
+msgid "Menu"
+msgstr "მენიუ"
+
+#: ../plugins/plugin-installer.py:128
+msgid "Notifications"
+msgstr "გაფრთხილებები"
+
+#: ../plugins/plugin-installer.py:136
+msgid "Filter by category"
+msgstr "კატეგორიით გაფილტვრა"
+
+#: ../plugins/plugin-installer.py:143
+msgid "_Install"
+msgstr "_დაყენება"
+
+#: ../plugins/plugin-installer.py:147
+msgid "_Uninstall"
+msgstr "_წაშლა"
+
+#: ../plugins/plugin-installer.py:252
+#, python-format
+msgid "Missing package manager '%s'. Cannot check nor install necessary dependencies!"
+msgstr ""
+"პაკეტების მმართველი '%s'. საჭირო დამოკიდებულებების შემოწმება და დაყენება შეუძლებელია!"
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr "აკლია პაკეტი '%s'. გნებავთ მისი დაყენება? (გაეშვება '%s')"
+
+#: ../plugins/plugin-installer.py:275
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem details!"
+msgstr ""
+"პაკეტის დაყენება ჩვაარდა (%s)! დეტალებისთვის შეამოწმეთ კონსოლზე გამოტანილი "
+"ინფორმაცია!"
+
+#: ../plugins/plugin-installer.py:278
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr "დამატების დამოკიდებულებების შემოწმების შეცდომა (%s)!"
+
+#: ../plugins/plugin-installer.py:287
+msgid "Command \"git\" not found, please install it!"
+msgstr "ბრძანება \"git\" დაყენებული არაა. დააყენეთ ის!"
+
+#: ../plugins/plugin-installer.py:296
+#, python-format
+msgid "Copying %s to %s"
+msgstr "კოპირება %s-დან %s-ში"
+
+#: ../plugins/plugin-installer.py:299
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr "დამატებების საქაღალდის კოპირება ჩავარდა (%s)!"
+
+#: ../plugins/plugin-installer.py:308
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr "დამატების.py ფაილის კოპირება ჩავარდა(%s)!"
+
+#: ../plugins/plugin-installer.py:318
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr "ფაილის .plugin კოპირება ჩავარდა(%s)!"
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Creating schema directory %s"
+msgstr "იქმნება სქემის საქაღალდე %s"
+
+#: ../plugins/plugin-installer.py:331
+#, python-format
+msgid "Installing schema %s"
+msgstr "სქემის %s დაყენება"
+
+#: ../plugins/plugin-installer.py:335
+msgid "Compiling schemas..."
+msgstr "სქემების კომპილაცია..."
+
+#: ../plugins/plugin-installer.py:340
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr "სქემის ფაილების დაყენება ჩავარდა (%s)!"
+
+#: ../plugins/plugin-installer.py:350
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr "დამატების (%s) ჩართვა ჩავარდა!"
+
+#: ../plugins/plugin-installer.py:356
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr "დამატება '%s' ახლა დაყენებულია. გადატვირთეთ Liferea!"
+
+#: ../plugins/plugin-installer.py:370
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr "დამატების (%s) გათიშვა ჩავარდა!"
+
+#: ../plugins/plugin-installer.py:377 ../plugins/plugin-installer.py:397
+#, python-format
+msgid "Deleting '%s'"
+msgstr "'%s'-ის წაშლა"
+
+#: ../plugins/plugin-installer.py:380
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr "საქაღალდის '%s' წაშლა ჩავარდა (%s)!"
+
+#: ../plugins/plugin-installer.py:390
+msgid "Failed to remove .py file!"
+msgstr ".py ფაილის წაშლა ჩავარდა!"
+
+#: ../plugins/plugin-installer.py:400
+msgid "Failed to remove .plugin file!"
+msgstr ".plugin ფაილის წაშლა ჩავარდა!"
+
+#: ../plugins/plugin-installer.py:409
+msgid "Sorry! Plugin removal failed!"
+msgstr "ბოდიში! დამატების წაშლა ჩავარდა!"
+
+#: ../plugins/plugin-installer.py:411
+msgid "Plugin was removed. Please restart Liferea once for it to take full effect!"
+msgstr "დამატება წაიშალა. გადატვირთეთ Liferea, რომ ცვლილებები ძალაში შევიდეს!"
+
+#: ../plugins/trayicon.py:168
+msgid "Liferea unread icon"
+msgstr "Liferea-ის წაუკითხაობის ხატულა"
+
+#: ../plugins/trayicon.py:186
+msgid "Show / Hide"
+msgstr "ჩვენება / დამალვა"
+
+#: ../plugins/trayicon.py:187
+msgid "Minimize to tray on close"
+msgstr "დახურვისას სისტემურ კუთხეში ჩაკეცვა"
+
+#: ../plugins/trayicon.py:188
+msgid "Quit"
+msgstr "გასვლა"
+
+#: ../src/browser.c:81 ../src/browser.c:98
+#, c-format
+msgid "Browser command failed: %s"
+msgstr "ბრაუზერის ბრძანება ჩავარდა: %s"
+
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1138
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "ეშვება: \"%s\""
+
+#. unauthorized
+#: ../src/comments.c:116
+msgid "Authorization Error"
+msgstr "ავტორიზაციის შეცდომა"
+
+#: ../src/common.c:68
+#, c-format
+msgid "Cannot create cache directory \"%s\"!"
+msgstr "შექმნის შეცდომა კეშის საქაღალდისთვის \"%s\"!"
+
+#. translation hint: date format for today, reorder format codes as necessary
+#: ../src/date.c:135
+msgid "Today %l:%M %p"
+msgstr "დღეს %l:%M %p"
+
+#. translation hint: date format for yesterday, reorder format codes as necessary
+#: ../src/date.c:144
+msgid "Yesterday %l:%M %p"
+msgstr "გუშინ %l:%M %p"
+
+#. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
+#: ../src/date.c:156
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
+#: ../src/date.c:164
+msgid "%b %d %l:%M %p"
+msgstr "%b %d %l:%M %p"
+
+#. translation hint: date format for dates from the last years, reorder format codes as necessary
+#: ../src/date.c:167
+msgid "%b %d %Y"
+msgstr "%b %d %Y"
+
+#: ../src/export.c:172
+#, c-format
+msgid "Error renaming %s to %s: %s\n"
+msgstr "%s-ის %s-მდე სახელის გადარქმევის შეცდომა: %s\n"
+
+#: ../src/export.c:371 ../src/export.c:373
+#, c-format
+msgid "XML error while reading OPML file! Could not import \"%s\"!"
+msgstr "XML-ის შეცდომა OPML ფაილის კითხვისას! \"%s\"-ის შემოტანა შეუძლებელია!"
+
+#: ../src/export.c:379 ../src/export.c:381
+#, c-format
+msgid "Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr "ცარიელი დოკუმენტი! შემოტანისას OPML დოკუმენტი \"%s\" ცარიელი არ უნდა იყოს."
+
+#: ../src/export.c:402 ../src/export.c:404
+#, c-format
+msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
+msgstr "\"%s\" არასწორი OPML დოკუმენტია! Liferea-ს ამ ფაილის შემოტანა შეუძლია!"
+
+#: ../src/export.c:423
+msgid "Imported feed list"
+msgstr "შემოტანილი ლენტების სია"
+
+#: ../src/export.c:435
+msgid "Import Feed List"
+msgstr "ლენტების სიის შემოტანა"
+
+#: ../src/export.c:435
+msgid "Import"
+msgstr "შემოტანა"
+
+#: ../src/export.c:435 ../src/export.c:452 ../src/node_sources/opml_source.c:366
+msgid "OPML Files"
+msgstr "OPML ფაილები"
+
+#: ../src/export.c:443
+msgid "Error while exporting feed list!"
+msgstr "შეცდომა ლენტების სიის გატანისას!"
+
+#: ../src/export.c:445
+msgid "Feed List exported!"
+msgstr "ლენტების სია გატანილია!"
+
+#: ../src/export.c:452
+msgid "Export Feed List"
+msgstr "ლენტების სიის გატანა"
+
+#: ../src/export.c:452
+msgid "Export"
+msgstr "გატანა"
+
+#: ../src/feed_parser.c:201
+msgid "Empty document!"
+msgstr "ცარიელი დოკუმენტი!"
+
+#: ../src/feed_parser.c:210
+msgid "Invalid XML!"
+msgstr "არასწორი XML!"
+
+#: ../src/node_source.c:113
+msgid "Miniflux"
+msgstr "Miniflux"
+
+#: ../src/node_source.c:318
+msgid "No feed list source types found!"
+msgstr "ლენტების სიის წყაროს ტიპები აღმოჩენილი არაა!"
+
+#: ../src/node_source.c:347
+msgid "Source Type"
+msgstr "წყაროს ტიპი"
+
+#: ../src/node_source.c:398
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr "შესვლა '%s' ჯერ არ დასრულებულა! დაელოდეთ შესვლის დასრულებას."
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/node_source.c:564
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr "გამოწერა '%s' წარმატებით იქნა გადაყვანილი ლოკალურ ლენტაში!"
+
+#: ../src/node_sources/default_source.c:135 ../glade/new_subscription.ui.h:1
+#: ../glade/simple_subscription.ui.h:1
+msgid "New Subscription"
+msgstr "ახალი გამოწერა"
+
+#: ../src/node_sources/google_source.c:192 ../src/node_sources/reedah_source.c:120
+#: ../src/node_sources/theoldreader_source.c:122
+msgid "Login failed!"
+msgstr "შესვლა ჩავარდა!"
+
+#: ../src/node_sources/google_source.c:402
+msgid "Google Reader API"
+msgstr "Google Reader-ის API"
+
+#: ../src/node_sources/google_source_feed.c:159
+msgid "Could not parse JSON returned by Google Reader API!"
+msgstr "Google Reader API-ის მიერ დაბრუნებული JSON-ის დამუშავება შეუძლებელია!"
+
+#: ../src/node_sources/opml_source.c:313
+msgid "Planet, BlogRoll, OPML"
+msgstr "Planet, BlogRoll, OPML"
+
+#: ../src/node_sources/opml_source.c:366
+msgid "Choose OPML File"
+msgstr "აირჩიეთ OPML ფაილი"
+
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
+msgid "_Open"
+msgstr "_გახსნა"
+
+#: ../src/node_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "ახალი OPML გამოწერა"
+
+#: ../src/node_sources/reedah_source.c:331
+msgid "Reedah"
+msgstr "Reedah"
+
+#: ../src/node_sources/reedah_source_feed.c:154
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr "Reedah API-ის მიერ დაბრუნებული JSON-ის დამუშავება შეუძლებელია!"
+
+#: ../src/node_sources/theoldreader_source.c:360
+msgid "TheOldReader"
+msgstr "TheOldReader"
+
+#: ../src/node_sources/ttrss_source.c:227 ../src/node_sources/ttrss_source.c:293
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr "TinyTinyRSS HTTP API ხელმისაწვდომი არაა!"
+
+#: ../src/node_sources/ttrss_source.c:234
+msgid "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed URL!"
+msgstr "TinyTinyRSS ლენტის გამოწერა ჩავარდა! შეამოწმეთ URL-ის სინამდვილე!"
+
+#: ../src/node_sources/ttrss_source.c:300
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr "TinyTinyRSS ლენტის გამოწერის გაუქმება ჩავარდა!"
+
+#: ../src/node_sources/ttrss_source.c:318
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version %s or "
+"later!"
+msgstr ""
+"ამ TinyTinyRSS-ის ვერსიას ლენტების წაშლის მხარდაჭერა არ აქვს. განახლდით ვერსიაზე %s, "
+"ან უფრო ახალზე!"
+
+#: ../src/node_sources/ttrss_source.c:468
+msgid "Tiny Tiny RSS"
+msgstr "პაწაწინა RSS"
+
+#: ../src/node_sources/ttrss_source_feed.c:150
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr "TinyTinyRSS API-ის მიერ დაბრუნებული JSON-ის დამუშავება შეუძლებელია!"
+
+#: ../src/node_providers/newsbin.c:116
+msgid "News Bin Properties"
+msgstr "სიახლეების კალათის თვისებები"
+
+#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
+msgid "Create News Bin"
+msgstr "სიახლეების კალათის შექმნა"
+
+#: ../src/node_providers/vfolder.c:52
+msgid "New Search Folder"
+msgstr "ახალი ძებნის საქაღალდე"
+
+#. if we don't find a feed with unread items do nothing
+#: ../src/itemlist.c:397
+msgid "There are no unread items"
+msgstr "წაუკითხავი ელემენტების გარეშე"
+
+#: ../src/liferea_application.c:280
+msgid "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
+msgstr ""
+"Liferea-ის გაშვება მისი მთავარი ფანჯრის მითითებული მდგომარეობით. მდგომარეობა "
+"შეიძლება, იყოს 'shown', ან 'hidden'"
+
+#: ../src/liferea_application.c:280
+msgid "STATE"
+msgstr "მდგომარეობა"
+
+#: ../src/liferea_application.c:281
+msgid "Show version information and exit"
+msgstr "ვერსიის ჩვენება და გასვლა"
+
+#: ../src/liferea_application.c:282
+msgid "Add a new subscription"
+msgstr "ახალი გამოწერის დამატება"
+
+#: ../src/liferea_application.c:282
+msgid "uri"
+msgstr "uri"
+
+#: ../src/liferea_application.c:283
+msgid "Start with all plugins disabled"
+msgstr "გაშვებისას ყველა დამატების გამორთვა"
+
+#: ../src/liferea_application.c:288
+msgid "Print debugging messages of all types"
+msgstr "ყველა ტიპის გამართვის შეტყობინების გამოტანა"
+
+#: ../src/liferea_application.c:289
+msgid "Print debugging messages for the cache handling"
+msgstr "კეშთან დაკავშირებული გამართვის შეტყობინებების გამოტანა"
+
+#: ../src/liferea_application.c:290
+msgid "Print debugging messages for the configuration handling"
+msgstr "კონფიგურაციასთან დაკავშირებული გამართვის შეტყობინებების გამოტანა"
+
+#: ../src/liferea_application.c:291
+msgid "Print debugging messages of the database handling"
+msgstr "მონაცემთა ბაზასთან დაკავშირებული გამართვის შეტყობინებების გამოტანა"
+
+#: ../src/liferea_application.c:292
+msgid "Print debugging messages of all GUI functions"
+msgstr "გრაფიკულ ინტერფეისთან დაკავშირებული ყველა გამართვის შეტყობინების გამოტანა"
+
+#: ../src/liferea_application.c:293
+msgid ""
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it will also "
+"dump the generated HTML into ~/.cache/liferea/output.html"
+msgstr ""
+"ჩართავს HTML-ის რენდერის გამართვას. ყოველ ჯერზე, როცა Liferea ახდენს HTML-ის "
+"რენდერს, გამოტანა ასევე ჩაიწერება ფაილში ~/.cache/liferea/output.html"
+
+#: ../src/liferea_application.c:294
+msgid "Print debugging messages of all network activity"
+msgstr "ქსელთან მუშაობის ყველა გამართვის შეტყობინების გამოტანა"
+
+#: ../src/liferea_application.c:295
+msgid "Print debugging messages of all parsing functions"
+msgstr "დამუშავების ფუნქციასთან დაკავშირებული ყველა გამართვის შეტყობინების გამოტანა"
+
+#: ../src/liferea_application.c:296
+msgid "Print debugging messages of the feed update processing"
+msgstr ""
+"ლენტის განახლების დამუშავებასთან დაკავშირებული ყველა გამართვის შეტყობინების გამოტანა"
+
+#: ../src/liferea_application.c:297
+msgid "Print debugging messages of the search folder matching"
+msgstr ""
+"ძებნის საქაღალდის დამთხვევასთან დაკავშირებული ყველა გამართვის შეტყობინების გამოტანა"
+
+#: ../src/liferea_application.c:302 ../src/liferea_application.c:303
+msgid "Print debugging messages for the given topic"
+msgstr "მითითებულ თემასთან დაკავშირებული ყველა გამართვის შეტყობინების გამოტანა"
+
+#. Some libsoup transport errors
+#: ../src/net.c:431
+msgid "The update request was cancelled"
+msgstr "განახლების მოთხოვნა გაუქმდა"
+
+#. http 3xx redirection
+#: ../src/net.c:434
+msgid "The resource moved permanently to a new location"
+msgstr "რესურსი სამუდამოდ გადავიდა ახალ მდებარეობაზე"
+
+#. http 4xx client error
+#: ../src/net.c:437
+msgid ""
+"You are unauthorized to download this feed. Please update your username and password "
+"in the feed properties dialog box"
+msgstr ""
+"თქვენ არ გაქვთ ავტორიზაცია, ეს არხი გადმოწეროთ. განაახლეთ თქვენი მომხმარებლის სახელი "
+"და პაროლი ლენტის თვისებების დიალოგში"
+
+#: ../src/net.c:439
+msgid "Payment required"
+msgstr "საჭიროა გადახდა"
+
+#: ../src/net.c:440
+msgid "You're not allowed to access this resource"
+msgstr "თქვენ არ გაქვთ ამ რესურსზე წვდომის უფლება"
+
+#: ../src/net.c:441
+msgid "Resource Not Found"
+msgstr "რესურსი აღმოჩენილი არაა"
+
+#: ../src/net.c:442
+msgid "Method Not Allowed"
+msgstr "მეთოდი დაშვებული არაა"
+
+#: ../src/net.c:443
+msgid "Not Acceptable"
+msgstr "მიუღებელი"
+
+#: ../src/net.c:444
+msgid "Proxy authentication required"
+msgstr "აუცილებელია პროქსის ავთენტიკაცია"
+
+#: ../src/net.c:445
+msgid "Request timed out"
+msgstr "მოთხოვნის მოლოდინის ვადა ამოიწურა"
+
+#: ../src/net.c:446
+msgid ""
+"The webserver indicates this feed is discontinued. It's no longer available. Liferea "
+"won't update it anymore but you can still access the cached headlines."
+msgstr ""
+"ვებსერვერი მიუთითებს, რომ ეს ლენტა შეწყვეტილია. ის ხელმისაწვდომი აღარაა. Liferea მას "
+"აღარ განაახლებს, მაგრამ დაკეშილ სათაურებზე წვდომა მაინც გექნებათ."
+
+#. http 5xx server errors
+#: ../src/net.c:449
+msgid "Internal Server Error"
+msgstr "სერვერის შიდა შეცდომა"
+
+#: ../src/net.c:450
+msgid "Not Implemented"
+msgstr "განხორციელებული არაა"
+
+#: ../src/net.c:451
+msgid "Bad Gateway"
+msgstr "არასწორი ნაგულისხმევი რაუტერი"
+
+#: ../src/net.c:452
+msgid "Service Unavailable"
+msgstr "სერვისი მიუწვდომელია"
+
+#: ../src/net.c:453
+msgid "Gateway Timeout"
+msgstr "რაუტერთან დაკავშირების მოლოდინის ვადა ამოიწურა"
+
+#: ../src/net.c:454
+msgid "HTTP Version Not Supported"
+msgstr "HTTP-ის ვერსია მხარდაჭერილი არაა"
+
+#: ../src/net.c:458
+msgid "An unknown networking error happened!"
+msgstr "აღმოჩენილია ქსელის უცნობ შეცდომა!"
+
+#: ../src/node.c:646
+#, c-format
+msgid "Failed to create feed file: %s"
+msgstr "შექმნის შეცდომა ლენტს ფაილისთვის: %s"
+
+#: ../src/node.c:665
+msgid "Feed file exported from Liferea"
+msgstr "ლენტის ფაილი გატანილიად Liferea-დან"
+
+#: ../src/node.c:680
+#, c-format
+msgid "Error while saving feed file"
+msgstr "შეცდომა ლენტის ფაილის შენახვისას"
+
+#: ../src/parsers/atom10.c:240
+msgid "Website"
+msgstr "ვებგვერდი"
+
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr "%b %d %H:%M"
+
+#. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
+#. ========================================================================================================================================================================================
+#: ../src/rule.c:272
+msgid "Item"
+msgstr "ელემენტი"
+
+#: ../src/rule.c:272 ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275
+#: ../src/rule.c:281 ../src/rule.c:282 ../src/rule.c:283
+msgid "does contain"
+msgstr "შეიცავს"
+
+#: ../src/rule.c:272 ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275
+#: ../src/rule.c:281 ../src/rule.c:282 ../src/rule.c:283
+msgid "does not contain"
+msgstr "არ შეიცავს"
+
+#: ../src/rule.c:273
+msgid "Item title"
+msgstr "ელემენტის სათაური"
+
+#: ../src/rule.c:274
+msgid "Item body"
+msgstr "ელემენტის სხეული"
+
+#: ../src/rule.c:275
+msgid "Item author"
+msgstr "ელემენტის ავტორი"
+
+#: ../src/rule.c:276
+msgid "Read status"
+msgstr "წაკითხვის სტატუსი"
+
+#: ../src/rule.c:276
+msgid "is unread"
+msgstr "წაუკითხავია"
+
+#: ../src/rule.c:276
+msgid "is read"
+msgstr "წაკითხულია"
+
+#: ../src/rule.c:277
+msgid "Flag status"
+msgstr "ალმის სტატუსი"
+
+#: ../src/rule.c:277
+msgid "is flagged"
+msgstr "აზის ალამი"
+
+#: ../src/rule.c:277
+msgid "is unflagged"
+msgstr "არ აზის ალამი"
+
+#: ../src/rule.c:278
+msgid "Enclosure"
+msgstr "კალათი"
+
+#: ../src/rule.c:278 ../src/rule.c:279
+msgid "included"
+msgstr "ჩასმულია"
+
+#: ../src/rule.c:278 ../src/rule.c:279
+msgid "not included"
+msgstr "ჩასმული არაა"
+
+#: ../src/rule.c:279
+msgid "Podcast"
+msgstr "პოდკასტი"
+
+#: ../src/rule.c:280
+msgid "Category"
+msgstr "კატეგორია"
+
+#: ../src/rule.c:280
+msgid "is set"
+msgstr "დაყენებულია"
+
+#: ../src/rule.c:280
+msgid "is not set"
+msgstr "დაყენებული არაა"
+
+#: ../src/rule.c:281
+msgid "Feed title"
+msgstr "ლენტის სათაური"
+
+#: ../src/rule.c:282
+msgid "Feed source"
+msgstr "ლენტის წყარო"
+
+#: ../src/rule.c:283
+msgid "Parent folder title"
+msgstr "მშობელი საქაღალდის სათაური"
+
+#: ../src/subscription.c:108
+#, c-format
+msgid "Subscription \"%s\" is already being updated!"
+msgstr "გამოწერის \"%s\" განახლება უკვე მიმდინარეობს!"
+
+#: ../src/subscription.c:113
+#, c-format
+msgid "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgstr "გამოწერა \"%s\" შეწყდა. Liferea მას აღარ განაახლებს!"
+
+#: ../src/subscription.c:188
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "\"%s\"-ის URL სამუდამოდ შეიცვალა და განახლდა"
+
+#: ../src/subscription.c:194
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" ბოლო განახლების შემდეგ არ შეცვლილა"
+
+#: ../src/subscription.c:207
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" შეწყდა. Liferea მას აღარ განაახლებს!"
+
+#: ../src/subscription.c:221 ../src/subscription.c:297
+#, c-format
+msgid "Updating (%d / %d) ..."
+msgstr "განახლება (%d / %d) ..."
+
+#: ../src/subscription.c:299
+#, c-format
+msgid "Updating '%s'..."
+msgstr "'%s'-ის განახლება..."
+
+#: ../src/ui/auth_dialog.c:110
+#, c-format
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "შეიყვანეთ მომხმარებლის სახელი და პაროლი \"%s\"-ისთვის (%s):"
+
+#: ../src/ui/auth_dialog.c:112
+msgid "Unknown source"
+msgstr "უცნობი წყარო"
+
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:246
+msgid "Untitled"
+msgstr "უსათაურო"
+
+#: ../src/ui/feed_list_view.c:426
+msgid "Liferea is in offline mode. No update possible."
+msgstr "Liferea ხაზგარეშეა. განახლება შეუძლებელია."
+
+#: ../src/ui/feed_list_view.c:472
+msgid "all feeds"
+msgstr "ყველა ლენტა"
+
+#: ../src/ui/feed_list_view.c:473
+#, c-format
+msgid "Mark %s as read ?"
+msgstr "მოინიშნოს %s როგორც წაკითხული ?"
+
+#: ../src/ui/feed_list_view.c:477
+#, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr ""
+"დარწმუნებული ბრძანდებით, რომ გნებავთ %s-ში ყველა ელემენტის წაკითხულად მონიშვნა?"
+
+#: ../src/ui/feed_list_view.c:615
+msgid "(Empty)"
+msgstr "(ცარიელი)"
+
+#: ../src/ui/feed_list_view.c:825
+#, c-format
+msgid ""
+"%s\n"
+"<i>Rebuilding</i>"
+msgstr ""
+"%s\n"
+"<i>თავიდან აგება</i>"
+
+#: ../src/ui/feed_list_view.c:894
+msgid "Deleting entry"
+msgstr "ჩანაწერის წაშლა"
+
+#: ../src/ui/feed_list_view.c:895
+#, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "დარწმუნებული ბრძანდებით, რომ გნებავთ, წაშალოთ \"%s\" და მისი შემცველობა?"
+
+#: ../src/ui/feed_list_view.c:895
+#, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
+msgstr "მართლა გნებავთ, წაშალოთ \"%s\"?"
+
+#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
+#: ../src/ui/popup_menu.c:224
+msgid "_Cancel"
+msgstr "_შეწყვეტა"
+
+#: ../src/ui/feed_list_view.c:905 ../src/ui/popup_menu.c:375
+msgid "_Delete"
+msgstr "_წაშლა"
+
+#: ../src/ui/feed_list_view.c:907
+msgid "Deletion Confirmation"
+msgstr "წაშლის დადასტურება"
+
+#: ../src/ui/feed_list_view.c:940
+#, c-format
+msgid ""
+"Are you sure that you want to add a new subscription with URL \"%s\"? Another "
+"subscription with the same URL already exists (\"%s\")."
+msgstr ""
+"დარწმუნებული ბრძანდებით, რომ გნებავთ, დაამატოთ ახალი გამოწერა URL-ით \"%s\"? სხვა "
+"გამოწერა იგივე URL-ით უკვე არსებობს (\"%s\")."
+
+#: ../src/ui/feed_list_view.c:953
+msgid "_Add"
+msgstr "_დამატება"
+
+#: ../src/ui/feed_list_view.c:955
+msgid "Adding Duplicate Subscription Confirmation"
+msgstr "გამეორებული გამოწერის დამატების დადასტურება"
+
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "ვერ ვიპოვე რასტრული ფაილი: %s"
+
+#: ../src/ui/item_list_view.c:113
+msgid "This item has no link specified!"
+msgstr "ამ ელემენტს ბმული მითითებული არ აქვს!"
+
+#: ../src/ui/item_list_view.c:492
+msgid " <span background='red' color='black'> important </span> "
+msgstr " <span background='red' color='black'> მნიშვნელოვანი </span> "
+
+#: ../src/ui/item_list_view.c:853
+msgid "Headline"
+msgstr "სათაური"
+
+#: ../src/ui/item_list_view.c:871
+msgid "Date"
+msgstr "თარიღი"
+
+#: ../src/ui/item_list_view.c:1040
+msgid "You must select a feed to delete its items!"
+msgstr "მისი ელემენტების წასაშლელად ჯერ ლენტა უნდა აირჩიოთ!"
+
+#: ../src/ui/item_list_view.c:1056 ../src/ui/item_list_view.c:1134
+#: ../src/ui/item_list_view.c:1149
+msgid "No item has been selected"
+msgstr "მონიშნული ელემენტის გარეშე"
+
+#: ../src/ui/liferea_shell.c:410
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] " (%d ახალი)"
+msgstr[1] " (%d ახალი)"
+
+#: ../src/ui/liferea_shell.c:415
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d წაუკითხავი%s"
+msgstr[1] "%d წაუკითხავი%s"
+
+#: ../src/ui/liferea_shell.c:857
+msgid "Help Topics"
+msgstr "დახმარების თემები"
+
+#: ../src/ui/liferea_shell.c:863
+msgid "Quick Reference"
+msgstr "სწრაფი მითითება"
+
+#: ../src/ui/liferea_shell.c:869
+msgid "FAQ"
+msgstr "ხდკ"
+
+#: ../src/ui/liferea_shell.c:1135
+#, c-format
+msgid "Email command failed: %s"
+msgstr "ელფოსტის ბრძანება ჩავარდა: %s"
+
+#: ../src/ui/popup_menu.c:80 ../glade/liferea_menu.ui.h:25
+msgid "Open In _Tab"
+msgstr "ჩანართში _გახსნა"
+
+#: ../src/ui/popup_menu.c:84 ../glade/liferea_menu.ui.h:26
+msgid "_Open In Browser"
+msgstr "_ბრაუზერში გახსნა"
+
+#: ../src/ui/popup_menu.c:88 ../glade/liferea_menu.ui.h:27
+msgid "Open In _External Browser"
+msgstr "გარ_ე ბრაუზერში გახსნა"
+
+#: ../src/ui/popup_menu.c:93
+msgid "Email The Author"
+msgstr "ელფოსტა ავტორს"
+
+#: ../src/ui/popup_menu.c:118
+msgid "Copy to News Bin"
+msgstr "კოპირება სიახლეების კალათაში"
+
+#: ../src/ui/popup_menu.c:126
+#, c-format
+msgid "_Bookmark at %s"
+msgstr "_სანიშნე მისამართზე %s"
+
+#: ../src/ui/popup_menu.c:132
+msgid "Copy Item _Location"
+msgstr "ე_ლემენტის მდებარეობის კოპირება"
+
+#: ../src/ui/popup_menu.c:141 ../glade/liferea_menu.ui.h:22
+msgid "Toggle _Read Status"
+msgstr "წაკითხულობის სტატუსის გადა_რთვა"
+
+#: ../src/ui/popup_menu.c:145 ../glade/liferea_menu.ui.h:23
+msgid "Toggle Item _Flag"
+msgstr "ელემენტის ალმის გადა_რთვა"
+
+#: ../src/ui/popup_menu.c:149
+msgid "R_emove Item"
+msgstr "_ელემენტის წაშლა"
+
+#: ../src/ui/popup_menu.c:221
+msgid "Save items to file"
+msgstr "ელემენტების ფაილში შენახვა"
+
+#: ../src/ui/popup_menu.c:226
+msgid "_Save"
+msgstr "_შენახვა"
+
+#: ../src/ui/popup_menu.c:235
+msgid "RSS 2.0 files"
+msgstr "RSS 2.0 ფაილები"
+
+#: ../src/ui/popup_menu.c:241
+msgid "All files"
+msgstr "ყველა ფაილი"
+
+#: ../src/ui/popup_menu.c:317 ../glade/liferea_menu.ui.h:13
+msgid "_Update"
+msgstr "_განახლება"
+
+#: ../src/ui/popup_menu.c:319
+msgid "_Update Folder"
+msgstr "სა_ქაღალდის განახლება"
+
+#: ../src/ui/popup_menu.c:329
+msgid "New _Subscription..."
+msgstr "ახალი გამო_წერა..."
+
+#: ../src/ui/popup_menu.c:332 ../glade/liferea_menu.ui.h:5
+msgid "New _Folder..."
+msgstr "ა_ხალი საქაღალდე..."
+
+#: ../src/ui/popup_menu.c:335 ../glade/liferea_menu.ui.h:6
+msgid "New S_earch Folder..."
+msgstr "ახალი ძებნის საქაღალდ_ე..."
+
+#: ../src/ui/popup_menu.c:336
+msgid "New S_ource..."
+msgstr "ახალი წყარ_ო..."
+
+#: ../src/ui/popup_menu.c:337 ../glade/liferea_menu.ui.h:8
+msgid "New _News Bin..."
+msgstr "ახალი ამბების _კალათა..."
+
+#: ../src/ui/popup_menu.c:340
+msgid "_New"
+msgstr "_ახალი"
+
+#: ../src/ui/popup_menu.c:349
+msgid "Sort Feeds"
+msgstr "ლენტების დალაგება"
+
+#: ../src/ui/popup_menu.c:357
+msgid "_Mark All As Read"
+msgstr "ყველას წაკითხულად დანი_შვნა"
+
+#: ../src/ui/popup_menu.c:359
+msgid "_Export Items To File"
+msgstr "_ელემენტების გატანა ფაილში"
+
+#: ../src/ui/popup_menu.c:367
+msgid "_Rebuild"
+msgstr "თავიდან აგება"
+
+#: ../src/ui/popup_menu.c:376 ../glade/liferea_menu.ui.h:17
+msgid "_Properties"
+msgstr "_თვისებები"
+
+#: ../src/ui/popup_menu.c:383
+msgid "Convert To Local Subscriptions..."
+msgstr "ლოკალურ გამოწერებში გადაყვანა..."
+
+#: ../src/ui/preferences_dialog.c:69
+msgid "GNOME default"
+msgstr "GNOME-ის ნაგულისხმევი"
+
+#: ../src/ui/preferences_dialog.c:70
+msgid "Text below icons"
+msgstr "ტექსტი ხატულის ქვემოთ"
+
+#: ../src/ui/preferences_dialog.c:71
+msgid "Text beside icons"
+msgstr "ტექსტი ხატულის გვერდზე"
+
+#: ../src/ui/preferences_dialog.c:72
+msgid "Icons only"
+msgstr "მხოლოდ ხატულები"
+
+#: ../src/ui/preferences_dialog.c:73
+msgid "Text only"
+msgstr "მხოლოდ ტექსტი"
+
+#: ../src/ui/preferences_dialog.c:81 ../src/ui/subscription_dialog.c:43
+msgid "minutes"
+msgstr "წუთი"
+
+#: ../src/ui/preferences_dialog.c:82 ../src/ui/subscription_dialog.c:44
+msgid "hours"
+msgstr "საათი"
+
+#: ../src/ui/preferences_dialog.c:83 ../src/ui/subscription_dialog.c:45
+msgid "days"
+msgstr "დღე"
+
+#: ../src/ui/preferences_dialog.c:88
+msgid "Space"
+msgstr "ჰარე"
+
+#: ../src/ui/preferences_dialog.c:89
+msgid "<Ctrl> Space"
+msgstr "<Ctrl> ჰარე"
+
+#: ../src/ui/preferences_dialog.c:90
+msgid "<Alt> Space"
+msgstr "<Alt> ჰარე"
+
+#: ../src/ui/preferences_dialog.c:95
+msgid "Normal View"
+msgstr "ნორმალური ხედი"
+
+#: ../src/ui/preferences_dialog.c:96
+msgid "Wide View"
+msgstr "ფართო ხედი"
+
+#: ../src/ui/preferences_dialog.c:97
+msgid "Automatic"
+msgstr "ავტომატური"
+
+#: ../src/ui/preferences_dialog.c:406
+msgid "Default Browser"
+msgstr "ნაგულისხმები ბრაუზერი"
+
+#: ../src/ui/preferences_dialog.c:408
+msgid "Manual"
+msgstr "ხელით"
+
+#: ../src/ui/rule_editor.c:261
+msgid "Remove"
+msgstr "წაშლა"
+
+#: ../src/ui/search_dialog.c:106
+msgid "Saved Search"
+msgstr "დამახსოვრებული ძებნა"
+
+#: ../src/ui/subscription_dialog.c:352
+msgid "Choose File"
+msgstr "ფაილის არჩევა"
+
+#: ../src/ui/subscription_dialog.c:424
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minute."
+msgid_plural "The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] "ამ ლენტის მომწოდებელი გთავაზობთ განახლებას ყოველ %d წუთში."
+msgstr[1] "ამ ლენტის მომწოდებელი გთავაზობთ განახლებას ყოველ %d წუთში."
+
+#: ../src/ui/subscription_dialog.c:428
+msgid "This feed specifies no default update interval."
+msgstr "ამ არხს ნაგულისხმევი განახლების ინტერვალი მითითებული არ აქვს."
+
+#: ../src/ui/ui_common.c:206
+msgid "All Files"
+msgstr "ყველა ფაილი"
+
+#: ../src/update_job.c:67
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr "გაფილტვრისთვის დროებითი ფაილის %s გახსნის შეცდომა!"
+
+#: ../src/update_job.c:89
+#, c-format
+msgid "%s exited with status %d"
+msgstr "%s დასრულდა სტატუსით %d"
+
+#: ../src/update_job.c:95 ../src/update_job.c:318
+#, c-format
+msgid "Error: Could not open pipe \"%s\""
+msgstr "შეცდომა: ვერ გავხსენი არხი \"%s\""
+
+#: ../src/update_job.c:99
+msgid "Error: Could not write temporary file!"
+msgstr "შეცდომა: დროებითი ფაილის ჩაწერის შეცდომა!"
+
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update_job.c:349
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "შეცდომა: ვერ გავხსენი ფაილი \"%s\""
+
+#: ../src/update_job.c:355
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "შეცდომა: ფაილი \"%s\" არ არსებობს"
+
+#: ../src/webkit/liferea_web_view.c:163
+msgid "Open Link In _Tab"
+msgstr "ბმულის გახსნა ახალ _ჩანართში"
+
+#: ../src/webkit/liferea_web_view.c:164
+msgid "Open Link In Browser"
+msgstr "ბმულის ბრაუზერში გახსნა"
+
+#: ../src/webkit/liferea_web_view.c:165
+msgid "Open Link In External Browser"
+msgstr "ბმულის გახსნა გარე ბრაუზერში"
+
+#: ../src/webkit/liferea_web_view.c:171
+#, c-format
+msgid "_Bookmark Link at %s"
+msgstr "_ბმულის სანიშნეების ჩამატება მისამართზე %s"
+
+#: ../src/webkit/liferea_web_view.c:178
+msgid "_Copy Link Location"
+msgstr "_ბმულის კოპირება"
+
+#: ../src/webkit/liferea_web_view.c:181
+msgid "_View Image"
+msgstr "სურათის ნახვა"
+
+#: ../src/webkit/liferea_web_view.c:182
+msgid "_Copy Image Location"
+msgstr "გამოსახულების მდებარეობის _კოპირება"
+
+#: ../src/webkit/liferea_web_view.c:185
+msgid "S_ave Link As"
+msgstr "ბმულის შენ_ახვა, როგორც"
+
+#: ../src/webkit/liferea_web_view.c:188
+msgid "S_ave Image As"
+msgstr "გ_ამოსახულების შენახვა, როგორც"
+
+#: ../src/webkit/liferea_web_view.c:195
+msgid "_Subscribe..."
+msgstr "გამო_წერა..."
+
+#: ../src/webkit/liferea_web_view.c:199
+msgid "_Copy"
+msgstr "_კოპირება"
+
+#: ../src/webkit/liferea_web_view.c:205
+msgid "_Increase Text Size"
+msgstr "ტექსტ_ის ზომის გაზრდა"
+
+#: ../src/webkit/liferea_web_view.c:206
+msgid "_Decrease Text Size"
+msgstr "ტექსტის ზომის შემ_ცირება"
+
+#: ../src/xml.c:427
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[არსებობს მეტი შეცდომა. გამოტანა წაკვეთილია!]"
+
+#: ../src/xml.c:595
+msgid "XML Parser: Could not parse document:\n"
+msgstr "XML-ის დამმუშავებელი: დოკუმენტის დამუშავება ჩავარდა:\n"
+
+#: ../glade/about.ui.h:1
+msgid "About"
+msgstr "შესახებ"
+
+#: ../glade/about.ui.h:2
+msgid "Liferea is a news aggregator for GTK+"
+msgstr "Liferea სიახლეების შემგროვებელია GTK+-ისთვის"
+
+#: ../glade/about.ui.h:3
+msgid "Liferea Homepage"
+msgstr "Liferea-ის საწყისი გვერდი"
+
+#: ../glade/auth.ui.h:1
+msgid "Authentication"
+msgstr "ავთენტიკაცია"
+
+#: ../glade/auth.ui.h:3
+#, no-c-format
+msgid "Enter the username and password for \"%s\" (%s)"
+msgstr "შეიყვანეთ მომხმარებელი და პაროლი \"%s\"-ისთვის (%s)"
+
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
+msgid "User_name:"
+msgstr "_მომხმარებლის სახელი:"
+
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
+msgid "_Password:"
+msgstr "_პაროლი:"
+
+#: ../glade/google_source.ui.h:1
+msgid "Add Google Reader API Account"
+msgstr "Google Reader-ის API-ის ანგარიშის დამატება"
+
+#: ../glade/google_source.ui.h:2
+msgid "Please enter the details of the new Google Reader API compatible subscription."
+msgstr "შეიყვანეთ ახალი Google Reader API-ისთან თავსებადი გამოწერის დეტალები."
+
+#: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
+#: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
+msgid "_Password"
+msgstr "_პაროლი"
+
+#: ../glade/google_source.ui.h:4 ../glade/reedah_source.ui.h:4
+#: ../glade/theoldreader_source.ui.h:4
+msgid "_Username (Email)"
+msgstr "მომ_ხმარებლის სახელი (ელფოსტა)"
+
+#: ../glade/google_source.ui.h:5
+msgid "_Server"
+msgstr "_სერვერი"
+
+#: ../glade/google_source.ui.h:6
+msgid "_Name"
+msgstr "_სახელი"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "გამო_წერები"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "ყველას განახლება"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "ყველას წაკითხულად დანი_შვნა"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "ახალი გამო_წერა..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "ახალი _წყარო..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "ლენტებ_ის სიის შემოტანა..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "ლ_ენტების სიის გატანა..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "გასვ_ლა"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_ლენტა"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "ყველა ელემენტის წაშლ_ა"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_წაშლა"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "ელემენტ_ი"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "_წაშლა"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_ხედი"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "სრული ეკრანი"
+
+#: ../glade/liferea_menu.ui.h:30
+msgid "Zoom _In"
+msgstr "_გადიდება"
+
+#: ../glade/liferea_menu.ui.h:31
+msgid "Zoom _Out"
+msgstr "და_პატარავება"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal size"
+msgstr "_ნორმალური ზომა"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Reduced Feed List"
+msgstr "შემცი_რებული ლენტების სია"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Tools"
+msgstr "_ხელსაწყოები"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Update Monitor"
+msgstr "განახლების მონიტ_ორი"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Preferences"
+msgstr "_მორგება"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "S_earch"
+msgstr "ძ_ებნა"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "_Help"
+msgstr "_დახმარება"
+
+#: ../glade/liferea_menu.ui.h:40
+msgid "_Contents"
+msgstr "შემ_ცველობა"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Quick Reference"
+msgstr "ს_წრაფი მითითება"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_FAQ"
+msgstr "_ხდკ"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_About"
+msgstr "_შესახებ"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "ამატებს გამოწერას ლენტების სიას."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid "Marks all items of the selected feed list node / in the item list as read."
+msgstr "მონიშნავს არჩეული ლენტის სიის კვანძის ყველა ელემენტს წაკითხულად."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "განაახლებს ყველა გამოწერას."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "ძიების დიალოგის ჩვენება."
+
+#: ../glade/mainwindow.ui.h:2
+msgid "page 1"
+msgstr "გვერდი 1"
+
+#: ../glade/mainwindow.ui.h:3
+msgid "page 2"
+msgstr "გვერდი 2"
+
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:25
+msgid "Headlines"
+msgstr "სათაურები"
+
+#: ../glade/mark_read_dialog.ui.h:1
+msgid "Mark all as read ?"
+msgstr "მოინიშნოს ყველა წაკითხულად?"
+
+#: ../glade/mark_read_dialog.ui.h:2
+msgid "Mark all as read"
+msgstr "ყველას წაკითხულად მონიშვნა"
+
+#: ../glade/mark_read_dialog.ui.h:3
+msgid "Do not ask again"
+msgstr "აღარ მკითხო"
+
+#: ../glade/new_folder.ui.h:1
+msgid "New Folder"
+msgstr "ახალი საქაღალდე"
+
+#: ../glade/new_folder.ui.h:2
+msgid "_Folder name:"
+msgstr "_საქაღალდის სახელი:"
+
+#: ../glade/new_newsbin.ui.h:2
+msgid "_News Bin Name:"
+msgstr "სიახლეების კალათის სა_ხელი:"
+
+#: ../glade/new_newsbin.ui.h:3
+msgid "_Always show in Reduced Feed List"
+msgstr "_ყოველთვის ჩვენება შემცირებული ლენტების სიაში"
+
+#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
+msgid "Feed Source"
+msgstr "ლენტის წყარო"
+
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:12
+msgid "Source Type:"
+msgstr "წყაროს ტიპი:"
+
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:13
+msgid "_URL"
+msgstr "_URL"
+
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:14
+msgid "_Command"
+msgstr "_ბრძანება"
+
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:15
+msgid "_Local File"
+msgstr "_ლოკალური ფაილი"
+
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
+msgid "Select File..."
+msgstr "აირჩიეთ ფაილი..."
+
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
+msgid "_Source:"
+msgstr "_წყარო:"
+
+#: ../glade/new_subscription.ui.h:9
+msgid "Download / Postprocessing"
+msgstr "გადმოწერა / პოსტპროცესინგი"
+
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:30
+msgid "_Don't use proxy for download"
+msgstr "გა_დმოსაწერად პროქსი გამოყენებული არ იქნება"
+
+#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:18
+msgid "Use conversion _filter"
+msgstr "გადაყვანის _ფილტრის გამოყენება"
+
+#: ../glade/new_subscription.ui.h:12
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and directories in "
+"non-supported formats.  See the documentation for more information."
+msgstr ""
+"Liferea-ს შეუძლია, გამოიყენოს გარე ფილტრის დამატებები იმისთვის, რომ იქონიოს წვდომა "
+"ლენტებთან და საქაღალდეებთან, რომლების ფორმატიც ნაგულისხმევად მხარდაჭერილი არაა.  "
+"მეტი ინფორმაციისთვის იხილეთ დოკუმენტაცია."
+
+#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:20
+msgid "Convert _using:"
+msgstr "_გადაყვანა პროგრამით:"
+
+#: ../glade/node_source.ui.h:1
+msgid "Source Selection"
+msgstr "წყაროს არჩევა"
+
+#: ../glade/node_source.ui.h:2
+msgid "_Select the source type you want to add..."
+msgstr "აირჩიეთ წყარო_ს ტიპი, რომლის დამატებაც გნებავთ..."
+
+#: ../glade/opml_source.ui.h:1
+msgid "Add OPML/Planet"
+msgstr "OPML/Planet-ის დამატება"
+
+#: ../glade/opml_source.ui.h:2
+msgid "Please specify a local file or an URL pointing to a valid OPML feed list."
+msgstr "მიუთითეთ ლოკალური ფაილი, ან URL, რომელიც სწორ OPML ლენტის სიაზე მიუთითებს."
+
+#: ../glade/opml_source.ui.h:3
+msgid "_Location"
+msgstr "_მდებარეობა"
+
+#: ../glade/opml_source.ui.h:4
+msgid "_Select File"
+msgstr "აირჩიეთ _ფაილი"
+
+#: ../glade/prefs.ui.h:1
+msgid "Liferea Preferences"
+msgstr "Liferea-ის მორგება"
+
+#: ../glade/prefs.ui.h:2
+msgid "Feed Cache Handling"
+msgstr "ლენტის კეშის დამუშავება"
+
+#: ../glade/prefs.ui.h:3
+msgid "Default _number of items per feed to save:"
+msgstr "შესანახი ელემენტების რაოდენობა თითოეული ლე_ნტისთვის:"
+
+#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:27
+msgid "0"
+msgstr "0"
+
+#: ../glade/prefs.ui.h:5
+msgid "Feed Update Settings"
+msgstr "ლენტის განახლების მორგება"
+
+#. Feed update interval hint in preference dialog.
+#: ../glade/prefs.ui.h:7
+msgid ""
+"Note: <i>Please remember to set a reasonable refresh time. Usually it is a waste of "
+"bandwidth to poll feeds more often than each hour.</i>"
+msgstr ""
+"შენიშვნა: <i>დააყენეთ გონივრული განახლების დრო. ჩვეულებრივ, თუ ამას 1 საათზე ხშირად "
+"დააყენებთ, უბრალოდ ტრაფილს დახარჯავთ.</i>"
+
+#: ../glade/prefs.ui.h:8
+msgid "_Update all subscriptions at startup."
+msgstr "ყველა გამოწერის განახლება გა_შვებისას."
+
+#: ../glade/prefs.ui.h:9
+msgid "Default Feed Refresh _Interval:"
+msgstr "ლენტის განახლების ნაგულისხმევი _ინტერვალი:"
+
+#: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:6
+msgid "1"
+msgstr "1"
+
+#: ../glade/prefs.ui.h:11
+msgid "Feeds"
+msgstr "ლენტები"
+
+#: ../glade/prefs.ui.h:12
+msgid "Folder Display Settings"
+msgstr "საქაღალდის ჩვენების მორგება"
+
+#: ../glade/prefs.ui.h:13
+msgid "_Show the items of all child feeds when a folder is selected."
+msgstr "ყველა შვილი ლენტის ელემენტების ჩვენება _საქაღალდის მონიშვნისას."
+
+#: ../glade/prefs.ui.h:14
+msgid "_Hide read items."
+msgstr "წაკითხული ელემენ_ტების დამალვა."
+
+#: ../glade/prefs.ui.h:15
+msgid "Feed Icons (Favicons)"
+msgstr "ლენტის ხატულები (Favicon-ები)"
+
+#: ../glade/prefs.ui.h:16
+msgid "_Update all favicons now"
+msgstr "ყველა favicon-ის ა_ხლა განახლება"
+
+#: ../glade/prefs.ui.h:17
+msgid "Folders"
+msgstr "საქაღალდეები"
+
+#: ../glade/prefs.ui.h:18
+msgid "Reading Headlines"
+msgstr "სათაურების კითხვა"
+
+#: ../glade/prefs.ui.h:19
+msgid "_Skim through articles with:"
+msgstr "_სტატიებს შორის გადართვა:"
+
+#: ../glade/prefs.ui.h:20
+msgid "_Default View Mode:"
+msgstr "_თვალიერების ნაგულისხმევი რეჟიმი:"
+
+#: ../glade/prefs.ui.h:21
+msgid "_Defer removing read items from folders and search folders."
+msgstr ""
+"წაკითხული ელემენტების წაშლის გაუქმება საქაღალ_დეებიდან და ძებნის საქაღალდეებიდან."
+
+#: ../glade/prefs.ui.h:22
+msgid "Ask for confirmation when marking all items as read."
+msgstr "დადასტურების მოთხოვნა ყველა ელემენტის წაკითხულად მონიშვნისას."
+
+#: ../glade/prefs.ui.h:23
+msgid "Web Integration"
+msgstr "ვებში ინტეგრაცია"
+
+#: ../glade/prefs.ui.h:24
+msgid "_Post Bookmarks to"
+msgstr "სანიშნეების და_პოსტავა"
+
+#: ../glade/prefs.ui.h:26
+msgid "Internal Browser Settings"
+msgstr "შიდა ბრაუზერის მორგება"
+
+#: ../glade/prefs.ui.h:27
+msgid "Open links in Liferea's _window."
+msgstr "ბმულების გახსნა Liferea-ის _ფანჯარაში."
+
+#: ../glade/prefs.ui.h:28
+msgid "_Never run external Javascript."
+msgstr "გარე Javascript არასდროს გაეშვას."
+
+#: ../glade/prefs.ui.h:29
+msgid "_Enable browser plugins."
+msgstr "ბრაუზერის დამატებ_ების ჩართვა."
+
+#: ../glade/prefs.ui.h:30
+msgid "External Browser Settings"
+msgstr "გარე ბრაუზერის პარამეტრები"
+
+#: ../glade/prefs.ui.h:31
+msgid "_Browser:"
+msgstr "_Browser:"
+
+#: ../glade/prefs.ui.h:32
+msgid "_Manual:"
+msgstr "სახელ_მძღვანელო:"
+
+#: ../glade/prefs.ui.h:34
+#, no-c-format
+msgid "<small>(%s for URL)</small>"
+msgstr "<small>(%s URL-ისთვის)</small>"
+
+#: ../glade/prefs.ui.h:35
+msgid "Browser"
+msgstr "ბრაუზერი"
+
+#: ../glade/prefs.ui.h:36
+msgid "Toolbar Settings"
+msgstr "ხელსაწყოების ზოლის მორგება"
+
+#: ../glade/prefs.ui.h:37
+msgid "_Hide toolbar."
+msgstr "_ხელსაწყოთა ზოლის დამალვა."
+
+#: ../glade/prefs.ui.h:38
+msgid "Toolbar _button labels:"
+msgstr "პანელის ღ_ილაკის წარწერა:"
+
+#: ../glade/prefs.ui.h:39
+msgid "Desktop"
+msgstr "სამუშაო მაგიდა"
+
+#: ../glade/prefs.ui.h:40
+msgid "HTTP Proxy Server"
+msgstr "HTTP პროქსი სერვერი"
+
+#: ../glade/prefs.ui.h:41
+msgid "_Auto Detect (GNOME or environment)"
+msgstr "_ავტომატური დადგენა (GNOME, ან გარემო)"
+
+#: ../glade/prefs.ui.h:42
+msgid "_No Proxy"
+msgstr "_პროქსის გარეშე"
+
+#: ../glade/prefs.ui.h:43
+msgid "_Manual Setting:"
+msgstr "ხელით _მორგება:"
+
+#: ../glade/prefs.ui.h:44
+msgid "Proxy _Host:"
+msgstr "პროქსის _ჰოსტი:"
+
+#: ../glade/prefs.ui.h:45
+msgid "Proxy _Port:"
+msgstr "_პროქსის პორტი:"
+
+#: ../glade/prefs.ui.h:46
+msgid "Use Proxy Au_thentication"
+msgstr "პროქსის ავთენ_ტიკაციის გამოყენება"
+
+#: ../glade/prefs.ui.h:47
+msgid "Proxy _Username:"
+msgstr "პროქსის მ_ომხმარებელი:"
+
+#: ../glade/prefs.ui.h:48
+msgid "Proxy Pass_word:"
+msgstr "პრო_ქსის პაროლი:"
+
+#: ../glade/prefs.ui.h:49
+msgid ""
+"Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per application "
+"proxy settings. The system's default proxy settings will be used."
+msgstr ""
+"WebKitGTK+-ის თქვენი ვერსია 2.15.3-ზე ძველია. მას აპლიკაციის პროექტის პარამეტრების "
+"ცალ-ცალკე მითითების საშუალება არ აქვს. გამოყენებული იქნება სისტემის ნაგულისხმევი "
+"პროქსის პარამეტრები."
+
+#: ../glade/prefs.ui.h:50
+msgid "Proxy"
+msgstr "პროქსი"
+
+#: ../glade/prefs.ui.h:51
+msgid "Privacy Settings"
+msgstr "პირადი კონფიგურაცია"
+
+#: ../glade/prefs.ui.h:52
+msgid "Tell websites that I do _not want to be tracked."
+msgstr "ვებსაიტებისთვის თქმა, რომ არ მინდა, თვალყური მადევნო_ნ."
+
+#: ../glade/prefs.ui.h:53
+msgid "Tell websites not to _sell or share my data."
+msgstr "ვებ_საიტებისთვის თქმა, რომ არ გაყიდონ, ან გააზიარონ ჩემი მონაცემები."
+
+#: ../glade/prefs.ui.h:54
+msgid "_Intelligent Tracking Prevention. "
+msgstr "ტრეკინგისგან ჭკვიან_ი დაცვა. "
+
+#: ../glade/prefs.ui.h:55
+msgid ""
+"This enables the WebKit feature described <a href=\"https://webkit.org/tracking-"
+"prevention/\">here</a>."
+msgstr ""
+"ეს ჩართავს WebKit-ის ფუნქციას, რომელიც <a href=\"https://webkit.org/tracking-"
+"prevention/\">აქაა</a> აღწერილი."
+
+#: ../glade/prefs.ui.h:56
+msgid ""
+"Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or higher."
+msgstr ""
+"ჭკვიანი ტრეკინგისგან დაცვა, მხოლოდ, ხელმისაწვდომია WebKitGtk+-ის ვერსიაში 2.30, ან "
+"უფრო ახალში."
+
+#: ../glade/prefs.ui.h:57
+msgid "Privacy"
+msgstr "პირადი ინფორმაცია"
+
+#: ../glade/properties.ui.h:1
+msgid "Subscription Properties"
+msgstr "გამოწერის თვისებები"
+
+#: ../glade/properties.ui.h:2
+msgid "Feed _Name"
+msgstr "ლე_ნტის სახელი"
+
+#: ../glade/properties.ui.h:3
+msgid "Update _Interval"
+msgstr "განახლების _ინტერვალი"
+
+#: ../glade/properties.ui.h:4
+msgid "_Use global default update interval."
+msgstr "გლობალური ნაგ_ულისხმევი განახლების ინტერვალის გამოყენება."
+
+#: ../glade/properties.ui.h:5
+msgid "_Feed specific update interval of"
+msgstr "_ლენტის საკუთარი განახლების ინტერვალი"
+
+#: ../glade/properties.ui.h:7
+msgid "_Don't update this feed automatically."
+msgstr "ეს არხი ავტომა_ტურად არ განახლდეს."
+
+#: ../glade/properties.ui.h:9
+#, no-c-format
+msgid "This feed provider suggests an update interval of %d minutes."
+msgstr "ამ ლენტის მომწოდებელი გთავაზობთ განახლებას ყოველ %d წუთში."
+
+#: ../glade/properties.ui.h:10
+msgid "General"
+msgstr "ზოგადი"
+
+#: ../glade/properties.ui.h:19
+msgid ""
+"Liferea can use external filter scripts in order to access feeds and directories in "
+"non-supported formats."
+msgstr ""
+"Liferea-ს შეუძლია, გამოიყენოს გარე ფილტრის სკრიპტი, რომ მოგცეთ წვდომა ლენტებთან და "
+"საქაღალდეებთან, რომლებიც მხარდაჭერილი ფორმატით არაა."
+
+#: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
+msgid "Source"
+msgstr "წყარო"
+
+#: ../glade/properties.ui.h:22
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea exits. "
+"Marked items are always saved to the cache."
+msgstr ""
+"კეშის პარამეტრი მართავს, ხდება, თუ არა ლენტების შემცველობის შენახვა, როცა Liferea "
+"მუშაობას ასრულებს. მონიშნული ელემენტების შენახვა კეშში ყოველთვის ხდება."
+
+#: ../glade/properties.ui.h:23
+msgid "_Default cache settings"
+msgstr "ნაგულისხმევი _კეშის პარამეტრები"
+
+#: ../glade/properties.ui.h:24
+msgid "Di_sable cache"
+msgstr "კეში_ს გამორთვა"
+
+#: ../glade/properties.ui.h:25
+msgid "_Unlimited cache"
+msgstr "შე_უზღუდავი კეში"
+
+#: ../glade/properties.ui.h:26
+msgid "_Number of items to save:"
+msgstr "შე_ნახული ელემენტების რაოდენობა:"
+
+#: ../glade/properties.ui.h:28
+msgid "Archive"
+msgstr "არქივი"
+
+#: ../glade/properties.ui.h:29
+msgid "Use HTTP _authentication"
+msgstr "HTTP _ავთენტიკაციის გამოყენება"
+
+#: ../glade/properties.ui.h:33
+msgid "Download"
+msgstr "გადმოწერა"
+
+#: ../glade/properties.ui.h:34
+msgid "_Automatically download all enclosures of this feed."
+msgstr "ამ ლენტის ყველა ელემენტის _ავტომატური გადმოწერა."
+
+#: ../glade/properties.ui.h:35
+msgid "Auto-_load item link in configured browser when selecting articles."
+msgstr ""
+"ე_ლემენტის ბმულის ავტომატური ჩატვირთვა მორგებულ ბრაუზერში სტატიების მონიშვნისას."
+
+#: ../glade/properties.ui.h:36
+msgid "Ignore _comment feeds for this subscription."
+msgstr "_კომენტარის ლენტების გამოტოვება ამ გამოწერისთვის."
+
+#: ../glade/properties.ui.h:37
+msgid "_Mark downloaded items as read."
+msgstr "გადმოწერილი ელემენტების წაკითხულად _მონიშვნა."
+
+#: ../glade/properties.ui.h:38
+msgid "Extract full content from HTML5 and Google AMP"
+msgstr "სრული შემცველობის ამოღება HTML5-დან და Google AMP-დან"
+
+#: ../glade/reedah_source.ui.h:1
+msgid "Add Reedah Account"
+msgstr "Reedah-ის ანგარიშის დამატება"
+
+#: ../glade/reedah_source.ui.h:2
+msgid "Please enter your Reedah account settings."
+msgstr "შეიყვანეთ თქვენი Reedah-ის ანგარიშის პარამეტრები."
+
+#: ../glade/rename_node.ui.h:1
+msgid "Rename"
+msgstr "სახელის გადარქმევა"
+
+#: ../glade/rename_node.ui.h:2
+msgid "_New Name:"
+msgstr "_ახალი სახელი:"
+
+#: ../glade/search_folder.ui.h:1
+msgid "Search Folder Properties"
+msgstr "ძებნის საქაღალდის თვისებები"
+
+#: ../glade/search_folder.ui.h:2
+msgid "Search _Name:"
+msgstr "ძებ_ნის სახელი:"
+
+#: ../glade/search_folder.ui.h:3
+msgid "Search Rules"
+msgstr "ძებნის წესები"
+
+#: ../glade/search_folder.ui.h:4
+msgid "Rules"
+msgstr "წესები"
+
+#: ../glade/search_folder.ui.h:5
+msgid "All rules for this search folder"
+msgstr "ყველა წესი ამ ძებნის საქაღალდისთვის"
+
+#: ../glade/search_folder.ui.h:6
+msgid "Rule Matching"
+msgstr "წესი, რომელიც ემთხვევა"
+
+#: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
+msgid "A_ny Rule Matches"
+msgstr "_ნებისმიერი წესის დამთხვევა"
+
+#: ../glade/search_folder.ui.h:8 ../glade/search.ui.h:5
+msgid "_All Rules Must Match"
+msgstr "ყველ_ა წესი უნდა დაემთხვეს"
+
+#: ../glade/search_folder.ui.h:9
+msgid "Hide read items"
+msgstr "წაკითხული ელემენტების დამალვა"
+
+#: ../glade/search.ui.h:1
+msgid "Advanced Search"
+msgstr "გაფართოებული ძებნა"
+
+#: ../glade/search.ui.h:2
+msgid "_Search Folder..."
+msgstr "ძებნის _საქაღამდე..."
+
+#: ../glade/search.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr "პოვნა ელემენტების, რომლებიც აკმაყოფილებენ შემდეგ პირობას"
+
+#: ../glade/simple_search.ui.h:1
+msgid "Search All Feeds"
+msgstr "ყველა ლენტის ძებნა"
+
+#: ../glade/simple_search.ui.h:2
+msgid "_Advanced..."
+msgstr "დ_ამატებითი..."
+
+#: ../glade/simple_search.ui.h:3
+msgid ""
+"Starts searching for the specified text in all feeds. The search result will appear "
+"in the item list."
+msgstr ""
+"დაიწყებს მითითებული ტექსტის ძებნას ყველა ლენტაში. ძებნის შედეგი ელემენტების სიაში "
+"გამოჩნდება."
+
+#: ../glade/simple_search.ui.h:4
+msgid "_Search for:"
+msgstr "_ძებნა:"
+
+#: ../glade/simple_search.ui.h:5
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its content."
+msgstr ""
+"შეიყვანეთ საძიებო სტრიქონი, რომელიც Liferea-მა ან ელემენტების სათაურში, ან მათ "
+"შემცველობაში უნდა იპოვოს."
+
+#: ../glade/simple_subscription.ui.h:2
+msgid "Advanced..."
+msgstr "დამატებით..."
+
+#: ../glade/simple_subscription.ui.h:3
+msgid "Feed _Source"
+msgstr "ლენტი_ს წყარო"
+
+#: ../glade/simple_subscription.ui.h:4
+msgid ""
+"Enter a website location to use feed autodiscovery or in case you know it the exact "
+"feed location."
+msgstr ""
+"შეიყვანეთ ვებსაიტის მისამართი ლენტის ავტოაღმოსაჩენად, ან, თუ ზუსტად იცით ლენტის "
+"მდებარეობა."
+
+#: ../glade/theoldreader_source.ui.h:1
+msgid "Add TheOldReader Account"
+msgstr "TheOldReader-ის ანგარისის დამატება"
+
+#: ../glade/theoldreader_source.ui.h:2
+msgid "Please enter your TheOldReader account settings."
+msgstr "შეიყვანეთ თქვენი TheOldReader-ის ანგარიშის პარამეტრები."
+
+#: ../glade/ttrss_source.ui.h:1
+msgid "Add Tiny Tiny RSS Account"
+msgstr "Tiny Tiny RSS-ის ანგარიშის დამატება"
+
+#: ../glade/ttrss_source.ui.h:2
+msgid "Please enter your TinyTinyRSS account settings."
+msgstr "შეიყვანეთ თქვენი TinyTinyRSS-ის ანგარიშის მონაცემები."
+
+#: ../glade/ttrss_source.ui.h:3
+msgid "_Server URL"
+msgstr "_სერვერის URL"
+
+#: ../glade/ttrss_source.ui.h:5
+msgid "_Username"
+msgstr "_მომხმარებელი"
+
+#: ../glade/update_monitor.ui.h:1
+msgid "Update Monitor"
+msgstr "განახლების მონიტორი"
+
+#: ../glade/update_monitor.ui.h:2
+msgid "Stop All"
+msgstr "ყველას გაჩერება"
+
+#: ../glade/update_monitor.ui.h:3
+msgid "_Pending Requests"
+msgstr "მოთხოვნები სია_ში"
+
+#: ../glade/update_monitor.ui.h:4
+msgid "_Downloading Now"
+msgstr "გა_დმოწერა"
+
+#: ../js/item.xml.in.h:1 ../js/node.xml.in.h:2
+msgid "Author"
+msgstr "ავტორი"
+
+#: ../js/item.xml.in.h:2
+msgid "Creator"
+msgstr "შემქმნელი"
+
+#: ../js/item.xml.in.h:3
+msgid "Shared By"
+msgstr "გაზიარების ავტორი"
+
+#: ../js/item.xml.in.h:4
+msgid "Via"
+msgstr "გავლით"
+
+#: ../js/node.xml.in.h:3
+msgid "Publisher"
+msgstr "გამომცემელი"
+
+#: ../js/node.xml.in.h:4
+msgid "Copyright"
+msgstr "საავტორო უფლებები"
+
+#: ../js/node.xml.in.h:5
+msgid "There was a problem when fetching this subscription!"
+msgstr "პრობლემა ამ გამოწერის გამოთხოვისას!"
+
+#: ../js/node.xml.in.h:6
+msgid "1. Authentication"
+msgstr "1. ავთენტიკაცია"
+
+#: ../js/node.xml.in.h:7
+msgid "2. Download"
+msgstr "2. გადმოწერა"
+
+#: ../js/node.xml.in.h:8
+msgid "3. Feed Discovery"
+msgstr "3. ლენტის აღმოჩენა"
+
+#: ../js/node.xml.in.h:9
+msgid "4. Parsing"
+msgstr "4. დამუშავება"
+
+#: ../js/node.xml.in.h:10
+msgid "Details:"
+msgstr "დეტალები:"
+
+#: ../js/node.xml.in.h:11
+msgid "Authentication failed. Please check the credentials and try again!"
+msgstr "ავთენტიკაცია ჩავარდა. შეამოწმეთ ავტორიზაციის დეტალები და კიდევ სცადეთ!"
+
+#: ../js/node.xml.in.h:12
+msgid "There was an error when downloading the feed source:"
+msgstr "შეცდომა ლენტის წყაროს გადმოწერისას:"
+
+#: ../js/node.xml.in.h:13
+msgid "There was an error when running the feed filter command:"
+msgstr "შეცდომა ლენტის ფილტრის ბრძანების გაშვებისას:"
+
+#: ../js/node.xml.in.h:14
+msgid ""
+"The source does not point directly to a feed or a webpage with a link to a feed!"
+msgstr ""
+"წყარო არ მიუთითებს პირდაპირ ლენტაზე, ან ვებგვერდზე, რომელიც ლენტაზე ბმულს შეიცავს!"
+
+#: ../js/node.xml.in.h:15
+msgid "Sorry, the feed could not be parsed!"
+msgstr "ლენტის დამუშავება შეუძლებელია!"
+
+#: ../js/node.xml.in.h:16
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr "ამის შესახებ, უკეთესია, ლენტის ავტორს/ვებმასტერს დაუკავშირდეთ!"
