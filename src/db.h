@@ -216,7 +216,6 @@ void db_subscription_remove (const gchar *id);
  */
 void db_node_update (Node *node);
 
-
 /**
  * Clean old nodes from the DB by comparing all DB nodes
  * against the OPML feed list.

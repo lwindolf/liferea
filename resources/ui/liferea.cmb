@@ -11,7 +11,7 @@
   </ui>
   <ui filename="reedah_source.ui" sha256="49bb0a7ce952375141fc25e0fb7994919392a33c202c9aab50a1fcf033ac3c5b"/>
   <ui filename="simple_subscription.ui" sha256="e1fa8dafe92edee712bee5431e4377ed4ff8693c0fa7e8e21cbb8fa0643e4e42"/>
-  <ui filename="search_folder.ui" sha256="6c42aeeec0819658ed977461544e4927a64fce4b796b33ab28304176ea87caab">
+  <ui filename="search_folder.ui" sha256="0e693837325a220b5dd0be3e38dd43f9fdebfff19ae235030d520054eabc26a1">
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
   <ui filename="rename_node.ui" sha256="b0d77ee75d41bf681ce4d0a2f9d4f9947f97fcfbf5222ed49cfd0cf3415c2def"/>

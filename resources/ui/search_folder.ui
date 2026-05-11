@@ -134,12 +134,27 @@
               </object>
             </child>
             <child>
-              <object class="GtkCheckButton" id="hideReadItemsBtn">
-                <property name="focusable">1</property>
-                <property name="halign">start</property>
-                <property name="label" translatable="yes">Hide read items</property>
-                <property name="use-underline">1</property>
-                <property name="valign">center</property>
+              <object class="GtkBox">
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkCheckButton" id="hideReadItemsBtn">
+                    <property name="focusable">1</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Hide read items</property>
+                    <property name="use-underline">1</property>
+                    <property name="valign">center</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="totalCountBtn">
+                    <property name="focusable">1</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Show total number of items</property>
+                    <property name="tooltip-text">Per default the feed list shows the unread count. Toggle this to show total count of matching items.</property>
+                    <property name="use-underline">1</property>
+                    <property name="valign">center</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
@@ -552,13 +552,7 @@ feed_list_view_node_update (FeedListView *flv, Node *node)
 	guint		labeltype;
 	static		gchar *countColor = NULL;
 
-	/* Until GTK3 we used real theme colors here. Nowadays GTK simply knows
-	   that we do not need to know about them and helpfully prevents us from
-	   accessing them. So we use hard-coded colors that hopefully fit all the 
-	   themes out there. 
-	
-	   And yes of course with to much time on my hand I could implement
-	   my own renderer widget... */
+	// FIXME: try to replace with sensible adwaita accent colors
 	if (conf_get_dark_theme ())
 		countColor = "foreground='#ddd' background='#444'";
 	else
@@ -574,6 +568,11 @@ feed_list_view_node_update (FeedListView *flv, Node *node)
 
 	if (node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype &= ~NODE_CAPABILITY_SHOW_UNREAD_COUNT;
+
+	if (IS_VFOLDER (node) && node->data) {
+		if (((vfolderPtr)node->data)->totalCount)
+			labeltype = NODE_CAPABILITY_SHOW_ITEM_COUNT;
+	}
 
 	label = g_markup_escape_text (node_get_title (node), -1);
 	switch (labeltype) {

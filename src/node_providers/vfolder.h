@@ -42,6 +42,7 @@ typedef struct vfolder {
 	itemSetPtr	itemset;	/**< the itemset with the rules and matching items */
 	gpointer	loader;		/**< vfolder loader (if currently rebuilding, otherwise NULL) */
 
+	gboolean	totalCount;	/**< TRUE if the total item count is to be shown in the feed list */
 	gboolean	unreadOnly;	/**< TRUE if only unread items are to be shown in the item list */
 	gboolean	reloading;	/**< TRUE if the search folder is in async reloading */
 	gulong		loadOffset;	/**< when in reloading: current offset */

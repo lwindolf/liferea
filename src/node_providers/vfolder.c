@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c  search folder node type
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,6 +76,13 @@ vfolder_import_rules (xmlNodePtr cur,
 		vfolder->unreadOnly = (0 == xmlStrcmp (tmp, BAD_CAST"true"));
 	else
 		vfolder->unreadOnly = FALSE;
+	xmlFree (tmp);
+
+	tmp = xmlGetProp (cur, BAD_CAST"totalCount");
+	if (tmp)
+		vfolder->totalCount = (0 == xmlStrcmp (tmp, BAD_CAST"true"));
+	else
+		vfolder->totalCount = FALSE;
 	xmlFree (tmp);
 
 	/* process any children */
@@ -195,6 +202,7 @@ vfolder_export (Node *node,
 
 	xmlNewProp (cur, BAD_CAST"matchType", BAD_CAST (vfolder->itemset->anyMatch?"any":"all"));
 	xmlNewProp (cur, BAD_CAST"unreadOnly", BAD_CAST (vfolder->unreadOnly?"true":"false"));
+	xmlNewProp (cur, BAD_CAST"totalCount", BAD_CAST (vfolder->totalCount?"true":"false"));
 
 	iter = vfolder->itemset->rules;
 	while (iter) {

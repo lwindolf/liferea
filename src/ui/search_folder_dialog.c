@@ -1,7 +1,7 @@
 /**
  * @file search-folder-dialog.c  Search folder properties dialog
  *
- * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,6 +70,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		rule_editor_save (sfd->re, sfd->vfolder->itemset);
 		sfd->vfolder->itemset->anyMatch = gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, "anyRuleRadioBtn")));
 		sfd->vfolder->unreadOnly = gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, "hideReadItemsBtn")));
+		sfd->vfolder->totalCount = gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, "totalCountBtn")));
 
 		/* update search folder */
 		vfolder_reset (sfd->vfolder);
@@ -124,7 +125,8 @@ search_folder_dialog_new (Node *node)
 	/* Set up rule match type */
 	gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, sfd->vfolder->itemset->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
 	gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, "hideReadItemsBtn")), sfd->vfolder->unreadOnly);
-
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (sfd->dialog, "totalCountBtn")), sfd->vfolder->totalCount);
+	
 	/* Set up rule list vbox */
 	gtk_viewport_set_child (GTK_VIEWPORT (liferea_dialog_lookup (sfd->dialog, "ruleview_vfolder_dialog")), rule_editor_get_widget (sfd->re));
 
