@@ -2,7 +2,7 @@
  * @file webkit.c  WebKit2GTK 6.0 support for Liferea
  *
  * Copyright (C) 2016-2019 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
@@ -569,10 +569,14 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 void
 liferea_webkit_launch_url (GtkWidget *webview, const gchar *url)
 {
-	// FIXME: hack to make URIs like "gnome.org" work
-	// https://bugs.webkit.org/show_bug.cgi?id=24195
-	gchar *http_url;
-	if (!strstr (url, "://")) {
+	g_return_if_fail (WEBKIT_IS_WEB_VIEW (webview));
+	g_return_if_fail (url != NULL);
+	
+	g_autofree gchar *http_url;
+	g_autoptr(GUri) uri = g_uri_parse (url, G_URI_FLAGS_PARSE_RELAXED, NULL);
+
+	/* Default protocol (see https://bugs.webkit.org/show_bug.cgi?id=24195) */
+	if (!uri || !g_uri_get_scheme (uri)) {
 		http_url = g_strdup_printf ("https://%s", url);
 	} else {
 		http_url = g_strdup (url);
@@ -581,13 +585,7 @@ liferea_webkit_launch_url (GtkWidget *webview, const gchar *url)
 	// Force preference JS settings when launching external URL
 	// needed, because we might be switching from internal reader mode
 	liferea_webkit_default_settings (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)));
-
-	webkit_web_view_load_uri (
-		WEBKIT_WEB_VIEW (webview),
-		http_url
-	);
-
-	g_free (http_url);
+	webkit_web_view_load_uri (WEBKIT_WEB_VIEW (webview), http_url);
 }
 
 void

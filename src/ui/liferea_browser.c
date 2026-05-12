@@ -101,7 +101,7 @@ on_liferea_browser_history_back (GtkWidget *widget, gpointer user_data)
 
 	liferea_browser_launch_URL_internal (browser, url);
 
-	g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (url, -1);
+	GtkEntryBuffer *buffer = gtk_entry_buffer_new (url, -1);
 	gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 }
 
@@ -118,7 +118,7 @@ on_liferea_browser_history_forward (GtkWidget *widget, gpointer user_data)
 
 	liferea_browser_launch_URL_internal (browser, url);
 
-	g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (url, -1);
+	GtkEntryBuffer *buffer = gtk_entry_buffer_new (url, -1);
 	gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 }
 
@@ -393,7 +393,7 @@ liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location
 	g_object_get (G_OBJECT (browser), "hidden-urlbar", &hiddenUrlbar, NULL);
 
 	if (browser->url && !g_str_has_prefix (browser->url, "liferea://") && !hiddenUrlbar) {
-		g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (browser->url, -1);
+		GtkEntryBuffer *buffer = gtk_entry_buffer_new (browser->url, -1);
 		gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 
 		browser_history_add_location (browser->history, browser->url);
@@ -451,7 +451,7 @@ liferea_browser_launch_URL_internal (LifereaBrowser *browser, const gchar *url)
 	gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
 	gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
 
-	g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (url, -1);
+	GtkEntryBuffer *buffer = gtk_entry_buffer_new (url, -1);
 	gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 
 	liferea_webkit_launch_url (browser->renderWidget, url);
