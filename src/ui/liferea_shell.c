@@ -805,7 +805,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	gtk_application_set_accels_for_action (app, "app.update-all", liferea_accels_update_all);
 	gtk_application_set_accels_for_action (app, "app.quit", liferea_accels_quit);
-	gtk_application_set_accels_for_action (app, "app.mark-selected-feed-as-read", liferea_accels_mark_feed_as_read);
+	gtk_application_set_accels_for_action (app, "app.node-mark-all-read", liferea_accels_mark_feed_as_read);
 	gtk_application_set_accels_for_action (app, "app.next-unread-item", liferea_accels_next_unread_item);
 	gtk_application_set_accels_for_action (app, "app.prev-read-item", liferea_accels_prev_read_item);
 	gtk_application_set_accels_for_action (app, "app.toggle-selected-item-read-status", liferea_accels_toggle_item_read_status);
