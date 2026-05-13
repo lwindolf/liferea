@@ -1,7 +1,7 @@
 /*
  * @file liferea_browser.c  Liferea embedded browser
  *
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -603,6 +603,8 @@ liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gcha
 	tmp = g_string_new (liferea_browser_get_template (browser, name));
 	g_string_replace (tmp, "REPLACE_MARKER", script, 1);
 
+	// do not use liferea_browser_write() as we need to write XHTML here
+	// which is produced by intltool
 	liferea_webkit_write_html (browser->renderWidget, tmp->str, strlen (tmp->str), baseURL, "text/html");
 }
 

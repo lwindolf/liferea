@@ -146,6 +146,26 @@ count_slashes (const gchar *str)
 	return slashes;
 }
 
+/* takes ownership of url if not in list, otherwise free's it */
+static GSList *
+favicon_urls_append (const gchar *info, GSList *urls, gchar *url)
+{
+	g_return_val_if_fail (url != NULL, urls);
+
+	/* Remove trailing slash from URL */
+	if (strlen(url) > 0 && url[strlen(url) - 1] == '/')
+		url[strlen(url) - 1] = 0;
+
+	if (!g_slist_find_custom (urls, url, (GCompareFunc)g_strcmp0)) {
+		debug (DEBUG_UPDATE, "%s: %s", info, url);
+		urls = g_slist_append (urls, url);
+	} else {
+		g_free (url);
+	}
+
+	return urls;
+}
+
 /*
  * This code tries to download from a series of URLs. If there are no
  * favicons, this will make five downloads, three of which will be 404
@@ -169,15 +189,13 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 	/* case 1: the feed parser passed us an icon URL in the subscription metadata */
 	if (metadata_list_get (subscription->metadata, "icon")) {
 		tmp = g_strstrip (g_strdup (metadata_list_get (subscription->metadata, "icon")));
-		urls = g_slist_append (urls, tmp);
-		debug (DEBUG_UPDATE, "(1) adding favicon search URL: %s", tmp);
+		urls = favicon_urls_append ("(1) adding favicon search URL", urls, tmp);
 	}
 
 	/* case 2: */
 	if (html_url && g_strstr_len (html_url, -1, "://")) {
 		tmp = g_strstrip (g_strdup (html_url));
-		urls = g_slist_append (urls, tmp);
-		debug (DEBUG_UPDATE, "(2) adding favicon search URL: %s", tmp);
+		urls = favicon_urls_append ("(2) adding favicon search URL", urls, tmp);
 	}
 
 	/* case 3: */
@@ -191,8 +209,7 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 		tmp = strrchr (tmp, '/');
 		if (tmp) {
 			*tmp = 0;
-			urls = g_slist_append (urls, g_strdup (tmp2));
-			debug (DEBUG_UPDATE, "(3) adding favicon search URL: %s", tmp2);
+			urls = favicon_urls_append ("(3) adding favicon search URL", urls, g_strdup (tmp2));
 		}
 		g_free (tmp2);
 	}
@@ -206,13 +223,10 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 				tmp = strchr (tmp + 3, '/');
 				if (tmp) {
 					*tmp = 0;
-					tmp = tmp2;
-					tmp2 = g_strdup_printf ("%s/favicon.ico", tmp);
-					urls = g_slist_append (urls, tmp2);
-					debug (DEBUG_UPDATE, "(4) adding favicon source URL: %s", tmp2);
+					urls = favicon_urls_append ("(4) adding favicon source URL:", urls, g_strdup_printf ("%s/favicon.ico", tmp2));
 				}
 			}
-			g_free (tmp);
+			g_free (tmp2);
 		}
 	}
 
@@ -222,12 +236,9 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 		tmp = strrchr(tmp, '/');
 		if (tmp) {
 			*tmp = 0;
-			tmp = tmp2;
-			tmp2 = g_strdup_printf ("%s/favicon.ico", tmp);
-			urls = g_slist_append (urls, tmp2);
-			debug (DEBUG_UPDATE, "(5) adding favicon source URL: %s", tmp2);
+			urls = favicon_urls_append ("(5) adding favicon source URL", urls, g_strdup_printf ("%s/favicon.ico", tmp2));
 		}
-		g_free (tmp);
+		g_free (tmp2);
 
 		/* case 6: */
 		tmp = tmp2 = g_strstrip (g_strdup (source_url));
@@ -236,13 +247,10 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 			tmp = strchr (tmp + 3, '/');	/* to skip to first subpath */
 			if (tmp) {
 				*tmp = 0;
-				tmp = tmp2;
-				tmp2 = g_strdup_printf ("%s/favicon.ico", tmp);
-				urls = g_slist_append (urls, tmp2);
-				debug (DEBUG_UPDATE, "(6) adding favicon source URL: %s", tmp2);
+				urls = favicon_urls_append ("(6) adding favicon source URL", urls, g_strdup_printf ("%s/favicon.ico", tmp2));
 			}
 		}
-		g_free (tmp);
+		g_free (tmp2);
 	}
 	return urls;
 }
