@@ -236,11 +236,9 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 		tmp = strrchr(tmp, '/');
 		if (tmp) {
 			*tmp = 0;
-			tmp = tmp2;
-			tmp2 = g_strdup_printf ("%s/favicon.ico", tmp);
-			urls = favicon_urls_append ("(5) adding favicon source URL", urls, tmp2);
+			urls = favicon_urls_append ("(5) adding favicon source URL", urls, g_strdup_printf ("%s/favicon.ico", tmp2));
 		}
-		g_free (tmp);
+		g_free (tmp2);
 
 		/* case 6: */
 		tmp = tmp2 = g_strstrip (g_strdup (source_url));
@@ -249,12 +247,10 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 			tmp = strchr (tmp + 3, '/');	/* to skip to first subpath */
 			if (tmp) {
 				*tmp = 0;
-				tmp = tmp2;
-				tmp2 = g_strdup_printf ("%s/favicon.ico", tmp);
-				urls = favicon_urls_append ("(6) adding favicon source URL", urls, tmp2);
+				urls = favicon_urls_append ("(6) adding favicon source URL", urls, g_strdup_printf ("%s/favicon.ico", tmp2));
 			}
 		}
-		g_free (tmp);
+		g_free (tmp2);
 	}
 	return urls;
 }
