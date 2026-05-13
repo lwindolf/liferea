@@ -69,6 +69,7 @@ memcheck = find_program('src/tests/memcheck.sh')
 
 # Note: the 'update' test is explicitly skipped as it's gsettings dependency breaks CI build (missing X11/DBUS)
 foreach name: [
+  'favicon',
   'parse_atom',
   'parse_date',
   'parse_html',

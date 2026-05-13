@@ -1,7 +1,7 @@
 /**
  * @file favicon.c  Test cases for favicon auto discovery
  *
- * Copyright (C) 2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2020-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 #include <glib.h>
 
+#include "debug.h"
 #include "favicon.h"
 #include "metadata.h"
 #include "subscription.h"
@@ -53,11 +54,7 @@ tc tc1 = {
 	"https://slashdot.org/",
 	NULL,
 	{
-		// 1.) is missing
- 		"https://slashdot.org/",
 		"https://slashdot.org",
-		"https://slashdot.org/favicon.ico",
-		"https://slashdot.org/favicon.ico",
 		"https://slashdot.org/favicon.ico",
 		NULL
 	}
@@ -70,11 +67,9 @@ tc tc2 = {
 	"https://slashdot.org/favicon.ico",
 	{
 		"https://slashdot.org/favicon.ico",
-		"https://slashdot.org/news/",
+		"https://slashdot.org/news",
 		"https://slashdot.org/feed",
-		"https://slashdot.org/favicon.ico",
 		"https://slashdot.org/feed/favicon.ico",
-		"https://slashdot.org/favicon.ico",
 		NULL
 	}
 };
@@ -85,11 +80,9 @@ tc tc3 = {
 	"https://news.com/news/",
 	NULL,
 	{
-		// 1.) is missing
-		"https://news.com/news/",
+		"https://news.com/news",
 		"https://example.com",
 		"https://news.com/favicon.ico",
-		"https://example.com/favicon.ico",
 		"https://example.com/favicon.ico",
 		NULL
 	}
@@ -174,9 +167,13 @@ tc_favicon_get_urls (gconstpointer user_data)
 }
 
 int
-main (int argc, char *argv[])
+test_favicon (int argc, char *argv[])
 {
 	g_test_init (&argc, &argv, NULL);
+
+        if (g_strv_contains ((const gchar **)argv, "--debug"))
+		debug_set_flags (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
+
 
 	g_test_add_data_func ("/favicon/tc1", &tc1, &tc_favicon_get_urls);
 	g_test_add_data_func ("/favicon/tc2", &tc2, &tc_favicon_get_urls);

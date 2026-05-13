@@ -192,8 +192,12 @@ html_auto_discover_collect_links (xmlNodePtr match, gpointer user_data)
 {
 	GSList **links = (GSList **)user_data;
 	gchar *link = xml_get_attribute (match, "href");
-	if (link)
-		*links = g_slist_append (*links, link);
+	if (link) {
+		if (!g_slist_find_custom (*links, link, (GCompareFunc)g_strcmp0))
+			*links = g_slist_append (*links, link);
+		else
+			g_free (link);
+	}
 }
 
 static void
