@@ -3,6 +3,12 @@ project('liferea', 'c',
   meson_version: '>= 0.62.0'
 )
 
+add_project_arguments(
+  '-Wno-analyzer-infinite-loop',
+  language: 'c'
+)
+
+
 gnome = import('gnome')
 i18n = import('i18n')
 
