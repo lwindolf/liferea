@@ -124,68 +124,69 @@ ui_popup_add_convert_to_local (GSimpleAction *action, GVariant *parameter, gpoin
 }
 
 static void
-on_menu_export_items_to_file_cb (GtkDialog *dialog, gint res, gpointer user_data)
+on_menu_export_items_to_file_cb (GObject *dialog, GAsyncResult *result, gpointer user_data)
 {
-       	Node *node = (Node *) user_data;
-       	GError *err = NULL;
+	Node *node = (Node *) user_data;
+	GError *err = NULL;
 
-	if (res != GTK_RESPONSE_ACCEPT)
-                return;
+	g_autoptr(GFile) file = gtk_file_dialog_save_finish (GTK_FILE_DIALOG (dialog), result, &err);
+	if (!file)
+		return;
 
-        g_autoptr(GFile) file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
 	g_autofree gchar *filename = g_file_get_path (file);
 	node_save_items_to_file (node, filename, &err);
 	if (err) {
-                ui_show_error_box (err->message);
-                g_error_free (err);
-        }
+		ui_show_error_box (err->message);
+		g_error_free (err);
+	}
 }
 
 static void
 on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	Node		*node = (Node *) user_data;
+	Node		*node = feedlist_get_selected ();
 	GtkWindow	*parent;
-	GtkWidget	*dialog;
-	GtkFileChooser	*chooser;
+	GtkFileDialog	*dialog;
+	GListStore	*filters;
 	GtkFileFilter	*feed_files_filter, *all_files_filter;
-        g_autoptr(GFile) file;
+	g_autoptr(GFile) file = NULL;
 	g_autofree gchar *curname = NULL;
 	const gchar	*title;
 
+	g_return_if_fail (node != NULL);
+
 	parent = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 
-	dialog = gtk_file_chooser_dialog_new (_("Save items to file"),
-	                                      parent,
-	                                      GTK_FILE_CHOOSER_ACTION_SAVE,
-	                                      _("_Cancel"),
-	                                      GTK_RESPONSE_CANCEL,
-	                                      _("_Save"),
-	                                      GTK_RESPONSE_ACCEPT,
-	                                      NULL);
-	chooser = GTK_FILE_CHOOSER (dialog);
+	dialog = gtk_file_dialog_new ();
+	gtk_file_dialog_set_title (dialog, _("Save items to file"));
 
 	/* Filters are only for improving usability for now, as the code
 	 * itself can only save feeds as RSS 2.0.
 	 */
+	filters = g_list_store_new (GTK_TYPE_FILE_FILTER);
+
 	feed_files_filter = gtk_file_filter_new ();
 	gtk_file_filter_set_name (feed_files_filter, _("RSS 2.0 files"));
 	gtk_file_filter_add_pattern (feed_files_filter, "*.rss");
 	gtk_file_filter_add_pattern (feed_files_filter, "*.xml");
-	gtk_file_chooser_add_filter(chooser, feed_files_filter);
+	g_list_store_append (filters, feed_files_filter);
 
 	all_files_filter = gtk_file_filter_new ();
 	gtk_file_filter_set_name (all_files_filter, _("All files"));
 	gtk_file_filter_add_pattern (all_files_filter, "*");
-	gtk_file_chooser_add_filter(chooser, all_files_filter);
+	g_list_store_append (filters, all_files_filter);
+
+	gtk_file_dialog_set_filters (dialog, G_LIST_MODEL (filters));
 
 	title = node_get_title (node);
 	curname = g_strdup_printf("%s.rss", title != NULL ? title : _("Untitled"));
-        file = g_file_new_for_path (curname);
-	gtk_file_chooser_set_file (chooser, file, NULL);
-	gtk_file_chooser_set_current_name (chooser, curname);
+	gtk_file_dialog_set_initial_name (dialog, curname);
 
-        g_signal_connect (dialog, "response", G_CALLBACK (on_menu_export_items_to_file_cb), user_data);
+	gtk_file_dialog_save (dialog, parent, NULL, on_menu_export_items_to_file_cb, node);
+
+	g_object_unref (filters);
+	g_object_unref (feed_files_filter);
+	g_object_unref (all_files_filter);
 }
 
 static void
@@ -322,8 +323,6 @@ GActionGroup *
 node_actions_create (LifereaShell *shell)
 {
 	GObject *feedlist, *itemlist;
-	gboolean toggle;
-
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 	
 	g_object_get (G_OBJECT (shell),
