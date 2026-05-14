@@ -1,7 +1,7 @@
 /**
  * @file update_request.h  generic update request processing
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -54,7 +54,7 @@ typedef struct updateOptions {
 
 /* defines all state data an updatable object (e.g. a feed) needs */
 typedef struct updateState {
-	glong		lastModified;		/*<< Last modified string as sent by the server */
+	gchar		*lastModified;		/*<< Last modified as sent by the server */
 	gint64  	lastPoll;		/*<< time at which the feed was last updated */
 	gint64 		lastFaviconPoll;	/*<< time at which the feeds favicon was last updated */
 	gchar		*cookies;		/*<< cookies to be used */
@@ -109,8 +109,8 @@ updateStatePtr update_state_new (void);
  */
 updateStatePtr update_state_copy (updateStatePtr state);
 
-glong update_state_get_lastmodified (updateStatePtr state);
-void update_state_set_lastmodified (updateStatePtr state, glong lastmodified);
+const gchar * update_state_get_lastmodified (updateStatePtr state);
+void update_state_set_lastmodified (updateStatePtr state, const gchar *lastmodified);
 
 const gchar * update_state_get_etag (updateStatePtr state);
 void update_state_set_etag (updateStatePtr state, const gchar *etag);

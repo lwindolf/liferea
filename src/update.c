@@ -1,7 +1,7 @@
 /**
  * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -30,16 +30,19 @@ update_state_new (void)
 	return g_new0 (struct updateState, 1);
 }
 
-glong
+const gchar *
 update_state_get_lastmodified (updateStatePtr state)
 {
 	return state->lastModified;
 }
 
 void
-update_state_set_lastmodified (updateStatePtr state, glong lastModified)
+update_state_set_lastmodified (updateStatePtr state, const gchar *lastModified)
 {
-	state->lastModified = lastModified;
+	g_free (state->lastModified);
+	state->lastModified = NULL;
+	if (lastModified)
+		state->lastModified = g_strdup (lastModified);
 }
 
 const gchar *
@@ -54,7 +57,7 @@ update_state_set_etag (updateStatePtr state, const gchar *etag)
 	g_free (state->etag);
 	state->etag = NULL;
 	if (etag)
-		state->etag = g_strdup(etag);
+		state->etag = g_strdup (etag);
 }
 
 void

@@ -1,7 +1,7 @@
 /**
  * @file net.c  HTTP network access using libsoup
  *
- * Copyright (C) 2007-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2021 Lorenzo L. Ancora <admin@lorenzoancora.info>
  *
@@ -35,6 +35,114 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+
+/**
+ * Note: there is a great resource for feed reader behaviour at https://rachelbythebay.com/frb/
+ * 
+ * Here is the implementation state of the listed requirements that this code base tries to achieve.
+ * Most of the logic is located in net.c update.c subscription.c and node_providers/feed.c.
+ * 
+ * Conditional requests
+ *   FRB001: Last-Modified storage				✅
+ *   FRB002: If-Modified-Since generation			✅
+ *   FRB003: ETag storage					✅
+ *   FRB004: If-None-Match generation				✅
+ * 
+ * Opaque cache values
+ *   FRB010: No short-term memory loss for cache parameters	✅
+ *   FRB011: No long-term memory loss for cache parameters	✅
+ *   FRB012: No "creative" cache IMS parameters			✅
+ *   FRB013: No "creative" cache INM parameters			✅
+ *   FRB014: Last-Modified and ETag are an atomic set		✅
+ *   FRB015: Cache parameters survive software upgrades		✅
+ *   FRB016: INM/IMS values survive HTTP 429			to be tested
+ * 
+ * Server-side rate-limiting hints
+ *   FRB020: Slow down on request (HTTP 429)			✅ (per domain, limitation: Retry-After only format in seconds supported)
+ *   FRB021: Slow down even no hints				✅ (retries after 5min)
+ *   FRB022: Documents also have cache hint			✅ (we honour Cache-Control max-age)
+ *   FRB023: Match the rhythm of the feed			not planned (we do support syn, ttl though)
+ *   FRB024: Some feed specs give hints on when to poll		✅ (but not skipDays, skipHours)
+ * 
+ * Client-side request scheduling
+ *   FRB030: No duplicate fetch for content (feed+posts)	✅ (users can optionally enable content scraping)
+ *   FRB031: Other URLs also need proper caching behaviour	✅ (one-time fetch only for content scraping)
+ *   FRB032: Don't hammer an item				✅ (one-time fetch only for content scraping)
+ *   FRB033: Don't hammer a server				❌ (per-server voluntary rate limit to be done)
+ *   FRB034: Many feeds, few servers				❌ (per-server voluntary rate limit to be done)
+ *   FRB035: Many hosts, few IPs				not planned
+ *   FRB036: Feed addition equals a single request		not planned
+ *   FRB037: Relying on cron is not enough			✅
+ * 
+ * Cloud/multiple device operations
+ *   (does not apply to desktop app)
+ * 
+ * HTTP Methods
+ *   FRB050: Use (only) GET					✅
+ *   FRB051: No HEAD						✅
+ * 
+ * Clean and concise requests
+ *   FRB060: Check user input of URLs				✅
+ *   FRB061: Don't guess at the URL				✅
+ *   FRB062: No extra parameters				✅
+ *   FRB063: No cookies by default				✅
+ *   FRB064: No cache-busting behaviour				✅
+ *   FRB065: No refer(r)ers					✅
+ *   FRB066: No normalizing query strings			✅
+ *
+ * Limit food pellets
+ *   FRB070: Limit on-demand fetch activity			to be tested (force update on single feed should be possible)
+ *   FRB071: Confirm for unconditional requests			❌ (to be implemented)
+ * 
+ * Identity
+ *   FRB080: User-Agent						✅
+ *   FRB081: contact URL					✅
+ *   FRB082: versioning						✅
+ *   FRB083: useful versioning					✅
+ *   FRB084: no masquerading					✅ (except if user overrides it with env var)
+ *   FRB085: no masquerading as browser				not compliant (to be revisited)
+ *   FRB086: no libraries					✅
+ *   FRB087: no morphing 					✅ (except if user overrides it with env var)
+ *   FRB088: no user id						✅
+ *   FRB089: you are not jwz					not compliant (to be revisited)
+ *   FRB090: URLs not fake					✅
+ * 
+ * Using URLs properly
+ *   FRB100: Don't add bad URLs					❌ (to be implemented)
+ *   FRB101: Provide bodies on feed creation failure		✅
+ *   FRB102: Recognizes non-feeds on creation			❌ (to be implemented)
+ *   FRB103: link rel=alternate					✅
+ *   FRB104: no feed link guessing				✅
+ *   FRB105: no other guessing					✅ (we guess favicons though)
+ *   FRB106: URL privacy					✅
+ * 
+ * Backing off in case of problems
+ *   FRB110: Slow down if it stops being a feed			❌ (to be implemented)
+ *   FRB111: Tell user on 410					✅
+ *   FRB112: Slow down on 403					❌ (to be implemented)
+ *   FRB113: Slow down on 404					❌ (to be implemented)
+ *   FRB114: Stop on 410					✅
+ *   FRB115: Slow down on other errors				❌ (to be implemented)
+ *   FRB116: Slow down on resolv error				❌ (to be implemented)
+ *   FRB117: Slow down on connection error			❌ (to be implemented)
+ *   FRB118: Slow down on server error				❌ (to be implemented)
+ *   FRB119: Slow down on errors				❌ (to be implemented)
+ *   FRB120: Communicate errors to users			✅
+ * 
+ * Keeping up with server-side changes
+ *   FRB130: permanent HTTP 301					✅
+ *   FRB131: permanent HTTP 308					✅
+ *   FRB132: inform user on permanent move			not planned
+ *   FRB133: temporary HTTP 302					✅
+ *   FRB134: temporary HTTP 307					✅
+ *   FRB135: inform user on temporary move			not planned
+ *   FRB136: inform user on TLS problems			✅
+ *   FRB137: feeds can merge					not planned
+ *
+ * Efficient encodings
+ *   FRB140: Response compression				✅
+ *   FRB141: Willingness to decompress				✅
+ */
 
 #define HOMEPAGE	"https://lzone.de/liferea/"
 
@@ -75,7 +183,6 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 	SoupSession		*session = SOUP_SESSION (obj);
 	SoupMessage		*msg;
 	UpdateJob *		job = (UpdateJob *)user_data;
-	GDateTime		*last_modified;
 	const gchar		*tmp = NULL;
 	GHashTable		*params;
 	gboolean		revalidated = FALSE;
@@ -127,31 +234,16 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (soup_message_get_response_headers (msg), NULL));
 
-	/* Update last-modified date */
+	/* Update last-modified and etag */
 	if (revalidated) {
-		 job->result->updateState->lastModified = update_state_get_lastmodified (job->request->updateState);
-	} else {
-		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Last-Modified");
-		if (tmp) {
-			/* The string may be badly formatted, which will make
-			* soup_date_new_from_string() return NULL */
-			last_modified = soup_date_time_new_from_http_string (tmp);
-			if (last_modified) {
-				job->result->updateState->lastModified = g_date_time_to_unix (last_modified);
-				g_date_time_unref (last_modified);
-			}
-		}
-	}
-
-	/* Update ETag value */
-	if (revalidated) {
+		job->result->updateState->lastModified = g_strdup (update_state_get_lastmodified (job->request->updateState));
 		job->result->updateState->etag = g_strdup (update_state_get_etag (job->request->updateState));
 	} else {
-		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "ETag");
-		if (tmp) {
-			job->result->updateState->etag = g_strdup (tmp);
-		}
+		update_state_set_lastmodified (job->result->updateState, soup_message_headers_get_one (soup_message_get_response_headers (msg), "Last-Modified"));
+		update_state_set_etag (job->result->updateState, soup_message_headers_get_one (soup_message_get_response_headers (msg), "ETag"));
 	}
+
+	/* No cookie persisting, we support only cookie sending! */
 
 	/* Update cache max-age  */
 	tmp = soup_message_headers_get_list (soup_message_get_response_headers (msg), "Cache-Control");
@@ -267,14 +359,9 @@ network_process_request (const UpdateJob *job)
 
 	/* Set the If-Modified-Since: header */
 	if (job->request->updateState && update_state_get_lastmodified (job->request->updateState)) {
-		g_autofree gchar *datestr = NULL;
-		g_autoptr(GDateTime) date;
-
-		date = g_date_time_new_from_unix_utc (update_state_get_lastmodified (job->request->updateState));
-		datestr = soup_date_time_to_string (date, SOUP_DATE_HTTP);
 		soup_message_headers_append (request_headers,
 					     "If-Modified-Since",
-					     datestr);
+					     update_state_get_lastmodified (job->request->updateState));
 	}
 
 	/* Set the If-None-Match header */
