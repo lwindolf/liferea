@@ -35,8 +35,6 @@
 #include "common.h"
 #include "debug.h"
 
-static void xml_buffer_parse_error(void *ctxt, const gchar * msg, ...);
-
 xmlDocPtr
 xhtml_parse (const gchar *html, gint len)
 {
@@ -388,45 +386,6 @@ unmarkupize (gchar *string, void(*parse)(gchar *string, result_buffer *buffer))
 gchar * unhtmlize (gchar * string) { return unmarkupize (string, _unhtmlize); }
 gchar * unxmlize (gchar * string) { return unmarkupize (string, _unxmlize); }
 
-#define MAX_PARSE_ERROR_LINES	10
-
-/**
- * Error buffering function to be registered by
- * xmlSetGenericErrorFunc(). This function is called on
- * each libxml2 error output and collects all output as
- * HTML in the buffer ctxt points to.
- *
- * @param	ctxt	error context
- * @param	msg	printf like format string
- */
-static void
-xml_buffer_parse_error (void *ctxt, const gchar * msg, ...)
-{
-	va_list		params;
-	errorCtxtPtr	errors = (errorCtxtPtr)ctxt;
-	gchar		*newmsg;
-	gchar		*tmp;
-
-	if (MAX_PARSE_ERROR_LINES > errors->errorCount++) {
-		va_start (params, msg);
-		newmsg = g_strdup_vprintf (msg, params);
-		va_end (params);
-
-		/* Do never encode any invalid characters from error messages */
-		if (g_utf8_validate (newmsg, -1, NULL)) {
-			tmp = g_markup_escape_text (newmsg, -1);
-			g_free (newmsg);
-			newmsg = tmp;
-
-			g_string_append_printf(errors->msg, "%s\n", newmsg);
-		}
-		g_free(newmsg);
-	}
-
-	if (MAX_PARSE_ERROR_LINES == errors->errorCount)
-		g_string_append (errors->msg, _("[There were more errors. Output was truncated!]"));
-}
-
 static xmlDocPtr entities = NULL;
 
 static xmlEntityPtr
@@ -528,15 +487,17 @@ xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace
 }
 
 static void
-liferea_xml_errorSAXFunc (void * ctx, const char * msg,...)
+xml_parse_error (errorCtxtPtr errCtx, const char * msg,...)
 {
 	va_list valist;
-	gchar *parser_error = NULL;
+	g_autofree gchar *formatted_msg = NULL;
+
 	va_start(valist,msg);
-	parser_error = g_strdup_vprintf (msg, valist);
+	formatted_msg = g_strdup_vprintf (msg, valist);
+	debug (DEBUG_PARSING, "XML parse error: %s", formatted_msg);
+	g_string_append (errCtx->msg, formatted_msg);
 	va_end(valist);
-	debug (DEBUG_PARSING, "SAX parser error : %s", parser_error);
-	g_free (parser_error);
+	errCtx->errorCount++;
 }
 
 xmlDocPtr
@@ -549,17 +510,31 @@ xml_parse (const gchar *data, size_t length, errorCtxtPtr errCtx)
 
 	ctxt = xmlNewParserCtxt ();
 	ctxt->sax->getEntity = xml_process_entities;
-	ctxt->sax->error = liferea_xml_errorSAXFunc;
 
-	if (errCtx)
-		xmlSetGenericErrorFunc (errCtx, (xmlGenericErrorFunc)xml_buffer_parse_error);
+	doc = xmlCtxtReadMemory (ctxt, data, length, NULL, NULL, 0);
 
-	doc = xmlSAXParseMemory (ctxt->sax, data, length, 0);
+	if (!doc || !ctxt->wellFormed || ctxt->errNo != XML_ERR_OK) {
+        	debug (DEBUG_PARSING, 
+			"XML parsing failed: wellFormed=%d, errNo=%d",
+			ctxt->wellFormed, ctxt->errNo);
 
-	/* This seems to reset the errorfunc to its default, so that the
-	   GtkHTML2 module is not unhappy because it also tries to call the
-	   errorfunc on occasion. */
-	xmlSetGenericErrorFunc (NULL, NULL);
+		if (errCtx) {
+			const xmlError *lastError = xmlCtxtGetLastError (ctxt);
+			if (lastError) {
+				xml_parse_error (errCtx,
+					"Line %d, Column %d: %s\n",
+					lastError->line,
+					lastError->int2,
+					lastError->message);
+			}
+	        }
+        
+		/* Clean up partial document if parsing failed */
+		if (doc) {
+			xmlFreeDoc (doc);
+			doc = NULL;
+		}
+	}
 
 	xmlFreeParserCtxt (ctxt);
 
