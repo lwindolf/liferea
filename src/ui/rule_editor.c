@@ -58,12 +58,12 @@ on_rulevalue_changed (GtkEditable *editable, gpointer user_data)
 }
 
 static void
-on_rule_changed_additive (GtkComboBox *optionmenu, gpointer user_data)
+on_rule_changed_additive (GtkDropDown *dropdown, GParamSpec *pspec, gpointer user_data)
 {
 	rulePtr rule = (rulePtr)user_data;
-	gint active = gtk_combo_box_get_active (optionmenu);
+	guint selected = gtk_drop_down_get_selected (dropdown);
 
-	rule->additive = ((active==0) ? TRUE : FALSE);
+	rule->additive = ((selected == 0) ? TRUE : FALSE);
 }
 
 /**
@@ -92,12 +92,15 @@ rule_editor_update_widgets (GtkWidget *hbox, rulePtr rule)
 	}
 
 	/* add popup menu for selection of positive or negative logic */
-	widget = gtk_combo_box_text_new ();
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (widget), rule->ruleInfo->positive);
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (widget), rule->ruleInfo->negative);
-	gtk_combo_box_set_active ((GtkComboBox*)widget, (rule->additive)?0:1);
-	g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK (on_rule_changed_additive), rule);
+	GtkStringList *logic_list = gtk_string_list_new (NULL);
+	gtk_string_list_append (logic_list, rule->ruleInfo->positive);
+	gtk_string_list_append (logic_list, rule->ruleInfo->negative);
+	
+	widget = gtk_drop_down_new (G_LIST_MODEL (logic_list), NULL);
+	gtk_drop_down_set_selected (GTK_DROP_DOWN (widget), (rule->additive) ? 0 : 1);
+	g_signal_connect (G_OBJECT (widget), "notify::selected", G_CALLBACK (on_rule_changed_additive), rule);
 	gtk_box_append (GTK_BOX (hbox), widget);
+
 
 	/* add new value entry if needed */
 	if (rule->ruleInfo->needsParameter) {
