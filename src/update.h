@@ -1,5 +1,5 @@
-/**
- * @file update_request.h  generic update request processing
+/*
+ * update_request.h  generic update request processing
  *
  * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>

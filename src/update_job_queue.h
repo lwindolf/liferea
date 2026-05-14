@@ -1,4 +1,4 @@
-/**
+/*
  * @file update_job_queue.h  handling async concurrent update processing
  *
  * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
@@ -34,7 +34,7 @@
 void update_job_queue_add (gpointer job, updateFlags flags);
 
 /**
- * update_job_queue_add:
+ * update_job_queue_finish:
  * @job:	the job to finish
   * 
  * Queues the given job for result processing. The job might be delayed if other requests are pending.
