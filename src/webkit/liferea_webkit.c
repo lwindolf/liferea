@@ -547,7 +547,7 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 		G_CONNECT_AFTER);
 
 	g_signal_connect (
-		view,
+		webkit_network_session_get_default (),
 		"download-started",
 		G_CALLBACK (liferea_webkit_download_started),
 		NULL);
