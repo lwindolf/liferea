@@ -268,9 +268,9 @@ liferea_webkit_initialize_web_extensions (WebKitWebContext 	*context,
 }
 
 static void
-liferea_webkit_download_started (WebKitWebContext	*context,
-				      WebKitDownload 	*download,
-				      gpointer 		user_data)
+liferea_webkit_download_started (WebKitWebView	*view,
+				 WebKitDownload	*download,
+				 gpointer	unused)
 {
 	WebKitURIRequest *request = webkit_download_get_request (download);
 	webkit_download_cancel (download);
@@ -449,18 +449,8 @@ liferea_webkit_init (LifereaWebKit *self)
 
 	webkit_network_session_set_itp_enabled (webkit_network_session_get_default (), enable_itp);
 
-	/* Webkit web extensions */
-	/*g_signal_connect (
-		webkit_web_context_get_default (),
-		"initialize-web-extensions",
-		G_CALLBACK (liferea_webkit_initialize_web_extensions),
-		self);
-*/
-	/*g_signal_connect (
-		webkit_web_context_get_default (),
-		"download-started",
-		G_CALLBACK (liferea_webkit_download_started),
-		self);*/
+	/* Initialize web extensions */
+	liferea_webkit_initialize_web_extensions (webkit_web_context_get_default (), self);
 }
 
 /**
@@ -555,6 +545,12 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 		G_CALLBACK (on_page_created),
 		view,
 		G_CONNECT_AFTER);
+
+	g_signal_connect (
+		view,
+		"download-started",
+		G_CALLBACK (liferea_webkit_download_started),
+		NULL);
 
 	/** Pass LifereaBrowser into the WebKitWebView object */
 	g_object_set_data (
