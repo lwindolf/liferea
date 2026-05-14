@@ -10,7 +10,7 @@ error=0
 if command -v valgrind >/dev/null; then
 	for check in $@; do
 		details=$(
-			valgrind -q --leak-check=full --gen-suppressions=all --suppressions="$(dirname "$0")/memcheck.supp" ./liferea --test "$check" 2>&1
+			valgrind -q --enable-debuginfod=no --leak-check=full --gen-suppressions=all --suppressions="$(dirname "$0")/memcheck.supp" ./liferea --test "$check" 2>&1
 		)
 		output=$(
 			echo "$details" | grep "definitely lost" | grep -v "0 bytes in 0 blocks"
