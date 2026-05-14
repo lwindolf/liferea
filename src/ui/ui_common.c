@@ -130,9 +130,9 @@ ui_confirm_box (const gchar *title, const gchar *message, const gchar *acceptBut
 void
 ui_show_error_box (const char *format, ...)
 {
-	GtkWidget		*dialog;
 	va_list			args;
 	g_autofree gchar	*msg = NULL;
+	AdwDialog		*dialog;
 
 	g_return_if_fail (format != NULL);
 
@@ -140,21 +140,20 @@ ui_show_error_box (const char *format, ...)
 	msg = g_strdup_vprintf (format, args);
 	va_end (args);
 
-	dialog = gtk_message_dialog_new (GTK_WINDOW (liferea_shell_get_window ()),
-                  GTK_DIALOG_DESTROY_WITH_PARENT,
-                  GTK_MESSAGE_ERROR,
-                  GTK_BUTTONS_CLOSE,
-                  "%s", msg);
+	dialog = adw_alert_dialog_new (_("Error"), NULL);
+	adw_alert_dialog_format_body (ADW_ALERT_DIALOG (dialog), "%s", msg);
+	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "close", _("_Close"));
+	adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "close");
 
-	g_signal_connect (dialog, "response", G_CALLBACK (gtk_window_destroy), NULL);
+	adw_dialog_present (dialog, liferea_shell_get_window ());
 }
 
 void
 ui_show_info_box (const char *format, ...)
 {
-	GtkWidget		*dialog;
 	va_list			args;
 	g_autofree gchar	*msg = NULL;
+	AdwDialog		*dialog;
 
 	g_return_if_fail (format != NULL);
 
@@ -162,13 +161,12 @@ ui_show_info_box (const char *format, ...)
 	msg = g_strdup_vprintf (format, args);
 	va_end (args);
 
-	dialog = gtk_message_dialog_new (GTK_WINDOW (liferea_shell_get_window ()),
-                  GTK_DIALOG_DESTROY_WITH_PARENT,
-                  GTK_MESSAGE_INFO,
-                  GTK_BUTTONS_CLOSE,
-                  "%s", msg);
+	dialog = adw_alert_dialog_new (_("Note"), NULL);
+	adw_alert_dialog_format_body (ADW_ALERT_DIALOG (dialog), "%s", msg);
+	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "close", _("_Close"));
+	adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "close");
 
-	g_signal_connect (dialog, "response", G_CALLBACK (gtk_window_destroy), NULL);
+	adw_dialog_present (dialog, liferea_shell_get_window ());
 }
 
 struct file_chooser_tuple {
@@ -177,12 +175,13 @@ struct file_chooser_tuple {
 };
 
 static void
-ui_choose_file_save_cb (GtkNativeDialog *dialog, gint response_id, gpointer user_data)
+ui_choose_file_save_cb (GObject *dialog, GAsyncResult *result, gpointer user_data)
 {
 	struct file_chooser_tuple *tuple = (struct file_chooser_tuple*)user_data;
+	GtkFileDialog *file_dialog = GTK_FILE_DIALOG (dialog);
+	g_autoptr(GFile) file = gtk_file_dialog_open_finish (file_dialog, result, NULL);
 
-	if (response_id == GTK_RESPONSE_ACCEPT) {
-		g_autoptr(GFile) file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
+	if (file) {
 		g_autofree gchar *filename = g_file_get_path (file);
 		tuple->func (filename, tuple->user_data);
 	} else {
@@ -195,8 +194,7 @@ ui_choose_file_save_cb (GtkNativeDialog *dialog, gint response_id, gpointer user
 static void
 ui_choose_file_or_dir (gchar *title, const gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data)
 {
-	GtkFileChooserNative		*native;
-	GtkFileChooser 			*chooser;
+	GtkFileDialog 			*dialog;
 	struct file_chooser_tuple	*tuple;
 	gchar				*path = NULL;
 
@@ -208,35 +206,29 @@ ui_choose_file_or_dir (gchar *title, const gchar *buttonName, gboolean saving, g
 	else
 		path = g_strdup (currentPath);
 
-	native = gtk_file_chooser_native_new (title, GTK_WINDOW (liferea_shell_get_window ()),
-	                                      (directory?GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER:
-					       (saving ? GTK_FILE_CHOOSER_ACTION_SAVE : GTK_FILE_CHOOSER_ACTION_OPEN)),
-	                                      buttonName, NULL);
-	chooser = GTK_FILE_CHOOSER (native);
+	dialog = gtk_file_dialog_new ();
+	gtk_file_dialog_set_title (dialog, title);
+	gtk_file_dialog_set_modal (dialog, TRUE);
+	gtk_file_dialog_set_accept_label (dialog, buttonName);
 
-	gtk_native_dialog_set_modal (GTK_NATIVE_DIALOG (native), TRUE);
-	gtk_native_dialog_set_transient_for (GTK_NATIVE_DIALOG (native), GTK_WINDOW (liferea_shell_get_window ()));
-	
 	tuple = g_new0 (struct file_chooser_tuple, 1);
 	tuple->func = callback;
 	tuple->user_data = user_data;
 
-	g_signal_connect (G_OBJECT (native), "response",
-	                  G_CALLBACK (ui_choose_file_save_cb), tuple);
 	if (path && g_file_test (path, G_FILE_TEST_EXISTS)) {
 		g_autoptr(GFile) file = g_file_new_for_path (path);
 
 		if (directory || defaultFilename)
-			gtk_file_chooser_set_current_folder (chooser, file, NULL);
-		else {
-			gtk_file_chooser_set_file (chooser, file, NULL);
-		}
+			gtk_file_dialog_set_initial_folder (dialog, file);
+		else
+			gtk_file_dialog_set_initial_file (dialog, file);
 	}
 	if (defaultFilename)
-		gtk_file_chooser_set_current_name (chooser, defaultFilename);
+		gtk_file_dialog_set_initial_name (dialog, defaultFilename);
 
 	if (filterstring && filtername) {
 		GtkFileFilter *filter, *allfiles;
+		GListStore *filters;
 		gchar **filterstrings, **f;
 
 		filter = gtk_file_filter_new ();
@@ -247,15 +239,29 @@ ui_choose_file_or_dir (gchar *title, const gchar *buttonName, gboolean saving, g
 		g_strfreev (filterstrings);
 
 		gtk_file_filter_set_name (filter, filtername);
-		gtk_file_chooser_add_filter (chooser, filter);
 
 		allfiles = gtk_file_filter_new ();
 		gtk_file_filter_add_pattern (allfiles, "*");
 		gtk_file_filter_set_name (allfiles, _("All Files"));
-		gtk_file_chooser_add_filter (chooser, allfiles);
+
+		filters = g_list_store_new (GTK_TYPE_FILE_FILTER);
+		g_list_store_append (filters, filter);
+		g_list_store_append (filters, allfiles);
+		gtk_file_dialog_set_filters (dialog, G_LIST_MODEL (filters));
+		g_object_unref (filters);
 	}
 
-	gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));
+	if (directory) {
+		gtk_file_dialog_select_folder (dialog, GTK_WINDOW (liferea_shell_get_window ()),
+									   NULL, ui_choose_file_save_cb, tuple);
+	} else if (saving) {
+		gtk_file_dialog_save (dialog, GTK_WINDOW (liferea_shell_get_window ()),
+							  NULL, ui_choose_file_save_cb, tuple);
+	} else {
+		gtk_file_dialog_open (dialog, GTK_WINDOW (liferea_shell_get_window ()),
+							  NULL, ui_choose_file_save_cb, tuple);
+	}
+
 	g_free (path);
 }
 

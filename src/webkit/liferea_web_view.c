@@ -325,7 +325,7 @@ struct FullscreenData {
 	gboolean visible;
 };
 /**
- * callback for fullscreen mode gtk_container_foreach()
+ * callback for fullscreen mode widget_foreach()
  */
 static void
 fullscreen_toggle_widget_visible (GtkWidget *wid, gpointer user_data) {
@@ -361,7 +361,7 @@ fullscreen_toggle_widget_visible (GtkWidget *wid, gpointer user_data) {
 	}
 }
 
-typedef void (*widgetForeachFunc)(GtkWidget *widget, gpointer callback, gpointer data);
+typedef void (*widgetForeachFunc)(GtkWidget *widget, gpointer data);
 
 static void
 widget_foreach (GtkWidget *widget, gpointer callback, gpointer data) {
@@ -371,7 +371,7 @@ widget_foreach (GtkWidget *widget, gpointer callback, gpointer data) {
 	     child != NULL;
 	     child = gtk_widget_get_next_sibling (child))
 	{
-		((widgetForeachFunc)callback) (child, callback, data);
+		((widgetForeachFunc)callback) (child, data);
 	}
 }
 
