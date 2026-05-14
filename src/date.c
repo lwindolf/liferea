@@ -1,7 +1,7 @@
 /**
  * @file date.c date formatting routines
  *
- * Copyright (C) 2008-2022  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2026  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * The date formatting was reused from the Evolution code base
@@ -344,11 +344,7 @@ date_parse_rfc822_tz (char *token)
 	int num_timezones = sizeof (tz_offsets) / sizeof ((tz_offsets)[0]);
 
 	if (*inptr == '+' || *inptr == '-') {
-		#ifdef HAVE_G_TIME_ZONE_NEW_IDENTIFIER
-			return g_time_zone_new_identifier (inptr);
-		#else
-			return g_time_zone_new (inptr);
-		#endif
+		return g_time_zone_new_identifier (inptr);
 	} else {
 		int t;
 
@@ -357,11 +353,7 @@ date_parse_rfc822_tz (char *token)
 
 		for (t = 0; t < num_timezones; t++)
 			if (!strncmp (inptr, tz_offsets[t].name, strlen (tz_offsets[t].name)))
-				#ifdef HAVE_G_TIME_ZONE_NEW_IDENTIFIER
-					return g_time_zone_new_identifier (tz_offsets[t].offset);
-				#else
-					return g_time_zone_new (tz_offsets[t].offset);
-				#endif
+				return g_time_zone_new_identifier (tz_offsets[t].offset);
 	}
 
 	return NULL;
