@@ -109,6 +109,7 @@ update_state_free (updateStatePtr updateState)
 	if (!updateState)
 		return;
 
+	g_free (updateState->lastModified);
 	g_free (updateState->cookies);
 	g_free (updateState->etag);
 	g_free (updateState);

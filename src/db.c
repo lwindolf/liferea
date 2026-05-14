@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  *
- * Copyright (C) 2007-2024  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1589,6 +1589,8 @@ void
 db_subscription_load (subscriptionPtr subscription)
 {
 	db_update_state_load (subscription->node->id, subscription->updateState);
+	if (subscription->metadata)
+		metadata_list_free (subscription->metadata);
 	subscription->metadata = db_subscription_metadata_load (subscription->node->id);
 }
 
