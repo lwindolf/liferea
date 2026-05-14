@@ -1,7 +1,7 @@
 /**
  * @file net.c  HTTP network access using libsoup
  *
- * Copyright (C) 2007-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2021 Lorenzo L. Ancora <admin@lorenzoancora.info>
  *
@@ -75,7 +75,6 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 	SoupSession		*session = SOUP_SESSION (obj);
 	SoupMessage		*msg;
 	UpdateJob *		job = (UpdateJob *)user_data;
-	GDateTime		*last_modified;
 	const gchar		*tmp = NULL;
 	GHashTable		*params;
 	gboolean		revalidated = FALSE;
@@ -127,31 +126,16 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (soup_message_get_response_headers (msg), NULL));
 
-	/* Update last-modified date */
+	/* Update last-modified and etag */
 	if (revalidated) {
-		 job->result->updateState->lastModified = update_state_get_lastmodified (job->request->updateState);
-	} else {
-		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Last-Modified");
-		if (tmp) {
-			/* The string may be badly formatted, which will make
-			* soup_date_new_from_string() return NULL */
-			last_modified = soup_date_time_new_from_http_string (tmp);
-			if (last_modified) {
-				job->result->updateState->lastModified = g_date_time_to_unix (last_modified);
-				g_date_time_unref (last_modified);
-			}
-		}
-	}
-
-	/* Update ETag value */
-	if (revalidated) {
+		job->result->updateState->lastModified = g_strdup (update_state_get_lastmodified (job->request->updateState));
 		job->result->updateState->etag = g_strdup (update_state_get_etag (job->request->updateState));
 	} else {
-		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "ETag");
-		if (tmp) {
-			job->result->updateState->etag = g_strdup (tmp);
-		}
+		update_state_set_lastmodified (job->result->updateState, soup_message_headers_get_one (soup_message_get_response_headers (msg), "Last-Modified"));
+		update_state_set_etag (job->result->updateState, soup_message_headers_get_one (soup_message_get_response_headers (msg), "ETag"));
 	}
+
+	/* No cookie persisting, we support only cookie sending! */
 
 	/* Update cache max-age  */
 	tmp = soup_message_headers_get_list (soup_message_get_response_headers (msg), "Cache-Control");
@@ -267,14 +251,9 @@ network_process_request (const UpdateJob *job)
 
 	/* Set the If-Modified-Since: header */
 	if (job->request->updateState && update_state_get_lastmodified (job->request->updateState)) {
-		g_autofree gchar *datestr = NULL;
-		g_autoptr(GDateTime) date;
-
-		date = g_date_time_new_from_unix_utc (update_state_get_lastmodified (job->request->updateState));
-		datestr = soup_date_time_to_string (date, SOUP_DATE_HTTP);
 		soup_message_headers_append (request_headers,
 					     "If-Modified-Since",
-					     datestr);
+					     update_state_get_lastmodified (job->request->updateState));
 	}
 
 	/* Set the If-None-Match header */

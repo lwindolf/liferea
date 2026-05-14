@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  *
- * Copyright (C) 2007-2024  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -472,9 +472,9 @@ db_init (void)
 	/* 1. Create tables if they do not exist yet */
 	db_exec ("CREATE TABLE items ("
         	 "   item_id		INTEGER PRIMARY KEY AUTOINCREMENT,"
-			 "   parent_item_id     INTEGER,"
+		 "   parent_item_id     INTEGER,"
         	 "   node_id		TEXT," /* FIXME: migrate node ids to real integers */
-			 "   parent_node_id     TEXT," /* FIXME: migrate node ids to real integers */
+		 "   parent_node_id     TEXT," /* FIXME: migrate node ids to real integers */
         	 "   title		TEXT,"
         	 "   read		INTEGER,"
         	 "   updated		INTEGER,"
@@ -486,7 +486,7 @@ db_init (void)
         	 "   description	TEXT,"
         	 "   date		INTEGER,"
         	 "   comment_feed_id	TEXT,"
-			 "   comment            INTEGER"
+		 "   comment            INTEGER"
         	 ");");
 
 	db_exec ("CREATE INDEX items_idx ON items (source_id);");
@@ -545,6 +545,21 @@ db_init (void)
 	         "   parent_node_id     STRING,"
 	         "   item_id		INTEGER,"
 		 "   PRIMARY KEY (node_id, item_id)"
+		 ");");
+
+	db_exec ("CREATE TABLE update_state ("
+        	 "   node_id            STRING,"
+		 "   last_modified      STRING,"
+		 "   last_poll          INTEGER,"
+		 "   last_favicon_poll  INTEGER,"
+		 "   cookies            STRING,"
+		 "   etag               STRING,"
+		 "   last_update        INTEGER,"
+		 "   max_age_minutes    INTEGER,"
+		 "   syn_frequency      INTEGER,"
+		 "   syn_period         INTEGER,"
+		 "   ttl                INTEGER,"
+        	 "   PRIMARY KEY (node_id)"
 		 ");");
 
 	db_end_transaction ();
@@ -607,6 +622,7 @@ db_init (void)
 		 "   DELETE FROM node WHERE node_id = old.node_id; "
 		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
 		 "   DELETE FROM search_folder_items WHERE parent_node_id = old.node_id; "
+		 "   DELETE FROM update_state WHERE node_id = old.node_id; "
         	 "END;");
 
 	/* Note: view counting triggers are set up in the view preparation code (see db_view_create()) */
@@ -751,6 +767,26 @@ db_init (void)
 
 	db_new_statement ("nodeRemoveStmt",
 	                  "DELETE FROM node WHERE node_id = ?;");
+
+	db_new_statement ("updateStateLoadStmt",
+	                  "SELECT "
+	                  "last_modified,"
+			  "last_poll,"
+	                  "last_favicon_poll,"
+			  "cookies,"
+	                  "etag,"
+	                  "last_update,"
+			  "max_age_minutes,"
+			  "syn_frequency,"
+			  "syn_period,"
+			  "ttl "
+	                  "FROM update_state "
+			  "WHERE node_id = ?");
+			 
+	db_new_statement ("updateStateSaveStmt",
+	                  "REPLACE INTO update_state "
+			  "(node_id,last_modified,last_poll,last_favicon_poll,cookies,etag,max_age_minutes,syn_frequency,syn_period,ttl) "
+			  "VALUES (?,?,?,?,?,?,?,?,?,?)");
 
 	g_assert (sqlite3_get_autocommit (db));
 
@@ -1438,6 +1474,67 @@ db_search_folder_get_unread_count (const gchar *id)
 	return count;
 }
 
+gboolean
+db_update_state_load (const gchar *id,
+                      updateStatePtr updateState)
+{
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	debug (DEBUG_DB, "loading subscription %s update state", id);
+
+	stmt = db_get_statement ("updateStateLoadStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+
+	res = sqlite3_step (stmt);
+	if (SQLITE_ROW == res) {
+		updateState->lastModified	= g_strdup ((const gchar *) sqlite3_column_text (stmt, 0));
+		updateState->lastPoll		= sqlite3_column_int64 (stmt, 1);
+		updateState->lastFaviconPoll	= sqlite3_column_int64 (stmt, 2);
+		updateState->cookies		= g_strdup ((const gchar *) sqlite3_column_text (stmt, 3));
+		updateState->etag		= g_strdup ((const gchar *) sqlite3_column_text (stmt, 4));
+		updateState->maxAgeMinutes	= sqlite3_column_int (stmt, 5);
+		updateState->synFrequency	= sqlite3_column_int (stmt, 6);
+		updateState->synPeriod		= sqlite3_column_int (stmt, 7);
+		updateState->timeToLive		= sqlite3_column_int (stmt, 8);
+	} else {
+		debug (DEBUG_DB, "Could not load update state for subscription %s (error code %d)!", id, res);
+	}
+
+	sqlite3_finalize (stmt);
+
+	return (SQLITE_ROW == res);
+}
+
+void
+db_update_state_save (const gchar *id,
+                      updateStatePtr updateState)
+{
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	debug (DEBUG_DB, "saving subscription %s update state", id);
+
+	stmt = db_get_statement ("updateStateSaveStmt");
+
+	sqlite3_bind_text  (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text  (stmt, 2, updateState->lastModified, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int64 (stmt, 3, updateState->lastPoll);
+	sqlite3_bind_int64 (stmt, 4, updateState->lastFaviconPoll);
+	sqlite3_bind_text  (stmt, 5, updateState->cookies, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text  (stmt, 6, updateState->etag, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int   (stmt, 7, updateState->maxAgeMinutes);
+	sqlite3_bind_int   (stmt, 8, updateState->synFrequency);
+	sqlite3_bind_int   (stmt, 9, updateState->synPeriod);
+	sqlite3_bind_int   (stmt, 10, updateState->timeToLive);
+
+	res = sqlite3_step (stmt);
+	if (SQLITE_DONE != res)
+		g_warning ("Could not save update state for subscription %s (error code %d)!", id, res);
+
+	sqlite3_finalize (stmt);
+}
+
 static GSList *
 db_subscription_metadata_load (const gchar *id)
 {
@@ -1491,6 +1588,7 @@ db_subscription_metadata_update (subscriptionPtr subscription)
 void
 db_subscription_load (subscriptionPtr subscription)
 {
+	db_update_state_load (subscription->node->id, subscription->updateState);
 	if (subscription->metadata)
 		metadata_list_free (subscription->metadata);
 	subscription->metadata = db_subscription_metadata_load (subscription->node->id);
@@ -1522,6 +1620,7 @@ db_subscription_update (subscriptionPtr subscription)
 
 	sqlite3_finalize (stmt);
 
+	db_update_state_save (subscription->node->id, subscription->updateState);
 	db_subscription_metadata_update (subscription);
 
 }
