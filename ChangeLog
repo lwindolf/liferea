@@ -1,8 +1,41 @@
+2025-05-25  Lars Windolf <lar.windolf@gmx.de>
+
+	Version 2.0-RC2
+
+	* Fixes #1515: Ctrl-R does not work
+	  (Lars Windolf)
+
+	* Fixes #1514: Internal browser URL submit broken
+	  (Lars Windolf)
+
+	* Fixes #1510: <media:content> images are not displayer
+	  (Lars Windolf)
+
+	* Fixes #1508: Duplicate favicon fetch
+	  (Lars Windolf)
+
+	* Fixes a lot of deprecations in GTK, libxml2
+	  (Lars Windolf)
+
+	* Fixes broken update state persistence that causes unnecessary
+	  feed updates. Documents compliance with feed reader requirements 
+	  https://rachelbythebay.com/frb/ in net.c
+	  (Lars Windolf)
+
+	* Add new feature to make search folders show the total count 
+	  instead of the unread count. This is useful for example with the
+	  "Important" search folder.
+	  (Lars Windolf)
+
+	* Add Georgian translation
+	  (Ekaterine Papava)
+
+
 2025-05-04  Lars Windolf <lar.windolf@gmx.de>
 
 	Version 2.0-RC1
 
-	Remove features:
+	Removed features:
 
 	* Dropped menu bar in favour of GtkHeader bar
 	* Dropped support for girepository-1.0
