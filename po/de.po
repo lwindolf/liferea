@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-26 21:53+0200\n"
-"PO-Revision-Date: 2022-12-17 21:57+0100\n"
+"PO-Revision-Date: 2026-05-25 18:20+0200\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.9\n"
 
 #: data/net.sourceforge.liferea.desktop.in:2 src/liferea_application.c:326
 #: resources/ui/mainwindow.ui:11
@@ -47,9 +47,8 @@ msgid "Configure a custom social bookmarking site. "
 msgstr ""
 
 #: plugins/add-bookmark-site.ui:75
-#, fuzzy
 msgid "Service _Name"
-msgstr "_Name der Suche:"
+msgstr "_Name des Dienstes"
 
 #: plugins/add-bookmark-site.ui:88 resources/ui/properties.ui:233
 msgid "_URL"
@@ -57,7 +56,7 @@ msgstr "_Adresse"
 
 #: plugins/add-bookmark-site.ui:121
 msgid "_Apply custom bookmark site"
-msgstr ""
+msgstr "_Anwenden der nutzerspezifischen Bookmark-Seite"
 
 #. Feed update interval hint in preference dialog.
 #: plugins/add-bookmark-site.ui:158
@@ -68,10 +67,15 @@ msgid ""
 "Example: \n"
 "https://bookmarks.org/add?u={url}&t={title}"
 msgstr ""
+"Hinweis: die URL muss sowohl einen  \"{url}\" als auch einen\n"
+"\"{title}\" Platzhalter enthalten.\n"
+"\n"
+"Beispiel:\n"
+"https://bookmarks.org/add?u={url}&t={title}"
 
 #: plugins/getfocus.ui:13
 msgid "Configure Plugin"
-msgstr ""
+msgstr "Plugin konfigurieren"
 
 #: plugins/getfocus.ui:26
 msgid "Save"
