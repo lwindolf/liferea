@@ -2,6 +2,12 @@
 
 	Version 1.16.10
 
+	* Fixes #1516: glib >= 2.86 required
+	  (Lars Windolf)
+
+	* Fixes #1508: Duplicate favicon fetch
+	  (Lars Windolf)
+
 	* Fixes update state persistence that caused unnecessary feed updates. 
 	  (Lars Windolf)
 
