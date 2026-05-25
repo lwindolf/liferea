@@ -1,3 +1,11 @@
+2026-05-25  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16.10
+
+	* Fixes update state persistence that caused unnecessary feed updates. 
+	  (Lars Windolf)
+
+
 2026-05-02  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.9
