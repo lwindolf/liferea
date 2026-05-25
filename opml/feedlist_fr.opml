@@ -43,7 +43,7 @@
     <outline text="Non lus" title="Non lus" description="Non lus" type="vfolder" htmlUrl="" xmlUrl="vfolder">
       <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
     </outline>
-    <outline text="Importants" title="Importants" description="Importants" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+    <outline text="Importants" title="Importants" description="Importants" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
       <outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
     </outline>
   </body>

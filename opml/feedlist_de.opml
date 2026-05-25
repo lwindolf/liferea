@@ -46,7 +46,7 @@
 	<outline text="Ungelesen" title="Ungelesen" description="Ungelesen" type="vfolder" htmlUrl="" xmlUrl="vfolder">
 		<outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
 	</outline>
-	<outline text="Wichtig" title="Wichtig" description="Wichtig" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+	<outline text="Wichtig" title="Wichtig" description="Wichtig" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
 		<outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
 	</outline>
 	<!-- end of search folder block -->

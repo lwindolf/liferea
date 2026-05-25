@@ -38,7 +38,7 @@
 	<outline text="Non lidos" title="Non lidos" description="Novas aínda non lidas" type="vfolder" htmlUrl="" xmlUrl="vfolder">
 		<outline type="rule" text="Estado da lectura" rule="unread" value="" additive="true"/>
 	</outline>
-	<outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+	<outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
 		<outline type="rule" text="Estado do marcador" rule="flagged" value="" additive="true"/>
 	</outline>
 	<!-- end of search folder block -->

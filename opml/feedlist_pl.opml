@@ -42,7 +42,7 @@
       <outline text="Nie przeczytane" title="Nie przeczytane" description="Nie przeczytane" type="vfolder" htmlUrl="" xmlUrl="vfolder">
         <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
       </outline>
-      <outline text="Oznaczone" title="Oznaczone" description="Oznaczone" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+      <outline text="Oznaczone" title="Oznaczone" description="Oznaczone" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
         <outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
       </outline>
     </outline>

@@ -48,7 +48,7 @@
         <outline text="Não Lidos" title="Não Lidos" description="Notícias ainda não lidas" type="vfolder" htmlUrl="" xmlUrl="vfolder">
             <outline type="rule" text="Estado de leitura" rule="unread" value="" additive="true"/>
         </outline>
-        <outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+        <outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
             <outline type="rule" text="Sinalizador de estado" rule="flagged" value="" additive="true"/>
         </outline>
     </outline>

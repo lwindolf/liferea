@@ -41,7 +41,7 @@
      <outline text="Irakurri gabeak" title="Irakurri gabeak" description="Irakurri gabeak" type="vfolder" htmlUrl="" xmlUrl="vfolder">
       <outline type="rule" text="Irakurketen egoera" rule="unread" value="" additive="true"/>
     </outline>
-    <outline text="Banderekin" title="Banderekin" description="Banderekin" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+    <outline text="Banderekin" title="Banderekin" description="Banderekin" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
       <outline type="rule" text="Banderen egoera" rule="flagged" value="" additive="true"/>
     </outline>
   </body>

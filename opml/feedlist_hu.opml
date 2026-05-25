@@ -34,7 +34,7 @@
 	<outline text="Olvasatlan" title="Olvasatlan" description="Unread" type="vfolder" htmlUrl="" xmlUrl="vfolder">
 		<outline type="rule" text="Olvasási állapot" rule="unread" value="" additive="true"/>
 	</outline>
-	<outline text="Fontos" title="Fontos" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+	<outline text="Fontos" title="Fontos" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
 		<outline type="rule" text="Megjelölés állapota" rule="flagged" value="" additive="true"/>
 	</outline>
 	<!-- end of search folder block -->

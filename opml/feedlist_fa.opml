@@ -41,7 +41,7 @@
 	<outline text="خوانده‌نشده" title="خوانده‌نشده" description="خوانده‌نشده" type="vfolder" htmlUrl="" xmlUrl="vfolder">
 		<outline type="rule" text="وضعیت خواندن" rule="unread" value="" additive="true"/>
 	</outline>
-	<outline text="مهم" title="Important" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+	<outline text="مهم" title="Important" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
 		<outline type="rule" text="وضعیت پرچم" rule="flagged" value="" additive="true"/>
 	</outline>
 	<!-- end of search folder block -->

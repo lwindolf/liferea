@@ -39,7 +39,7 @@
     <outline text="Ongelezen" title="Ongelezen" description="Ongelezen" type="vfolder" htmlUrl="" xmlUrl="vfolder">
       <outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
     </outline>
-    <outline text="Gemarkeerd met vlaggetje" title="Gemarkeerd met vlaggetje" description="Gemarkeerd met vlaggetje" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+    <outline text="Gemarkeerd met vlaggetje" title="Gemarkeerd met vlaggetje" description="Gemarkeerd met vlaggetje" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
       <outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
     </outline>
   </body>
