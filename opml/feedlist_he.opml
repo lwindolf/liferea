@@ -35,7 +35,7 @@
 				<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feed"/>
 			</outline>
 			<outline text="קוד פתוח">		<!-- translate this for localized feed list -->
-				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://feeds.feedburner.com/LifereaBlog" />
+				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://lzone.de/feed/liferea.xml" />
 				<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/rss20.xml" />	
 			</outline>	
 			<outline text="Podcasts &amp; Music">		<!-- translate this title for localized feed list -->
