@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.c  property dialog for feed subscriptions
  *
- * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 #include "ui/subscription_dialog.h"
 
 #include <libxml/uri.h>
+#include <libadwaita-1/adwaita.h>
 #include <string.h>
 
 #include "common.h"
@@ -34,6 +35,7 @@
 #include "update.h"
 #include "ui/feed_list_view.h"
 #include "ui/liferea_dialog.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 
 /* The subscription dialog can currently be used in three modes
@@ -64,7 +66,7 @@ typedef struct ui_data {
 /* properties dialog */
 
 static gchar *
-ui_subscription_create_url (gchar *url,
+ui_subscription_create_url (const gchar *url,
                             gboolean auth,
 			    const gchar *username,
 			    const gchar *password)
@@ -73,7 +75,7 @@ ui_subscription_create_url (gchar *url,
 	gchar *str, *tmp2;
 
 	/* First, strip leading and trailing whitespace */
-	str = g_strstrip(url);
+	str = g_strstrip (g_strdup (url));
 
 	/* Add https:// if needed */
 	if (strstr(str, "://") == NULL) {
@@ -122,7 +124,7 @@ ui_subscription_dialog_decode_source (GtkWidget *dialog)
 		source = g_strdup (entry);
 
 	else if (gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (dialog, "feed_loc_url"))))
-		source = ui_subscription_create_url (g_strdup (entry),
+		source = ui_subscription_create_url (entry,
 			gtk_check_button_get_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (dialog, "HTTPauthCheck"))),
 			liferea_dialog_entry_get (dialog, "usernameEntry"),
 			liferea_dialog_entry_get (dialog, "passwordEntry"));
@@ -503,33 +505,44 @@ subscription_dialog_complex_new (gpointer unused)
 }
 
 static void
-on_simple_dialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+on_applybtn_clicked (GtkButton *btn, gpointer user_data)
 {
+	GtkWidget *dialog = GTK_WIDGET (user_data);
 	g_autofree gchar *source = NULL;
 
-	if (response_id == GTK_RESPONSE_OK) {
-		source = ui_subscription_create_url (g_strdup (liferea_dialog_entry_get (GTK_WIDGET (dialog), "sourceEntry")),
-		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
+	source = ui_subscription_create_url (gtk_editable_get_text (GTK_EDITABLE (liferea_dialog_lookup (dialog, "sourceEntry"))),
+					FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		feedlist_add_subscription_by_url (source);
-	}
+	feedlist_add_subscription_by_url (source);
+	adw_dialog_close (ADW_DIALOG (dialog));
+}
 
-	/* APPLY code misused for "Advanced" */
-	if (response_id == GTK_RESPONSE_APPLY)
-		g_idle_add (subscription_dialog_complex_new, NULL);
-
-	gtk_window_close (GTK_WINDOW (dialog));
+static void
+on_advancedbtn_clicked (GtkButton *btn, gpointer user_data)
+{
+	g_idle_add (subscription_dialog_complex_new, NULL);
+	adw_dialog_close (ADW_DIALOG (user_data));
 }
 
 void
 subscription_dialog_new (void)
 {
 	GtkWidget *dialog = liferea_dialog_new ("simple_subscription");
-	GtkWidget *entry = liferea_dialog_lookup (dialog, "sourceEntry");
+	GtkWidget *applyBtn = liferea_dialog_lookup (dialog, "applyBtn");
+	AdwEntryRow *sourceEntry = ADW_ENTRY_ROW (liferea_dialog_lookup (dialog, "sourceEntry"));
 
-	gtk_widget_grab_focus (entry);
-	gtk_entry_set_activates_default (GTK_ENTRY (entry), TRUE);
+	adw_dialog_set_default_widget (ADW_DIALOG (dialog), applyBtn);
+	adw_entry_row_set_activates_default (sourceEntry, TRUE);
 
-	g_signal_connect (G_OBJECT (dialog), "response",
-	                  G_CALLBACK (on_simple_dialog_response), NULL);
+	g_signal_connect (applyBtn, "clicked",
+			  G_CALLBACK (on_applybtn_clicked),
+			  dialog);
+	g_signal_connect (liferea_dialog_lookup (dialog, "advancedBtn"), "clicked",
+			  G_CALLBACK (on_advancedbtn_clicked),
+			  dialog);
+	g_signal_connect_swapped (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked",
+			  G_CALLBACK (adw_dialog_close),
+			  dialog);
+
+	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
 }

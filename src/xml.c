@@ -417,7 +417,7 @@ xml_process_entities (void *ctxt, const xmlChar *name)
 		}
 	}
 	if (!entity) {
-		g_print("unsupported entity: %s\n", name);
+		debug (DEBUG_PARSING, "unsupported entity: %s\n", name);
 	}
 	return entity;
 }

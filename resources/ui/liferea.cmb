@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE cambalache-project SYSTEM "cambalache-project.dtd">
-<!-- Created with Cambalache 1.0 -->
+<!-- Created with Cambalache 1.0.2 -->
 <cambalache-project version="1.0.0" target_tk="gtk-4.0" depends="libadwaita-1,webkitgtk-6.0">
   <css is_global="1" filename="gtk-liferea.css" sha256="ce35b6c71817ef75601dcdb42e134c9054751e0d85f070825cb63e6f77b6dd0b"/>
   <ui filename="auth.ui" sha256="4c87551e71c4b7a817d20e5840c902f4af6ac92c0f0bf27dcb995528b4db71d4"/>
@@ -10,7 +10,7 @@
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
   <ui filename="reedah_source.ui" sha256="49bb0a7ce952375141fc25e0fb7994919392a33c202c9aab50a1fcf033ac3c5b"/>
-  <ui filename="simple_subscription.ui" sha256="e1fa8dafe92edee712bee5431e4377ed4ff8693c0fa7e8e21cbb8fa0643e4e42"/>
+  <ui filename="simple_subscription.ui" sha256="1917aa6f6ff5794b6607ab6a89a5921fe513a7e36e39eb66bfe6d2ac09daaf55"/>
   <ui filename="search_folder.ui" sha256="0e693837325a220b5dd0be3e38dd43f9fdebfff19ae235030d520054eabc26a1">
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
