@@ -30,7 +30,7 @@
 				<outline text="Quanta Magazine" htmlUrl="https://api.quantamagazine.org/" xmlUrl="https://api.quantamagazine.org/feed/"/>
 			</outline>
 			<outline text="Software Livre">		<!-- translate this title for localized feed list -->
-				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://feeds.feedburner.com/LifereaBlog" />
+				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://lzone.de/feed/liferea.xml" />
 				<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/atom.xml" />
 			</outline>
 			<outline text="Podcasts">	<!-- translate this title for localized feed list -->
