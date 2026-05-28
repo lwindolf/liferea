@@ -27,15 +27,12 @@ if appstreamcli.found()
   )
 endif
 
-icondir = join_paths(datadir, 'icons', 'hicolor')
-foreach size: ['scalable']
+icondir = join_paths(datadir_base, 'icons', 'hicolor')
+foreach size: ['16x16', '32x32', '22x22', '24x24', '32x32', '48x48', 'scalable']
   install_subdir(join_paths('pixmaps', size), install_dir: icondir)
 endforeach
 
 pixmapsdir = join_paths(datadir, 'pixmaps')
-foreach size: ['16x16', '32x32', '22x22', '24x24', '32x32', '48x48']
-  install_subdir(join_paths('pixmaps', size), install_dir: pixmapsdir)
-endforeach
 foreach file: [
   'default.svg',
   'emblem-important.svg',
@@ -46,7 +43,6 @@ foreach file: [
   'newsbin.png',
   'unread.png'
 ]
-  # FIXME: does this duplicate pixmaps?
   install_data(join_paths('pixmaps', file), install_dir: pixmapsdir)
 endforeach
 

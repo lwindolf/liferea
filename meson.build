@@ -8,28 +8,28 @@ add_project_arguments(
   language: 'c'
 )
 
-
 gnome = import('gnome')
 i18n = import('i18n')
 
-gettext_package = 'liferea'
+gettext_package = meson.project_name()
 add_project_arguments('-DGETTEXT_PACKAGE=' + gettext_package, language: 'c')
 
 subdir('po')
 
 prefix = get_option('prefix')
-datadir = join_paths(prefix, get_option('datadir'), 'liferea')
-libdir = join_paths(prefix, get_option('libdir'), 'liferea')
-girdir = join_paths(prefix, get_option('datadir'), 'liferea', 'gir-1.0')
-typelibdir = join_paths(prefix, get_option('libdir'), 'liferea', 'girepository-1.0')
-localedir = join_paths(prefix, get_option('localedir'))
-webprocessextensionsdir = join_paths(prefix, get_option('libdir'), 'liferea', 'web-process-extensions')
+datadir_base = join_paths(prefix, get_option('datadir'))
+datadir      = join_paths(datadir_base, meson.project_name())
+girdir       = join_paths(datadir_base, meson.project_name(), 'gir-1.0')
+libdir       = join_paths(prefix, get_option('libdir'), meson.project_name())
+typelibdir   = join_paths(prefix, get_option('libdir'), meson.project_name(), 'girepository-1.0')
+webprocessextensionsdir = join_paths(prefix, get_option('libdir'), meson.project_name(), 'web-process-extensions')
+localedir    = join_paths(prefix, get_option('localedir'))
 
 conf = configuration_data()
 conf.set_quoted('APPLICATION_ID', 'net.sf.liferea')
 conf.set_quoted('BUILD_ROOT', meson.project_build_root())
 conf.set_quoted('WEB_EXTENSIONS_DIR', webprocessextensionsdir)
-conf.set_quoted('PACKAGE', 'liferea')
+conf.set_quoted('PACKAGE', meson.project_name())
 conf.set_quoted('PACKAGE_URL', 'https://github.com/lwindolf/liferea')
 conf.set_quoted('PACKAGE_DATA_DIR', datadir)
 conf.set_quoted('PACKAGE_LIB_DIR', libdir)
