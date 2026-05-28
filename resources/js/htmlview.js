@@ -235,22 +235,31 @@ async function load_item(data, baseURL, direction) {
 
 		// If there are no images in the description let's present a single suitable image
 		// from possible metadata keys in the following priority order
-		// 1.) first "media" [type=image/...]
+		// 1.) first "media" enclosure [type=image/...]
 		// 2.) "thumbnail"
 		// 3.) "gravatar"
+		// 4.) first "media" enclosure with no type
 		if (document.querySelectorAll('img').length == 0) {
 			let imgUrl, imgAlt;
 
 			const imgEnclosures = item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('image/'));
+			// 1.
 			if(imgEnclosures.length > 0) {
 				imgUrl = imgEnclosures[0].url;
 			}
+			// 2.
 			if(!imgUrl) {
 				imgUrl = metadata_get(item, "mediathumbnail");
 				imgAlt = metadata_get(item, "mediadescription");
 			}
+			// 3.
 			if(!imgUrl) {
 				imgUrl = metadata_get(item, "gravatar");
+			}
+			// 4.
+			const imgEnclosuresNoMime = item.enclosures.filter((enclosure) => !enclosure.mime);
+			if(imgEnclosuresNoMime.length > 0) {
+				imgUrl = imgEnclosuresNoMime[0].url;
 			}
 
 			if(imgUrl) {
