@@ -102,7 +102,7 @@ folder_remove (Node *node)
 static void
 on_newfolder_response (GtkWidget *dialog, gpointer user_data)
 {
-	feedlist_add_folder (liferea_dialog_entryrow_get (dialog, "foldertitleentry"));
+	feedlist_set_selected (feedlist_add_folder (liferea_dialog_entryrow_get (dialog, "foldertitleentry")));
 }
 
 static gboolean

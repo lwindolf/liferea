@@ -5,7 +5,7 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.5"/>
   <object class="AdwDialog" id="rename_node">
-    <property name="default-widget">nameEntry</property>
+    <property name="default-widget">applyBtn</property>
     <property name="width-request">400</property>
     <child>
       <object class="GtkBox">
@@ -48,7 +48,6 @@
                 <property name="focusable">1</property>
                 <property name="label" translatable="yes">_Cancel</property>
                 <property name="use-underline">True</property>
-                <signal name="clicked" handler="gtk_widget_hide" swapped="True"/>
               </object>
             </child>
             <child>

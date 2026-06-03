@@ -440,7 +440,7 @@ feedlist_reset_new_item_count (void)
 	feedlist_new_items (0);
 }
 
-void
+Node *
 feedlist_add_folder (const gchar *title)
 {
 	Node	*parent = feedlist_get_parent_node ();
@@ -448,22 +448,22 @@ feedlist_add_folder (const gchar *title)
 	g_assert (NULL != title);
 
 	if(0 == (NODE_PROVIDER (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
-		return;
+		return NULL;
 
-	node_source_add_folder (parent->source->root, title);
+	return node_source_add_folder (parent->source->root, title);
 }
 
-void
+Node *
 feedlist_add_subscription (subscriptionPtr subscription)
 {
 	Node	*parent = feedlist_get_parent_node ();
 
 	if (0 == (NODE_PROVIDER (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS)) {
 		g_warning ("feedlist_add_subscription: this should never happen!");
-		return;
+		return NULL;
 	}
 
-	node_source_add_subscription (parent->source->root, subscription);
+	return node_source_add_subscription (parent->source->root, subscription);
 }
 
 void

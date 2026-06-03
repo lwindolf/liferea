@@ -150,6 +150,7 @@ liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDia
 	g_signal_connect_data (liferea_dialog_lookup (dialog, "applyBtn"), "clicked", G_CALLBACK (on_liferea_dialog_run_apply_cb), dialog, NULL, 0);
 	g_signal_connect_data (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked", G_CALLBACK (on_liferea_dialog_run_cancel_cb), dialog, NULL, 0);
 
+	adw_dialog_set_default_widget (ADW_DIALOG (dialog), liferea_dialog_lookup (dialog, "applyBtn"));
 	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
 }
 

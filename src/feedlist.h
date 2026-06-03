@@ -1,7 +1,7 @@
 /*
  * @file feedlist.h  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -135,8 +135,10 @@ Node * feedlist_find_node (Node *parent, feedListFindType type, const gchar *str
  *
  * Adds a new subscription to the feed list. Does not check for duplicates.
  * Non-interactive.
+ * 
+ * Returns: (transfer full): the new subscription node
  */
-void feedlist_add_subscription (subscriptionPtr subscription);
+Node * feedlist_add_subscription (subscriptionPtr subscription);
 
 /**
  * feedlist_add_subscription_by_url:
@@ -161,8 +163,10 @@ void feedlist_add_subscription_check_duplicate (subscriptionPtr subscription);
  * @title:		the title of the new folder.
  *
  * Adds a folder to the feed list without any user interaction.
+ * 
+ * Returns: (transfer full): the new subscription node
  */
-void feedlist_add_folder (const gchar *title);
+Node * feedlist_add_folder (const gchar *title);
 
 /**
  * feedlist_node_added:

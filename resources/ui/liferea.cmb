@@ -14,7 +14,7 @@
   <ui filename="search_folder.ui" sha256="0e693837325a220b5dd0be3e38dd43f9fdebfff19ae235030d520054eabc26a1">
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
-  <ui filename="rename_node.ui" sha256="630b23f189c300bfb4f55eaea0a40705f31673b4ceae512c91f85b850343c730"/>
+  <ui filename="rename_node.ui" sha256="3e5bdf6e835eeedd24a46563aaed2463ded128dfcfbda61af953ca06f543c55b"/>
   <ui filename="properties.ui" sha256="d2c80b4d2f0fbf674dc3c7e9230bafdda7a054033a25232957b4786c96b42268"/>
   <ui filename="prefs.ui" sha256="ac4047b3a0424ce986363eb625b09967211bef723d48acda4c8149cbf2b1e486"/>
   <ui filename="opml_source.ui" sha256="f60bf4a7efcaf62431670993c2608f6109e14fc21df2baba07958b0397a0e6b6"/>
