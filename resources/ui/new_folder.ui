@@ -6,6 +6,7 @@
   <requires lib="libadwaita" version="1.7"/>
   <object class="AdwDialog" id="new_folder">
     <property name="accessible-role">form</property>
+    <property name="default-widget">applyBtn</property>
     <property name="focus-widget">foldertitleentry</property>
     <property name="follows-content-size">True</property>
     <property name="width-request">400</property>
@@ -23,12 +24,13 @@
             <property name="spacing">12</property>
             <child>
               <object class="GtkLabel" id="titleLabel">
-                <property name="css-classes">title-</property>
+                <property name="css-classes">title-3</property>
                 <property name="label">New Folder</property>
               </object>
             </child>
             <child>
               <object class="AdwEntryRow" id="foldertitleentry">
+                <property name="activates-default">True</property>
                 <property name="title">Folder Name</property>
               </object>
             </child>
