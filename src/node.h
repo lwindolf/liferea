@@ -308,14 +308,6 @@ const gchar *node_get_id (Node *node);
 void node_set_id (Node *node, const gchar *id);
 
 /**
- * node_save:
- * @node:	the node
- *
- * Saves the given node to cache.
- */
-void node_save (Node *node);
-
-/**
  * node_to_json:
  * @node:	the node
  * 

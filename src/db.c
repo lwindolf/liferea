@@ -795,8 +795,6 @@ db_init (void)
 void
 db_deinit (void)
 {
-
-
 	if (FALSE == sqlite3_get_autocommit (db))
 		g_warning ("Fatal: DB not in auto-commit mode. This is a bug. Data may be lost!");
 

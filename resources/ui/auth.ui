@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 0.96.0 -->
+<!-- Created with Cambalache 1.0.2 -->
 <interface>
   <!-- interface-name auth.ui -->
   <requires lib="gtk" version="4.0"/>
@@ -30,22 +30,13 @@
           </object>
         </child>
         <child>
-          <object class="GtkEntry" id="usernameEntry">
-            <property name="activates-default">1</property>
-            <property name="focusable">1</property>
-            <property name="hexpand">True</property>
-            <property name="hexpand-set">True</property>
-            <property name="placeholder-text">Username</property>
+          <object class="AdwEntryRow" id="usernameEntry">
+            <property name="title">Username</property>
           </object>
         </child>
         <child>
-          <object class="GtkEntry" id="passwordEntry">
-            <property name="activates-default">1</property>
-            <property name="focusable">1</property>
-            <property name="hexpand">True</property>
-            <property name="hexpand-set">True</property>
-            <property name="placeholder-text">Password</property>
-            <property name="visibility">0</property>
+          <object class="AdwEntryRow" id="passwordEntry">
+            <property name="title">Password</property>
           </object>
         </child>
       </object>

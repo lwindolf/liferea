@@ -1,7 +1,7 @@
 /**
  * @file dummy_source.c  dummy feed list source
  * 
- * Copyright (C) 2006-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,6 @@
 #include <glib.h>
 #include "ui/icons.h"
 
-static gchar * dummy_source_get_feedlist(Node *node) { return NULL; }
-
 static void dummy_source_noop (Node *node) { }
 
 static void dummy_source_import(Node *node) {
@@ -33,20 +31,12 @@ static void dummy_source_import(Node *node) {
 	node_set_title (node, g_strdup_printf ("Unknown source type '%s'", node->source->type->id));
 }
 
-static void dummy_source_init(void) { }
-
-static void dummy_source_deinit(void) { }
-
-/* feed list provider plugin definition */
-
 static struct nodeSourceType nst = {
 	.id			= NODE_SOURCE_TYPE_DUMMY_ID,
 	.name			= "Dummy Feed List Source",
-	.source_type_init	= dummy_source_init,
-	.source_type_deinit	= dummy_source_deinit,
+	.source_type_init	= NULL,
+	.source_type_deinit	= NULL,
 	.source_import		= dummy_source_import,
-	.source_export		= dummy_source_noop,
-	.source_get_feedlist	= dummy_source_get_feedlist,
 	.source_auto_update	= dummy_source_noop
 };
 

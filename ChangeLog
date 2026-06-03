@@ -1,4 +1,12 @@
-2025-05-25  Lars Windolf <lar.windolf@gmx.de>
+To be released
+	
+	Version 2.0-RC3
+
+	* Drop old migration code for 1.4-1.8 versions
+	  (Lars Windolf)
+	  
+
+2025-05-25  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0-RC2
 
@@ -31,7 +39,7 @@
 	  (Ekaterine Papava)
 
 
-2025-05-04  Lars Windolf <lar.windolf@gmx.de>
+2025-05-04  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0-RC1
 

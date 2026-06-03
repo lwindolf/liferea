@@ -116,7 +116,7 @@ ttrss_source_subscription_list_cb (const UpdateResult * const result, gpointer u
 	subscriptionPtr subscription = (subscriptionPtr) user_data;
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
 
-	debug (DEBUG_UPDATE,"ttrss_subscription_cb(): %s", result->data);
+	debug (DEBUG_UPDATE, "ttrss_subscription_cb(): %s", result->data);
 
 	subscription->updateJob = NULL;
 
@@ -191,7 +191,7 @@ ttrss_source_subscription_list_cb (const UpdateResult * const result, gpointer u
 
 			subscription->node->available = TRUE;
 		} else {
-			g_print ("Invalid JSON returned on TinyTinyRSSS request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
@@ -385,8 +385,6 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateR
 
 	return TRUE;
 }
-
-/* OPML subscription type definition */
 
 struct subscriptionType ttrssSourceSubscriptionType = {
 	ttrss_subscription_prepare_update_request,

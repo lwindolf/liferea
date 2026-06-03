@@ -21,9 +21,7 @@
 #ifndef _LIFEREA_DIALOG_H
 #define _LIFEREA_DIALOG_H
 
-#include <gtk/gtk.h>
-#include <glib-object.h>
-#include <glib.h>
+#include <libadwaita-1/adwaita.h>
 
 G_BEGIN_DECLS
 
@@ -78,6 +76,15 @@ GtkWidget * liferea_dialog_lookup (GtkWidget *widget, const gchar *name);
  * Returns: the text of the GtkEntry widget with the given name
  */
 const gchar * liferea_dialog_entry_get (GtkWidget *widget, const gchar *name);
+
+/**
+ * liferea_dialog_entryrow_get:
+ * @widget:	the dialog widget
+ * @name:	the AdwEntryRow name
+ * 
+ * Returns: the text of the AdwEntryRow widget with the given name
+ */
+const gchar * liferea_dialog_entryrow_get (GtkWidget *widget, const gchar *name);
 
 /**
  * liferea_dialog_entry_set:

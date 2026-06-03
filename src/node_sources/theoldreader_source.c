@@ -187,8 +187,6 @@ void theoldreader_source_init (void)
 	metadata_type_register ("theoldreader-feed-id", METADATA_TYPE_TEXT);
 }
 
-static void theoldreader_source_deinit (void) { }
-
 static void
 theoldreader_source_import (Node *node)
 {
@@ -266,7 +264,7 @@ on_theoldreader_source_selected (GtkDialog *dialog,
                            gpointer user_data)
 {
 	if (response_id == GTK_RESPONSE_OK) {
-		Node *node = node_new ("node_source");
+		Node *node = node_new ("source");
 		node_source_new (node, theoldreader_source_get_type (), "http://theoldreader.com/reader");
 		node_set_title (node, node->source->type->name);
 
@@ -350,8 +348,6 @@ theoldreader_source_reparent_node (Node *node, Node *oldParent, Node *newParent)
 	}
 }
 
-/* node source type definition */
-
 extern struct subscriptionType theOldReaderSourceFeedSubscriptionType;
 extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
 
@@ -369,12 +365,10 @@ static struct nodeSourceType nst = {
 	.feedSubscriptionType = &theOldReaderSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &theOldReaderSourceOpmlSubscriptionType,
 	.source_type_init    = theoldreader_source_init,
-	.source_type_deinit  = theoldreader_source_deinit,
+	.source_type_deinit  = NULL,
 	.source_new          = ui_theoldreader_source_get_account_info,
 	.source_delete       = opml_source_remove,
 	.source_import       = theoldreader_source_import,
-	.source_export       = opml_source_export,
-	.source_get_feedlist = opml_source_get_feedlist,
 	.source_auto_update  = theoldreader_source_auto_update,
 	.free                = theoldreader_source_cleanup,
 	.item_set_flag       = theoldreader_source_item_set_flag,

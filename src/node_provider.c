@@ -38,7 +38,6 @@ node_provider_register (nodeProviderPtr provider)
 	g_assert (provider->import);
 	g_assert (provider->export);
 	g_assert (provider->load);
-	g_assert (provider->save);
 	g_assert (provider->update_counters);
 	g_assert (provider->remove);
 	g_assert (provider->request_add);

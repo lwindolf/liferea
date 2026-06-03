@@ -265,9 +265,7 @@ vfolder_free (Node *node)
 
 }
 
-/* implementation of the node type interface */
-
-static void vfolder_save (Node *node) { }
+/* implementation of the node provider interface */
 
 static void
 vfolder_update_counters (Node *node)
@@ -311,7 +309,6 @@ vfolder_get_provider (void)
 		vfolder_import,
 		vfolder_export,
 		vfolder_load,
-		vfolder_save,
 		vfolder_update_counters,
 		vfolder_remove,
 		vfolder_add,

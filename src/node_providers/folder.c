@@ -75,13 +75,6 @@ folder_export (Node *node, xmlNodePtr cur, gboolean trusted)
 }
 
 static void
-folder_save (Node *node)
-{
-	/* A folder has no own state but must give all childs the chance to save theirs */
-	node_foreach_child (node, node_save);
-}
-
-static void
 folder_add_child_update_counters (Node *node, gpointer user_data)
 {
 	guint	*unreadCount = (guint *)user_data;
@@ -137,7 +130,6 @@ folder_get_provider (void)
 		folder_import,
 		folder_export,
 		folder_load,
-		folder_save,
 		folder_update_counters,
 		folder_remove,
 		folder_add_dialog,
@@ -166,7 +158,6 @@ root_get_provider (void)
 		folder_import,
 		folder_export,
 		folder_load,
-		folder_save,
 		folder_update_counters,
 		folder_remove,
 		folder_add_dialog,

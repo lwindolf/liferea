@@ -47,7 +47,7 @@
 /** default Reedah subscription list update interval = once a day */
 #define NODE_SOURCE_UPDATE_INTERVAL (guint64)(60*60*24) * (guint64)G_USEC_PER_SEC
 
-#define BASE_URL "http://www.reedah.com/reader/api/0/"
+#define BASE_URL "https://www.reedah.com/reader/api/0/"
 
 /** create a Reedah source with given node as root */
 static ReedahSourcePtr
@@ -200,8 +200,6 @@ reedah_source_init (void)
 	metadata_type_register ("reedah-feed-id", METADATA_TYPE_TEXT);
 }
 
-static void reedah_source_deinit (void) { }
-
 static void
 reedah_source_import (Node *node)
 {
@@ -257,35 +255,32 @@ reedah_source_remove_node (Node *node, Node *child)
 /* GUI callbacks */
 
 static void
-on_reedah_source_selected (GtkDialog *dialog,
-                           gint response_id,
-                           gpointer user_data)
+on_reedah_source_selected (GtkButton *button, gpointer user_data)
 {
-	if (response_id == GTK_RESPONSE_OK) {
-		Node *node = node_new ("node_source");
-		node_source_new (node, reedah_source_get_type (), "http://www.reedah.com/reader");
-		node_set_title (node, node->source->type->name);
-		
-		subscription_set_auth_info (node->subscription,
-					    liferea_dialog_entry_get (GTK_WIDGET (dialog), "userEntry"),
-					    liferea_dialog_entry_get (GTK_WIDGET (dialog), "passwordEntry"));
+	GtkWidget *dialog = GTK_WIDGET (user_data);
 
-		node->data = reedah_source_new (node);
-		feedlist_node_added (node);
-		node_source_update (node);
-	}
+	Node *node = node_new ("source");
+	node_source_new (node, reedah_source_get_type (), "https://www.reedah.com/reader");
+	node_set_title (node, node->source->type->name);
+	
+	subscription_set_auth_info (node->subscription,
+					liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "usernameEntry"),
+					liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "passwordEntry"));
+
+	node->data = reedah_source_new (node);
+	feedlist_node_added (node);
+	node_source_update (node);
 }
 
 static void
 ui_reedah_source_get_account_info (void)
 {
-	GtkWidget	*dialog;
+	GtkWidget *dialog = liferea_dialog_new ("reedah_source");
 
-	dialog = liferea_dialog_new ("reedah_source");
-
-	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_reedah_source_selected),
-			  NULL);
+	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
+			  G_CALLBACK (on_reedah_source_selected), dialog);
+	g_signal_connect_swapped (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked",
+			  G_CALLBACK (adw_dialog_close), dialog);
 }
 
 static void
@@ -321,8 +316,6 @@ reedah_source_convert_to_local (Node *node)
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }
 
-/* node source type definition */
-
 extern struct subscriptionType reedahSourceFeedSubscriptionType;
 extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 
@@ -339,12 +332,10 @@ static struct nodeSourceType nst = {
 	.feedSubscriptionType = &reedahSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &reedahSourceOpmlSubscriptionType,
 	.source_type_init    = reedah_source_init,
-	.source_type_deinit  = reedah_source_deinit,
+	.source_type_deinit  = NULL,
 	.source_new          = ui_reedah_source_get_account_info,
 	.source_delete       = opml_source_remove,
 	.source_import       = reedah_source_import,
-	.source_export       = opml_source_export,
-	.source_get_feedlist = opml_source_get_feedlist,
 	.source_auto_update  = reedah_source_auto_update,
 	.free                = reedah_source_cleanup,
 	.item_set_flag       = reedah_source_item_set_flag,

@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.c  authentication dialog
  *
- * Copyright (C) 2007-2025  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,8 +40,8 @@ on_authdialog_response (AdwDialog *dialog,
 
 	if (g_strcmp0 (response_id, "ok") == 0) {
 		subscription_set_auth_info (subscription,
-		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "usernameEntry"),
-		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "passwordEntry"));
+		                            liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "usernameEntry"),
+		                            liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "passwordEntry"));
 		subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 

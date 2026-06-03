@@ -1,7 +1,7 @@
 /*
  * @file node_source.h  generic node source interface
  *
- * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -106,7 +106,7 @@ typedef struct nodeSourceType {
 	/* The subscription type for the source itself (can be NULL) */
 	subscriptionTypePtr	sourceSubscriptionType;
 
-	/* source type loading and unloading methods */
+	/* OPTIONAL source type loading and unloading methods */
 	void		(*source_type_init)(void);
 	void 		(*source_type_deinit)(void);
 
@@ -132,21 +132,6 @@ typedef struct nodeSourceType {
 	 * node.
 	 */
 	void 		(*source_import)(Node *node);
-
-	/*
-	 * This MANDATORY method is called when the source is to
-	 * save it's feed list subtree (if necessary at all). This
-	 * is not a request to save the data of the attached nodes!
-	 */
-	void 		(*source_export)(Node *node);
-
-	/*
-	 * This MANDATORY method is called to get an OPML representation
-	 * of the feedlist of the given node source. Returns a newly
-	 * allocated filename string that is to be freed by the
-	 * caller.
-	 */
-	gchar *		(*source_get_feedlist)(Node *node);
 
 	/*
 	 * This MANDATARY method is called to request the source to update
@@ -262,6 +247,13 @@ Node * node_source_root_from_node (Node *node);
  * Returns: a newly created root node
  */
 Node * node_source_setup_root (void);
+
+/**
+ * node_source_export_feedlist: (skip)
+ *
+ * Exports the current feed list to the OPML file.
+ */
+void node_source_export_feedlist (void);
 
 /**
  * node_source_new: (skip)

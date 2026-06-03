@@ -605,13 +605,9 @@ feedlist_schedule_save_cb (gpointer user_data)
 	if (!feedlist || !ROOTNODE)
 		return FALSE;
 
-	/* step 1: request each node to save its state, that is
-	   mostly needed for nodes that are node sources */
-	feedlist_foreach (node_save);
-
-	/* step 2: request saving for the root node and thereby
-	   forcing the default source to write an OPML file */
-	NODE_SOURCE_TYPE (ROOTNODE)->source_export (ROOTNODE);
+	/* Request saving for the root node and thereby forcing the root node
+	   and all node sources to write an OPML file */
+	node_source_export_feedlist ();
 
 	feedlist->saveTimer = 0;
 

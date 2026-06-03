@@ -410,14 +410,6 @@ node_to_json (Node *node)
 	return json_dump (b);
 }
 
-/* helper functions to be used with node_foreach* */
-
-void
-node_save(Node *node)
-{
-	NODE_PROVIDER(node)->save(node);
-}
-
 /* node attributes encapsulation */
 
 void

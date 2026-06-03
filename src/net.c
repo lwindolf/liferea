@@ -1,5 +1,5 @@
 /**
- * @file net.c  HTTP network access using libsoup
+ * @file net.c  HTTP network access using libsoup3
  *
  * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
@@ -287,7 +287,7 @@ network_process_request (const UpdateJob *job)
 	g_autoptr(SoupMessage)	msg = NULL;
 	SoupMessageHeaders	*request_headers;
 	g_autoptr(GUri)		sourceUri = NULL;
-	gboolean		do_not_track = FALSE, do_not_sell = false;
+	gboolean		do_not_track = FALSE, do_not_sell = FALSE;
 	g_autofree gchar	*scheme = NULL, *user = NULL, *password = NULL, *auth_params = NULL, *host = NULL, *path = NULL, *query = NULL, *fragment = NULL;
 	gint			port;
 

@@ -170,7 +170,6 @@ newsbin_get_provider (void)
 		nodeType->load			= feed_get_provider()->load;
 		nodeType->import		= newsbin_import;
 		nodeType->export		= newsbin_export;
-		nodeType->save			= feed_get_provider()->save;
 		nodeType->update_counters	= feed_get_provider()->update_counters;
 		nodeType->remove		= newsbin_remove;
 		nodeType->request_add		= ui_newsbin_add;

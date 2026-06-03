@@ -28,6 +28,7 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
+#include "export.h"
 #include "feedlist.h"
 #include "item_state.h"
 #include "metadata.h"
@@ -46,10 +47,59 @@
 #include "node_sources/google_reader_api.h"
 #include "node_sources/opml_source.h"
 #include "node_sources/reedah_source.h"
+#include "node_sources/webdav_source.h"
 #include "node_sources/theoldreader_source.h"
 #include "node_sources/ttrss_source.h"
 
 static GSList		*nodeSourceTypes = NULL;
+
+/** lock to prevent feed list saving while loading */
+static gboolean feedlistImport = TRUE;
+
+static void
+node_source_import_feedlist (Node *node) 
+{
+	g_autofree gchar *filename, *backupFilename, *content;
+	gssize	length;
+
+	g_assert (TRUE == feedlistImport);
+
+	filename = common_create_config_filename ("feedlist.opml");
+	backupFilename = g_strdup_printf("%s.backup", filename);
+	
+	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
+		if (!import_OPML_feedlist (filename, node, FALSE, TRUE))
+			g_error ("Fatal: Feed list import failed! You might want to try to restore\n"
+			         "the feed list file %s from the backup in %s", filename, backupFilename);
+
+		/* upon successful import create a backup copy of the feed list */
+		if (g_file_get_contents (filename, &content, (gsize *)&length, NULL))
+			g_file_set_contents (backupFilename, content, length, NULL);
+	} else {
+		/* If subscriptions could not be loaded provide a default feed list */
+		g_autofree gchar *defaultFilename = common_get_localized_filename (PACKAGE_DATA_DIR "/opml/feedlist_%s.opml");
+		if (!defaultFilename)
+			g_error ("Fatal: No migration possible and no default feedlist found!");
+
+		if (!import_OPML_feedlist (defaultFilename, node, FALSE, TRUE))
+			g_error ("Fatal: Feed list import failed!");
+	}
+
+	feedlistImport = FALSE;
+
+}
+
+void
+node_source_export_feedlist (void)
+{
+	g_autofree gchar *filename;
+	
+	if (feedlistImport)
+		return;
+	
+	filename = common_create_config_filename ("feedlist.opml");
+	export_OPML_feedlist (filename, feedlist_get_root (), TRUE);
+}
 
 Node *
 node_source_root_from_node (Node *node)
@@ -82,8 +132,8 @@ node_source_type_register (nodeSourceTypePtr type)
 {
 	debug (DEBUG_PARSING, "Registering node source type %s", type->name);
 
-	/* allow the plugin to initialize */
-	type->source_type_init ();
+	if (type->source_type_init)
+		type->source_type_init ();
 
 	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
 
@@ -107,6 +157,7 @@ node_source_setup_root (void)
 	node_source_type_register (reedah_source_get_type ());
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
+	// FIXME node_source_type_register (webdav_source_get_type ());
 
 	/* register all source types that are google like */
 	type = g_new0 (struct nodeSourceType, 1);
@@ -124,7 +175,7 @@ node_source_setup_root (void)
 	rootNode->source = g_new0 (struct nodeSource, 1);
 	rootNode->source->root = rootNode;
 	rootNode->source->type = type;
-	type->source_import (rootNode);
+	node_source_import_feedlist (rootNode);
 
 	return rootNode;
 }
@@ -206,14 +257,15 @@ node_source_export (Node *node, xmlNodePtr xml, gboolean trusted)
 	/* If the node source type was loaded using the dummy node source
 	   type we need to restore the original node source type id from
 	   temporarily saved into node->data */
-	if (!strcmp (NODE_SOURCE_TYPE (node)->id, NODE_SOURCE_TYPE_DUMMY_ID))
+	if (!strcmp (NODE_SOURCE_TYPE (node)->id, NODE_SOURCE_TYPE_DUMMY_ID)) {
 		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (node->data));
-	else
+		// no OPML dump for dummy source!
+	} else {
 		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (NODE_SOURCE_TYPE(node)->id));
+		opml_source_export (node);
+	}
 
 	subscription_export (node->subscription, xml, trusted);
-
-	NODE_SOURCE_TYPE (node)->source_export (node);
 }
 
 void
@@ -604,12 +656,6 @@ node_source_remove (Node *node)
 }
 
 static void
-node_source_save (Node *node)
-{
-	node_foreach_child (node, node_save);
-}
-
-static void
 node_source_free (Node *node)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->free)
@@ -642,7 +688,6 @@ node_source_get_provider (void)
 		provider->import		= node_source_import;
 		provider->export		= node_source_export;
 		provider->load			= folder_get_provider ()->load;
-		provider->save			= node_source_save;
 		provider->update_counters	= folder_get_provider ()->update_counters;
 		provider->remove		= node_source_remove;
 		provider->request_add		= feed_list_node_source_type_dialog;

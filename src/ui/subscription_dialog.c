@@ -510,7 +510,7 @@ on_applybtn_clicked (GtkButton *btn, gpointer user_data)
 	GtkWidget *dialog = GTK_WIDGET (user_data);
 	g_autofree gchar *source = NULL;
 
-	source = ui_subscription_create_url (gtk_editable_get_text (GTK_EDITABLE (liferea_dialog_lookup (dialog, "sourceEntry"))),
+	source = ui_subscription_create_url (liferea_dialog_entryrow_get (dialog, "sourceEntry"),
 					FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
 	feedlist_add_subscription_by_url (source);

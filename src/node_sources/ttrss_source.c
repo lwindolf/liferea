@@ -203,8 +203,6 @@ ttrss_source_init (void)
 	metadata_type_register ("ttrss-feed-id", METADATA_TYPE_TEXT);
 }
 
-static void ttrss_source_deinit (void) { }
-
 static void
 ttrss_source_import (Node *node)
 {
@@ -348,7 +346,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
                            gpointer user_data)
 {
 	if (response_id == GTK_RESPONSE_OK) {
-		Node *node = node_new ("node_source");
+		Node *node = node_new ("source");
 		node_source_new (node, ttrss_source_get_type (), "");
 		node_set_title (node, node->source->type->name);
 
@@ -366,7 +364,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 		feedlist_node_added (node);
 		node_source_update (node);
 
-		db_node_update (node);	/* because of metadate_list_set() above */
+		db_node_update (node);	/* because of metadata_list_set() above */
 	}
 }
 
@@ -458,8 +456,6 @@ ttrss_source_convert_to_local (Node *node)
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }
 
-/* node source type definition */
-
 extern struct subscriptionType ttrssSourceFeedSubscriptionType;
 extern struct subscriptionType ttrssSourceSubscriptionType;
 
@@ -475,12 +471,10 @@ static struct nodeSourceType nst = {
 	.feedSubscriptionType = &ttrssSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &ttrssSourceSubscriptionType,
 	.source_type_init    = ttrss_source_init,
-	.source_type_deinit  = ttrss_source_deinit,
+	.source_type_deinit  = NULL,
 	.source_new          = ui_ttrss_source_get_account_info,
 	.source_delete       = opml_source_remove,
 	.source_import       = ttrss_source_import,
-	.source_export       = opml_source_export,
-	.source_get_feedlist = opml_source_get_feedlist,
 	.source_auto_update  = ttrss_source_auto_update,
 	.free                = ttrss_source_cleanup,
 	.item_set_flag       = ttrss_source_item_set_flag,

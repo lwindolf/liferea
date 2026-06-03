@@ -110,6 +110,9 @@ liferea_dialog_new (const gchar *name)
 	g_object_set_data (G_OBJECT (priv->dialog), "LifereaDialog", ld);
 	g_signal_connect_swapped (priv->dialog, "destroy", G_CALLBACK (g_object_unref), ld);
 
+	if (ADW_IS_DIALOG (priv->dialog))
+		adw_dialog_present (ADW_DIALOG (priv->dialog), liferea_shell_get_window ());
+
 	return priv->dialog;
 }
 
@@ -162,4 +165,10 @@ void
 liferea_dialog_entry_set (GtkWidget *dialog, const gchar *name, const gchar *text)
 {
 	gtk_entry_buffer_set_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))), text, -1);
+}
+
+const gchar *
+liferea_dialog_entryrow_get (GtkWidget *dialog, const gchar *name)
+{
+	return gtk_editable_get_text (GTK_EDITABLE (liferea_dialog_lookup (dialog, name)));
 }

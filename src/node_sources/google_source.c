@@ -252,9 +252,6 @@ google_source_auto_update (Node *node)
 	subscription_auto_update (node->subscription);
 }
 
-static void google_source_init (void) { }
-static void google_source_deinit (void) { }
-
 static void
 google_source_import (Node *node)
 {
@@ -263,24 +260,6 @@ google_source_import (Node *node)
 	node->subscription->type = &googleSourceOpmlSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) google_source_new (node);
-}
-
-static void
-google_source_export (Node *node)
-{
-	opml_source_export (node);
-}
-
-static gchar *
-google_source_get_feedlist (Node *node)
-{
-	return opml_source_get_feedlist (node);
-}
-
-static void 
-google_source_remove (Node *node)
-{ 
-	opml_source_remove (node);
 }
 
 static Node *
@@ -336,7 +315,7 @@ on_google_source_selected (GtkDialog *dialog,
 	Node	*node;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		node = node_new ("node_source");
+		node = node_new ("source");
 		node_source_new (node, google_source_get_type (), gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "serverEntry")))));
 		node_set_title (node, gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "nameEntry")))));
 		
@@ -395,8 +374,6 @@ google_source_convert_to_local (Node *node)
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }
 
-/* node source type definition */
-
 static struct nodeSourceType nst = {
 	.id                  = "fl_google_reader",
 	.name                = N_("Google Reader API"),
@@ -407,13 +384,11 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
 	.feedSubscriptionType	= &googleSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &googleSourceOpmlSubscriptionType,
-	.source_type_init    = google_source_init,
-	.source_type_deinit  = google_source_deinit,
+	.source_type_init    = NULL,
+	.source_type_deinit  = NULL,
 	.source_new          = ui_google_source_get_account_info,
-	.source_delete       = google_source_remove,
+	.source_delete       = opml_source_remove,
 	.source_import       = google_source_import,
-	.source_export       = google_source_export,
-	.source_get_feedlist = google_source_get_feedlist,
 	.source_auto_update  = google_source_auto_update,
 	.free                = google_source_cleanup,
 	.item_set_flag       = google_source_item_set_flag,

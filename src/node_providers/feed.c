@@ -132,12 +132,6 @@ feed_load (Node *node)
 }
 
 static void
-feed_save (Node *node)
-{
-	/* Nothing to do. Feeds do not have any UI states */
-}
-
-static void
 feed_update_counters (Node *node)
 {
 	node->itemCount = db_itemset_get_item_count (node->id);
@@ -194,7 +188,6 @@ feed_get_provider (void)
 		feed_import,
 		feed_export,
 		feed_load,
-		feed_save,
 		feed_update_counters,
 		feed_remove,
 		feed_add,

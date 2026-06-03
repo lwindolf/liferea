@@ -57,12 +57,10 @@ typedef struct nodeProvider {
 	const gchar	*id;		/*<< type id (used for type attribute in OPML export) */
 	guint		icon;		/*<< default icon for nodes of this type (if no favicon available) */
 	
-	/* For method documentation see the wrappers defined below! 
-	   All methods are mandatory for each node type. */
+	/* All methods are mandatory for each node type. */
 	void    	(*import)		(Node *node, Node *parent, xmlNodePtr cur, gboolean trusted);
 	void    	(*export)		(Node *node, xmlNodePtr cur, gboolean trusted);
 	itemSetPtr	(*load)			(Node *node);
-	void 		(*save)			(Node *node);
 	void		(*update_counters)	(Node *node);
 	void		(*remove)		(Node *node);
 	gboolean	(*request_add)		(void);

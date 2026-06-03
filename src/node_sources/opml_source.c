@@ -252,32 +252,25 @@ opml_source_import (Node *node)
 	subscription_set_update_interval (node->subscription, OPML_SOURCE_UPDATE_INTERVAL);
 
 	node->subscription->type = &opmlSubscriptionType;
-
 }
 
 void
 opml_source_export (Node *node)
 {
-	gchar		*filename;
-
-	/* Although the OPML structure won't change, it needs to
-	   be saved so that the feed ids are saved to disk after
-	   the first import or updates of the source OPML. */
+	g_autofree gchar *filename;
 
 	g_assert (node == node->source->root);
 
 	filename = opml_source_get_feedlist (node);
 	export_OPML_feedlist (filename, node, TRUE);
-	g_free (filename);
 
-	debug (DEBUG_CACHE, "adding OPML source: title=%s", node_get_title(node));
-
+	debug (DEBUG_CACHE, "exporting OPML source: title=%s file=%s", node_get_title(node), filename);
 }
 
 void
 opml_source_remove (Node *node)
 {
-	gchar		*filename;
+	g_autofree gchar *filename;
 
 	/* step 1: delete all child nodes */
 	node_foreach_child (node, feedlist_node_removed);
@@ -286,7 +279,6 @@ opml_source_remove (Node *node)
 	/* step 2: delete source instance OPML cache file */
 	filename = opml_source_get_feedlist (node);
 	unlink (filename);
-	g_free (filename);
 }
 
 static void
@@ -301,24 +293,16 @@ opml_source_auto_update (Node *node)
 		node_source_update (node);
 }
 
-static void opml_source_init(void) { }
-
-static void opml_source_deinit(void) { }
-
-/* node source type definition */
-
 static struct nodeSourceType nst = {
 	.id                  = "fl_opml",
 	.name                = N_("Planet, BlogRoll, OPML"),
 	.sourceSubscriptionType = &opmlSubscriptionType,
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
-	.source_type_init    = opml_source_init,
-	.source_type_deinit  = opml_source_deinit,
+	.source_type_init    = NULL,
+	.source_type_deinit  = NULL,
 	.source_new          = ui_opml_source_get_source_url,
 	.source_delete       = opml_source_remove,
 	.source_import       = opml_source_import,
-	.source_export       = opml_source_export,
-	.source_get_feedlist = opml_source_get_feedlist,
 	.source_auto_update  = opml_source_auto_update,
 	.free                = NULL,
 	.item_set_flag       = NULL,
@@ -345,7 +329,7 @@ on_opml_source_selected (GtkDialog *dialog,
                          gpointer user_data)
 {
 	if (response_id == GTK_RESPONSE_OK) {
-		Node *node = node_new ("node_source");
+		Node *node = node_new ("source");
 		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
 		node_source_new (node, opml_source_get_type (), liferea_dialog_entry_get (GTK_WIDGET (dialog), "location_entry"));
 		feedlist_node_added (node);

@@ -3,13 +3,13 @@
 <!-- Created with Cambalache 1.0.2 -->
 <cambalache-project version="1.0.0" target_tk="gtk-4.0" depends="libadwaita-1,webkitgtk-6.0">
   <css is_global="1" filename="gtk-liferea.css" sha256="ce35b6c71817ef75601dcdb42e134c9054751e0d85f070825cb63e6f77b6dd0b"/>
-  <ui filename="auth.ui" sha256="4c87551e71c4b7a817d20e5840c902f4af6ac92c0f0bf27dcb995528b4db71d4"/>
+  <ui filename="auth.ui" sha256="919053c57f0ac27ba1e9d565e574d5ba029119fd32426dc2d6303512e851c89d"/>
   <ui filename="google_source.ui" sha256="872b201d99d01b35edfbc7f2a24afaa13c1a34f8e3750a33d6a2314c0c9d820f"/>
   <ui filename="update_monitor.ui" sha256="c1ab80b66415458e03188ec1b19531bbe3776bbbae2c3c6e815fc0d23a7bcc68"/>
   <ui filename="search.ui" sha256="17859583a4784ad90288cf83969cabf157b3e9e98b28fba07ef08d8e127a96aa">
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
-  <ui filename="reedah_source.ui" sha256="49bb0a7ce952375141fc25e0fb7994919392a33c202c9aab50a1fcf033ac3c5b"/>
+  <ui filename="reedah_source.ui" sha256="47ad8f97307eb7c241732fbfa07bf9790d4a7c2b1fca3025044c472b021d19b2"/>
   <ui filename="simple_subscription.ui" sha256="1917aa6f6ff5794b6607ab6a89a5921fe513a7e36e39eb66bfe6d2ac09daaf55"/>
   <ui filename="search_folder.ui" sha256="0e693837325a220b5dd0be3e38dd43f9fdebfff19ae235030d520054eabc26a1">
     <css-provider>gtk-liferea.css</css-provider>
@@ -27,4 +27,5 @@
   <ui filename="ttrss_source.ui" sha256="a1bf29b1f3aa456f3bd4037b26b64ef35ec7955b24b9e796ba1e87d8b843ac69"/>
   <ui filename="mainwindow.ui" sha256="0511cbf889b3e3d56444054a6b6903218f2e45f6a751eac0210a86fc8edcfe0d"/>
   <ui filename="shortcuts.ui" sha256="6235bca30daa703ea5ee43166a609f54443c1d40cbdf116c74107345fe3a73ae"/>
+  <ui filename="webdav_source.ui" sha256="4b0b27dd8bb0be4e7fec421394bc2d30039051c8ee5cf41c4216652cf88f9d36"/>
 </cambalache-project>

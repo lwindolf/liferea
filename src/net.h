@@ -1,5 +1,5 @@
 /**
- * @file net.h  HTTP network access interface
+ * @file net.h  HTTP network access using libsoup3
  *
  * Copyright (C) 2007-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
