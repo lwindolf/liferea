@@ -50,7 +50,7 @@
 #define BASE_URL "https://www.reedah.com/reader/api/0/"
 
 /** create a Reedah source with given node as root */
-static ReedahSourcePtr
+static void
 reedah_source_new (Node *node)
 {
 	ReedahSourcePtr source = g_new0 (struct ReedahSource, 1) ;
@@ -72,19 +72,9 @@ reedah_source_new (Node *node)
 	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s&async=true");
 	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s&async=true");
 
-	return source;
-}
-
-static void
-reedah_source_free (ReedahSourcePtr source)
-{
-	if (!source)
-		return;
-
-	update_job_cancel_by_owner (source);
-
-	g_hash_table_unref (source->lastTimestampMap);
-	g_free (source);
+	// FIXME: document why
+	node->subscription->updateInterval = -1;
+	node->data = (gpointer)source;
 }
 
 static void
@@ -200,17 +190,6 @@ reedah_source_init (void)
 	metadata_type_register ("reedah-feed-id", METADATA_TYPE_TEXT);
 }
 
-static void
-reedah_source_import (Node *node)
-{
-	opml_source_import (node);
-
-	node->subscription->updateInterval = -1;
-	node->subscription->type = node->source->type->sourceSubscriptionType;
-	if (!node->data)
-		node->data = (gpointer) reedah_source_new (node);
-}
-
 static Node *
 reedah_source_add_subscription (Node *node, subscriptionPtr subscription)
 {
@@ -267,7 +246,7 @@ on_reedah_source_selected (GtkButton *button, gpointer user_data)
 					liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "usernameEntry"),
 					liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "passwordEntry"));
 
-	node->data = reedah_source_new (node);
+	reedah_source_new (node);
 	feedlist_node_added (node);
 	node_source_update (node);
 }
@@ -284,11 +263,14 @@ ui_reedah_source_get_account_info (void)
 }
 
 static void
-reedah_source_cleanup (Node *node)
+reedah_source_free (Node *node)
 {
-	ReedahSourcePtr reader = (ReedahSourcePtr) node->data;
-	reedah_source_free(reader);
-	node->data = NULL ;
+	ReedahSourcePtr source = (ReedahSourcePtr) node->data;
+	node->data = NULL;
+
+	update_job_cancel_by_owner (source);
+	g_hash_table_unref (source->lastTimestampMap);
+	g_free (source);
 }
 
 static void
@@ -333,11 +315,11 @@ static struct nodeSourceType nst = {
 	.sourceSubscriptionType = &reedahSourceOpmlSubscriptionType,
 	.source_type_init    = reedah_source_init,
 	.source_type_deinit  = NULL,
-	.source_new          = ui_reedah_source_get_account_info,
+	.source_new	     = reedah_source_new,
+	.source_create       = ui_reedah_source_get_account_info,
 	.source_delete       = opml_source_remove,
-	.source_import       = reedah_source_import,
 	.source_auto_update  = reedah_source_auto_update,
-	.free                = reedah_source_cleanup,
+	.source_free         = reedah_source_free,
 	.item_set_flag       = reedah_source_item_set_flag,
 	.item_mark_read      = reedah_source_item_mark_read,
 	.add_folder          = NULL,

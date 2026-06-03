@@ -14,13 +14,13 @@
   <ui filename="search_folder.ui" sha256="0e693837325a220b5dd0be3e38dd43f9fdebfff19ae235030d520054eabc26a1">
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
-  <ui filename="rename_node.ui" sha256="b0d77ee75d41bf681ce4d0a2f9d4f9947f97fcfbf5222ed49cfd0cf3415c2def"/>
+  <ui filename="rename_node.ui" sha256="630b23f189c300bfb4f55eaea0a40705f31673b4ceae512c91f85b850343c730"/>
   <ui filename="properties.ui" sha256="d2c80b4d2f0fbf674dc3c7e9230bafdda7a054033a25232957b4786c96b42268"/>
   <ui filename="prefs.ui" sha256="ac4047b3a0424ce986363eb625b09967211bef723d48acda4c8149cbf2b1e486"/>
   <ui filename="opml_source.ui" sha256="f60bf4a7efcaf62431670993c2608f6109e14fc21df2baba07958b0397a0e6b6"/>
   <ui filename="node_source.ui" sha256="9cadcaf00da97d09b9fee8776d500ca77fa653105cb7331672e3e8ea5a9a9512"/>
   <ui filename="new_newsbin.ui" sha256="27a7285dca21d90010e3925c211145178e139d1fa22e6e1a082c5fbad25ac1e9"/>
-  <ui filename="new_folder.ui" sha256="404ec252da139fa0f36c8034ef94c4d40a282708030eab8004e9087dc5f275f2"/>
+  <ui filename="new_folder.ui" sha256="e2a1fd8929a60b1ef32d1644d25493727f96a20d9c325ae98166402c5045a5cd"/>
   <ui filename="mark_read_dialog.ui" sha256="34b96a4e8b99660d441b678d009e977ee0dec9e3304246eedf8cef8aa56422a2"/>
   <ui filename="about.ui" sha256="acb9ae69305d3c1efc81b0450b2f6b0d4875208b162f220ad1c696906822dfdc"/>
   <ui filename="theoldreader_source.ui" sha256="0b8ae21b4fd3b5c3c7d51494133a2c9af3f0279c728e670d06e122989433b9d8"/>

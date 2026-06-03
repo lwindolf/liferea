@@ -230,14 +230,15 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 		node_source_new (node, type, NULL);
 		node_set_subscription (node, subscription_import (xml, trusted));
 
-		type->source_import (node);
+		if (type) {
+			opml_source_import (node);
 
-		/* Set subscription type for all child nodes imported */
-		node_source_set_feed_subscription_type (node, type->feedSubscriptionType);
+			node->subscription->type = node->source->type->sourceSubscriptionType;
+			if (node->source->type->source_new)
+				node->source->type->source_new (node);
 
-		if (!strcmp ((gchar *)typeStr, "fl_bloglines")) {
-			g_print ("Removing obsolete Bloglines subscription.");
-			feedlist_node_removed (node);
+			/* Set subscription type for all child nodes imported */
+			node_source_set_feed_subscription_type (node, type->feedSubscriptionType);
 		}
 		
 		if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API)
@@ -245,13 +246,11 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 	} else {
 		g_print ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}
-
 }
 
 static void
 node_source_export (Node *node, xmlNodePtr xml, gboolean trusted)
 {
-
 	debug (DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE (node)->id);
 
 	/* If the node source type was loaded using the dummy node source
@@ -346,7 +345,7 @@ on_node_source_type_response (GtkButton *btn, gpointer user_data)
 	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 		gtk_tree_model_get (model, &iter, 1, &type, -1);
 		if (type)
-			type->source_new ();
+			type->source_create ();
 	}
 
 	adw_dialog_close (dialog);
@@ -658,8 +657,8 @@ node_source_remove (Node *node)
 static void
 node_source_free (Node *node)
 {
-	if (NULL != NODE_SOURCE_TYPE (node)->free)
-		NODE_SOURCE_TYPE (node)->free (node);
+	if (NULL != NODE_SOURCE_TYPE (node)->source_free)
+		NODE_SOURCE_TYPE (node)->source_free (node);
 
 	google_reader_api_free (&(node->source->api));
 

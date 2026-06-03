@@ -1,81 +1,67 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 1.0 -->
+<!-- Created with Cambalache 1.0.2 -->
 <interface>
   <!-- interface-name rename_node.ui -->
   <requires lib="gtk" version="4.0"/>
-  <object class="GtkDialog" id="rename_node">
-    <property name="modal">1</property>
-    <property name="resizable">0</property>
-    <property name="title" translatable="yes">Rename</property>
+  <requires lib="libadwaita" version="1.5"/>
+  <object class="AdwDialog" id="rename_node">
+    <property name="default-widget">nameEntry</property>
     <property name="width-request">400</property>
-    <child internal-child="action_area">
-      <object class="GtkBox" id="dialog-action_area7">
-        <property name="homogeneous">false</property>
-        <property name="margin-bottom">5</property>
-        <property name="margin-end">5</property>
-        <property name="margin-start">5</property>
-        <property name="margin-top">5</property>
-        <property name="orientation">horizontal</property>
-        <property name="spacing">6</property>
-        <property name="valign">center</property>
-        <child>
-          <object class="GtkButton" id="cancelbutton1">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_Cancel</property>
-            <property name="use-underline">True</property>
-            <signal name="clicked" handler="gtk_widget_hide" object="rename_node"/>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="namechangebtn">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_OK</property>
-            <property name="use-underline">True</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child internal-child="content_area">
-      <object class="GtkBox" id="dialog-vbox7">
+    <child>
+      <object class="GtkBox">
         <property name="margin-bottom">12</property>
         <property name="margin-end">12</property>
         <property name="margin-start">12</property>
         <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">6</property>
         <child>
-          <object class="GtkGrid">
-            <property name="column-spacing">12</property>
-            <property name="row-spacing">6</property>
+          <object class="GtkLabel" id="label23_2">
+            <property name="css-classes">title-3</property>
+            <property name="label" translatable="yes">_New Name:</property>
+            <property name="mnemonic-widget">nameEntry</property>
+            <property name="use-underline">1</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkEntry" id="nameEntry">
+            <property name="activates-default">1</property>
+            <property name="focusable">1</property>
+            <property name="hexpand">True</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox" id="dialog-action_area7_2">
+            <property name="baseline-position">bottom</property>
+            <property name="halign">end</property>
+            <property name="homogeneous">false</property>
+            <property name="margin-bottom">5</property>
+            <property name="margin-end">5</property>
+            <property name="margin-start">5</property>
+            <property name="margin-top">5</property>
+            <property name="orientation">horizontal</property>
+            <property name="spacing">6</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
             <child>
-              <object class="GtkLabel" id="label23">
-                <property name="label" translatable="yes">_New Name:</property>
-                <property name="mnemonic-widget">nameentry</property>
-                <property name="use-underline">1</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">0</property>
-                </layout>
+              <object class="GtkButton" id="cancelBtn">
+                <property name="focusable">1</property>
+                <property name="label" translatable="yes">_Cancel</property>
+                <property name="use-underline">True</property>
+                <signal name="clicked" handler="gtk_widget_hide" swapped="True"/>
               </object>
             </child>
             <child>
-              <object class="GtkEntry" id="nameentry">
-                <property name="activates-default">1</property>
+              <object class="GtkButton" id="applyBtn">
+                <property name="css-classes">suggested-action</property>
                 <property name="focusable">1</property>
-                <property name="hexpand">True</property>
-                <layout>
-                  <property name="column">1</property>
-                  <property name="row">0</property>
-                </layout>
+                <property name="label" translatable="yes">_OK</property>
+                <property name="use-underline">True</property>
               </object>
             </child>
           </object>
         </child>
       </object>
     </child>
-    <action-widgets>
-      <action-widget response="0">cancelbutton1</action-widget>
-      <action-widget response="-5">namechangebtn</action-widget>
-    </action-widgets>
   </object>
 </interface>

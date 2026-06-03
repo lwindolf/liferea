@@ -881,18 +881,19 @@ feed_list_view_reload_feedlist ()
 /* node renaming dialog */
 
 static void
-on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+on_nodenamedialog_response (GtkButton *button, gpointer user_data)
 {
-	Node	*node = (Node *)user_data;
+	GtkWidget *dialog = GTK_WIDGET (user_data);
+	Node	*node = node_from_id (g_object_get_data (G_OBJECT (dialog), "node"));
 
-	if (response_id == GTK_RESPONSE_OK) {
-		node_set_title (node, liferea_dialog_entry_get(GTK_WIDGET (dialog), "nameentry"));
+	if (node) {
+		node_set_title (node, liferea_dialog_entryrow_get(GTK_WIDGET (dialog), "nameEntry"));
 
 		feed_list_view_node_update (flv, node);
 		feedlist_schedule_save ();
 	}
 
-	gtk_window_close (GTK_WINDOW (dialog));
+	adw_dialog_close (ADW_DIALOG (dialog));
 }
 
 void
@@ -900,10 +901,9 @@ feed_list_view_rename_node (Node *node)
 {
 	GtkWidget *dialog = liferea_dialog_new ("rename_node");
 
-	liferea_dialog_entry_set (dialog, "nameentry", node_get_title (node));
-	g_signal_connect (G_OBJECT (dialog), "response",
-	                  G_CALLBACK (on_nodenamedialog_response), node);
-	gtk_window_present (GTK_WINDOW (dialog));
+	liferea_dialog_entryrow_set (dialog, "nameEntry", node_get_title (node));
+	g_object_set_data (G_OBJECT (dialog), "node", node->id);
+	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked", G_CALLBACK (on_nodenamedialog_response), dialog);
 }
 
 /* node deletion dialog */

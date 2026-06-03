@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source.c  TheOldReader feed list source support
  *
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -48,7 +48,7 @@
 #define BASE_URL "https://theoldreader.com/reader/api/0/"
 
 /** create a source with given node as root */
-static TheOldReaderSourcePtr
+static void
 theoldreader_source_new (Node *node)
 {
 	TheOldReaderSourcePtr source = g_new0 (struct TheOldReaderSource, 1) ;
@@ -72,20 +72,9 @@ theoldreader_source_new (Node *node)
 	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s");
 	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s");
 
-	return source;
-}
-
-static void
-theoldreader_source_free (TheOldReaderSourcePtr source)
-{
-	if (!source)
-		return;
-
-	update_job_cancel_by_owner (source);
-
-	g_hash_table_unref (source->lastTimestampMap);
-	g_hash_table_destroy (source->folderToCategory);
-	g_free (source);
+	// FIXME: document why
+	node->subscription->updateInterval = -1;
+	node->data = (gpointer)source;
 }
 
 static void
@@ -187,25 +176,12 @@ void theoldreader_source_init (void)
 	metadata_type_register ("theoldreader-feed-id", METADATA_TYPE_TEXT);
 }
 
-static void
-theoldreader_source_import (Node *node)
-{
-	opml_source_import (node);
-
-	node->subscription->updateInterval = -1;
-	node->subscription->type = node->source->type->sourceSubscriptionType;
-	if (!node->data)
-		node->data = (gpointer) theoldreader_source_new (node);
-}
-
 static Node *
 theoldreader_source_add_subscription (Node *root, subscriptionPtr subscription)
 {
 	Node			*parent;
 	gchar			*categoryId = NULL;
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr)root->data;
-
-
 
 	/* Determine correct category from selected folder name */
 	parent = feedlist_get_selected ();
@@ -272,7 +248,7 @@ on_theoldreader_source_selected (GtkDialog *dialog,
 		                            liferea_dialog_entry_get (GTK_WIDGET(dialog), "userEntry"),
 		                            liferea_dialog_entry_get (GTK_WIDGET(dialog), "passwordEntry"));
 
-		node->data = theoldreader_source_new (node);
+		theoldreader_source_new (node);
 		feedlist_node_added (node);
 		node_source_update (node);
 	}
@@ -291,11 +267,16 @@ ui_theoldreader_source_get_account_info (void)
 }
 
 static void
-theoldreader_source_cleanup (Node *node)
+theoldreader_source_free (Node *node)
 {
-	TheOldReaderSourcePtr reader = (TheOldReaderSourcePtr) node->data;
-	theoldreader_source_free(reader);
+	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node->data;
 	node->data = NULL;
+
+	update_job_cancel_by_owner (source);
+
+	g_hash_table_unref (source->lastTimestampMap);
+	g_hash_table_destroy (source->folderToCategory);
+	g_free (source);
 }
 
 static void
@@ -366,11 +347,11 @@ static struct nodeSourceType nst = {
 	.sourceSubscriptionType = &theOldReaderSourceOpmlSubscriptionType,
 	.source_type_init    = theoldreader_source_init,
 	.source_type_deinit  = NULL,
-	.source_new          = ui_theoldreader_source_get_account_info,
+	.source_new	     = theoldreader_source_new,
+	.source_create       = ui_theoldreader_source_get_account_info,
 	.source_delete       = opml_source_remove,
-	.source_import       = theoldreader_source_import,
 	.source_auto_update  = theoldreader_source_auto_update,
-	.free                = theoldreader_source_cleanup,
+	.source_free         = theoldreader_source_free,
 	.item_set_flag       = theoldreader_source_item_set_flag,
 	.item_mark_read      = theoldreader_source_item_mark_read,
 	.add_folder          = NULL,

@@ -29,7 +29,6 @@
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
-#include "ui/liferea_shell.h"
 
 /* Note: The folder node type implements the behaviour of a folder like
    node in the feed list. The two most important features are viewing the
@@ -103,7 +102,7 @@ folder_remove (Node *node)
 static void
 on_newfolder_response (GtkWidget *dialog, gpointer user_data)
 {
-	feedlist_add_folder (liferea_dialog_entry_get (dialog, "foldertitleentry"));
+	feedlist_add_folder (liferea_dialog_entryrow_get (dialog, "foldertitleentry"));
 }
 
 static gboolean

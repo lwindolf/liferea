@@ -42,10 +42,8 @@ typedef void (*LifereaDialogCallback) (GtkWidget *dialog, gpointer user_data);
  * trigger the passed callbacks.
  * 
  * For more complex scenarios and AdwAlertDialogs use liferea_dialog_new()
- * 
- * Returns: the dialog widget
  */
-GtkWidget * liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata);
+void liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata);
 
 /**
  * liferea_dialog_new:
@@ -78,6 +76,14 @@ GtkWidget * liferea_dialog_lookup (GtkWidget *widget, const gchar *name);
 const gchar * liferea_dialog_entry_get (GtkWidget *widget, const gchar *name);
 
 /**
+ * liferea_dialog_entry_set:
+ * @widget:	the dialog widget
+ * @name:	the GtkEntry name
+ * @text:	the text to set
+ */
+void liferea_dialog_entry_set (GtkWidget *widget, const gchar *name, const gchar *text);
+
+/**
  * liferea_dialog_entryrow_get:
  * @widget:	the dialog widget
  * @name:	the AdwEntryRow name
@@ -87,12 +93,12 @@ const gchar * liferea_dialog_entry_get (GtkWidget *widget, const gchar *name);
 const gchar * liferea_dialog_entryrow_get (GtkWidget *widget, const gchar *name);
 
 /**
- * liferea_dialog_entry_set:
+ * liferea_dialog_entryrow_set:
  * @widget:	the dialog widget
- * @name:	the GtkEntry name
+ * @name:	the AdwEntryRow name
  * @text:	the text to set
  */
-void liferea_dialog_entry_set (GtkWidget *widget, const gchar *name, const gchar *text);
+void liferea_dialog_entryrow_set (GtkWidget *widget, const gchar *name, const gchar *text);
 
 G_END_DECLS
 

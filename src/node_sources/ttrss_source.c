@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.c  Tiny Tiny RSS feed list source support
  *
- * Copyright (C) 2010-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@
 #include "node_sources/opml_source.h"
 
 /** Initialize a TinyTinyRSS source with given node as root */
-static ttrssSourcePtr
+static void
 ttrss_source_new (Node *node)
 {
 	ttrssSourcePtr source = g_new0 (struct ttrssSource, 1) ;
@@ -51,21 +51,9 @@ ttrss_source_new (Node *node)
 	source->categories = g_hash_table_new (g_direct_hash, g_direct_equal);
 	source->folderToCategory = g_hash_table_new (g_str_hash, g_str_equal);
 
-	return source;
-}
-
-static void
-ttrss_source_free (ttrssSourcePtr source)
-{
-	if (!source)
-		return;
-
-	update_job_cancel_by_owner (source);
-
-	g_hash_table_destroy (source->categories);
-	g_hash_table_destroy (source->folderToCategory);
-	g_free (source->session_id);
-	g_free (source);
+	// FIXME: document why
+	node->subscription->updateInterval = -1;
+	node->data = (gpointer)source;
 }
 
 static void
@@ -201,17 +189,6 @@ ttrss_source_init (void)
 {
 	metadata_type_register ("ttrss-url", METADATA_TYPE_URL);
 	metadata_type_register ("ttrss-feed-id", METADATA_TYPE_TEXT);
-}
-
-static void
-ttrss_source_import (Node *node)
-{
-	opml_source_import (node);
-
-	node->subscription->updateInterval = -1;
-	node->subscription->type = node->source->type->sourceSubscriptionType;
-	if (!node->data)
-		node->data = (gpointer) ttrss_source_new (node);
 }
 
 static void
@@ -360,7 +337,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "userEntry"),
 		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "passwordEntry"));
 
-		node->data = (gpointer)ttrss_source_new (node);
+		ttrss_source_new (node);
 		feedlist_node_added (node);
 		node_source_update (node);
 
@@ -381,11 +358,16 @@ ui_ttrss_source_get_account_info (void)
 }
 
 static void
-ttrss_source_cleanup (Node *node)
+ttrss_source_free (Node *node)
 {
 	ttrssSourcePtr source = (ttrssSourcePtr) node->data;
-	ttrss_source_free (source);
 	node->data = NULL;
+
+	update_job_cancel_by_owner (source);
+	g_hash_table_destroy (source->categories);
+	g_hash_table_destroy (source->folderToCategory);
+	g_free (source->session_id);
+	g_free (source);
 }
 
 static void
@@ -472,11 +454,11 @@ static struct nodeSourceType nst = {
 	.sourceSubscriptionType = &ttrssSourceSubscriptionType,
 	.source_type_init    = ttrss_source_init,
 	.source_type_deinit  = NULL,
-	.source_new          = ui_ttrss_source_get_account_info,
+	.source_create       = ui_ttrss_source_get_account_info,
 	.source_delete       = opml_source_remove,
-	.source_import       = ttrss_source_import,
+	.source_new          = ttrss_source_new,
 	.source_auto_update  = ttrss_source_auto_update,
-	.free                = ttrss_source_cleanup,
+	.source_free         = ttrss_source_free,
 	.item_set_flag       = ttrss_source_item_set_flag,
 	.item_mark_read      = ttrss_source_item_mark_read,
 	.add_folder          = NULL,	/* not supported by current tt-rss JSON API (v1.8) */

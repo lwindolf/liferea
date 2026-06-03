@@ -25,10 +25,10 @@
 
 static void dummy_source_noop (Node *node) { }
 
-static void dummy_source_import(Node *node) {
+static void dummy_source_new (Node *node) {
 
+	// brrr... mutating the node is bad style
 	node->icon = (gpointer)icon_get (ICON_UNAVAILABLE);
-	node_set_title (node, g_strdup_printf ("Unknown source type '%s'", node->source->type->id));
 }
 
 static struct nodeSourceType nst = {
@@ -36,7 +36,7 @@ static struct nodeSourceType nst = {
 	.name			= "Dummy Feed List Source",
 	.source_type_init	= NULL,
 	.source_type_deinit	= NULL,
-	.source_import		= dummy_source_import,
+	.source_new		= dummy_source_new,
 	.source_auto_update	= dummy_source_noop
 };
 

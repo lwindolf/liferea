@@ -48,7 +48,7 @@
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
 
 /** create a google source with given node as root */ 
-static GoogleSourcePtr
+static void
 google_source_new (Node *node) 
 {
 	GoogleSourcePtr source = g_new0 (struct GoogleSource, 1) ;
@@ -142,20 +142,7 @@ google_source_new (Node *node)
 	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s&async=true");
 	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s&async=true");
 
-	return source;
-}
-
-static void
-google_source_free (GoogleSourcePtr gsource) 
-{
-	if (!gsource)
-		return;
-
-	update_job_cancel_by_owner (gsource);
-	
-	g_queue_free (gsource->actionQueue) ;
-	g_hash_table_destroy (gsource->folderToCategory);
-	g_free (gsource);
+	node->data = (gpointer)source;
 }
 
 static void
@@ -252,16 +239,6 @@ google_source_auto_update (Node *node)
 	subscription_auto_update (node->subscription);
 }
 
-static void
-google_source_import (Node *node)
-{
-	opml_source_import (node);
-	
-	node->subscription->type = &googleSourceOpmlSubscriptionType;
-	if (!node->data)
-		node->data = (gpointer) google_source_new (node);
-}
-
 static Node *
 google_source_add_subscription (Node *node, subscriptionPtr subscription) 
 { 
@@ -323,7 +300,7 @@ on_google_source_selected (GtkDialog *dialog,
 		                            gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry")))),
 		                            gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry")))));
 		                            
-		node->data = google_source_new (node);
+		google_source_new (node);
 		feedlist_node_added (node);
 		node_source_update (node);
 	}
@@ -342,11 +319,16 @@ ui_google_source_get_account_info (void)
 }
 
 static void
-google_source_cleanup (Node *node)
+google_source_free (Node *node)
 {
-	GoogleSourcePtr reader = (GoogleSourcePtr) node->data;
-	google_source_free (reader);
+	GoogleSourcePtr gsource = (GoogleSourcePtr) node->data;
 	node->data = NULL;
+
+	update_job_cancel_by_owner (gsource);
+	
+	g_queue_free (gsource->actionQueue) ;
+	g_hash_table_destroy (gsource->folderToCategory);
+	g_free (gsource);
 }
 
 static void 
@@ -386,11 +368,11 @@ static struct nodeSourceType nst = {
 	.sourceSubscriptionType = &googleSourceOpmlSubscriptionType,
 	.source_type_init    = NULL,
 	.source_type_deinit  = NULL,
-	.source_new          = ui_google_source_get_account_info,
+	.source_new          = google_source_new,	
+	.source_create       = ui_google_source_get_account_info,
 	.source_delete       = opml_source_remove,
-	.source_import       = google_source_import,
 	.source_auto_update  = google_source_auto_update,
-	.free                = google_source_cleanup,
+	.source_free         = google_source_free,
 	.item_set_flag       = google_source_item_set_flag,
 	.item_mark_read      = google_source_item_mark_read,
 	.add_folder          = NULL, 

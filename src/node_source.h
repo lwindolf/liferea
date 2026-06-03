@@ -112,11 +112,17 @@ typedef struct nodeSourceType {
 
 	/*
 	 * This OPTIONAL callback is used to create an instance
+	 * of the implemented source type. It is to be called on
+	 * startup on feed list import. This method sets node->data.
+	 */
+	void		(*source_new)(Node *node);
+
+	/*
+	 * This OPTIONAL callback is used to create an instance
 	 * of the implemented source type. It is to be called by
 	 * the parent source node_request_add_*() implementation.
-	 * Mandatory for all sources except the root source.
 	 */
-	void 		(*source_new)(void);
+	void 		(*source_create)(void);
 
 	/*
 	 * This OPTIONAL callback is used to delete an instance
@@ -144,7 +150,7 @@ typedef struct nodeSourceType {
 	 * Frees all data of the given node source instance. To be called
 	 * during g_object_unref() for a source node.
 	 */
-	void		(*free) (Node *node);
+	void		(*source_free) (Node *node);
 
 	/*
 	 * Changes the flag state of an item.  This is to allow node source type

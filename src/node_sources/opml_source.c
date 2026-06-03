@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c  OPML Planet/Blogroll feed list source
  *
- * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -300,11 +300,12 @@ static struct nodeSourceType nst = {
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 	.source_type_init    = NULL,
 	.source_type_deinit  = NULL,
-	.source_new          = ui_opml_source_get_source_url,
+	.source_new	     = NULL,
+	.source_create       = ui_opml_source_get_source_url,
 	.source_delete       = opml_source_remove,
 	.source_import       = opml_source_import,
 	.source_auto_update  = opml_source_auto_update,
-	.free                = NULL,
+	.source_free         = NULL,
 	.item_set_flag       = NULL,
 	.item_mark_read      = NULL,
 	.add_folder          = NULL,
