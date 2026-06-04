@@ -47,7 +47,7 @@
 #include "node_sources/google_reader_api.h"
 #include "node_sources/opml_source.h"
 #include "node_sources/reedah_source.h"
-#include "node_sources/webdav_source.h"
+//#include "node_sources/webdav_source.h"
 #include "node_sources/theoldreader_source.h"
 #include "node_sources/ttrss_source.h"
 
