@@ -119,6 +119,15 @@ item_copy (LifereaItem *item)
 }
 
 void
+item_add_enclosure (LifereaItem *item, enclosurePtr enclosure)
+{
+	g_autofree gchar *encStr = enclosure_to_string (enclosure);
+	item->metadata = metadata_list_append (item->metadata, "enclosure", encStr);
+	item->hasEnclosure = TRUE;
+	enclosure_free (enclosure);
+}
+
+void
 item_set_title (LifereaItem *item, const gchar * title)
 {
 	g_free (item->title);
@@ -237,7 +246,7 @@ item_make_link (LifereaItem *item)
 }
 
 const gchar *
-item_get_author(LifereaItem *item)
+item_get_author (LifereaItem *item)
 {
 	gchar *author;
 
@@ -256,8 +265,6 @@ item_get_base_url (LifereaItem *item)
 gchar *
 item_to_json (LifereaItem *item)
 {
-	GSList *list = NULL;
-
 	g_autoptr(JsonBuilder) b = json_builder_new ();
 
 	json_builder_begin_object (b);
@@ -344,24 +351,6 @@ item_to_json (LifereaItem *item)
 			}
 		}
 	}
-
-	json_builder_set_member_name (b, "enclosures");
-	json_builder_begin_array (b);
-	list = metadata_list_get_values (item->metadata, "enclosure");
-	while (list) {
-		enclosurePtr enclosure = enclosure_from_string (list->data);
-		if (enclosure) {
-			json_builder_begin_object (b);
-			json_builder_set_member_name (b, "url");
-			json_builder_add_string_value (b, enclosure->url);
-			json_builder_set_member_name (b, "mime");
-			json_builder_add_string_value (b, enclosure->mime);
-			json_builder_end_object (b);
-			enclosure_free (enclosure);
-		}
-		list = g_slist_next (list);
-	}
-	json_builder_end_array (b);
 
 	if (item->validGuid) {
 		GSList	*iter, *duplicates;

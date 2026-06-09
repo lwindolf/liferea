@@ -1,7 +1,7 @@
 /**
  * @file parse_rss.c  Test cases for RSS parsing
  *
- * Copyright (C) 2023-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2023-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,8 +50,8 @@ gchar *tc_rss_feed1[] = {
 #if LIBXML_VERSION < 21400
 	"</p>"
 #endif
-	"</div>\",\"source\":\"http://localhost/item1.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
-	"{\"id\":0,\"title\":\"i2\",\"description\":null,\"source\":\"https://localhost/item2.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
+	"</div>\",\"source\":\"http://localhost/item1.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[]}",
+	"{\"id\":0,\"title\":\"i2\",\"description\":null,\"source\":\"https://localhost/item2.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[]}",
 	NULL
 };
 
@@ -61,7 +61,7 @@ gchar *tc_rss_feed2_rce[] = {
 	"<rss version=\"2.0\"><channel><title>T</title><item><title>i1</title><link>|date >/tmp/bad-item-link.txt</link></item></channel></rss>",
 	"true",
 	"1",
-	"{\"id\":0,\"title\":\"i1\",\"description\":null,\"source\":null,\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
+	"{\"id\":0,\"title\":\"i1\",\"description\":null,\"source\":null,\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[]}",
 	NULL
 };
 

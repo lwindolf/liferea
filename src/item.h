@@ -25,6 +25,8 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "enclosure.h"
+
 /* Each feed/subscription type provider must provide it's data using `Item` */
 
 G_BEGIN_DECLS
@@ -188,6 +190,15 @@ gchar *	item_make_link (LifereaItem *item);
  * Returns: pointer to string in GSList meta data
  */
 const gchar * item_get_author(LifereaItem *item);
+
+/**
+ * item_add_enclosure:
+ * @item: the item
+ * @enclosure: the enclosure to add
+ * 
+ * Adds the given enclosure to the item. Takes ownership of the enclosure.
+ */
+void item_add_enclosure (LifereaItem *item, enclosurePtr enclosure);
 
 /**
  * item_set_title:

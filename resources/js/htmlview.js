@@ -155,6 +155,23 @@ async function load_node(data, baseURL, direction) {
 	}
 }
 
+// Get largest image (by width) that fits window width, or use first one
+function findLargestImage(imgEnclosures) {
+	let bestImg = imgEnclosures[0];
+	let maxWidth = 0;
+	const windowWidth = window.innerWidth;
+	
+	for (let enclosure of imgEnclosures) {
+		console.log(`Checking enclosure ${enclosure.url} with width ${enclosure.width} against window width ${windowWidth}`);
+		if(enclosure.width <= windowWidth && enclosure.width > maxWidth) {
+			console.log(`Enclosure ${enclosure.url} is the new best image with width ${enclosure.width}`);
+			maxWidth = enclosure.width;
+			bestImg = enclosure;
+		}
+	}
+	return bestImg.url;
+}
+
 async function load_item(data, baseURL, direction) {
 	try {
 		if(window.hookPreItemRendering) {
@@ -167,6 +184,7 @@ async function load_item(data, baseURL, direction) {
 	try {
 		const item = JSON.parse(decodeURIComponent(data));
 		const richContent = metadata_get(item, "richContent");
+		const enclosures = item.metadata.filter((m) => m.enclosure).map((m) => m.enclosure);
 		let title = item.title;
 		let article;
 		let debugfooter = `<hr/>DEBUG: item_id=${item?.id} `;
@@ -210,8 +228,8 @@ async function load_item(data, baseURL, direction) {
 			slashSection		: metadata_get(item, "slashSection"),
 			slashDepartment		: metadata_get(item, "slashDepartment"),
 			categories		: item.metadata.filter((m) => m.category).map((m) => m.category),
-			videos			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/')),
-			audios			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'))
+			videos			: enclosures.filter((m) => m.mime?.startsWith('video/')),
+			audios			: enclosures.filter((m) => m.mime?.startsWith('audio/'))
 			// FIXME: use this too
 			/*let related		= metadata_get(item, "related");
 			let point		= metadata_get(item, "point");
@@ -242,10 +260,10 @@ async function load_item(data, baseURL, direction) {
 		if (document.querySelectorAll('img').length == 0) {
 			let imgUrl, imgAlt;
 
-			const imgEnclosures = item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('image/'));
 			// 1.
-			if(imgEnclosures.length > 0) {
-				imgUrl = imgEnclosures[0].url;
+			const imgEnclosures = enclosures.filter((enclosure) => enclosure.mime?.startsWith('image/'));
+			if(imgEnclosures.length > 0) {				
+				imgUrl = findLargestImage(imgEnclosures);
 			}
 			// 2.
 			if(!imgUrl) {
@@ -257,9 +275,9 @@ async function load_item(data, baseURL, direction) {
 				imgUrl = metadata_get(item, "gravatar");
 			}
 			// 4.
-			const imgEnclosuresNoMime = item.enclosures.filter((enclosure) => !enclosure.mime);
+			const imgEnclosuresNoMime = enclosures.filter((enclosure) => !enclosure.mime);
 			if(imgEnclosuresNoMime.length > 0) {
-				imgUrl = imgEnclosuresNoMime[0].url;
+				imgUrl = findLargestImage(imgEnclosuresNoMime);
 			}
 
 			if(imgUrl) {

@@ -294,15 +294,11 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 		} else if (g_str_equal (relation, "enclosure")) {
 			if (ctxt->item) {
 				gsize length = 0;
-				gchar *lengthStr = xml_get_ns_attribute (cur, "length", NULL);
+				g_autofree gchar *lengthStr = xml_get_ns_attribute (cur, "length", NULL);
 				if (lengthStr)
 					length = atol (lengthStr);
-				g_free (lengthStr);
 
-				gchar *encStr = enclosure_values_to_string (url, type, length, FALSE /* not yet downloaded */);
-				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", encStr);
-				ctxt->item->hasEnclosure = TRUE;
-				g_free (encStr);
+				item_add_enclosure (ctxt->item, enclosure_new (url, type, length, -1 /* FIXME width */, -1 /* height */));
 			}
 		} else if (g_str_equal (relation, "related") || g_str_equal (relation, "via")) {
 			if (ctxt->item)

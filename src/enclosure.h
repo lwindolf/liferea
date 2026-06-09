@@ -1,7 +1,7 @@
 /*
  * @file enclosure.h enclosure/podcast support
  *
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +23,29 @@
 
 #include <glib.h>
 
+#include "json.h"
+
 /* structure describing an enclosure and its states */
 typedef struct enclosure {
 	gchar		*url;		/*<< enclosure download URI (absolute path) */
 	gchar		*mime;		/*<< enclosure MIME type (optional, can be NULL) */
-	gssize		size;		/*<< enclosure size (optional, can be 0, but also -1) */
+	gssize		size;		/*<< enclosure size (optional, -1 or 0 for not set) */
+	gssize		width;		/*<< enclosure width in pixel (optional, -1 for not set) */
+	gssize		height;		/*<< enclosure height in pixel (optional, -1 for not set) */
 	gboolean	downloaded;	/*<< flag indicating we have downloaded the enclosure */
 } *enclosurePtr;
+
+/**
+ * enclosure_new: (skip)
+ * @url:	the enclosure URL
+ * @mime:	the enclosure MIME type (optional, can be NULL)
+ * @length:	the enclosure size (optional, -1 for not set)
+ * @width:	the enclosure width in pixel (optional, -1 for not set)
+ * @height:	the enclosure height in pixel (optional, -1 for not set)
+ * 
+ * Returns: (transfer full): new enclosure structure (to be free'd using enclosure_free)
+ */
+enclosurePtr enclosure_new (const gchar *url, const gchar *mime, gssize length, gssize width, gssize height);
 
 /**
  * enclosure_from_string: (skip)
@@ -42,27 +58,23 @@ typedef struct enclosure {
 enclosurePtr enclosure_from_string (const gchar *str);
 
 /**
- * enclosure_values_to_string:
- * @url:		the enclosure URL
- * @mime:		the MIME type (optional, can be NULL)
- * @size:	  	the enclosure size (optional, can be 0, and also -1)
- * @downloaded:	downloading state (TRUE=downloaded)
- *
- * Serialize enclosure infos to string.
- *
- * Returns: (transfer full): new string (to be free'd using g_free)
- */
-gchar * enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gboolean downloaded);
-
-/**
  * enclosure_to_string: (skip)
  * @enclosure:		the enclosure
  *
- * Serialize enclosure to string.
+ * Serialize enclosure to JSON string.
  *
  * Returns: (transfer full): new string (to be free'd using g_free)
  */
 gchar * enclosure_to_string (const enclosurePtr enclosure);
+
+/**
+ * enclosure_to_json:
+ * @enclosure:	the enclosure
+ * @b:		the JSON builder
+ * 
+ * Serializes the enclosure to JSON using a JsonBuilder.
+ */
+void enclosure_to_json (const enclosurePtr enclosure, JsonBuilder *b);
 
 /**
  * enclosure_get_url:

@@ -114,14 +114,13 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 						 */
 						if (json_get_string (enc_node, "content_url") &&
 						    json_get_string (enc_node, "content_type")) {
-							gchar *encStr = enclosure_values_to_string (
+							item_add_enclosure (item, enclosure_new (
 								json_get_string (enc_node, "content_url"),
 								json_get_string (enc_node, "content_type"),
-								0 /* length unknown to TinyTiny RSS*/,
-								FALSE /* not yet downloaded */);
-							item->metadata = metadata_list_append (item->metadata, "enclosure", encStr);
-							item->hasEnclosure = TRUE;
-							g_free (encStr);
+								json_get_int (enc_node, "duration"),
+								-1 /* width unknown to TinyTiny RSS */,
+								-1 /* height unknown to TinyTiny RSS */)
+							);
 						}
 						aiter = g_list_next (aiter);
 					}

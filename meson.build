@@ -78,6 +78,7 @@ foreach name: [
   'favicon',
   'parse_atom',
   'parse_date',
+  'parse_enclosure',
   'parse_html',
   'parse_rss',
   'parse_uri',

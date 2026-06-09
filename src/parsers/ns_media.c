@@ -2,7 +2,7 @@
  * @file ns_media.c  Yahoo media namespace support / Media RSS Specification
  *
  * Copyright (C) 2019 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2007-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
 
 #include <string.h>
 
@@ -56,7 +52,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
         	       width="300" 
         	       lang="en" />
 		       
-	   (example quoted from specification)
+	   (example quoted from specification https://www.rssboard.org/media-rss#media-content)
 	*/
 	if (!xmlStrcmp(cur->name, BAD_CAST"content")) {
 		tmp = xml_get_attribute (cur, "url");
@@ -66,12 +62,21 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		/* the following code is duplicated from rss_item.c! */
 		const gchar *feedURL = subscription_get_homepage (ctxt->subscription);
 	
-		gchar *type = xml_get_attribute (cur, "type");
-		gchar *lengthStr = xml_get_attribute (cur, "length");
-		gchar *medium = xml_get_attribute (cur, "medium");
-		gssize length = 0;
-		if (lengthStr)
-			length = atol (lengthStr);
+		g_autofree gchar *type = xml_get_attribute (cur, "type");
+		g_autofree gchar *medium = xml_get_attribute (cur, "medium");
+		g_autofree gchar *fileSize = xml_get_attribute (cur, "fileSize");
+		g_autofree gchar *width = xml_get_attribute (cur, "width");
+		g_autofree gchar *height = xml_get_attribute (cur, "height");
+		gssize l = -1, h = -1, w = -1;
+
+		if (fileSize)
+			l = atol (fileSize);
+		if (width)
+			w = atol (width);
+		if (height)
+			h = atol (height);
+
+		 /* if the URL is relative and we have a feed URL, try to add it */
 	
 		if ((strstr (tmp, "://") == NULL) && feedURL && (feedURL[0] != '|') &&
 		    (strstr (feedURL, "://") != NULL)) {
@@ -88,17 +93,10 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		} else {
 			/* Never add enclosures for images already contained in the description */
 			if (!(ctxt->item->description && strstr (ctxt->item->description, tmp))) {
-				gchar *encl_string = enclosure_values_to_string (tmp, type, length, FALSE /* not yet downloaded */);
-				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "enclosure", encl_string);
-				g_free (encl_string);
-
-				ctxt->item->hasEnclosure = TRUE;
+				item_add_enclosure (ctxt->item, enclosure_new (tmp, type, l, w, h));
 			}
 		}
 		g_free (tmp);
-		g_free (type);
-		g_free (medium);
-		g_free (lengthStr);
 	}
 	else if (!xmlStrcmp (cur->name, BAD_CAST"group")) {
 		cur = cur->xmlChildrenNode;

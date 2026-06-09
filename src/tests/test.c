@@ -2,6 +2,7 @@
 
 extern int test_parse_atom (int argc, char *argv[]);
 extern int test_parse_date (int argc, char *argv[]);
+extern int test_parse_enclosure (int argc, char *argv[]);
 extern int test_parse_html (int argc, char *argv[]);
 extern int test_parse_uri (int argc, char *argv[]);
 extern int test_parse_xml (int argc, char *argv[]);
@@ -17,6 +18,8 @@ int run_test (int argc, char *argv[]) {
                         return test_parse_atom (argc, argv);
                 if (g_str_equal (argv[2], "parse_date"))
                         return test_parse_date (argc, argv);
+                if (g_str_equal (argv[2], "parse_enclosure"))
+                        return test_parse_enclosure (argc, argv);
                 if (g_str_equal (argv[2], "parse_html"))
                         return test_parse_html (argc, argv);
                 if (g_str_equal (argv[2], "parse_rss"))

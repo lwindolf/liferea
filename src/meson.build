@@ -95,6 +95,7 @@ liferea_sources = files(
   'tests/favicon.c',
   'tests/parse_atom.c',
   'tests/parse_date.c',
+  'tests/parse_enclosure.c',
   'tests/parse_html.c',
   'tests/parse_rss.c',
   'tests/parse_uri.c',

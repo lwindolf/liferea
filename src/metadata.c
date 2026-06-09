@@ -347,10 +347,22 @@ metadata_list_to_json (GSList *metadata, JsonBuilder *b)
 		struct pair *p = (struct pair*)list->data;
 		GSList *list2 = p->data;
 		while (list2) {
-			json_builder_begin_object (b);
-			json_builder_set_member_name (b, p->strid);
-			json_builder_add_string_value (b, list2->data);
-			json_builder_end_object (b);
+			// Enclosures need some special handling due to different legacy serialization formats
+			if (g_str_equal (p->strid, "enclosure")) {
+				enclosurePtr enclosure = enclosure_from_string (list2->data);
+				if (enclosure) {
+					json_builder_begin_object (b);
+					json_builder_set_member_name (b, p->strid);
+					enclosure_to_json (enclosure, b);
+					enclosure_free (enclosure);
+					json_builder_end_object (b);
+				}
+			} else {
+				json_builder_begin_object (b);
+				json_builder_set_member_name (b, p->strid);
+				json_builder_add_string_value (b, list2->data);
+				json_builder_end_object (b);
+			}
 			list2 = list2->next;
 		}
 		list = list->next;
