@@ -131,6 +131,24 @@ social_add_bookmark (const itemPtr item)
 	g_free (url);
 }
 
+static void
+social_cleanup (void)
+{
+	socialSitePtr	site;
+	GSList		*iter;
+	
+	iter = bookmarkSites;	
+	while (iter) {
+		site = (socialSitePtr) iter->data;
+		g_free (site->name);
+		g_free (site->url);
+		g_free (site);
+		iter = g_slist_next(iter);
+	}
+	g_slist_free (bookmarkSites);
+	bookmarkSites = NULL;
+}
+
 void
 social_init (void)
 {
@@ -154,22 +172,6 @@ social_init (void)
 	
 	if (!bookmarkSite)
 		bookmarkSite = bookmarkSites->data;	// use first in list
-}
 
-void
-social_free (void)
-{
-	socialSitePtr	site;
-	GSList		*iter;
-	
-	iter = bookmarkSites;	
-	while (iter) {
-		site = (socialSitePtr) iter->data;
-		g_free (site->name);
-		g_free (site->url);
-		g_free (site);
-		iter = g_slist_next(iter);
-	}
-	g_slist_free (bookmarkSites);
-	bookmarkSites = NULL;
+	atexit (social_cleanup);
 }

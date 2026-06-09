@@ -168,7 +168,6 @@ on_app_shutdown (GApplication *app, gpointer user_data)
 		g_object_unref (liferea_shell_get_instance ());
 
 	db_deinit ();
-	social_free ();
 	conf_deinit ();
 }
 

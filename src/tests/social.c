@@ -27,29 +27,58 @@ extern GSList *bookmarkSites;
 extern socialSitePtr bookmarkSite;
 
 typedef struct tc {
+	gchar   *name;
 	gchar	*url;
 	gchar	*result;
-} *tcPtr;
+} tc;
 
-struct tc tc_url = { "https://example.com/add?u={url}", "https://example.com/add?u=https://coolsite.org" };
-struct tc tc_url2 = { "https://example.com/add?u={url}&abc", "https://example.com/add?u=https://coolsite.org&abc" };
-
-struct tc tc_title1 = { "https://example.com/add?u={url}&t={title}", "https://example.com/add?u=https://coolsite.org&t=TITLE" };
-struct tc tc_title2 = { "https://example.com/add?t={title}&u={url}&abc", "https://example.com/add?t=TITLE&u=https://coolsite.org&abc" };
-
+static const tc tests[] = {
+	{
+		.name = "/social/tc_url",
+		.url = "https://example.com/add?u={url}&t={title}",
+		.result = "https://example.com/add?u=https://coolsite.org&t=TITLE"
+	},
+	{
+		.name = "/social/tc_url2",
+		.url = "https://example.com/add?u={url}&abc",
+		.result = "https://example.com/add?u=https://coolsite.org&abc"
+	},
+	{
+		.name = "/social/tc_title1",
+		.url = "https://example.com/add?u={url}&t={title}",
+		.result = "https://example.com/add?u=https://coolsite.org&t=TITLE"
+	},
+	{
+		.name = "/social/tc_title2",
+		.url = "https://example.com/add?t={title}&u={url}&abc",
+		.result = "https://example.com/add?t=TITLE&u=https://coolsite.org&abc"
+	}
+};
 
 static void
 tc_build_uri (gconstpointer user_data)
 {
-	tcPtr			tc = (tcPtr)user_data;
+	tc			*test = (tc *)user_data;
 	g_autofree gchar	*result;
+	GSList			*iter;
 
-	social_free (); // to cleanup previous site
+	social_register_bookmark_site (test->name, test->url);
 
-	social_register_bookmark_site ("TEST", tc->url);
-	bookmarkSite = bookmarkSites->data;	// select our only added bookmark site
+	g_assert (bookmarkSites != NULL);
+
+	// somewhat hacky: force site active
+	iter = bookmarkSites;
+	while (iter) {
+		if (g_str_equal (((socialSitePtr)iter->data)->name, test->name))
+			break;
+
+		iter = g_slist_next (iter);
+	}
+	g_assert (iter);
+
+	bookmarkSite = (socialSitePtr)iter->data;	// select our only added bookmark site
 	result = social_get_bookmark_url ("https://coolsite.org", "TITLE");
-	g_assert_cmpstr (result, ==, tc->result);
+	g_assert_cmpstr (result, ==, test->result);
 }
 
 int
@@ -59,15 +88,13 @@ test_social (int argc, char *argv[])
 
 	g_test_init (&argc, &argv, NULL);
 
-	g_test_add_data_func ("/social/url",	&tc_url,	&tc_build_uri);
-	g_test_add_data_func ("/social/url2",	&tc_url2,	&tc_build_uri);
+	// Do not call social_init () as it would need gsettings
+	g_assert (bookmarkSites == NULL);
 
-	g_test_add_data_func ("/social/title1",	&tc_title1,	&tc_build_uri);
-	g_test_add_data_func ("/social/title2",	&tc_title2,	&tc_build_uri);
+        for (guint i = 0; i < G_N_ELEMENTS (tests); i++)
+                g_test_add_data_func (tests[i].name, &tests[i], &tc_build_uri);
 
 	result = g_test_run();
-
-	social_free ();
 
 	return result;
 }
