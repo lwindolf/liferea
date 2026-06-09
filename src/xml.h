@@ -1,7 +1,7 @@
 /**
  * @file xml.h  XML helper methods for Liferea
  *
- * Copyright (C) 2003-2020  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -32,11 +32,6 @@
  * Initialize XML parsing.
  */
 void xml_init (void);
-
-/**
- * Deinit XML parsing
- */
-void xml_deinit (void);
 
 /**
  * Retrieves the text content of an HTML chunk. All entities

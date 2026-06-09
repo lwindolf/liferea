@@ -1,7 +1,7 @@
 /**
  * @file ns_slash.c slash namespace support
  *
- * Copyright (C) 2003-2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,9 @@
 
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include <string.h>
 #include "ns_slash.h"
-#include "common.h"
+
+#include "metadata.h"
 
 /* a tag list from http://f3.grp.yahoofs.com/v1/YP40P2oiXvP5CAx4TM6aQw8mDrCtNDwF9_BkMwcvulZHdlhYmCk5cS66_06t9OaIVsubWpwtMUTxYNG7/Modules/Proposed/mod_slash.html
 
@@ -62,23 +58,12 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	
 }
 
-static void
-ns_slash_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_slash_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, "slash", nsh);
-	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/slash/", nsh);
+	static NsHandler nsh = {
+		parseItemTag: parse_item_tag,
+	};
+	g_hash_table_insert (prefixhash, "slash", &nsh);
+	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/slash/", &nsh);
 }
-
-NsHandler *
-ns_slash_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->registerNs		= ns_slash_register_ns;
-	nsh->prefix		= "slash";
-	nsh->parseItemTag	= parse_item_tag;
-
-	return nsh;
-}
-

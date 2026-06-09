@@ -1,7 +1,7 @@
 /**
  * @file ns_cC.c creativeCommon RSS namespace support
  * 
- * Copyright (C) 2003-2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,25 +89,18 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	g_free (tag);
 }
 
-static void
-ns_cC_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
-{
-	g_hash_table_insert (prefixhash, RSS1_CC_PREFIX, nsh);
-	g_hash_table_insert (prefixhash, RSS2_CC_PREFIX, nsh);
-	g_hash_table_insert (urihash, "http://web.resource.org/cc/", nsh);
-	g_hash_table_insert (urihash, "http://backend.userland.com/creativeCommonsRssModule", nsh);
-}
 
-NsHandler *
-ns_cC_get_handler (void)
+
+void
+ns_cC_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	NsHandler 	*nsh;
+	static NsHandler nsh = {
+		.parseChannelTag=	parse_channel_tag,
+		.parseItemTag=		parse_item_tag,
+	};
 	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->prefix 			= RSS1_CC_PREFIX;
-	nsh->registerNs			= ns_cC_register_ns;
-	nsh->parseChannelTag		= parse_channel_tag;
-	nsh->parseItemTag		= parse_item_tag;
-
-	return nsh;
+	g_hash_table_insert (prefixhash, RSS1_CC_PREFIX, &nsh);
+	g_hash_table_insert (prefixhash, RSS2_CC_PREFIX, &nsh);
+	g_hash_table_insert (urihash, "http://web.resource.org/cc/", &nsh);
+	g_hash_table_insert (urihash, "http://backend.userland.com/creativeCommonsRssModule", &nsh);
 }

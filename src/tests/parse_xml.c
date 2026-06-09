@@ -162,7 +162,5 @@ test_parse_xml (int argc, char *argv[])
 
 	result = g_test_run();
 
-	xml_deinit ();
-
 	return result;
 }

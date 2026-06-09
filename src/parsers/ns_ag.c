@@ -75,22 +75,14 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	}
 }
 
-static void
-ns_ag_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_ag_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, "ag", nsh);
-	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/aggregation/", nsh);
+	static NsHandler nsh = {
+		parseItemTag: parse_item_tag,
+	};
+
+	g_hash_table_insert (prefixhash, "ag", &nsh);
+	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/aggregation/", &nsh);
 }
 
-NsHandler *
-ns_ag_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->registerNs		= ns_ag_register_ns;
-	nsh->prefix		= "ag";
-	nsh->parseItemTag	= parse_item_tag;
-
-	return nsh;
-}

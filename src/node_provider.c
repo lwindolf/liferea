@@ -31,6 +31,13 @@
 static GSList *providers = NULL;
 
 static void
+node_provider_cleanup (void)
+{
+	g_slist_free (providers);
+	providers = NULL;
+}
+
+static void
 node_provider_register (nodeProviderPtr provider)
 {
 	/* all attributes and methods except free() are mandatory! */
@@ -74,6 +81,7 @@ node_provider_by_name (const gchar *str)
 		node_provider_register (vfolder_get_provider ());
 		node_provider_register (node_source_get_provider ());
 		node_provider_register (newsbin_get_provider ());
+		atexit(node_provider_cleanup);
 	}
 
 	if (g_str_equal (str, ""))	/* type maybe "" if initial download is not yet done */

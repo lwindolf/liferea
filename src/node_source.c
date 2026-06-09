@@ -51,10 +51,16 @@
 #include "node_sources/theoldreader_source.h"
 #include "node_sources/ttrss_source.h"
 
-static GSList		*nodeSourceTypes = NULL;
+static GSList	*nodeSourceTypes = NULL;
 
 /** lock to prevent feed list saving while loading */
 static gboolean feedlistImport = TRUE;
+
+static void
+node_source_cleanup (void) {
+	g_slist_free (nodeSourceTypes);
+	nodeSourceTypes = NULL;
+}
 
 static void
 node_source_import_feedlist (Node *node) 
@@ -158,6 +164,7 @@ node_source_setup_root (void)
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
 	// FIXME node_source_type_register (webdav_source_get_type ());
+	atexit(node_source_cleanup);
 
 	/* register all source types that are google like */
 	type = g_new0 (struct nodeSourceType, 1);

@@ -68,8 +68,6 @@ test_parse_date (int argc, char *argv[])
 
 	g_test_init (&argc, &argv, NULL);
 
-	date_init ();
-
 	g_test_add_data_func ("/parse_date/rfc822/empty",	&tc_empty,		&tc_parse_rfc822);
 	g_test_add_data_func ("/parse_date/rfc822/nonsense",	&tc_nonsense,		&tc_parse_rfc822);
 	g_test_add_data_func ("/parse_date/rfc822/full",	&tc_rfc822_full,	&tc_parse_rfc822);
@@ -92,8 +90,6 @@ test_parse_date (int argc, char *argv[])
 	g_test_add_data_func ("/parse_date/iso8601/notz",	&tc_iso8601_notz,	&tc_parse_iso8601);
 
 	result = g_test_run();
-
-	date_deinit ();
 
 	return result;
 }

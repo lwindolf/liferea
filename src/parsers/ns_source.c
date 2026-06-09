@@ -20,6 +20,7 @@
  */
 
 #include "ns_source.h"
+#include "metadata.h"
 
 /* For namespace docs see: https://source.scripting.com/ */
 
@@ -35,23 +36,12 @@ parse_feed_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	}
 }
 
-static void
-ns_source_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_source_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, "source", nsh);
-	g_hash_table_insert (urihash, "http://source.scripting.com/", nsh);
+	static NsHandler nsh = {
+		.parseChannelTag = parse_feed_tag,
+	};
+	g_hash_table_insert (prefixhash, "source", &nsh);
+	g_hash_table_insert (urihash, "http://source.scripting.com/", &nsh);
 }
-
-NsHandler *
-ns_source_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->registerNs		= ns_source_register_ns;
-	nsh->prefix		= "source";
-	nsh->parseChannelTag	= parse_feed_tag;
-
-	return nsh;
-}
-

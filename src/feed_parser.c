@@ -40,6 +40,13 @@ struct feed_type {
 	gchar *id_str;
 };
 
+static void
+feed_parsers_cleanup (void)
+{
+	g_slist_free_full (feedHandlers, (GDestroyNotify)g_free);
+	feedHandlers = NULL;
+}
+
 static GSList *
 feed_parsers_get_list (void)
 {
@@ -53,6 +60,8 @@ feed_parsers_get_list (void)
 	feedHandlers = g_slist_append (feedHandlers, ldjson_init_feed_handler ());
 	feedHandlers = g_slist_append (feedHandlers, html5_init_feed_handler ());
 	feedHandlers = g_slist_append (feedHandlers, gopher_init_feed_handler ());
+
+	atexit(feed_parsers_cleanup);
 
 	return feedHandlers;
 }

@@ -22,7 +22,9 @@
 #include <string.h>
 
 #include "ns_media.h"
+
 #include "enclosure.h"
+#include "metadata.h"
 #include "xml.h"
 
 /* a namespace documentation can be found at 
@@ -157,22 +159,12 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	// FIXME: should we support media:player too?
 }
 
-static void
-ns_media_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_media_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, "media", nsh);
-	g_hash_table_insert (urihash, "http://www.rssboard.org/media-rss", nsh);
-}
-
-NsHandler *
-ns_media_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->prefix		= "media";
-	nsh->registerNs		= ns_media_register_ns;
-	nsh->parseItemTag	= parse_item_tag;
-
-	return nsh;
+	static NsHandler nsh = {
+		.parseItemTag = parse_item_tag,
+	};
+	g_hash_table_insert (prefixhash, "media", &nsh);
+	g_hash_table_insert (urihash, "http://www.rssboard.org/media-rss", &nsh);
 }

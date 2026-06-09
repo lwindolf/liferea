@@ -1,7 +1,8 @@
 /**
- * @file georss.h  GeoRSS namespace support
+ * @file ns_georss.h  GeoRSS namespace support
  *
  * Copyright (C) 2009 Mikel Olasagasti <mikel@olasagasti.info>
+ * Copyright (C) 2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +19,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _GEORSS_H
-#define _GEORSS_H
+#ifndef _NS_GEORSS_H
+#define _NS_GEORSS_H
 
-#include "metadata.h"
+#include <glib.h>
 
-NsHandler *ns_georss_get_handler(void);
+void ns_georss_register_ns (GHashTable *prefixhash, GHashTable *urihash);
 
 #endif

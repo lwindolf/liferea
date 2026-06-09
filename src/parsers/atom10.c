@@ -852,12 +852,13 @@ atom10_format_check (xmlDocPtr doc, xmlNodePtr cur)
 }
 
 static void
-atom10_add_ns_handler (NsHandler *handler)
+atom10_cleanup (void)
 {
-	g_assert (NULL != atom10_nstable);
-	g_hash_table_insert (atom10_nstable, (gpointer)handler->prefix, handler);
-	g_assert (handler->registerNs != NULL);
-	handler->registerNs (handler, atom10_nstable, ns_atom10_ns_uri_table);
+	g_hash_table_destroy (atom10_nstable);
+	atom10_nstable = NULL;
+
+	g_hash_table_destroy (ns_atom10_ns_uri_table);
+	ns_atom10_ns_uri_table = NULL;
 }
 
 feedHandlerPtr
@@ -872,18 +873,20 @@ atom10_init_feed_handler (void)
 		ns_atom10_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
 
 		/* register name space handlers */
-		atom10_add_ns_handler (ns_dc_get_handler ());
-  		atom10_add_ns_handler (ns_slash_get_handler ());
-		atom10_add_ns_handler (ns_content_get_handler ());
-		atom10_add_ns_handler (ns_syn_get_handler ());
-		atom10_add_ns_handler (ns_admin_get_handler ());
-		atom10_add_ns_handler (ns_ag_get_handler ());
-		atom10_add_ns_handler (ns_cC_get_handler ());
-		atom10_add_ns_handler (ns_wfw_get_handler ());
-		atom10_add_ns_handler (ns_media_get_handler ());
-		atom10_add_ns_handler (ns_trackback_get_handler ());
-		atom10_add_ns_handler (ns_georss_get_handler ());
-		atom10_add_ns_handler (ns_source_get_handler ());
+		ns_dc_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+  		ns_slash_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_content_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_syn_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_admin_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_ag_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_cC_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_wfw_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_media_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_trackback_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_georss_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+		ns_source_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
+
+		atexit(atom10_cleanup);
 	}
 	/* prepare feed handler structure */
 	fhp->typeStr = "atom";

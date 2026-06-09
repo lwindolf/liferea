@@ -52,22 +52,13 @@ parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	g_free (value);
 }
 
-static void
-ns_admin_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_admin_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, "admin", nsh);
-	g_hash_table_insert (urihash, "http://webns.net/mvcb/", nsh);
-}
+	static NsHandler nsh = {
+		parseChannelTag: parse_channel_tag,
+	};
 
-NsHandler *
-ns_admin_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->registerNs		= ns_admin_register_ns;
-	nsh->prefix		= "admin";
-	nsh->parseChannelTag	= parse_channel_tag;;
-
-	return nsh;
+	g_hash_table_insert (prefixhash, "admin", &nsh);
+	g_hash_table_insert (urihash, "http://webns.net/mvcb/", &nsh);
 }

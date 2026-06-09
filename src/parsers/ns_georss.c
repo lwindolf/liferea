@@ -1,7 +1,8 @@
 /**
- * @file georss.c  GeoRSS namespace support
+ * @file ns_georss.c  GeoRSS namespace support
  *
  * Copyright (C) 2009 Mikel Olasagasti <mikel@olasagasti.info>
+ * Copyright (C) 2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,23 +45,12 @@ ns_georss_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	}
 }
 
-static void
-ns_georss_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_georss_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, GEORSS_PREFIX, nsh);
-	g_hash_table_insert (urihash, "http://www.georss.org/georss", nsh);
-}
-
-NsHandler *
-ns_georss_get_handler (void)
-{
-	NsHandler 	*nsh;
-
-	nsh = g_new0 (NsHandler, 1);
-	nsh->prefix 			= GEORSS_PREFIX;
-	nsh->registerNs			= ns_georss_register_ns;
-	nsh->parseChannelTag		= NULL;
-	nsh->parseItemTag		= ns_georss_parse_item_tag;
-
-	return nsh;
+	static NsHandler handler = {
+		parseItemTag: ns_georss_parse_item_tag,
+	};
+	g_hash_table_insert (prefixhash, GEORSS_PREFIX, &handler);
+	g_hash_table_insert (urihash, "http://www.georss.org/georss", &handler);
 }

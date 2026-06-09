@@ -21,8 +21,8 @@
 #ifndef _NS_SOURCE_H
 #define _NS_SOURCE_H
 
-#include "metadata.h"
+#include <glib.h>
 
-NsHandler *ns_source_get_handler(void);
+void ns_source_register_ns (GHashTable *prefixhash, GHashTable *urihash);
 
 #endif

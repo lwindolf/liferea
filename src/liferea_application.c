@@ -145,7 +145,6 @@ on_app_startup (GApplication *gapp, gpointer user_data)
 	update_init ();
 
 	/* order is important! */
-	date_init ();
 	db_init ();
 	xml_init ();
 	social_init ();
@@ -171,8 +170,6 @@ on_app_shutdown (GApplication *app, gpointer user_data)
 	db_deinit ();
 	social_free ();
 	conf_deinit ();
-	xml_deinit ();
-	date_deinit ();
 }
 
 static void

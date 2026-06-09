@@ -1,7 +1,7 @@
 /**
  * @file ns_syn.c syndication namespace support
  * 
- * Copyright (C) 2003-2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <stdlib.h>
+
 #include "ns_syn.h"
+
+#include "metadata.h"
+#include "xml.h"
 
 /* you can find the syn module documentation at
    http://web.resource.org/rss/1.0/modules/syndication/
@@ -73,22 +73,12 @@ ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 
 }
 
-static void
-ns_syn_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_syn_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, "syn", nsh);
-	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/syndication/", nsh);
-}
-
-NsHandler *
-ns_syn_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->registerNs		= ns_syn_register_ns;
-	nsh->prefix		= "syn";
-	nsh->parseChannelTag	= ns_syn_parse_tag;
-
-	return nsh;
+	static NsHandler nsh = {
+		.parseChannelTag = ns_syn_parse_tag,
+	};
+	g_hash_table_insert (prefixhash, "syn", &nsh);
+	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/syndication/", &nsh);
 }

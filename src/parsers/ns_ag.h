@@ -1,7 +1,7 @@
 /*
    mod_aggregation support
    
-   Copyright (C) 2003-2007 Lars Windolf <lars.windolf@gmx.de>
+   Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
 #ifndef _NS_AG_H
 #define _NS_AG_H
 
-#include "metadata.h"
+#include <glib.h>
 
-NsHandler *ns_ag_get_handler(void);
+void ns_ag_register_ns(GHashTable *prefixhash, GHashTable *urihash);
 
 #endif

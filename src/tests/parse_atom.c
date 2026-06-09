@@ -1,7 +1,7 @@
 /**
  * @file parse_atom.c  Test cases for Atom parsing
  *
- * Copyright (C) 2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2025-2026Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,8 +132,6 @@ test_parse_atom (int argc, char *argv[])
 	}
 
         result = g_test_run();
-
-        xml_deinit ();
 
         return result;
 }

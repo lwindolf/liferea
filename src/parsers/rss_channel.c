@@ -1,7 +1,7 @@
 /**
  * @file rss_channel.c  some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -303,7 +303,8 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	}
 }
 
-static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
+static gboolean
+rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss") ||
 	   !xmlStrcmp(cur->name, BAD_CAST"rdf") ||
@@ -322,12 +323,16 @@ static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 }
 
 static void
-rss_add_ns_handler (NsHandler *handler)
+rss_parser_cleanup (void)
 {
-	g_assert (NULL != rss_nstable);
-	g_hash_table_insert (rss_nstable, (gpointer)handler->prefix, handler);
-	g_assert (handler->registerNs != NULL);
-	handler->registerNs (handler, rss_nstable, ns_rss_ns_uri_table);
+	g_hash_table_destroy (RssToMetadataMapping);
+	RssToMetadataMapping = NULL;
+
+	g_hash_table_destroy (rss_nstable);
+	rss_nstable = NULL;
+
+	g_hash_table_destroy (ns_rss_ns_uri_table);
+	ns_rss_ns_uri_table = NULL;
 }
 
 feedHandlerPtr
@@ -352,26 +357,26 @@ rss_init_feed_handler (void)
 		g_hash_table_insert (RssToMetadataMapping, "publisher", "webmaster");
 		g_hash_table_insert (RssToMetadataMapping, "author", "author");
 		g_hash_table_insert (RssToMetadataMapping, "comments", "commentsUri");
-	}
 
-	if (!rss_nstable) {
 		rss_nstable = g_hash_table_new (g_str_hash, g_str_equal);
 		ns_rss_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
 
 		/* register name space handlers */
-		rss_add_ns_handler (ns_dc_get_handler ());
-		rss_add_ns_handler (ns_slash_get_handler ());
-		rss_add_ns_handler (ns_content_get_handler ());
-		rss_add_ns_handler (ns_syn_get_handler ());
-		rss_add_ns_handler (ns_admin_get_handler ());
-		rss_add_ns_handler (ns_ag_get_handler ());
-		rss_add_ns_handler (ns_cC_get_handler ());
-		rss_add_ns_handler (ns_wfw_get_handler ());
-		rss_add_ns_handler (ns_media_get_handler ());
-		rss_add_ns_handler (ns_itunes_get_handler ());
-		rss_add_ns_handler (ns_trackback_get_handler ());
-		rss_add_ns_handler (ns_georss_get_handler ());
-		rss_add_ns_handler (ns_source_get_handler ());
+		ns_dc_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_slash_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_content_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_syn_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_admin_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_ag_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_cC_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_wfw_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_media_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_itunes_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_trackback_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_georss_register_ns (rss_nstable, ns_rss_ns_uri_table);
+		ns_source_register_ns (rss_nstable, ns_rss_ns_uri_table);
+
+		atexit (rss_parser_cleanup);
 	}
 
 	/* prepare feed handler structure */

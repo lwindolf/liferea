@@ -43,6 +43,20 @@
 
 static GTimeZone *utc = NULL;
 
+static void
+date_deinit (void)
+{
+	g_time_zone_unref (utc);
+	utc = NULL;
+}
+
+static void
+date_init (void)
+{
+	utc = g_time_zone_new_utc ();
+	atexit (date_deinit);
+}
+
 /**
  * Originally from Evolution e-util.c
  *
@@ -211,6 +225,9 @@ date_parse_ISO8601 (const gchar *date)
 	gchar		*pos, *next, *ascii_date = NULL;
 
 	g_assert (date != NULL);
+
+	if (!utc)
+		date_init ();
 
 	/* we expect at least something like "2003-08-07T15:28:19" and
 	   don't require the second fractions and the timezone info
@@ -488,17 +505,4 @@ date_format_rfc822_en_gmt (gint64 datetime)
 		rfc822_weekdays[dt.tm_wday],
 		dt.tm_mday, rfc822_months[dt.tm_mon], dt.tm_year + 1900,
 		dt.tm_hour, dt.tm_min, dt.tm_sec);
-}
-
-void
-date_init (void)
-{
-	utc = g_time_zone_new_utc ();
-}
-
-void
-date_deinit (void)
-{
-	g_time_zone_unref (utc);
-	utc = NULL;
 }

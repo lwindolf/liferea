@@ -118,7 +118,5 @@ test_parse_rss (int argc, char *argv[])
 
 	result = g_test_run();
 
-	xml_deinit ();
-
 	return result;
 }

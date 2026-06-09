@@ -1,7 +1,7 @@
 /**
  * @file ns_content.c content namespace support
  *
- * Copyright (C) 2003-2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,8 @@
 #endif
 
 #include "ns_content.h"
-#include "common.h"
+
+#include "metadata.h"
 #include "xml.h"
 
 /* a namespace documentation can be found at 
@@ -49,22 +50,13 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	}
 }
 
-static void
-ns_content_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_content_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, "content", nsh);
-	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/content/", nsh);
-}
+	static NsHandler handler = {
+		parseItemTag: parse_item_tag,
+	};
 
-NsHandler *
-ns_content_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->prefix		= "content";
-	nsh->registerNs		= ns_content_register_ns;
-	nsh->parseItemTag	= parse_item_tag;
-
-	return nsh;
+	g_hash_table_insert (prefixhash, "content", &handler);
+	g_hash_table_insert (urihash, "http://purl.org/rss/1.0/modules/content/", &handler);
 }

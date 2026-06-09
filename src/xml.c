@@ -575,17 +575,7 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 	return doc;
 }
 
-void
-xml_init (void)
-{
-	/* set libxml2 to use glib allocation, so that we
-	   can free() and reuse libxml2 allocated memory chunks */
-	xmlMemSetup (g_free, g_malloc, g_realloc, g_strdup);
-	/* has to be called for multithreaded programs */
-	xmlInitParser ();
-}
-
-void
+static void
 xml_deinit (void)
 {
 	GSList *iter = dhtml_strippers;
@@ -596,4 +586,16 @@ xml_deinit (void)
 	}
 	g_slist_free_full (dhtml_strippers, g_free);
 	dhtml_strippers = NULL;
+}
+
+void
+xml_init (void)
+{
+	/* set libxml2 to use glib allocation, so that we
+	   can free() and reuse libxml2 allocated memory chunks */
+	xmlMemSetup (g_free, g_malloc, g_realloc, g_strdup);
+	/* has to be called for multithreaded programs */
+	xmlInitParser ();
+
+	atexit (xml_deinit);
 }

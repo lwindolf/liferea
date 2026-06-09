@@ -1,7 +1,7 @@
 /**
  * @file ns_dc.c Dublin Core support for RSS and Atom
  *
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -204,24 +204,14 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	parse_tag(ctxt, cur, FALSE);
 }
 
-static void
-ns_dc_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_dc_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, "dc", nsh);
-	g_hash_table_insert (urihash, "http://purl.org/dc/elements/1.1/", nsh);
-	g_hash_table_insert (urihash, "http://purl.org/dc/elements/1.0/", nsh);
-}
-
-NsHandler *
-ns_dc_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->prefix			= "dc";
-	nsh->registerNs			= ns_dc_register_ns;
-	nsh->parseChannelTag		= parse_channel_tag;
-	nsh->parseItemTag		= parse_item_tag;
-	
-	return nsh;
+	static NsHandler handler = {
+		parseChannelTag:	parse_channel_tag,
+		parseItemTag:		parse_item_tag,
+	};
+	g_hash_table_insert (prefixhash, "dc", &handler);
+	g_hash_table_insert (urihash, "http://purl.org/dc/elements/1.1/", &handler);
+	g_hash_table_insert (urihash, "http://purl.org/dc/elements/1.0/", &handler);
 }

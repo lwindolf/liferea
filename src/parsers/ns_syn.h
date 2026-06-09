@@ -1,7 +1,7 @@
 /**
  * @file ns_syn.h syndication namespace support
  *
- * Copyright (C) 2003-2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
 #ifndef _NS_SYN_H
 #define _NS_SYN_H
 
-#include "metadata.h"
+#include <glib.h>
 
-NsHandler *ns_syn_get_handler(void);
+void ns_syn_register_ns (GHashTable *prefixhash, GHashTable *urihash);
 
 #endif

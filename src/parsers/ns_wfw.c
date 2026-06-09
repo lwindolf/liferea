@@ -1,7 +1,7 @@
 /**
  * @file ns_wfw.c Well-Formed Web RSS namespace support
  * 
- * Copyright (C) 2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
-#include "common.h"
-#include "metadata.h"
 #include "ns_wfw.h"
+
+#include "metadata.h"
 
 #define WFW_PREFIX	"wfw"
 
@@ -48,23 +44,12 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	}
 }
 
-static void
-ns_wfw_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
+void
+ns_wfw_register_ns (GHashTable *prefixhash, GHashTable *urihash)
 {
-	g_hash_table_insert (prefixhash, WFW_PREFIX, nsh);
-	g_hash_table_insert (urihash, "http://wellformedweb.org/CommentAPI", nsh);
-}
-
-NsHandler *
-ns_wfw_get_handler (void)
-{
-	NsHandler 	*nsh;
-	
-	nsh = g_new0 (NsHandler, 1);
-	nsh->prefix 			= WFW_PREFIX;
-	nsh->registerNs			= ns_wfw_register_ns;
-	nsh->parseChannelTag		= NULL;
-	nsh->parseItemTag		= parse_item_tag;
-
-	return nsh;
+	static NsHandler nsh = {
+		.parseItemTag = parse_item_tag,
+	};
+	g_hash_table_insert (prefixhash, WFW_PREFIX, &nsh);
+	g_hash_table_insert (urihash, "http://wellformedweb.org/CommentAPI", &nsh);
 }

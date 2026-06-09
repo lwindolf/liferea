@@ -1,7 +1,7 @@
 /**
  * @file date.h date formatting and parsing routines for Liferea
  *
- * Copyright (C) 2008-2009 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,8 +68,5 @@ gint64 date_parse_RFC822 (const gchar *date);
  * @returns (transfer full) (nullable): a newly allocated string or NULL for internal errors.
  */
 gchar * date_format_rfc822_en_gmt (gint64 datetime);
-
-void date_init (void);
-void date_deinit (void);
 
 #endif
