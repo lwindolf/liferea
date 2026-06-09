@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source_feed.c  Tiny Tiny RSS feed subscription routines
  *
- * Copyright (C) 2010-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -162,7 +162,6 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	Node		*root = node_source_root_from_node (subscription->node);
 	ttrssSourcePtr	source = (ttrssSourcePtr) root->data;
 	const gchar	*feed_id;
-	gchar		*source_name;
 	gint		fetchCount;
 
 	debug (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
@@ -183,10 +182,10 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	/* We can always max out as TinyTinyRSS does limit results itself */
 	fetchCount = subscription_get_max_item_count (subscription);
 
-	request->postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, fetchCount);
-	source_name = g_strdup_printf (TTRSS_URL, source->url);
+	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, fetchCount);
+	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
+	g_autofree gchar *source_name = g_strdup_printf (TTRSS_URL, source->url);
 	update_request_set_source (request, source_name);
-	g_free (source_name);
 
 	return TRUE;
 }

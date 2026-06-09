@@ -191,17 +191,26 @@ update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr 
 }
 
 void
-update_request_set_source(UpdateRequest *request, const gchar* source)
+update_request_set_source(UpdateRequest *request, const gchar *source)
 {
 	g_free (request->source);
 	request->source = g_strdup (source);
 }
 
 void
-update_request_set_auth_value (UpdateRequest *request, const gchar* authValue)
+update_request_set_auth_value (UpdateRequest *request, const gchar *authValue)
 {
 	g_free (request->authValue);
 	request->authValue = g_strdup (authValue);
+}
+
+void
+update_request_set_postdata (UpdateRequest *request, const gchar *postdata, const gchar *contentType)
+{
+	g_free (request->postdata);
+	request->postdata = g_strdup (postdata);
+	g_free (request->contentType);
+	request->contentType = contentType?g_strdup (contentType):NULL;
 }
 
 void
@@ -209,7 +218,6 @@ update_request_allow_commands (UpdateRequest *request, gboolean allowCommands)
 {
 	request->allowCommands = allowCommands;
 }
-
 
 /* update result */
 

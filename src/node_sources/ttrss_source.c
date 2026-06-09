@@ -128,7 +128,7 @@ ttrss_source_login_cb (const UpdateResult * const result, gpointer userdata, upd
 void
 ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 {
-	gchar			*username, *password, *source_uri;
+	gchar			*username, *password;
 	UpdateRequest		*request;
 	subscriptionPtr		subscription = source->root->subscription;
 
@@ -143,21 +143,19 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 		return;
 	}
 
-	source_uri = g_strdup_printf (TTRSS_URL, source->url);
-
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
 		source_uri,
 		NULL,	// updateState
 		subscription->updateOptions
 	);
 
-	g_free (source_uri);
-
 	/* escape user and password for JSON call */
 	username = g_strescape (subscription->updateOptions->username, NULL);
 	password = g_strescape (subscription->updateOptions->password, NULL);
 
-	request->postdata = g_strdup_printf (TTRSS_JSON_LOGIN, username, password);
+	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_LOGIN, username, password);
+	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
 	g_free (username);
 	g_free (password);
@@ -223,7 +221,6 @@ ttrss_source_add_subscription (Node *root, subscriptionPtr subscription)
 	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
 	UpdateRequest		*request;
 	gint			categoryId = 0;
-	gchar			*source_uri;
 
 	/* Determine correct category from selected folder name */
 	parent = feedlist_get_selected ();
@@ -233,21 +230,19 @@ ttrss_source_add_subscription (Node *root, subscriptionPtr subscription)
 		categoryId = GPOINTER_TO_INT (g_hash_table_lookup (source->folderToCategory, parent->id));
 	}
 
-	source_uri = g_strdup_printf (TTRSS_URL, source->url);
-
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
 		source_uri,
 		NULL,
 		root->subscription->updateOptions
 	);
 
-	g_free (source_uri);
-
 	/* escape user and password for JSON call */
 	username = g_strescape (root->subscription->updateOptions->username, NULL);
 	password = g_strescape (root->subscription->updateOptions->password, NULL);
 
-	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIBE, source->session_id, subscription->source, categoryId, username, password);
+	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIBE, source->session_id, subscription->source, categoryId, username, password);
+	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
 	g_free (username);
 	g_free (password);
@@ -285,7 +280,6 @@ ttrss_source_remove_node (Node *root, Node *node)
 	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
 	UpdateRequest	*request;
 	const gchar	*id;
-	gchar		*source_uri;
 
 	// FIXME: Check for login?
 
@@ -300,17 +294,15 @@ ttrss_source_remove_node (Node *root, Node *node)
 		return;
 	}
 
-	source_uri = g_strdup_printf (TTRSS_URL, source->url);
-
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
 		source_uri,
 		NULL,
 		root->subscription->updateOptions
 	);
 
-	g_free (source_uri);
-
-	request->postdata = g_strdup_printf (TTRSS_JSON_UNSUBSCRIBE, source->session_id, id);
+	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_UNSUBSCRIBE, source->session_id, id);
+	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
 	update_job_new (source, request, ttrss_source_remove_node_cb, node, 0 /* flags */);
 }
@@ -384,19 +376,16 @@ ttrss_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 	Node		*root = node_source_root_from_node (node);
 	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
 	UpdateRequest	*request;
-	gchar		*source_uri;
 
-	source_uri = g_strdup_printf (TTRSS_URL, source->url);
-
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
 		source_uri,
 		NULL,
 		root->subscription->updateOptions
 	);
 
-	g_free (source_uri);
-
-	request->postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_FLAG, source->session_id, item_get_id(item), newStatus?1:0 );
+	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_FLAG, source->session_id, item_get_id(item), newStatus?1:0 );
+	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
 	update_job_new (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 
@@ -409,18 +398,16 @@ ttrss_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 	Node		*root = node_source_root_from_node (node);
 	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
 	UpdateRequest	*request;
-	gchar		*source_uri;
 
-	source_uri = g_strdup_printf (TTRSS_URL, source->url);
-
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
 		source_uri,
 		NULL,
 		root->subscription->updateOptions
 	);
-	g_free (source_uri);
 
-	request->postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_UNREAD, source->session_id, item_get_id(item), newStatus?0:1 );
+	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_UNREAD, source->session_id, item_get_id(item), newStatus?0:1);
+	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
 	update_job_new (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 

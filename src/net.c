@@ -294,7 +294,7 @@ network_process_request (const UpdateJob *job)
 	g_assert (NULL != job->request);
 	debug (DEBUG_NET, "downloading %s", job->request->source);
 	if (job->request->postdata && (debug_get_flags () & DEBUG_NET))
-		debug (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
+		debug (DEBUG_NET, "   postdata=>>>%s<<< (content type: %s)", job->request->postdata, job->request->contentType?job->request->contentType:"NULL");
 
 	/* Do not process request on HTTP 429 */
 	g_autoptr(GUri) uri = g_uri_parse (job->request->source, G_URI_FLAGS_NONE, NULL);
@@ -353,7 +353,7 @@ network_process_request (const UpdateJob *job)
 	if (job->request->postdata) {
 		g_autoptr(GBytes) postdata = g_bytes_new (job->request->postdata, strlen (job->request->postdata));
 		soup_message_set_request_body_from_bytes (msg,
-		                                          "application/x-www-form-urlencoded",
+		                                          job->request->contentType?job->request->contentType:"application/x-www-form-urlencoded",
 		                                          postdata);
 	}
 
