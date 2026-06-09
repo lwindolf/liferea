@@ -209,19 +209,16 @@ static void
 ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr subscription)
 {
 	UpdateRequest	*request;
-	gchar		*source_uri;
 
-	source_uri = g_strdup_printf (TTRSS_URL, source->url);
-
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
 		source_uri,
 		subscription->updateState,
 		subscription->updateOptions
 	);
 
-	g_free (source_uri);
-
-	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
+	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
+	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
 	subscription->updateJob = update_job_new (subscription, request, ttrss_source_subscription_list_cb, subscription, UPDATE_REQUEST_NO_FEED);
 }
@@ -362,7 +359,6 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateR
 {
 	Node *node = subscription->node;
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
-	gchar *source_uri;
 
 	debug (DEBUG_UPDATE, "ttrss_subscription_prepare_update_request");
 
@@ -379,10 +375,10 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateR
 	   installation is not self-updating to run a remote update for
 	   each feed before fetching it's items */
 
-	source_uri = g_strdup_printf (TTRSS_URL, source->url);
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	update_request_set_source (request, source_uri);
-	g_free (source_uri);
-	request->postdata = g_strdup_printf (TTRSS_JSON_CATEGORIES_LIST, source->session_id);
+	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_CATEGORIES_LIST, source->session_id);
+	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
 	return TRUE;
 }

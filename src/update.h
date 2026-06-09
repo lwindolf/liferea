@@ -78,6 +78,7 @@ struct _UpdateRequest {
 					     then it is parsed as a URL, otherwise it is a
 					     filename. */
 	gchar           *postdata;      /*<< HTTP POST request data (NULL for non-POST requests) */
+	gchar	        *contentType;   /*<< HTTP request content type (optional) */
 	gchar           *authValue;     /*<< Custom value for Authorization: header */
 	updateOptionsPtr options;	/*<< Update options for the request */
 	gchar		*filtercmd;	/*<< Command will filter output of URL */
@@ -177,6 +178,16 @@ void update_request_set_source (UpdateRequest *request, const gchar* source);
  * Sets a custom authorization header value.
  */
 void update_request_set_auth_value (UpdateRequest *request, const gchar* authValue);
+
+/** 
+ * update_request_set_postdata:
+ * @request:        the update request
+ * @postdata:       the data to be sent in an HTTP POST request
+ * @contentType:    the content type of the request (e.g. "application/json")
+ * 
+ * Sets the data and optional content type for a HTTP POST request.
+ */
+void update_request_set_postdata (UpdateRequest *request, const gchar* postdata, const gchar* contentType);
 
 /**
  * update_request_allow_commands:
