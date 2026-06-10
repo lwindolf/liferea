@@ -2,23 +2,23 @@
 	
 	Version 2.0-RC3
 
-        * Fixes a long-standing security bug that caused unencrypted connection 
-          when fetching feed content from Reedah and TheOldReader. Please upgrade
-          and change your Reedah / TheOldReader password afterwards!
-          (Lars Windolf)
+	* Fixes a long-standing security bug that caused unencrypted connection 
+	  when fetching feed content from Reedah and TheOldReader. Please upgrade
+	  and change your Reedah / TheOldReader password afterwards!
+	  (Lars Windolf)
 
 	* Fixes #1529: small memory leak in parser initialization
 	  (Lars Windolf)
 
-        * Fixes #1528: TinyTinyRSS not working anymore due to Content-Encoding
-          header not indicating JSON
-          (Lars Windolf)
+	* Fixes #1528: TinyTinyRSS not working anymore due to Content-Encoding
+	  header not indicating JSON
+	  (Lars Windolf)
 
 	* Fixes #1524: mark all read dialog broken
 	  (Lars Windolf)
 
-        * Fixes #1523: replace outdated feedburner URL in default feed list OPML
-          (Lars Windolf)
+	* Fixes #1523: replace outdated feedburner URL in default feed list OPML
+	  (Lars Windolf)
 
 	* Dialogs converted to libadwaita: rename, reedah_source, google_source
 	  (Lars Windolf)
