@@ -6,56 +6,43 @@
   <requires lib="libadwaita" version="1.5"/>
   <object class="AdwDialog" id="rename_node">
     <property name="default-widget">applyBtn</property>
+    <property name="title">Rename</property>
     <property name="width-request">400</property>
     <child>
       <object class="GtkBox">
-        <property name="margin-bottom">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-start">12</property>
-        <property name="margin-top">12</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">6</property>
         <child>
-          <object class="GtkLabel" id="label23_2">
-            <property name="css-classes">title-3</property>
-            <property name="label" translatable="yes">_New Name:</property>
-            <property name="mnemonic-widget">nameEntry</property>
-            <property name="use-underline">1</property>
-          </object>
+          <object class="AdwHeaderBar"/>
         </child>
         <child>
-          <object class="GtkEntry" id="nameEntry">
-            <property name="activates-default">1</property>
-            <property name="focusable">1</property>
-            <property name="hexpand">True</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox" id="dialog-action_area7_2">
-            <property name="baseline-position">bottom</property>
-            <property name="halign">end</property>
-            <property name="homogeneous">false</property>
-            <property name="margin-bottom">5</property>
-            <property name="margin-end">5</property>
-            <property name="margin-start">5</property>
-            <property name="margin-top">5</property>
-            <property name="orientation">horizontal</property>
-            <property name="spacing">6</property>
-            <property name="valign">center</property>
-            <property name="vexpand">True</property>
+          <object class="GtkBox">
+            <property name="margin-bottom">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">12</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
             <child>
-              <object class="GtkButton" id="cancelBtn">
-                <property name="focusable">1</property>
-                <property name="label" translatable="yes">_Cancel</property>
-                <property name="use-underline">True</property>
+              <object class="AdwEntryRow" id="nameEntry">
+                <property name="title">New name</property>
               </object>
             </child>
             <child>
-              <object class="GtkButton" id="applyBtn">
-                <property name="css-classes">suggested-action</property>
-                <property name="focusable">1</property>
-                <property name="label" translatable="yes">_OK</property>
-                <property name="use-underline">True</property>
+              <object class="GtkBox" id="dialog-action_area7_2">
+                <property name="baseline-position">bottom</property>
+                <property name="halign">end</property>
+                <property name="homogeneous">false</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">6</property>
+                <property name="valign">center</property>
+                <child>
+                  <object class="GtkButton" id="applyBtn">
+                    <property name="css-classes">suggested-action</property>
+                    <property name="focusable">1</property>
+                    <property name="label" translatable="yes">_OK</property>
+                    <property name="use-underline">True</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

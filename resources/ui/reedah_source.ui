@@ -22,7 +22,7 @@ title-3</property>
         </child>
         <child>
           <object class="GtkLabel">
-            <property name="label">Create an account at &lt;a href='https://reedah.com'&gt;reedah.com&lt;/a&gt; and provide your credentials below.	</property>
+            <property name="label">Create an account at &lt;a href='https://reedah.com'&gt;reedah.com&lt;/a&gt; and provide your credentials</property>
             <property name="use-markup">True</property>
           </object>
         </child>
@@ -32,7 +32,7 @@ title-3</property>
           </object>
         </child>
         <child>
-          <object class="AdwEntryRow" id="passwordEntry">
+          <object class="AdwPasswordEntryRow" id="passwordEntry">
             <property name="title">Password</property>
           </object>
         </child>

@@ -249,6 +249,8 @@ on_reedah_source_selected (GtkButton *button, gpointer user_data)
 	reedah_source_new (node);
 	feedlist_node_added (node);
 	node_source_update (node);
+
+	adw_dialog_close (ADW_DIALOG (dialog));
 }
 
 static void
