@@ -190,10 +190,12 @@ on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpoint
 }
 
 static void
-on_mark_all_read_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+on_mark_all_read_response (GtkWidget *btn, gpointer user_data)
 {
-	if (response_id == GTK_RESPONSE_OK)
-		feedlist_mark_all_read ((Node *) user_data);
+	AdwDialog *dialog = ADW_DIALOG (user_data);
+	Node *node = g_object_get_data (G_OBJECT (dialog), "node");
+	feedlist_mark_all_read (node);
+	adw_dialog_close (dialog);
 }
 
 static void
@@ -212,19 +214,19 @@ on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data
 	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
 
 	if (confirm_mark_read) {
-		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
-		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
-		const gchar *feed_title = (feedlist_get_root () == node) ? _("all feeds"):node_get_title (node);
-		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
-
-		g_object_set (confirm_dialog, "text", primary_message, NULL);
-		g_free (primary_message);
-		gtk_message_dialog_format_secondary_text (confirm_dialog, _("Are you sure you want to mark all items in %s as read ?"), feed_title);
+		AdwDialog *dialog = ADW_DIALOG (liferea_dialog_new ("mark_read_dialog"));
+		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (dialog), "dontAskAgainToggle");
+		GtkWidget *label = liferea_dialog_lookup (GTK_WIDGET (dialog), "label");
+		GtkWidget *applyBtn = liferea_dialog_lookup (GTK_WIDGET (dialog), "applyBtn");
+		GtkWidget *cancelBtn = liferea_dialog_lookup (GTK_WIDGET (dialog), "cancelBtn");
+		g_autofree gchar *title = g_strdup_printf(_("Are you sure you want to mark all items in %s as read ?"), (feedlist_get_root () == node) ? _("all feeds"):node_get_title (node));
+		gtk_label_set_text (GTK_LABEL (label), title);
 
 		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
 
-		g_signal_connect (G_OBJECT (confirm_dialog), "response",
-	                  G_CALLBACK (on_mark_all_read_response), (gpointer)node);
+		g_object_set_data (G_OBJECT (dialog), "node", node);
+		g_signal_connect (G_OBJECT (applyBtn), "clicked", G_CALLBACK (on_mark_all_read_response), dialog);
+		g_signal_connect_swapped (G_OBJECT (cancelBtn), "clicked", G_CALLBACK (adw_dialog_close), dialog);
 	} else {
 		feedlist_mark_all_read (node);
 	}

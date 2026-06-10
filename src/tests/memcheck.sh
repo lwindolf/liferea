@@ -7,6 +7,9 @@
 
 error=0
 
+export G_DEBUG=gc-friendly
+export G_SLICE=always-malloc 
+
 if command -v valgrind >/dev/null; then
 	for check in $@; do
 		details=$(
