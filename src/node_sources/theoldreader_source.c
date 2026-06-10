@@ -241,7 +241,7 @@ on_theoldreader_source_selected (GtkDialog *dialog,
 {
 	if (response_id == GTK_RESPONSE_OK) {
 		Node *node = node_new ("source");
-		node_source_new (node, theoldreader_source_get_type (), "http://theoldreader.com/reader");
+		node_source_new (node, theoldreader_source_get_type (), "https://theoldreader.com/reader");
 		node_set_title (node, node->source->type->name);
 
 		subscription_set_auth_info (node->subscription,

@@ -1,7 +1,7 @@
 /**
  * @file reedah_source_feed.c  Reedah feed subscription routines
  *
- * Copyright (C) 2013-2024  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2013-2026  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -179,7 +179,7 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	gchar* source_escaped = g_uri_escape_string(metadata_list_get (subscription->metadata, "reedah-feed-id"), NULL, TRUE);
 	// FIXME: move to .h
 	// FIXME: do not use hard-coded 30
-	gchar* newUrl = g_strdup_printf ("http://www.reedah.com/reader/api/0/stream/contents/%s?client=liferea&n=30", source_escaped);
+	gchar* newUrl = g_strdup_printf ("https://www.reedah.com/reader/api/0/stream/contents/%s?client=liferea&n=30", source_escaped);
 	update_request_set_source (request, newUrl);
 	g_free (newUrl);
 	g_free (source_escaped);
