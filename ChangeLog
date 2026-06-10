@@ -1,8 +1,34 @@
-To be released
+2025-06-10  Lars Windolf <lars.windolf@gmx.de>
 	
 	Version 2.0-RC3
 
+        * Fixes a long-standing security bug that caused unencrypted connection 
+          when fetching feed content from Reedah and TheOldReader. Please upgrade
+          and change your Reedah / TheOldReader password afterwards!
+          (Lars Windolf)
+
+	* Fixes #1529: small memory leak in parser initialization
+	  (Lars Windolf)
+
+        * Fixes #1528: TinyTinyRSS not working anymore due to Content-Encoding
+          header not indicating JSON
+          (Lars Windolf)
+
+	* Fixes #1524: mark all read dialog broken
+	  (Lars Windolf)
+
+        * Fixes #1523: replace outdated feedburner URL in default feed list OPML
+          (Lars Windolf)
+
+	* Dialogs converted to libadwaita: rename, reedah_source, google_source
+	  (Lars Windolf)
+
 	* Drop old migration code for 1.4-1.8 versions
+	  (Lars Windolf)
+
+	* Improved enclosure handling: when using images a large one matching the window
+	  width will be used (previously sometimes the smallest one was selected due to
+	  not checking sizes)
 	  (Lars Windolf)
 	  
 

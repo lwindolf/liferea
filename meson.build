@@ -1,5 +1,5 @@
 project('liferea', 'c',
-  version: '2.0-RC2',
+  version: '2.0-RC3',
   meson_version: '>= 0.62.0'
 )
 
