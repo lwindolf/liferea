@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.c  Reedah source support
  *
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -47,7 +47,7 @@
 /** default Reedah subscription list update interval = once a day */
 #define NODE_SOURCE_UPDATE_INTERVAL (guint64)(60*60*24) * (guint64)G_USEC_PER_SEC
 
-#define BASE_URL "http://www.reedah.com/reader/api/0/"
+#define BASE_URL "https://www.reedah.com/reader/api/0/"
 
 #define SOURCE_ID "fl_reedah"
 
@@ -257,7 +257,7 @@ on_reedah_source_selected (GtkDialog *dialog,
 {
 	if (response_id == GTK_RESPONSE_OK) {
 		Node *node = node_new ("node_source");
-		node_source_new (node, SOURCE_ID, "http://www.reedah.com/reader");
+		node_source_new (node, SOURCE_ID, "https://www.reedah.com/reader");
 		node_set_title (node, node->source->type->name);
 		
 		subscription_set_auth_info (node->subscription,

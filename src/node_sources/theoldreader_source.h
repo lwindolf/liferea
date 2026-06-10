@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source.h TheOldReader feed list source support
  * 
- * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ typedef struct TheOldReaderSource {
  *         Authorization header in future requests. 
  */ 
 #define THEOLDREADER_READER_LOGIN_URL "https://theoldreader.com/accounts/ClientLogin" 
-#define THEOLDREADER_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://theoldreader.com"
+#define THEOLDREADER_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=https://theoldreader.com"
 
 void theoldreader_source_register (void);
 
