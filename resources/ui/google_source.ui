@@ -1,158 +1,61 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 1.0 -->
+<!-- Created with Cambalache 1.0.2 -->
 <interface>
   <!-- interface-name google_source.ui -->
   <requires lib="gtk" version="4.0"/>
-  <object class="GtkDialog" id="google_source">
-    <property name="title" translatable="yes">Add Google Reader API Account</property>
-    <property name="visible">1</property>
-    <property name="width-request">500</property>
-    <child internal-child="content_area">
-      <object class="GtkBox" id="dialog-vbox1">
-        <property name="margin-bottom">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-start">12</property>
-        <property name="margin-top">12</property>
+  <requires lib="libadwaita" version="1.6"/>
+  <object class="AdwDialog" id="google_source">
+    <property name="title">New Google Reader API Source</property>
+    <child>
+      <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkBox" id="vbox1">
-            <property name="can-focus">0</property>
+          <object class="AdwHeaderBar"/>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="margin-bottom">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">12</property>
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>
-              <object class="GtkLabel" id="label1">
-                <property name="label" translatable="yes">Please enter the details of the new Google Reader API compatible subscription.</property>
-                <property name="valign">center</property>
-                <property name="wrap">1</property>
-                <property name="xalign">0</property>
+              <object class="GtkLabel">
+                <property name="label">Please enter the details of the new Google Reader API compatible subscription.</property>
+                <property name="use-markup">True</property>
               </object>
             </child>
             <child>
-              <object class="GtkGrid" id="table1">
-                <property name="can-focus">False</property>
-                <property name="column-spacing">6</property>
-                <property name="hexpand">True</property>
-                <property name="row-spacing">6</property>
-                <property name="visible">True</property>
-                <child>
-                  <object class="GtkLabel" id="nameLabel">
-                    <property name="label" translatable="yes">_Name</property>
-                    <property name="use-underline">1</property>
-                    <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="column-span">1</property>
-                      <property name="row">0</property>
-                      <property name="row-span">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="nameEntry">
-                    <property name="focusable">1</property>
-                    <property name="hexpand">True</property>
-                    <property name="placeholder-text">Name in feed list</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="column-span">1</property>
-                      <property name="row">0</property>
-                      <property name="row-span">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="userLabel">
-                    <property name="label" translatable="yes">_Username (Email)</property>
-                    <property name="use-underline">1</property>
-                    <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="column-span">1</property>
-                      <property name="row">1</property>
-                      <property name="row-span">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="userEntry">
-                    <property name="focusable">1</property>
-                    <property name="hexpand">True</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="column-span">1</property>
-                      <property name="row">1</property>
-                      <property name="row-span">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="passwordLabel">
-                    <property name="label" translatable="yes">_Password</property>
-                    <property name="use-underline">1</property>
-                    <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="column-span">1</property>
-                      <property name="row">2</property>
-                      <property name="row-span">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="passwordEntry">
-                    <property name="focusable">1</property>
-                    <property name="hexpand">True</property>
-                    <property name="visibility">0</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="column-span">1</property>
-                      <property name="row">2</property>
-                      <property name="row-span">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="serverLabel">
-                    <property name="label" translatable="yes">_Server</property>
-                    <property name="use-underline">1</property>
-                    <property name="xalign">0</property>
-                    <layout>
-                      <property name="column">0</property>
-                      <property name="column-span">1</property>
-                      <property name="row">3</property>
-                      <property name="row-span">1</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="serverEntry">
-                    <property name="focusable">1</property>
-                    <property name="hexpand">True</property>
-                    <property name="placeholder-text">https://</property>
-                    <layout>
-                      <property name="column">1</property>
-                      <property name="column-span">1</property>
-                      <property name="row">3</property>
-                      <property name="row-span">1</property>
-                    </layout>
-                  </object>
-                </child>
+              <object class="AdwEntryRow" id="nameEntry">
+                <property name="title">Title in feed list</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwEntryRow" id="usernameEntry">
+                <property name="title">Username</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPasswordEntryRow" id="passwordEntry_2">
+                <property name="title">Password</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwEntryRow" id="serverEntry">
+                <property name="input-purpose">url</property>
+                <property name="text">https://</property>
+                <property name="title">Server</property>
               </object>
             </child>
             <child>
               <object class="GtkBox">
                 <property name="halign">end</property>
-                <property name="spacing">6</property>
+                <property name="spacing">12</property>
                 <child>
-                  <object class="GtkButton" id="cancelbutton">
-                    <property name="focusable">1</property>
-                    <property name="label" translatable="yes">Cancel</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkButton" id="okbutton">
-                    <property name="focusable">1</property>
-                    <property name="label" translatable="yes">_Add</property>
+                  <object class="GtkButton" id="applyBtn">
+                    <property name="css-classes">suggested-action</property>
+                    <property name="label">_Add</property>
                     <property name="use-underline">True</property>
                   </object>
                 </child>

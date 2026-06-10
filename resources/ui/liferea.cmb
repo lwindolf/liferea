@@ -4,7 +4,7 @@
 <cambalache-project version="1.0.0" target_tk="gtk-4.0" depends="libadwaita-1,webkitgtk-6.0">
   <css is_global="1" filename="gtk-liferea.css" sha256="ce35b6c71817ef75601dcdb42e134c9054751e0d85f070825cb63e6f77b6dd0b"/>
   <ui filename="auth.ui" sha256="919053c57f0ac27ba1e9d565e574d5ba029119fd32426dc2d6303512e851c89d"/>
-  <ui filename="google_source.ui" sha256="872b201d99d01b35edfbc7f2a24afaa13c1a34f8e3750a33d6a2314c0c9d820f"/>
+  <ui filename="google_source.ui" sha256="37f1e6c5fa3a69553193a8fe5a45c1ef283bfe13c6b30475c63bb13628cda0bc"/>
   <ui filename="update_monitor.ui" sha256="c1ab80b66415458e03188ec1b19531bbe3776bbbae2c3c6e815fc0d23a7bcc68"/>
   <ui filename="search.ui" sha256="17859583a4784ad90288cf83969cabf157b3e9e98b28fba07ef08d8e127a96aa">
     <css-provider>gtk-liferea.css</css-provider>

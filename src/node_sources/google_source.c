@@ -1,7 +1,7 @@
 /**
  * @file google_source.c  Google reader feed list source support
  * 
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -285,37 +285,29 @@ google_source_remove_node (Node *node, Node *child)
 /* GUI callbacks */
 
 static void
-on_google_source_selected (GtkDialog *dialog,
-                           gint response_id,
+on_google_source_selected (GtkWidget *dialog,
                            gpointer user_data) 
 {
-	Node	*node;
+	Node	*node = node_new ("source");
 
-	if (response_id == GTK_RESPONSE_OK) {
-		node = node_new ("source");
-		node_source_new (node, google_source_get_type (), gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "serverEntry")))));
-		node_set_title (node, gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "nameEntry")))));
-		
-		subscription_set_auth_info (node->subscription,
-		                            gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry")))),
-		                            gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry")))));
-		                            
-		google_source_new (node);
-		feedlist_node_added (node);
-		node_source_update (node);
-	}
+	node_source_new (node, google_source_get_type (), liferea_dialog_entryrow_get (dialog, "serverEntry"));
+	node_set_title (node, liferea_dialog_entryrow_get (dialog, "nameEntry"));
+	
+	subscription_set_auth_info (
+		node->subscription,
+		liferea_dialog_entryrow_get (dialog, "userEntry"),
+		liferea_dialog_entryrow_get (dialog, "passwordEntry")
+	);
+					
+	google_source_new (node);
+	feedlist_node_added (node);
+	node_source_update (node);
 }
 
 static void
 ui_google_source_get_account_info (void)
 {
-	GtkWidget	*dialog;
-	
-	dialog = liferea_dialog_new ("google_source");
-	
-	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_google_source_selected), 
-			  NULL);
+	liferea_dialog_run ("google_source", on_google_source_selected, NULL, NULL);
 }
 
 static void
