@@ -512,8 +512,7 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 	subscription = subscription_new (NULL, NULL, NULL);
 
 	source = xmlGetProp (xml, BAD_CAST "xmlUrl");
-	if (!source)
-		source = xmlGetProp (xml, BAD_CAST "xmlurl");	/* e.g. for AmphetaDesk */
+
 
 	xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST"type");
 	subscription->fhp = feed_type_str_to_fhp ((gchar *)typeStr);
@@ -558,10 +557,6 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		if (tmp && !xmlStrcmp (tmp, BAD_CAST "true"))
 			subscription->updateOptions->dontUseProxy = TRUE;
 		xmlFree (tmp);
-
-		/* authentication options */
-		subscription->updateOptions->username = (gchar *)xmlGetProp (xml, BAD_CAST "username");
-		subscription->updateOptions->password = (gchar *)xmlGetProp (xml, BAD_CAST "password");
 	}
 
 	/* Set the feed cache limit */
