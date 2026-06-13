@@ -321,6 +321,18 @@ async function load_item(data, baseURL, direction) {
 
 		contentCleanup ();
 
+		// Content scraping sometimes produces thumbnail images as wide as the window, which look really bad. 
+		// So for each image check size after loading and reduce size if larger than actual image size
+		document.querySelectorAll('img').forEach((img) => {
+			img.addEventListener('load', () => {
+				if(img.naturalWidth < img.width || img.naturalHeight < img.height) {
+					img.width = img.naturalWidth;
+					img.height = img.naturalHeight;
+					debugfooter += " resizedImage";
+				}
+			});
+		});
+
 		if(window.debugflags > 0)
 			document.body.innerHTML += debugfooter + '<pre>' + escapeHTML(JSON.stringify(item, null, 2)) + '</pre>';
 
