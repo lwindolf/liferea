@@ -569,6 +569,9 @@ feed_list_view_node_update (FeedListView *flv, Node *node)
 	if (node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype &= ~NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 
+	if (node->itemCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_ITEM_COUNT))
+		labeltype &= ~NODE_CAPABILITY_SHOW_ITEM_COUNT;
+
 	if (IS_VFOLDER (node) && node->data) {
 		if (((vfolderPtr)node->data)->totalCount)
 			labeltype = NODE_CAPABILITY_SHOW_ITEM_COUNT;
