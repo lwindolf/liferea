@@ -1,7 +1,7 @@
 /**
  * @file newsbin.c  news bin node type implementation
  *
- * Copyright (C) 2006-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,14 +65,12 @@ newsbin_remove (Node *node)
 }
 
 static void
-on_newsbin_common_btn_clicked (GtkDialog *dialog, gint response_id, gpointer user_data)
+on_newsbin_common_btn_clicked (GtkButton *button, gpointer user_data)
 {
-	GtkWidget	*showinreduced = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinalwaysshowinreduced");
-	Node		*newsbin = (Node *)user_data;
+	GtkWidget	*dialog = GTK_WIDGET (user_data);
+	GtkWidget	*showinreduced = liferea_dialog_lookup (dialog, "newsbinalwaysshowinreduced");
+	Node		*newsbin = (Node *)g_object_get_data (G_OBJECT (dialog), "node");
 	gboolean	newly_created = FALSE;
-
-	if (response_id != GTK_RESPONSE_OK)
-		return;
 
 	if (!newsbin) {
 		newsbin = node_new ("newsbin");
@@ -81,13 +79,15 @@ on_newsbin_common_btn_clicked (GtkDialog *dialog, gint response_id, gpointer use
 		newly_created = TRUE;
 	}
 
-	node_set_title (newsbin, liferea_dialog_entry_get (GTK_WIDGET (dialog), "newsbinnameentry"));
-	newsbin->subscription->alwaysShowInReduced = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showinreduced));
+	node_set_title (newsbin, liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "nameEntry"));
+	newsbin->subscription->alwaysShowInReduced = gtk_check_button_get_active (GTK_CHECK_BUTTON (showinreduced));
 
 	if (newly_created)
 		feedlist_node_added (newsbin);
 
 	feedlist_schedule_save ();
+
+	adw_dialog_close (ADW_DIALOG (dialog));
 }
 
 static gboolean
@@ -97,18 +97,16 @@ ui_newsbin_common (Node *node)
 	GtkWidget	*showinreduced = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinalwaysshowinreduced");
 
 	if (node) {
-		gtk_window_set_title (GTK_WINDOW (dialog), _("News Bin Properties"));
-		liferea_dialog_entry_set (dialog, "newsbinnameentry", node_get_title (node));
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), node->subscription->alwaysShowInReduced);
+		adw_dialog_set_title (ADW_DIALOG (dialog), _("News Bin Properties"));
+		liferea_dialog_entryrow_set (dialog, "nameEntry", node_get_title (node));
+		gtk_check_button_set_active (GTK_CHECK_BUTTON (showinreduced), node->subscription->alwaysShowInReduced);
 	} else {
-		gtk_window_set_title (GTK_WINDOW (dialog), _("Create News Bin"));
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), FALSE);
+		adw_dialog_set_title (ADW_DIALOG (dialog), _("Create News Bin"));
+		gtk_check_button_set_active (GTK_CHECK_BUTTON (showinreduced), FALSE);
 	}
 
-	g_signal_connect (dialog, "response",
-	                  G_CALLBACK (on_newsbin_common_btn_clicked), node);
-
-	gtk_window_present (GTK_WINDOW (dialog));
+	g_object_set_data (G_OBJECT (dialog), "node", node);
+	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked", G_CALLBACK (on_newsbin_common_btn_clicked), dialog);
 
 	return TRUE;
 }

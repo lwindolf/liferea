@@ -1,71 +1,30 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 1.0 -->
+<!-- Created with Cambalache 1.0.2 -->
 <interface>
   <!-- interface-name new_newsbin.ui -->
   <requires lib="gtk" version="4.0"/>
-  <object class="GtkDialog" id="new_newsbin">
-    <property name="modal">1</property>
-    <property name="title" translatable="yes">Create News Bin</property>
-    <child internal-child="action_area">
-      <object class="GtkBox" id="dialog-action_area22">
-        <property name="homogeneous">false</property>
-        <property name="margin-bottom">5</property>
-        <property name="margin-end">5</property>
-        <property name="margin-start">5</property>
-        <property name="margin-top">5</property>
-        <property name="orientation">horizontal</property>
-        <property name="spacing">6</property>
-        <property name="valign">center</property>
-        <child>
-          <object class="GtkButton" id="cancelbutton6">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_Cancel</property>
-            <property name="use-underline">True</property>
-            <signal name="clicked" handler="gtk_widget_destroy" object="new_newsbin"/>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="newnewsbinbtn">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_OK</property>
-            <property name="use-underline">True</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child internal-child="content_area">
-      <object class="GtkBox" id="dialog-vbox22">
-        <property name="margin-bottom">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-start">12</property>
-        <property name="margin-top">12</property>
+  <requires lib="libadwaita" version="1.5"/>
+  <object class="AdwDialog" id="new_newsbin">
+    <property name="title">New Newsbin</property>
+    <child>
+      <object class="GtkBox">
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="width-request">300</property>
         <child>
-          <object class="GtkGrid">
-            <property name="column-spacing">12</property>
-            <property name="row-spacing">6</property>
+          <object class="AdwHeaderBar"/>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="margin-bottom">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">12</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
             <child>
-              <object class="GtkLabel" id="label250">
-                <property name="label" translatable="yes">_News Bin Name:</property>
-                <property name="mnemonic-widget">newsbinnameentry</property>
-                <property name="use-underline">1</property>
-                <property name="xalign">0.0</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="row">0</property>
-                </layout>
-              </object>
-            </child>
-            <child>
-              <object class="GtkEntry" id="newsbinnameentry">
-                <property name="activates-default">1</property>
-                <property name="focusable">1</property>
-                <property name="hexpand">True</property>
-                <layout>
-                  <property name="column">1</property>
-                  <property name="row">0</property>
-                </layout>
+              <object class="AdwEntryRow" id="nameEntry">
+                <property name="title">_News Bin Name:</property>
+                <property name="use-underline">True</property>
               </object>
             </child>
             <child>
@@ -73,20 +32,19 @@
                 <property name="focusable">1</property>
                 <property name="label" translatable="yes">_Always show in Reduced Feed List</property>
                 <property name="use-underline">1</property>
-                <layout>
-                  <property name="column">0</property>
-                  <property name="column-span">2</property>
-                  <property name="row">1</property>
-                </layout>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="applyBtn">
+                <property name="css-classes">suggested-action</property>
+                <property name="halign">end</property>
+                <property name="label">_Apply</property>
+                <property name="use-underline">True</property>
               </object>
             </child>
           </object>
         </child>
       </object>
     </child>
-    <action-widgets>
-      <action-widget response="-6">cancelbutton6</action-widget>
-      <action-widget response="-5">newnewsbinbtn</action-widget>
-    </action-widgets>
   </object>
 </interface>

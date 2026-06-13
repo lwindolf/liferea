@@ -19,7 +19,7 @@
   <ui filename="prefs.ui" sha256="ac4047b3a0424ce986363eb625b09967211bef723d48acda4c8149cbf2b1e486"/>
   <ui filename="opml_source.ui" sha256="f60bf4a7efcaf62431670993c2608f6109e14fc21df2baba07958b0397a0e6b6"/>
   <ui filename="node_source.ui" sha256="9cadcaf00da97d09b9fee8776d500ca77fa653105cb7331672e3e8ea5a9a9512"/>
-  <ui filename="new_newsbin.ui" sha256="27a7285dca21d90010e3925c211145178e139d1fa22e6e1a082c5fbad25ac1e9"/>
+  <ui filename="new_newsbin.ui" sha256="7720dfba7eb73b2acc89603960f6e8630bc1101dc1df5efec0d3db54e4448aad"/>
   <ui filename="new_folder.ui" sha256="69f33fb4e2a7a2e8be61136a6639ce7c770124861df3466e1ac04084392cc1fb"/>
   <ui filename="mark_read_dialog.ui" sha256="5b4720947843eb69079afb29bd8ca617269e5db42835e9cad6774c1296faa6d1"/>
   <ui filename="about.ui" sha256="acb9ae69305d3c1efc81b0450b2f6b0d4875208b162f220ad1c696906822dfdc"/>
