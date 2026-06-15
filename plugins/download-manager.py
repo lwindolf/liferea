@@ -22,6 +22,7 @@ import requests
 import gi
 import os
 import time
+import subprocess
 
 gi.require_version('Gtk', '4.0')
 
@@ -140,7 +141,7 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
             pass
 
     def on_open_file(self, button, download):
-        os.system(f"xdg-open {download.get('filename')}")
+        subprocess.run(["xdg-open", download.get('filename')])
 
     # Ideas:
     #
