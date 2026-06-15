@@ -201,6 +201,14 @@ import_parse_outline (xmlNodePtr cur, Node *parentNode, gboolean trusted)
 
 		if (tmp) {
 			debug (DEBUG_CACHE, "-> URL found assuming type feed");
+
+			/* Security check, avoid RCE using commands on untrusted OPML */
+			if (!trusted && tmp[0] == '|') {
+				debug (DEBUG_CACHE, "-> Unsafe command found in untrusted OPML, skipping: %s", tmp);
+				xmlFree (tmp);
+				return;
+			}
+
 			type = g_strdup ("feed");
 			xmlFree (tmp);
 		} else {

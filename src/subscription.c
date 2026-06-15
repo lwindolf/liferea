@@ -519,14 +519,6 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 	xmlFree (typeStr);
 
 	if (source) {
-		if (!trusted && source[0] == '|') {
-			/* FIXME: Display warning dialog asking if the command
-			   is safe? */
-			tmp = (xmlChar *)g_strdup_printf ("unsafe command: %s", source);
-			xmlFree (source);
-			source = tmp;
-		}
-
 		subscription_set_source (subscription, (gchar *)source);
 		xmlFree (source);
 
