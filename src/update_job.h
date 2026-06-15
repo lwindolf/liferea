@@ -33,7 +33,8 @@ typedef enum {
 	JOB_STATE_PENDING = 0,	/*<< request added to download queue */
 	JOB_STATE_PROCESSING,	/*<< request currently downloading */
 	JOB_STATE_FILTERING,	/*<< request currently being filtered */
-	JOB_STATE_FINISHED	/*<< request processing finished */
+	JOB_STATE_FAILED,	/*<< request processing failed */
+	JOB_STATE_FINISHED	/*<< request processing finished successfully */
 } request_state;
 
 G_BEGIN_DECLS
@@ -97,6 +98,17 @@ void update_job_process_result (gpointer user_data);
  * the job queue and specific result processing callback.
  */
 void update_job_finished (UpdateJob *job);
+
+/**
+ * update_job_failed:
+ * @job:	the update job
+ * @error:	error message
+ * 
+ * To be called when an update job has failed. Triggers
+ * the job queue and specific result processing callback.
+ * Takes ownership of @error string.
+ */
+void update_job_failed (UpdateJob *job, gchar *error);
 
 /**
  * update_job_get_state:

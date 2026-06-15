@@ -121,6 +121,15 @@ subscription_can_be_updated (subscriptionPtr subscription)
 	if (!subscription_get_source (subscription))
 		return FALSE;
 
+	// check for useful URI
+	if (subscription->source[0] != '|') {
+		g_autoptr(GUri) uri = g_uri_parse (subscription->source, G_URI_FLAGS_PARSE_RELAXED | G_URI_FLAGS_HAS_PASSWORD | G_URI_FLAGS_HAS_AUTH_PARAMS, NULL);
+		if (!uri) {
+			liferea_shell_set_status_bar (_("The subscription \"%s\" has an invalid source URI!"), node_get_title (subscription->node));
+			return FALSE;
+		}
+	}
+
 	return TRUE;
 }
 
@@ -180,11 +189,13 @@ subscription_set_blogroll (subscriptionPtr subscription, const gchar *blogroll)
  *
  * @param subscription	the subscription
  * @param httpstatus	the new HTTP status code
+ * @param updateError	update error string (or NULL)
  * @param filterError	filter error string (or NULL)
  */
 static void
 subscription_update_error_status (subscriptionPtr subscription,
                                   gint httpstatus,
+				  gchar *updateError,
                                   gchar *filterError)
 {
 	if (subscription->filterError)
@@ -195,7 +206,7 @@ subscription_update_error_status (subscriptionPtr subscription,
 		g_free (subscription->updateError);
 
 	subscription->filterError = g_strdup (filterError);
-	subscription->updateError = NULL;	// FIXME: this might not be very useful!
+	subscription->updateError = g_strdup (updateError);
 	subscription->httpError = NULL;
 	subscription->httpErrorCode = httpstatus;
 
@@ -248,7 +259,7 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 			subscription_set_discontinued (subscription, TRUE);
 			liferea_shell_toast (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 		}
-	} else if (result->filterErrors) {
+	} else if (result->filterErrors || result->updateError) {
 		node->available = FALSE;
 		subscription->error = FETCH_ERROR_NET;
 	} else {
@@ -262,7 +273,7 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	else
 		liferea_shell_set_header_bar (NULL);
 
-	subscription_update_error_status (subscription, result->httpstatus, result->filterErrors);
+	subscription_update_error_status (subscription, result->httpstatus, result->updateError, result->filterErrors);
 
 	subscription->updateJob = NULL;
 

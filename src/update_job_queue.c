@@ -60,7 +60,7 @@ update_job_queue_finish (gpointer data)
 {
 	UpdateJob *job = (UpdateJob *)data;
 
-	g_assert (job->state == JOB_STATE_FINISHED);
+	g_assert (job->state == JOB_STATE_FINISHED || job->state == JOB_STATE_FAILED);
 	g_thread_pool_push (resultPool, (gpointer)job, NULL);
 }
 

@@ -219,6 +219,7 @@ struct _UpdateResult {
 	size_t		size;		/*<< Size of downloaded data */
 	gchar		*contentType;	/*<< Content type of received data */
 	gchar		*filterErrors;	/*<< Error messages from filter execution */
+	gchar		*updateError;	/*<< Error messages from general update processing */
 	updateStatePtr	updateState;	/*<< New update state of the requested object (etags, last modified...) */
 };
 

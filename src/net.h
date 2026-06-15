@@ -97,9 +97,9 @@ const gchar * network_get_proxy_password (void);
 /**
  * Process the given update job.
  *
- * @param request	the update request
+ * @param job	the update job
  */
-void network_process_request (const UpdateJob *job);
+void network_process_request (UpdateJob *job);
 
 /**
  * Returns explanation string for the given network error code.
