@@ -1,7 +1,7 @@
 """
 Download Manager Plugin
 
-Copyright (C) 2024 Lars Windolf <lars.lindner@gmx.de>
+Copyright (C) 2024-2026 Lars Windolf <lars.lindner@gmx.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -22,6 +22,7 @@ import requests
 import gi
 import os
 import time
+import subprocess
 
 gi.require_version('Gtk', '3.0')
 
@@ -137,7 +138,7 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
         dialog.destroy()
 
     def on_open_file(self, button, download):
-        os.system(f"xdg-open {download.get('filename')}")
+        subprocess.run(["xdg-open", download.get('filename')])
 
     # Ideas:
     #
