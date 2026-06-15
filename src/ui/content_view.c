@@ -1,7 +1,7 @@
 /*
  * @file content_view.c  presenting items and feeds in HTML
  *
- * Copyright (C) 2006-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,6 +100,7 @@ content_view_create (FeedList *feedlist, ItemList *itemlist)
 
         g_signal_connect (itemlist, "item-selected", G_CALLBACK (content_view_item_selected), cv);
         g_signal_connect (feedlist, "node-selected", G_CALLBACK (content_view_node_selected), cv);
+        g_signal_connect (feedlist, "node-updated", G_CALLBACK (content_view_node_selected), cv);
 
         return cv;
 }

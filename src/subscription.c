@@ -297,7 +297,7 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
 
-	if (processing && subscription->node->newCount > 0) {
+	if (subscription->error || (processing && subscription->node->newCount > 0)) {
 		// FIXME: use new-items signal in itemview class
 		feedlist_new_items (node->newCount);
 		feedlist_node_was_updated (node);
