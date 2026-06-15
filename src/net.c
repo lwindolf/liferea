@@ -307,7 +307,10 @@ network_process_request (UpdateJob *job)
 				job->result->source = g_strdup (job->request->source);
 				job->result->httpstatus = 429;
 				debug (DEBUG_NET, "HTTP 429 cooldown for %s, skipping request (cooldown %d seconds)", host, remaining);
-				update_job_failed (job, g_strdup_printf (_("The server '%s' is currently rate-limiting requests, Liferea will not make new requests for %d minutes"), host, remaining / 60));
+				gint remaining_minutes = MAX (1, (remaining + 59) / 60);
+				update_job_failed (job, g_strdup_printf (ngettext ("The server '%s' is currently rate-limiting requests, Liferea will not make new requests for %d minute.",
+				                                              "The server '%s' is currently rate-limiting requests, Liferea will not make new requests for %d minutes.",
+				                                              remaining_minutes), host, remaining_minutes));
 				return;
 			}
 		}
