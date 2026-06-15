@@ -282,7 +282,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
    last modified string.
  */
 void
-network_process_request (const UpdateJob *job)
+network_process_request (UpdateJob *job)
 {
 	g_autoptr(SoupMessage)	msg = NULL;
 	SoupMessageHeaders	*request_headers;
@@ -303,10 +303,11 @@ network_process_request (const UpdateJob *job)
 		if (host) {
 			gint cooldown = GPOINTER_TO_INT (g_hash_table_lookup (http429, host));
 			if (0 < cooldown && cooldown > time (NULL)) {
-				debug (DEBUG_NET, "HTTP 429 cooldown for %s, skipping request (cooldown %d seconds)", host, cooldown - time (NULL));
+				gint remaining = cooldown - time (NULL);
 				job->result->source = g_strdup (job->request->source);
 				job->result->httpstatus = 429;
-				update_job_finished ((UpdateJob *)job);
+				debug (DEBUG_NET, "HTTP 429 cooldown for %s, skipping request (cooldown %d seconds)", host, remaining);
+				update_job_failed (job, g_strdup_printf (_("The server '%s' is currently rate-limiting requests, Liferea will not make new requests for %d minutes"), host, remaining / 60));
 				return;
 			}
 		}
@@ -340,10 +341,13 @@ network_process_request (const UpdateJob *job)
 		fragment
 	);
 
-	if (sourceUri)
-		msg = soup_message_new_from_uri (job->request->postdata?"POST":"GET", sourceUri);
+	if (sourceUri) {
+		g_autofree gchar *uri_str = g_uri_to_string (sourceUri);
+		msg = soup_message_new (job->request->postdata?"POST":"GET", uri_str);
+	}
 	if (!msg) {
-		g_warning ("The request for %s could not be parsed!", job->request->source);
+		debug (DEBUG_NET, "invalid URI: %s", job->request->source);
+		update_job_failed ((UpdateJob *)job, g_strdup (_("The source URI is invalid!")));
 		return;
 	}
 

@@ -191,7 +191,7 @@ update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr 
 }
 
 void
-update_request_set_source(UpdateRequest *request, const gchar *source)
+update_request_set_source (UpdateRequest *request, const gchar *source)
 {
 	g_free (request->source);
 	request->source = g_strdup (source);
@@ -223,31 +223,32 @@ update_request_allow_commands (UpdateRequest *request, gboolean allowCommands)
 
 G_DEFINE_TYPE (UpdateResult, update_result, G_TYPE_OBJECT)
 
-static void update_result_finalize (GObject *object) {
-	UpdateResult *self = UPDATE_RESULT(object);
+static void
+update_result_finalize (GObject *object)
+{
+	UpdateResult *result = UPDATE_RESULT (object);
 
-	g_free(self->source);
-	g_free(self->data);
-	g_free(self->contentType);
-	g_free(self->filterErrors);
-	if (self->updateState) {
-		update_state_free(self->updateState);
+	g_free (result->source);
+	g_free (result->data);
+	g_free (result->contentType);
+	g_free (result->filterErrors);
+	g_free (result->updateError);
+	if (result->updateState) {
+		update_state_free (result->updateState);
 	}
 
-	G_OBJECT_CLASS(update_result_parent_class)->finalize(object);
+	G_OBJECT_CLASS (update_result_parent_class)->finalize (object);
 }
 
-static void update_result_class_init (UpdateResultClass *klass) {
-	GObjectClass *object_class = G_OBJECT_CLASS(klass);
+static void
+update_result_class_init (UpdateResultClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	object_class->finalize = update_result_finalize;
 }
 
-static void update_result_init (UpdateResult *self) {
-	self->source = NULL;
-	self->httpstatus = 0;
-	self->data = NULL;
-	self->size = 0;
-	self->contentType = NULL;
-	self->filterErrors = NULL;
-	self->updateState = update_state_new ();
+static void
+update_result_init (UpdateResult *result)
+{
+	result->updateState = update_state_new ();
 }

@@ -446,7 +446,7 @@ update_job_execute (UpdateJob *job)
 {
 	/* Here we decide on the source type and the proper execution
 	   methods which then do anything they want with the job and
-	   pass the processed job to update_job_finished()
+	   pass the processed job to update_job_finished/failed()
 	   for result dequeuing */
 
 	/* if job was cancelled... */
@@ -463,7 +463,7 @@ update_job_execute (UpdateJob *job)
 		} else {
 			debug (DEBUG_UPDATE, "Refusing to run local command from unexpected source: %s", job->request->source);
 			job->result->httpstatus = 403;  /* Forbidden. */
-			update_job_finished (job);
+			update_job_failed (job, g_strdup ("Refusing to run local command from unexpected source!"));
 		}
 		return;
 	}
@@ -488,7 +488,7 @@ update_job_execute (UpdateJob *job)
 		return;
 	}
 
-	g_warning ("FATAL: This should not happen. Unhandled URI type \"%s\"!", job->request->source);
+	update_job_failed (job, g_strdup_printf ("FATAL: This should not happen. Unhandled URI type \"%s\"!", job->request->source));
 }
 
 UpdateJob *
@@ -561,5 +561,20 @@ update_job_finished (UpdateJob *job)
         }
 
 	job->state = JOB_STATE_FINISHED;
+	update_job_queue_finish (job);
+}
+
+void
+update_job_failed (UpdateJob *job, gchar *error)
+{
+	/* Handling abandoned requests (e.g. after feed deletion) */
+	if (job->callback == NULL) {
+		debug (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
+		g_object_unref (job);
+		return;
+	}
+
+	job->state = JOB_STATE_FAILED;
+	job->result->updateError = error;
 	update_job_queue_finish (job);
 }
