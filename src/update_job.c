@@ -570,6 +570,7 @@ update_job_failed (UpdateJob *job, gchar *error)
 	/* Handling abandoned requests (e.g. after feed deletion) */
 	if (job->callback == NULL) {
 		debug (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
+		g_free (error);
 		g_object_unref (job);
 		return;
 	}
