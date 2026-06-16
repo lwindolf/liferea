@@ -1,3 +1,17 @@
+2026-06-16  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16.12
+
+	* Fixes a RCE vulnerability when importing OPML files containing
+	  script commands. Now script commands from untrusted OPML files are
+	  always dropped.
+	  (reported by Laurence Tennant)
+
+	* Fixes a RCE vulnerability in the download manager plugin where
+	  a command could have been injected into file paths.
+	  (reported by Laurence Tennant)
+
+
 2026-06-10  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.11
