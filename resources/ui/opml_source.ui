@@ -1,48 +1,24 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!-- Created with Cambalache 1.0 -->
+<!-- Created with Cambalache 1.0.2 -->
 <interface>
   <!-- interface-name opml_source.ui -->
   <requires lib="gtk" version="4.0"/>
-  <object class="GtkDialog" id="opml_source">
-    <property name="title" translatable="yes">Add OPML</property>
-    <property name="visible">1</property>
-    <property name="width-request">500</property>
-    <child internal-child="action_area">
-      <object class="GtkBox" id="dialog-action_area1">
-        <property name="homogeneous">false</property>
-        <property name="margin-bottom">5</property>
-        <property name="margin-end">5</property>
-        <property name="margin-start">5</property>
-        <property name="margin-top">5</property>
-        <property name="orientation">horizontal</property>
-        <property name="spacing">6</property>
-        <property name="valign">center</property>
-        <child>
-          <object class="GtkButton" id="cancelbutton1">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_Cancel</property>
-            <property name="use-underline">True</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkButton" id="okbutton1">
-            <property name="focusable">1</property>
-            <property name="label" translatable="yes">_OK</property>
-            <property name="use-underline">True</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child internal-child="content_area">
-      <object class="GtkBox" id="dialog-vbox1">
-        <property name="margin-bottom">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-start">12</property>
-        <property name="margin-top">12</property>
+  <requires lib="libadwaita" version="1.5"/>
+  <object class="AdwDialog" id="opml_source">
+    <property name="focus-widget">locationEntry</property>
+    <property name="title">New OPML Source</property>
+    <child>
+      <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkBox" id="vbox1">
-            <property name="can-focus">0</property>
+          <object class="AdwHeaderBar"/>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="margin-bottom">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">12</property>
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>
@@ -57,17 +33,9 @@
                 <property name="can-focus">0</property>
                 <property name="spacing">6</property>
                 <child>
-                  <object class="GtkLabel" id="label2">
-                    <property name="halign">center</property>
-                    <property name="label" translatable="yes">_Location</property>
-                    <property name="mnemonic-widget">location_entry</property>
-                    <property name="use-underline">1</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="location_entry">
-                    <property name="focusable">1</property>
-                    <property name="hexpand">1</property>
+                  <object class="AdwEntryRow" id="locationEntry">
+                    <property name="hexpand">True</property>
+                    <property name="title">Location</property>
                   </object>
                 </child>
                 <child>
@@ -80,13 +48,18 @@
                 </child>
               </object>
             </child>
+            <child>
+              <object class="GtkButton" id="applyBtn">
+                <property name="css-classes">suggested-action</property>
+                <property name="focusable">1</property>
+                <property name="halign">end</property>
+                <property name="label" translatable="yes">_Add</property>
+                <property name="use-underline">True</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
     </child>
-    <action-widgets>
-      <action-widget response="-6">cancelbutton1</action-widget>
-      <action-widget response="-5">okbutton1</action-widget>
-    </action-widgets>
   </object>
 </interface>

@@ -325,23 +325,23 @@ opml_source_get_type (void)
 /* GUI callbacks */
 
 static void
-on_opml_source_selected (GtkDialog *dialog,
-                         gint response_id,
-                         gpointer user_data)
+on_opml_source_selected (GtkButton *button, gpointer user_data)
 {
-	if (response_id == GTK_RESPONSE_OK) {
-		Node *node = node_new ("source");
-		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
-		node_source_new (node, opml_source_get_type (), liferea_dialog_entry_get (GTK_WIDGET (dialog), "location_entry"));
-		feedlist_node_added (node);
-		node_source_update (node);
-	}
+	GtkWidget *dialog = GTK_WIDGET (user_data);
+	Node *node = node_new ("source");
+
+	node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
+	node_source_new (node, opml_source_get_type (), liferea_dialog_entryrow_get (dialog, "locationEntry"));
+	feedlist_node_added (node);
+	node_source_update (node);
+
+	adw_dialog_close (ADW_DIALOG (dialog));
 }
 
 static void
 on_opml_file_selected (const gchar *filename, gpointer user_data)
 {
-	liferea_dialog_entry_set (GTK_WIDGET (user_data), "location_entry", filename);
+	liferea_dialog_entryrow_set (GTK_WIDGET (user_data), "locationEntry", filename);
 }
 
 static void
@@ -353,16 +353,13 @@ on_opml_file_choose_clicked (GtkButton *button, gpointer user_data)
 static void
 ui_opml_source_get_source_url (void)
 {
-	GtkWidget	*dialog, *button;
+	GtkWidget *dialog = liferea_dialog_new ("opml_source");
 
-	dialog = liferea_dialog_new ("opml_source");
-	button = liferea_dialog_lookup (dialog, "select_button");
-
-	g_signal_connect (G_OBJECT (dialog), "response",
+	g_signal_connect (G_OBJECT (liferea_dialog_lookup (dialog, "applyBtn")), "clicked",
 			  G_CALLBACK (on_opml_source_selected),
-			  NULL);
+			  dialog);
 
-	g_signal_connect (G_OBJECT (button), "clicked",
+	g_signal_connect (G_OBJECT (liferea_dialog_lookup (dialog, "select_button")), "clicked",
 	                  G_CALLBACK (on_opml_file_choose_clicked),
 			  dialog);
 }

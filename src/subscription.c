@@ -121,8 +121,9 @@ subscription_can_be_updated (subscriptionPtr subscription)
 	if (!subscription_get_source (subscription))
 		return FALSE;
 
-	// check for useful URI
-	if (subscription->source[0] != '|') {
+	// check for useful URI (except for file paths and commands)
+	if (subscription->source[0] != '|' &&
+	    subscription->source[0] != '/') {
 		g_autoptr(GUri) uri = g_uri_parse (subscription->source, G_URI_FLAGS_PARSE_RELAXED | G_URI_FLAGS_HAS_PASSWORD | G_URI_FLAGS_HAS_AUTH_PARAMS, NULL);
 		if (!uri) {
 			liferea_shell_set_status_bar (_("The subscription \"%s\" has an invalid source URI!"), node_get_title (subscription->node));
