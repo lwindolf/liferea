@@ -4,7 +4,7 @@
     "installDeps": "cd node_modules && cp dompurify/dist/purify.min.js ../resources/js/vendor && cp handlebars/dist/handlebars.js ../resources/js/vendor && cp handlebars/dist/handlebars.min.js ../resources/js/vendor && cp @mozilla/readability/Readability.js ../resources/js/vendor"
   },
   "dependencies": {
-    "dompurify": "^3.4.0",
+    "dompurify": "^3.4.9",
     "@mozilla/readability": "^0.6.0",
     "handlebars": "^4.7.9"
   },
