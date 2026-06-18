@@ -101,6 +101,7 @@ enum {
 	PROP_HTML_VIEW,
 	PROP_BROWSER_TABS,
 	PROP_LAYOUT_MODE,
+	PROP_VISIBILITY,
 	PROP_BUILDER
 };
 
@@ -170,6 +171,9 @@ liferea_shell_get_property (GObject *object, guint prop_id, GValue *value, GPara
 		case PROP_LAYOUT_MODE:
 			g_value_set_int (value, shell->currentLayoutMode);
 			break;
+		case PROP_VISIBILITY:
+			g_value_set_boolean (value, shell->window && gtk_widget_get_visible (GTK_WIDGET (shell->window)));
+			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 			break;
@@ -182,6 +186,14 @@ liferea_shell_set_property (GObject *object, guint prop_id, const GValue *value,
 	switch (prop_id) {
 		case PROP_LAYOUT_MODE:
 			liferea_shell_update_layout (g_value_get_int (value));
+			break;
+		case PROP_VISIBILITY:
+			if (shell->window) {
+				if (g_value_get_boolean (value))
+					gtk_window_present (shell->window);
+				else
+					gtk_widget_set_visible (GTK_WIDGET (shell->window), FALSE);
+			}
 			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -247,6 +259,14 @@ liferea_shell_class_init (LifereaShellClass *klass)
 							     G_MAXINT,
 		                                             NODE_VIEW_MODE_AUTO,
 		                                             G_PARAM_READWRITE));
+
+	g_object_class_install_property (object_class,
+		                         PROP_VISIBILITY,
+		                         g_param_spec_boolean ("visibility",
+		                                               "Visibility",
+		                                               "Main window visibility",
+		                                               TRUE,
+		                                               G_PARAM_READWRITE));
 
 }
 
@@ -639,7 +659,7 @@ liferea_shell_add_actions (const GActionEntry *entries, int count)
 	return group;
 }
 
-itemPtr
+gpointer
 liferea_shell_find_next_unread (gulong startId)
 {
 	itemPtr	result = NULL;
@@ -672,7 +692,7 @@ liferea_shell_find_next_unread (gulong startId)
 		}
 	}
 
-	return result;
+	return (gpointer)result;
 }
 
 static GtkWidget *
@@ -863,19 +883,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 void liferea_shell_show_window (void)
 {
-	gtk_window_present (shell->window);
-}
-
-void
-liferea_shell_toggle_visibility (void)
-{
-	GtkWidget *mainwindow = GTK_WIDGET (shell->window);
-
-	if (!gtk_widget_get_visible (mainwindow)) {
-		liferea_shell_show_window ();
-	} else {
-		gtk_widget_set_visible (mainwindow, FALSE);
-	}
+	g_object_set (G_OBJECT (shell), "visibility", TRUE, NULL);
 }
 
 GtkWidget *

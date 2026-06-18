@@ -1,0 +1,20 @@
+[Plugin]
+Module=trayicon
+Embedded=_lp_trayicon_register_types
+Loader=c
+Icon=preferences-desktop-accessibility
+IAge=2
+Name=Tray Icon (Application Indicator and GNOME Classic)
+Name[de]=Tray Icon (Application Indicator und GNOME Klassik)
+Name[it]=Icona di vassoio (Application Indicator and GNOME Classic)
+Name[he]=סמל מגש (Application Indicator and GNOME קלאסי)
+Description=Display a small system tray icon to hide/unhide Liferea.
+Description[de]=Zeigt ein kleines Tray Icon an mit dem Liferea schnell angezeigt und wieder versteckt werden kann
+Description[it]=Mostra una piccola icona nel vassoio di sistema per visualizzare o nascondere l'applicazione.
+Description[he]=הצג סמל מגש מערכת קטן כדי להסתיר או להציג את Liferea
+Description[pl]=Wyświetl małą ikonę na pasku powiadamiania, aby ukryć/odkryć Liferea.
+Authors=Lars Windolf <lars.windolf@gmx.de>, Yuri Konotopov <ykonotopov@gnome.org>
+Copyright=Copyright © 2013-2026 Lars Windolf
+Website=https://lzone.de/liferea/
+Help=https://lzone.de/liferea/
+

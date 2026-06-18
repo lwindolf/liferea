@@ -51,7 +51,8 @@ liferea_deps = [
   dependency('libpeas-2'),
   dependency('pango', version: '>= 1.56'),
   dependency('fribidi', version: '>= 0.19.7'),
-  dependency('girepository-2.0')
+  dependency('girepository-2.0'),
+  dependency('dbus-1')
 ]
 
 configure_file(
@@ -63,10 +64,12 @@ configure_file(
 subdir('resources')
 subdir('src')
 subdir('data')
+subdir('plugins')
 
 liferea = executable('liferea',
   liferea_sources + files('src/main.c'),
   liferea_resources,
+  link_whole: plugins_static,
   dependencies: liferea_deps,
   include_directories: include_directories('.', 'src'),
   install: true
