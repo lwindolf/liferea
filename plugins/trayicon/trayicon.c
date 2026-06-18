@@ -71,9 +71,8 @@ typedef struct {
 	GObject parent_instance;
 
         TrayIcon        *tray;
-        TrayMenu        *trayMenuObject;
-        int             trayHideID;
 	GObject         *shell;
+	guint            timeout_id;
 } TrayiconPlugin;
 
 typedef struct {
@@ -91,12 +90,24 @@ G_DEFINE_FINAL_TYPE_WITH_CODE (TrayiconPlugin, trayicon_plugin, G_TYPE_OBJECT,
                                G_IMPLEMENT_INTERFACE (LIFEREA_TYPE_SHELL_ACTIVATABLE, trayicon_plugin_shell_iface_init))
 
 static void
+trayicon_remove (TrayiconPlugin *plugin)
+{
+	if (plugin->timeout_id) {
+		g_source_remove (plugin->timeout_id);
+		plugin->timeout_id = 0;
+	}
+	if (plugin->tray) {
+        	stray_destroy (plugin->tray);
+		plugin->tray = NULL;
+	}
+}
+
+static void
 trayicon_plugin_finalize (GObject *object)
 {
 	TrayiconPlugin *plugin = (TrayiconPlugin *)object;
 
-        // FIXME: cleanup menu
-
+	trayicon_remove (plugin);
 	g_clear_object (&plugin->shell);
 	G_OBJECT_CLASS (trayicon_plugin_parent_class)->finalize (object);
 }
@@ -104,7 +115,6 @@ trayicon_plugin_finalize (GObject *object)
 static void
 trayicon_plugin_init (TrayiconPlugin *plugin)
 {
-	g_print("trayicon plugin init!\n");
 }
 
 static void
@@ -159,16 +169,31 @@ trayicon_plugin_class_init (TrayiconPluginClass *klass)
 }
 
 static void
-on_toggle_visibility (G_GNUC_UNUSED int ID, G_GNUC_UNUSED void *Data)
+on_toggle_visibility (G_GNUC_UNUSED int id, gpointer userdata)
 {
-        //liferea_shell_toggle_visibility ();
+	TrayiconPlugin *plugin = (TrayiconPlugin *)userdata;
+	gboolean visible = FALSE;
+
+	g_object_get (G_OBJECT (plugin->shell), "visibility", &visible, NULL);
+	g_object_set (G_OBJECT (plugin->shell), "visibility", !visible, NULL);
 }
 
 static void
-on_quit (G_GNUC_UNUSED int ID, G_GNUC_UNUSED void *Data)
+on_quit (G_GNUC_UNUSED int id, G_GNUC_UNUSED void *userdata)
 {
         liferea_application_shutdown ();
 }
+
+static void
+on_button_cb (G_GNUC_UNUSED TrayButton button, G_GNUC_UNUSED int x, G_GNUC_UNUSED int y, void *userdata)
+{
+	on_toggle_visibility (0, userdata);
+}
+
+/*static void
+on_close_checkbox_changed (G_GNUC_UNUSED int id, G_GNUC_UNUSED void *userdata)
+{
+}*/
 
 gboolean
 TrayEvents(gpointer Data)
@@ -183,27 +208,30 @@ static void
 trayicon_activate (LifereaActivatable *activatable)
 {
 	TrayiconPlugin *plugin = (TrayiconPlugin *)activatable;
+	TrayMenu *menu;
 
-	g_print("trayicon activate!\n");
-
-        plugin->tray = stray_create ("Liferea", "liferea", "Liferea");
+        plugin->tray = stray_create ("Liferea", "emblem-web.svg", "Liferea");
 	stray_set_status (plugin->tray, STRAY_STATUS_ACTIVE);
 
 	// Create tray menu and add to icon
-	plugin->trayMenuObject = stray_menu_create ();
-	stray_set_menu (plugin->tray, plugin->trayMenuObject);
+	menu = stray_menu_create ();
+	stray_set_menu (plugin->tray, menu);
 
 	// Try to register and exit on failure (systems with no tray icon support)
 	if (stray_register (plugin->tray) == 0) {
 		return;
 	}
 
-	plugin->trayHideID = stray_menu_add_item (plugin->trayMenuObject, _("Show / Hide"), on_toggle_visibility, NULL);
-	stray_menu_add_item (plugin->trayMenuObject, _("Quit"), on_quit, NULL);
-	//stray_set_button_callback (plugin->tray, TrayGeneralButtonCallback, NULL);
+	stray_menu_add_item (menu, _("Show / Hide"), on_toggle_visibility, plugin);
+	//stray_menu_add_check_item (menu, _("Minimize to tray on close"), on_close_checkbox_changed, plugin);
+	//stray_menu_set_item_checked(menu, id, checked);
+	stray_menu_add_item (menu, _("Quit"), on_quit, NULL);
+	stray_set_button_callback (plugin->tray, on_button_cb, plugin);
 
-	// Start processing events every 100 ms
-	g_timeout_add(100, TrayEvents, plugin->tray);
+	plugin->timeout_id = g_timeout_add (100, TrayEvents, plugin->tray);
+
+	// Always force show window upon activation to avoid hidden window on startup
+	g_object_set (plugin->shell, "visibility", TRUE, NULL);
 }
 
 static void
@@ -211,13 +239,12 @@ trayicon_deactivate (LifereaActivatable *activatable)
 {
 	TrayiconPlugin *plugin = (TrayiconPlugin *)activatable;
 
-        // FIXME: remove
+	trayicon_remove (plugin);
 }
 
 static void
 trayicon_plugin_iface_init (LifereaActivatableInterface *iface)
 {
-	g_print("trayicon iface init\n");
 	iface->activate = trayicon_activate;
 	iface->deactivate = trayicon_deactivate;
 }
@@ -225,12 +252,10 @@ trayicon_plugin_iface_init (LifereaActivatableInterface *iface)
 static void
 trayicon_plugin_shell_iface_init (LifereaShellActivatableInterface *iface)
 {
-	g_print("trayicon shell iface init\n");
 }
 
 G_MODULE_EXPORT void
 _lp_trayicon_register_types (PeasObjectModule *module)
 {
-	g_print("trayicon register!\n");
         peas_object_module_register_extension_type (module, LIFEREA_TYPE_SHELL_ACTIVATABLE, TRAYICON_TYPE_PLUGIN);
 }

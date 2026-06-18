@@ -105,13 +105,6 @@ GActionGroup * liferea_shell_add_actions (const GActionEntry *entries, int count
 void liferea_shell_show_window (void);
 
 /**
- * liferea_shell_toggle_visibility:
- *
- * Toggles main window visibility.
- */
-void liferea_shell_toggle_visibility (void);
-
-/**
  * liferea_shell_toast:
  *
  * Show a toast. Takes printf() like parameters.

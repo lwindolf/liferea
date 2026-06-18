@@ -409,7 +409,6 @@ static void emit_properties_changed(TrayIcon *icon, const char *property_name) {
     const char *menu_path;
     const char *id_str;
     const char *status_str;
-    const char *empty_str;
     DBusMessageIter args, changed_props, invalidated_props;
     DBusMessage *msg;
     dbus_bool_t item_is_menu;
@@ -431,7 +430,6 @@ static void emit_properties_changed(TrayIcon *icon, const char *property_name) {
     );
 
     interface = STRAY_INTERFACE_NAME;
-    empty_str = "";
 
     dbus_message_iter_init_append(msg, &args);
     dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &interface);
