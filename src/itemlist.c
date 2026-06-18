@@ -433,7 +433,7 @@ itemlist_select_next_unread (void)
 
 	itemlist->priv->loading++;	/* prevent unwanted selections */
 
-	result = liferea_shell_find_next_unread (itemlist->priv->selectedId);
+	result = (itemPtr)liferea_shell_find_next_unread (itemlist->priv->selectedId);
 
 	itemlist->priv->loading--;
 

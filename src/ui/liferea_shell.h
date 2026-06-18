@@ -27,8 +27,6 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include "node.h"
-
 /* possible main window states */
 enum mainwindowState {
 	MAINWINDOW_SHOWN,		/*<< main window is visible */
@@ -156,7 +154,7 @@ GtkWidget * liferea_shell_get_window (void);
  *
  * Returns: (transfer none): the item found (or NULL)
  */
-itemPtr liferea_shell_find_next_unread (gulong startId);
+gpointer liferea_shell_find_next_unread (gulong startId);
 
 G_END_DECLS
 

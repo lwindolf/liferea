@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2002-2005 Paolo Maggi
  * Copyright (C) 2010 Steve Frécinaux
- * Copyright (C) 2012-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,9 +111,10 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 	g_autofree gchar *data = g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL);
 	g_autofree gchar *lib = g_build_filename (PACKAGE_LIB_DIR, "plugins", NULL);
 
-        peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), userdata, userdata);
-	peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), lib, data);
-	peas_engine_rescan_plugins (PEAS_ENGINE (plugins->engine));
+	peas_engine_add_search_path (plugins->engine, "resource:///org/gnome/liferea/plugins", NULL);
+        peas_engine_add_search_path (plugins->engine, userdata, userdata);
+	peas_engine_add_search_path (plugins->engine, lib, data);
+	peas_engine_rescan_plugins (plugins->engine);
 
 	g_settings_bind (plugin_settings,
 			"active-plugins",

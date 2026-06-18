@@ -639,7 +639,7 @@ liferea_shell_add_actions (const GActionEntry *entries, int count)
 	return group;
 }
 
-itemPtr
+gpointer
 liferea_shell_find_next_unread (gulong startId)
 {
 	itemPtr	result = NULL;
@@ -672,7 +672,7 @@ liferea_shell_find_next_unread (gulong startId)
 		}
 	}
 
-	return result;
+	return (gpointer)result;
 }
 
 static GtkWidget *
