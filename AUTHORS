@@ -77,7 +77,8 @@ Sebastian Keller <sebastian-keller@gmx.de>		Gedit-like tab close buttons
 Simon Kågedal Reimer <skagedal@gmail.com>		Seekable GStreamer media player
 Daneil Aleksandersen 					Partial RFC3229 support saving bandwidth
                                                         Security fixes, network improvements
-Lorenzo L. Ancora <admin@lorenzoancora.info>    Support for anonymous/random HTTP/S UA string
+Lorenzo L. Ancora <admin@lorenzoancora.info>		Support for anonymous/random HTTP/S UA string
+
 
 Maintainer Credits
 ==================
@@ -155,7 +156,11 @@ Indonesian		Samsul Ma'arif <mail@samsul.web.id>
 Code included from other projects
 =================================
 
-Evolution Team		AM/PM time formatting
+libstray		Charles Rocket
+			(https://github.com/charlesrocket/libstray)
+			
+PeerTube-GTK trayicon 	MorsMortium, Erwinjitsu and Other Contributors
+			(https://codeberg.org/The-World-Machine/PeerTube-GTK)
 
 If we forgot to list you here, leave us a message on
 the mailing list and we'll include your name and email!

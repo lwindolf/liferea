@@ -1,3 +1,14 @@
+Note: Liferea is mostly GPL licensed with the following exceptions:
+
+js/vendor/purify.min.js       Apache 2.0 license
+js/vendor/Readability.js      Apache 2.0 license
+js/vendor/handlebar.min.js    MIT license
+plugins/trayicon/stray.h      MIT license
+
+Please refer to the license declaration in those files for more details.
+
+-----------------------------------------------------------------------
+
                     GNU GENERAL PUBLIC LICENSE
                        Version 2, June 1991
 
