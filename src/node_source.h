@@ -68,11 +68,11 @@ typedef enum {
 
 /* node source state model */
 typedef enum {
-	NODE_SOURCE_STATE_NONE = 0,		/*<< no authentication tried so far */
-	NODE_SOURCE_STATE_IN_PROGRESS,		/*<< authentication in progress */
-	NODE_SOURCE_STATE_ACTIVE,		/*<< authentication succeeded */
-	NODE_SOURCE_STATE_NO_AUTH,		/*<< authentication has failed */
-	NODE_SOURCE_STATE_MIGRATE,		/*<< source will be migrated, do not do anything anymore! */
+	NODE_SOURCE_STATE_NONE 		= 0,		/*<< no authentication tried so far */
+	NODE_SOURCE_STATE_IN_PROGRESS	= (1<<0),	/*<< authentication in progress */
+	NODE_SOURCE_STATE_ACTIVE	= (1<<1),	/*<< authentication succeeded */
+	NODE_SOURCE_STATE_NO_AUTH	= (1<<2),	/*<< authentication has failed */
+	NODE_SOURCE_STATE_MIGRATE	= (1<<3)	/*<< source will be migrated, do not do anything anymore! */
 } nodeSourceState;
 
 /* node source subscription update flags */
@@ -221,7 +221,7 @@ typedef struct nodeSource {
 	nodeSourceTypePtr	type;		/*<< node source type of this source instance */
 	Node			*root;		/*<< insertion node of this node source instance */
 	GQueue			*actionQueue;	/*<< queue for async actions */
-	gint			loginState;	/*<< The current login state */
+	nodeSourceState		loginState;	/*<< The current login state */
 
 	gchar			*authToken;	/*<< The authorization token */
 	gint			authFailures;	/*<< Number of authentication failures */

@@ -298,7 +298,7 @@ node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
 void
 node_source_set_state (Node *node, gint newState)
 {
-	debug (DEBUG_UPDATE, "node source '%s' now in state %d (was %d)", node->id, newState, node->source->loginState);
+	debug (DEBUG_UPDATE, "node source '%s' (id '%s') now in state %d (was %d)", node->title, node->id, newState, node->source->loginState);
 
 	/* State transition actions below... */
 	if (newState == NODE_SOURCE_STATE_ACTIVE)
@@ -313,6 +313,8 @@ node_source_set_state (Node *node, gint newState)
 		newState = NODE_SOURCE_STATE_NO_AUTH;
 
 	node->source->loginState = newState;
+
+	// FIXME: emit node-updated to refresh source/feed info
 }
 
 void
