@@ -1,7 +1,7 @@
 /**
  * @file google_source.c  Google reader feed list source support
  * 
- * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -178,6 +178,7 @@ google_source_login_cb (const UpdateResult * const result, gpointer userdata, up
 		if (tmp)
 			*tmp = '\0';
 		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
+		node_source_set_state (subscription->node, NODE_SOURCE_STATE_ACTIVE);
 
 		/* now that we are authenticated trigger updating to start data retrieval */
 		if (!(flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN))

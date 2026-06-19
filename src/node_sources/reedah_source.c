@@ -106,7 +106,8 @@ reedah_source_login_cb (const UpdateResult * const result, gpointer userdata, up
 		tmp = strchr (tmp, '\n');
 		if (tmp)
 			*tmp = '\0';
-		node_source_set_auth_token (node, g_strdup_printf ("ReedahLogin auth=%s", ttmp + 5));
+		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
+		node_source_set_state (subscription->node, NODE_SOURCE_STATE_ACTIVE);
 
 		/* now that we are authenticated trigger updating to start data retrieval */
 		if (!(flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
