@@ -11,11 +11,11 @@ the feed list and changes the visual rendering of feed titles.
 
 To help you getting started there is a tutorial on writing plugins:
 
-- [Part 1: Introduction + Plugin Boiler Plate](https://lzone.de/liferea/blog/#2018-01-05-Writing+Liferea+Plugins+Tutorial+Part+1)
-- [Part 2: Access and modify UI elements](https://lzone.de/liferea/blog/#2018-01-06-Writing+Liferea+Plugins+Tutorial+Part+2)
-- [Part 3: Adding menu elements](https://lzone.de/liferea/blog/#2018-01-07-Writing+Liferea+Plugins+Tutorial+Part+3)
-- [Part 4: Using GTK inspector](https://lzone.de/liferea/blog/#2018-01-25-Writing+Liferea+Plugins+Tutorial+Part+4)
-- [Part 5: Enabling translations for plugins](https://lzone.de/liferea/blog/#2018-12-07-Writing+Liferea+Plugins+Tutorial+Part+5)
+- [Part 1: Introduction + Plugin Boiler Plate](https://lzone.de/liferea/blog/#2018-01-05-Writing%20Liferea%20Plugins%20Tutorial%20Part+1)
+- [Part 2: Access and modify UI elements](https://lzone.de/liferea/blog/#2018-01-06-Writing%20Liferea%20Plugins%20Tutorial%20Part+2)
+- [Part 3: Adding menu elements](https://lzone.de/liferea/blog/#2018-01-07-Writing%20Liferea%20Plugins%20Tutorial%20Part+3)
+- [Part 4: Using GTK inspector](https://lzone.de/liferea/blog/#2018-01-25-Writing%20Liferea%20Plugins%20Tutorial%20Part+4)
+- [Part 5: Enabling translations for plugins](https://lzone.de/liferea/blog/#2018-12-07-Writing%20Liferea%20Plugins%20Tutorial%20Part+5)
 
 ## Adding 3rd Party Plugins
 
