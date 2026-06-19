@@ -1,5 +1,5 @@
 /*
- * @file content_view.c  presenting items and feeds in HTML
+ * @file content_view.c  presenting items and feed info in HTML
  *
  * Copyright (C) 2006-2026 Lars Windolf <lars.windolf@gmx.de>
  *
@@ -82,6 +82,11 @@ content_view_node_selected (GObject *obj, gchar *nodeId, gpointer user_data)
 	const gchar		*direction = NULL;
 
         if (!node)
+                return;
+
+        // this bail out is needed for the "node-updated" signal case
+        if (feedlist_get_selected () != node ||
+            itemlist_get_selected () != NULL)
                 return;
 
         direction = common_get_app_direction ();
