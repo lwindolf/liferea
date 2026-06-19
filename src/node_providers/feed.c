@@ -128,7 +128,7 @@ feed_prepare_update_request (subscriptionPtr subscription, UpdateRequest *reques
 static itemSetPtr
 feed_load (Node *node)
 {
-	return db_itemset_load(node->id);
+	return db_itemset_load (node->id);
 }
 
 static void

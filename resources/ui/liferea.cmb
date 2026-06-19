@@ -15,7 +15,6 @@
     <css-provider>gtk-liferea.css</css-provider>
   </ui>
   <ui filename="rename_node.ui" sha256="005647316ef364741a757ef736ec845f2e1aed7c9e3c600ca918f0d2dc80a3bc"/>
-  <ui filename="properties.ui" sha256="d2c80b4d2f0fbf674dc3c7e9230bafdda7a054033a25232957b4786c96b42268"/>
   <ui filename="prefs.ui" sha256="ac4047b3a0424ce986363eb625b09967211bef723d48acda4c8149cbf2b1e486"/>
   <ui filename="opml_source.ui" sha256="f48ddb47213b27726ea035db63cd177dcc3f7137385f99204405055e5e790e7f"/>
   <ui filename="node_source.ui" sha256="9cadcaf00da97d09b9fee8776d500ca77fa653105cb7331672e3e8ea5a9a9512"/>
@@ -28,4 +27,5 @@
   <ui filename="mainwindow.ui" sha256="0511cbf889b3e3d56444054a6b6903218f2e45f6a751eac0210a86fc8edcfe0d"/>
   <ui filename="shortcuts.ui" sha256="6235bca30daa703ea5ee43166a609f54443c1d40cbdf116c74107345fe3a73ae"/>
   <ui filename="webdav_source.ui" sha256="4b0b27dd8bb0be4e7fec421394bc2d30039051c8ee5cf41c4216652cf88f9d36"/>
+  <ui filename="properties.ui" sha256="65bbf98675267462bc42edd63e9b442ef5ac38ddf3fbb2f6ffc4a0576f3d43dd"/>
 </cambalache-project>

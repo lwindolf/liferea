@@ -136,19 +136,14 @@ ui_subscription_dialog_decode_source (GtkWidget *dialog)
 }
 
 static void
-on_dialog_response (GtkDialog *d, gint response_id, gpointer user_data)
+on_dialog_response (GtkButton *btn, gpointer user_data)
 {
-	GtkWidget		*dialog = GTK_WIDGET (d);
-	subscriptionPtr		subscription = (subscriptionPtr)user_data;
+	GtkWidget		*dialog = GTK_WIDGET (user_data);
+	subscriptionPtr		subscription = (subscriptionPtr)g_object_get_data (G_OBJECT (dialog), "subscription");
 	g_autofree gchar	*newSource = NULL;
 	const gchar		*newFilter;
 	gboolean		needsUpdate = FALSE;
 	Node			*node = subscription->node;
-
-	if (response_id != GTK_RESPONSE_OK) {
-		gtk_window_close(GTK_WINDOW (dialog));
-		return;
-	}
 
 	/* "General" */
 	if (node)
@@ -230,7 +225,7 @@ on_dialog_response (GtkDialog *d, gint response_id, gpointer user_data)
 		feedlist_add_subscription (subscription);
 	}
 
-	gtk_window_close(GTK_WINDOW (dialog));
+	adw_dialog_close (ADW_DIALOG (dialog));
 }
 
 static void
@@ -492,7 +487,9 @@ subscription_prop_dialog_new (subscriptionPtr subscription)
 
 	subscription_prop_dialog_load (dialog, subscription);
 
-	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_dialog_response), (gpointer)subscription);
+	g_object_set_data (G_OBJECT (dialog), "subscription", (gpointer)subscription);
+
+	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked", G_CALLBACK (on_dialog_response), dialog);
 }
 
 /* simple "New" dialog */

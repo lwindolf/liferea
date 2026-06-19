@@ -8,7 +8,7 @@ To be released
 	* Reimplemented trayicon plugin using Status-Notifier-Item and libstray
 	  (Lars Windolf)
 
-	* Convert OPML source dialog to libadwaita
+	* Convert OPML source and properties dialog to libadwaita
 	  (Lars Windolf)
 
 	* Update of Javascript library DomPurify
@@ -22,6 +22,7 @@ To be released
 	* full screen mode broken
 	* libxml parser errors written to STDOUT
 	* Reedah login does not complete (but Reedah support works)
+	* internal plugins not hidden in preferences
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>
