@@ -5,14 +5,14 @@
 # Og Maciel <ogmaciel@gnome.org>, 2007, 2009.
 # Leon Nardella <leon.nardela@gmail.com>, 2009.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2013.
-# Fúlvio Alves <fga.fulvio@gmail.com>, 2023.
+# Fúlvio Alves <fga.fulvio@gmail.com>, 2023, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-26 21:53+0200\n"
-"PO-Revision-Date: 2023-08-02 20:29-0300\n"
+"PO-Revision-Date: 2026-06-18 22:49-0300\n"
 "Last-Translator: Fúlvio Alves <fga.fulvio@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-"
 "translation@lists.sourceforge.net>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.9\n"
 
 #: data/net.sourceforge.liferea.desktop.in:2 src/liferea_application.c:326
 #: resources/ui/mainwindow.ui:11
@@ -43,16 +43,15 @@ msgstr "notícias;fonte;agregador;blog;podcast;sindicação;rss;atom"
 
 #: plugins/add-bookmark-site.ui:7
 msgid "Add Bookmark Service"
-msgstr ""
+msgstr "Adicionar Serviço de Favoritos"
 
 #: plugins/add-bookmark-site.ui:50
 msgid "Configure a custom social bookmarking site. "
-msgstr ""
+msgstr "Configurar um site de favoritos socais personalizado. "
 
 #: plugins/add-bookmark-site.ui:75
-#, fuzzy
 msgid "Service _Name"
-msgstr "Pesquisar _Nome:"
+msgstr "_Nome do Serviço"
 
 #: plugins/add-bookmark-site.ui:88 resources/ui/properties.ui:233
 msgid "_URL"
@@ -60,7 +59,7 @@ msgstr "_URL"
 
 #: plugins/add-bookmark-site.ui:121
 msgid "_Apply custom bookmark site"
-msgstr ""
+msgstr "_Adicionar site aos favoritos personalizados"
 
 #. Feed update interval hint in preference dialog.
 #: plugins/add-bookmark-site.ui:158
@@ -71,10 +70,16 @@ msgid ""
 "Example: \n"
 "https://bookmarks.org/add?u={url}&t={title}"
 msgstr ""
+"Observação: O URL precisa ter um marcador de posição obrigatório \"{url}\" "
+"\r\n"
+"e pode conter um marcador de posição \"{title}\" .\r\n"
+"\r\n"
+"Exemplo: \r\n"
+"https://bookmarks.org/add?u={url}&t={title}"
 
 #: plugins/getfocus.ui:13
 msgid "Configure Plugin"
-msgstr ""
+msgstr "Configurar Plug-in"
 
 #: plugins/getfocus.ui:26
 msgid "Save"
@@ -522,6 +527,8 @@ msgstr ""
 #: src/net.c:491
 msgid "Too many requests. Liferea has to wait a while before trying again."
 msgstr ""
+"Muitas solicitações. O Liferea precisa aguardar um pouco antes de tentar "
+"novamente."
 
 #. http 5xx server errors
 #: src/net.c:494
@@ -750,9 +757,8 @@ msgid "_New"
 msgstr "_Nova"
 
 #: src/ui/feed_list_view.c:295
-#, fuzzy
 msgid "Sort Feeds"
-msgstr "Ordenar Fontes"
+msgstr "Classificar Fontes"
 
 #: src/ui/feed_list_view.c:303
 msgid "_Mark All As Read"
@@ -825,9 +831,8 @@ msgid "Couldn't find pixmap file: %s"
 msgstr "Não foi possível localizar o arquivo de imagem: %s"
 
 #: src/ui/item_list_view.c:601
-#, fuzzy
 msgid " <span background='red' color='white'> important </span> "
-msgstr " <span background='red' color='black'> importante </span> "
+msgstr " <span background='red' color='white'> importante </span> "
 
 #: src/ui/item_list_view.c:736 resources/ui/mainwindow.ui:369
 msgid "Open In _Tab"
@@ -923,13 +928,12 @@ msgid "Manual"
 msgstr "Manual"
 
 #: src/ui/preferences_dialog.c:383
-#, fuzzy
 msgid "Enable or disable this plugin"
-msgstr "Falha ao desativar plugin (%s)!"
+msgstr "Ativar ou desativar este plug-in"
 
 #: src/ui/preferences_dialog.c:389
 msgid "Configure this plugin"
-msgstr ""
+msgstr "Configurar este plug-in"
 
 #. add remove button
 #: src/ui/rule_editor.c:180
@@ -1087,13 +1091,12 @@ msgstr "_Senha:"
 
 #: resources/ui/auth.ui:111 resources/ui/google_source.ui:148
 #: resources/ui/reedah_source.ui:100
-#, fuzzy
 msgid "Cancel"
-msgstr "_Cancelar"
+msgstr "Cancelar"
 
 #: resources/ui/auth.ui:117 resources/ui/reedah_source.ui:106
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: resources/ui/google_source.ui:7
 msgid "Add Google Reader API Account"
@@ -1237,9 +1240,8 @@ msgid "_Update Monitor"
 msgstr "Monitor de At_ualização"
 
 #: resources/ui/mainwindow.ui:423
-#, fuzzy
 msgid "_Sort Feeds"
-msgstr "Ordenar Fontes"
+msgstr "Ordenar Fonte_s"
 
 #: resources/ui/mainwindow.ui:429
 msgid "_Preferences"
@@ -1263,7 +1265,7 @@ msgstr "Índ_ice"
 
 #: resources/ui/mainwindow.ui:457
 msgid "_Shortcuts"
-msgstr ""
+msgstr "Atalho_s"
 
 #: resources/ui/mainwindow.ui:463
 msgid "_About"
@@ -1274,9 +1276,8 @@ msgid "Mark all as read ?"
 msgstr "Marcar todos como lidos?"
 
 #: resources/ui/mark_read_dialog.ui:27
-#, fuzzy
 msgid "_Mark all as read"
-msgstr "Marcar todos como lidos"
+msgstr "_Marcar todos como lidos"
 
 #: resources/ui/mark_read_dialog.ui:46
 msgid "Do not ask again"
@@ -1296,7 +1297,7 @@ msgstr "N_ome da pasta:"
 #: resources/ui/search_folder.ui:143 resources/ui/simple_subscription.ui:95
 #: resources/ui/theoldreader_source.ui:103 resources/ui/ttrss_source.ui:123
 msgid "_OK"
-msgstr ""
+msgstr "_OK"
 
 #: resources/ui/new_newsbin.ui:23
 msgid "_News Bin Name:"
@@ -1315,9 +1316,8 @@ msgid "_Select the source type you want to add..."
 msgstr "_Selecione o tipo de fonte de origem que você deseja adicionar..."
 
 #: resources/ui/opml_source.ui:7
-#, fuzzy
 msgid "Add OPML"
-msgstr "Adicionar OPML/Planeta"
+msgstr "Adicionar OPML"
 
 #: resources/ui/opml_source.ui:23
 msgid ""
@@ -1335,17 +1335,16 @@ msgid "_Select File"
 msgstr "_Selecionar Arquivo"
 
 #: resources/ui/plugins.ui:9
-#, fuzzy
 msgid "Plugin Manager"
-msgstr "Instalador de Plugins"
+msgstr "Gerenciador de Plugins"
 
 #: resources/ui/plugins.ui:43
 msgid "Con_figure"
-msgstr ""
+msgstr "Con_figurar"
 
 #: resources/ui/plugins.ui:51 resources/ui/prefs.ui:786
 msgid "_Close"
-msgstr ""
+msgstr "Fe_char"
 
 #: resources/ui/prefs.ui:19
 msgid "Liferea Preferences"
@@ -1403,7 +1402,7 @@ msgstr "Ícones das Fontes de Notícias (Favicons)"
 
 #: resources/ui/prefs.ui:253
 msgid "_Update all favicons now"
-msgstr "At_ualizar todos favicons agora"
+msgstr "At_ualizar todos os favicons agora"
 
 #: resources/ui/prefs.ui:273
 msgid "Folders"
@@ -1486,13 +1485,12 @@ msgid "Privacy Settings"
 msgstr "Configurações de Privacidade"
 
 #: resources/ui/prefs.ui:669
-#, fuzzy
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "Dizer aos sites que _não quero ser rastreado."
 
 #: resources/ui/prefs.ui:682
 msgid "Tell websites not to _sell or share my data."
-msgstr ""
+msgstr "Dizer aos sites para não vender meus dado_s."
 
 #: resources/ui/prefs.ui:697
 msgid "_Intelligent Tracking Prevention. "
@@ -1707,17 +1705,16 @@ msgid "Advanced Search"
 msgstr "Pesquisa Avançada"
 
 #: resources/ui/search.ui:26
-#, fuzzy
 msgid "Find items that meet the following criteria"
 msgstr "Encontre itens que atendam aos seguintes critérios"
 
 #: resources/ui/search.ui:100 resources/ui/update_monitor.ui:111
 msgid "Close"
-msgstr ""
+msgstr "Fechar"
 
 #: resources/ui/search.ui:113
 msgid "Find"
-msgstr ""
+msgstr "Localizar"
 
 #: resources/ui/simple_subscription.ui:26
 msgid "Feed _Source"
