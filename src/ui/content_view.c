@@ -21,6 +21,7 @@
 #include "content_view.h"
 
 #include "common.h"
+#include "node_source.h"
 #include "ui/liferea_browser.h"
 
 /*
@@ -85,7 +86,10 @@ content_view_node_selected (GObject *obj, gchar *nodeId, gpointer user_data)
                 return;
 
         // this bail out is needed for the "node-updated" signal case
-        if (feedlist_get_selected () != node ||
+        // which we only want to process in case the currently displayed
+        // node info or its source node has changed (to display auth state)
+        Node *selected = feedlist_get_selected ();
+        if ((selected != node && selected != node->source->root) ||
             itemlist_get_selected () != NULL)
                 return;
 

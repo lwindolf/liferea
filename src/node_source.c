@@ -314,7 +314,7 @@ node_source_set_state (Node *node, gint newState)
 
 	node->source->loginState = newState;
 
-	// FIXME: emit node-updated to refresh source/feed info
+	feedlist_node_was_updated (node);
 }
 
 void
