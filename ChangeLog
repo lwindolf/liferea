@@ -19,9 +19,10 @@ To be released
 
 	Known problems
 
-	* full screen mode broken
-	* libxml parser errors written to STDOUT
-	* Reedah login does not complete (but Reedah support works)
+	* #1551 full screen mode broken
+	* #1525 folder collapse state is not persisted over restarts
+	* #1518 Update counter gets stuck with command download errors
+	* many "Fatal: item to be removed not found in item id list!"
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>

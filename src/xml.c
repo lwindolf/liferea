@@ -576,6 +576,19 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 }
 
 static void
+xml_print_error (void *ctxt, const char *msg, ...)
+{
+	va_list valist;
+	g_autofree gchar *parser_error = NULL;
+
+	va_start(valist,msg);
+	parser_error = g_strdup_vprintf (msg, valist);
+	va_end(valist);
+
+	debug (DEBUG_PARSING, "libxml2 parse error: %s", parser_error);
+}
+
+static void
 xml_deinit (void)
 {
 	GSList *iter = dhtml_strippers;
@@ -596,6 +609,8 @@ xml_init (void)
 	xmlMemSetup (g_free, g_malloc, g_realloc, g_strdup);
 	/* has to be called for multithreaded programs */
 	xmlInitParser ();
+
+	xmlSetGenericErrorFunc (NULL, (xmlGenericErrorFunc)xml_print_error);
 
 	atexit (xml_deinit);
 }
