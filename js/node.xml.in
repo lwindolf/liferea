@@ -31,18 +31,18 @@
 
 		{{#if node.nodeSource}}
 			{{#with node.nodeSource}}
-				{{#compare loginState "==" 8}}
+				{{#compare loginState "==" 4}}
 					<div id="errors">
 						<p><_span>⛔ Account login for '{{ title }}' failed ({{ authFailures }}/{{ maxFailures }} retries)!</_span></p>
 						<p><_span>Please check your credentials!</_span></p>
 					</div>
 				{{/compare}}
-				{{#compare loginState "==" 2}}
+				{{#compare loginState "==" 1}}
 					<div id="errors">
 						<_span>⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/{{ maxFailures }} retries)...</_span>
 					</div>
 				{{/compare}}
-				{{#compare loginState "==" 1}}
+				{{#compare loginState "==" 0}}
 					<div id="errors">
 						<_span>⚠️ Account login for '{{ title }}' has not yet started.</_span>
 					</div>

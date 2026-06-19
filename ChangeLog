@@ -1,3 +1,14 @@
+To be released
+
+	Version 1.16.13
+
+	* Fixes Reedah login (invalid auth token)
+	  (Lars Windolf)
+
+	* Fixes node source update state after login for Reedah, TheOldReader, GoogleReader
+	  (Lars Windolf)
+	
+
 2026-06-16  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.12
