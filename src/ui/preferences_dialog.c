@@ -373,6 +373,10 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	for (guint i = 0; i < g_list_model_get_n_items (plugin_infos); i++) {
 		g_autoptr(PeasPluginInfo) info = PEAS_PLUGIN_INFO (g_list_model_get_item (plugin_infos, i));
+
+		if (peas_plugin_info_is_hidden (info))
+			continue;
+
 		const gchar *plugin_name = peas_plugin_info_get_name (info);
 		const gchar *plugin_desc = peas_plugin_info_get_description (info);
 		gboolean is_active = peas_plugin_info_is_loaded (info);
