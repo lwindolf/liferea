@@ -1,3 +1,29 @@
+To be released
+
+	Version 2.0-RC5
+
+	* Fixes #1533: refresh feed info on update broken
+	  (Lars Windolf)
+
+	* Reimplemented trayicon plugin using Status-Notifier-Item and libstray
+	  (Lars Windolf)
+
+	* Convert OPML source dialog to libadwaita
+	  (Lars Windolf)
+
+	* Update of Javascript library DomPurify
+	  (Lars Windolf)
+
+	* Update of Brazilian Portuguese translation
+	  (Fúlvio Alves)
+
+	Known problems
+
+	* full screen mode broken
+	* libxml parser errors written to STDOUT
+	* Reedah login does not complete (but Reedah support works)
+
+
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0-RC4
