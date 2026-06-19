@@ -64,7 +64,6 @@ configure_file(
 subdir('resources')
 subdir('src')
 subdir('data')
-subdir('plugins')
 
 liferea = executable('liferea',
   liferea_sources + files('src/main.c'),

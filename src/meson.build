@@ -154,3 +154,14 @@ liferea_gir_sources = files(
   'plugins/liferea_shell_activatable.h',
   'plugins/node_source_activatable.h'
 )
+
+# compile and bundle all C plugins
+
+plugins_sources = []
+
+subdir('plugins/trayicon')
+
+plugins_static = static_library('plugins', plugins_sources,
+  dependencies: liferea_deps,
+  gnu_symbol_visibility: 'hidden'
+)
