@@ -41,13 +41,20 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
 
 /**
- * liferea_shell_get_instance:
+ * liferea_shell_get_instance: (skip)
  *
  * Get the LifereaShell instance
  *
  * Returns: (transfer none): the LifereaShell instance
  */
 LifereaShell * liferea_shell_get_instance (void);
+
+/**
+ * liferea_shell_destroy: (skip)
+ * 
+ * Destroy all shell elements.
+ */
+void liferea_shell_destroy (void);
 
 /**
  * liferea_shell_lookup:
@@ -68,14 +75,7 @@ GtkWidget * liferea_shell_lookup (const gchar *name);
  *
  * Set up the Liferea main window.
  */
-void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled);
-
-/**
- * liferea_shell_destroy: (skip)
- *
- * Destroys the global liferea_shell object.
- */
-void liferea_shell_destroy (void);
+LifereaShell * liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled);
 
 /**
  * liferea_shell_enable_action:

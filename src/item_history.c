@@ -68,6 +68,7 @@ item_history_get_instance (void)
 		itemHistory = g_object_new (ITEM_HISTORY_TYPE, NULL);
 		g_object_get (G_OBJECT (liferea_shell_get_instance ()), "itemlist", &itemlist, NULL);
 		g_signal_connect (G_OBJECT (itemlist), "item-selected", G_CALLBACK (on_itemlist_selection_changed), NULL);
+		g_object_unref (itemlist);
 	}
 
 	return itemHistory;

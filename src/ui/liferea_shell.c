@@ -72,8 +72,6 @@ struct _LifereaShell {
 	GActionGroup	*itemlistActions;
 	GActionGroup	*linkActions;
 
-	LifereaPluginsEngine *plugins;
-
 	GtkWindow	*window;		/*<< Liferea main window */
 
 	gboolean	autoLayout;		/*<< TRUE if automatic layout switching is active */
@@ -117,34 +115,35 @@ liferea_shell_get_instance (void)
 	return shell;
 }
 
-static void
-liferea_shell_finalize (GObject *object)
+void
+liferea_shell_destroy (void)
 {
-	LifereaShell *ls = LIFEREA_SHELL (object);
-
-	if (ls->toastTimeout) {
-		g_source_remove (ls->toastTimeout);
-		ls->toastTimeout = 0;
+	if (shell->toastTimeout) {
+		g_source_remove (shell->toastTimeout);
+		shell->toastTimeout = 0;
 	}
 
-	g_object_unref (ls->plugins);
-	g_object_unref (ls->tabs);
-	g_object_unref (ls->feedlist);
-	g_object_unref (ls->feedListView);
-	g_object_unref (ls->itemlist);
-	g_object_unref (ls->itemListView);
-	g_object_unref (ls->htmlview);
+	g_clear_object (&shell->tabs);
+	g_clear_object (&shell->feedlist);
+	g_clear_object (&shell->feedListView);
+	g_clear_object (&shell->itemlist);
+	g_clear_object (&shell->itemListView);
+	g_clear_object (&shell->htmlview);
 
-	gtk_window_destroy (ls->window);
+	g_clear_object (&shell->settings);
+	g_clear_object (&shell->xml);
 
-	g_object_unref (ls->settings);
-	g_object_unref (ls->xml);
+	g_clear_object (&shell->shellActions);
+	g_clear_object (&shell->feedlistActions);
+	g_clear_object (&shell->itemlistActions);
+}
 
-	g_object_unref (ls->shellActions);
-	g_object_unref (ls->feedlistActions);
-	g_object_unref (ls->itemlistActions);
+static void
+liferea_shell_dispose (GObject *object)
+{
+	liferea_shell_destroy ();
 
-	g_object_unref (ls->xml);
+	G_OBJECT_CLASS (liferea_shell_parent_class)->dispose (object);
 }
 
 static void
@@ -208,7 +207,7 @@ liferea_shell_class_init (LifereaShellClass *klass)
 
 	object_class->get_property = liferea_shell_get_property;
 	object_class->set_property = liferea_shell_set_property;
-	object_class->finalize = liferea_shell_finalize;
+	object_class->dispose = liferea_shell_dispose;
 
 	g_object_class_install_property (object_class,
 		                         PROP_FEED_LIST,
@@ -297,12 +296,12 @@ liferea_shell_init (LifereaShell *ls)
 static gboolean
 liferea_shell_hide_toast (gpointer user_data)
 {
-    g_return_val_if_fail (shell != NULL, G_SOURCE_REMOVE);
-    
-    gtk_revealer_set_reveal_child (GTK_REVEALER (shell->toastRevealer), FALSE);
-    shell->toastTimeout = 0;
-    
-    return G_SOURCE_REMOVE;
+	g_return_val_if_fail (shell != NULL, G_SOURCE_REMOVE);
+
+	gtk_revealer_set_reveal_child (GTK_REVEALER (shell->toastRevealer), FALSE);
+	shell->toastTimeout = 0;
+
+	return G_SOURCE_REMOVE;
 }
 
 void
@@ -759,7 +758,7 @@ liferea_shell_create_toast_widget (void)
 	return revealer;
 }
 
-void
+LifereaShell *
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
 	GtkEventController *keypress;
@@ -785,7 +784,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 		gtk_revealer_get_child (GTK_REVEALER (shell->toastRevealer))
 	);
 	gtk_overlay_add_overlay (GTK_OVERLAY (shell->toastOverlay), shell->toastRevealer);
-	shell->plugins = liferea_plugins_engine_get ();
 	shell->itemlist = ITEMLIST (g_object_new (ITEMLIST_TYPE, NULL));
 	shell->feedlist = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
 	shell->htmlview = LIFEREA_BROWSER (content_view_create (shell->feedlist, shell->itemlist));
@@ -879,6 +877,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 10. Load feedlist and enable signals for feedListView */
 	gtk_widget_set_sensitive (liferea_shell_lookup ("feedlist"), TRUE);
+
+	return shell;
 }
 
 void liferea_shell_show_window (void)

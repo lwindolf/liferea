@@ -338,5 +338,8 @@ node_actions_create (LifereaShell *shell)
 	node_actions_item_updated (NULL, 0, ag);
 	node_actions_node_selected (NULL, NULL, ag);
 
+	g_object_unref (itemlist);
+	g_object_unref (feedlist);
+
         return ag;
 }

@@ -5,6 +5,9 @@ To be released
 	* Fixes #1533: refresh feed info on update broken
 	  (Lars Windolf)
 
+	* Fixes #1525 folder collapse state is not persisted over restarts
+	  (Lars Windolf)
+
 	* Reimplemented trayicon plugin using Status-Notifier-Item and libstray
 	  (Lars Windolf)
 
@@ -19,10 +22,10 @@ To be released
 
 	Known problems
 
-	* #1551 full screen mode broken
-	* #1525 folder collapse state is not persisted over restarts
+	* #1551 full screen mode broken	
 	* #1518 Update counter gets stuck with command download errors
 	* many "Fatal: item to be removed not found in item id list!"
+	* Python console plugin broken
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>

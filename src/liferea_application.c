@@ -43,6 +43,7 @@
 #include "social.h"
 #include "update.h"
 #include "xml.h"
+#include "plugins/plugins_engine.h"
 #include "ui/liferea_shell.h"
 #include "tests/test.h"
 
@@ -50,7 +51,11 @@ struct _LifereaApplication {
 	AdwApplication	parent;
 	gchar		*initialStateOption;
 	gint		pluginsDisabled;
+
 	LifereaDBus	*dbus;
+	LifereaShell	*shell;
+	LifereaPluginsEngine *plugins;
+
 	gulong		debug_flags;
 };
 
@@ -86,11 +91,10 @@ on_app_open (GApplication *application,
 	int			i;
 	GFile			**uris = (GFile **)files;
 	GtkApplication		*gtk_app = GTK_APPLICATION (application);
-	GList			*list = gtk_application_get_windows (gtk_app);
 	LifereaApplication	*app = LIFEREA_APPLICATION (application);
 
-	if (!list)
-		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
+	if (!app->shell)
+		app->shell = liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
 
 	for (i=0;(i<n_files) && uris[i];i++) {
 		gchar *uri = g_file_get_uri (uris[i]);
@@ -118,15 +122,12 @@ on_app_open (GApplication *application,
 static void
 on_app_activate (AdwApplication *adw_app, gpointer user_data)
 {
-	GList				*list;
-	LifereaApplication 		*app = LIFEREA_APPLICATION (adw_app);
+	LifereaApplication *app = LIFEREA_APPLICATION (adw_app);
 
-	list = gtk_application_get_windows (GTK_APPLICATION (app));
-	if (list) {
+	if (app->shell)
 		liferea_shell_show_window ();
-	} else {
-		liferea_shell_create (GTK_APPLICATION (app), app->initialStateOption, app->pluginsDisabled);
-	}
+	else
+		app->shell = liferea_shell_create (GTK_APPLICATION (app), app->initialStateOption, app->pluginsDisabled);
 }
 
 /* Callback to the startup signal emitted only by the primary instance upon registration. */
@@ -150,22 +151,28 @@ on_app_startup (GApplication *gapp, gpointer user_data)
 	social_init ();
 
 	app->dbus = liferea_dbus_new ();
+	app->plugins = liferea_plugins_engine_new ();
 }
 
 /* Callback to the "shutdown" signal emitted only on the primary instance; */
 static void
-on_app_shutdown (GApplication *app, gpointer user_data)
+on_app_shutdown (GApplication *gapp, gpointer user_data)
 {
-	GList *list;
+	LifereaApplication *app = LIFEREA_APPLICATION (gapp);
 
 	/* order is important ! */
 	update_deinit ();
 
-	/* When application is started as a service, it waits 10 seconds for a message.
-	 * If no message arrives, it will shutdown without having created a window. */
-	list = gtk_application_get_windows (GTK_APPLICATION (app));
-	if (list)
-		g_object_unref (liferea_shell_get_instance ());
+	/* unregister plugins to drop all shell references */
+	liferea_plugins_engine_unregister_all ();
+	g_clear_object (&app->plugins);
+
+	/* FIXME: Currently there is a bug with the shell plugins not freeing
+	   1 remaining shell reference. Therefore we explicitely "destroy"
+	   the shell to trigger all necessary shutdown. */
+	liferea_shell_destroy ();
+	g_clear_object (&app->shell);
+	g_clear_object (&app->dbus);
 
 	db_deinit ();
 	conf_deinit ();

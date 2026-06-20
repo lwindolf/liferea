@@ -126,11 +126,11 @@ trayicon_plugin_get_property (GObject    *object,
 	TrayiconPlugin *plugin = (TrayiconPlugin *)object;
 
 	switch (prop_id) {
-	case PROP_SHELL:
-		g_value_set_object (value, plugin->shell);
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		case PROP_SHELL:
+			g_value_set_object (value, plugin->shell);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 	}
 }
 
@@ -143,11 +143,11 @@ trayicon_plugin_set_property (GObject      *object,
 	TrayiconPlugin *plugin = (TrayiconPlugin *)object;
 
 	switch (prop_id) {
-	case PROP_SHELL:
-		g_set_object (&plugin->shell, g_value_get_object (value));
-		break;
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		case PROP_SHELL:
+			g_set_object (&plugin->shell, g_value_get_object (value));
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 	}
 }
 

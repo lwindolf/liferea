@@ -658,7 +658,7 @@ feedlist_node_was_updated (Node *node)
 static void
 feedlist_save (void)
 {
-	debug (DEBUG_CONF, "Forced feed list save");
+	debug (DEBUG_CONF, "Forced feedlist save");
 	feedlist_schedule_save_cb (NULL);
 }
 

@@ -68,7 +68,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 
 	debug (DEBUG_GUI, "Initializing plugins engine");
 
-	plugins->extension_sets = g_hash_table_new (g_direct_hash, g_direct_equal);
+	plugins->extension_sets = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_object_unref);
 	plugins->engine = peas_engine_get_default ();
 	g_object_add_weak_pointer (G_OBJECT (plugins), (gpointer) &plugins->engine);
 
@@ -129,7 +129,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 		if (info)
 			peas_engine_load_plugin (PEAS_ENGINE (plugins->engine), info);
 		else
-			g_warning ("The plugin-installer plugin was not found.");
+			g_warning ("The '%s' plugin was not found.", mandatory[i]);
 	}
 
 	plugins->all = peas_extension_set_new (plugins->engine, LIFEREA_TYPE_ACTIVATABLE, NULL);
@@ -153,6 +153,7 @@ on_extension_removed (PeasExtensionSet   *extensions,
                       LifereaActivatable *plugin,
                       gpointer           user_data)
 {
+	debug (DEBUG_GUI, "Plugin removed %s", peas_plugin_info_get_name (info));
 	liferea_activatable_deactivate (plugin);
 }
 
@@ -195,12 +196,8 @@ liferea_plugin_is_active (GType type)
 static void
 liferea_plugins_engine_dispose (GObject * object)
 {
-	LifereaPluginsEngine *plugins = LIFEREA_PLUGINS_ENGINE (object);
-
-	if (plugins->extension_sets) {
-		g_hash_table_destroy (plugins->extension_sets);
-		plugins->extension_sets = NULL;
-	}
+	liferea_plugins_engine_unregister_all ();
+	plugins = NULL;
 
 	G_OBJECT_CLASS (liferea_plugins_engine_parent_class)->dispose (object);
 }
@@ -214,30 +211,30 @@ liferea_plugins_engine_class_init (LifereaPluginsEngineClass * klass)
 }
 
 LifereaPluginsEngine *
-liferea_plugins_engine_get (void)
+liferea_plugins_engine_new (void)
 {
-	if (!plugins) {
-		plugins = LIFEREA_PLUGINS_ENGINE (g_object_new (LIFEREA_TYPE_PLUGINS_ENGINE, NULL));
+	g_assert (!plugins);
 
-		/* Immediately register basic non-GUI plugin intefaces that might be requirement
-		   for everything to come up. All other plugins are registered later on
-		   using liferea_plugins_engine_register_shell_plugins() */
-		GType types[] = {
-			LIFEREA_AUTH_ACTIVATABLE_TYPE,
-			LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE
-		};
+	plugins = LIFEREA_PLUGINS_ENGINE (g_object_new (LIFEREA_TYPE_PLUGINS_ENGINE, NULL));
 
-		debug (DEBUG_GUI, "Registering basic plugins");
+	/* Immediately register basic non-GUI plugin intefaces that might be requirement
+	   for everything to come up. All other plugins are registered later on
+	   using liferea_plugins_engine_register_shell_plugins() */
+	GType types[] = {
+		LIFEREA_AUTH_ACTIVATABLE_TYPE,
+		LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE
+	};
 
-		for (guint i = 0; i < G_N_ELEMENTS (types); i++) {
-			PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (plugins->engine), types[i], NULL);
-			g_hash_table_insert (plugins->extension_sets, GINT_TO_POINTER(types[i]), extensions);
+	debug (DEBUG_GUI, "Registering basic plugins");
 
-			peas_extension_set_foreach (extensions, (PeasExtensionSetForeachFunc)on_extension_added, NULL);
+	for (guint i = 0; i < G_N_ELEMENTS (types); i++) {
+		PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (plugins->engine), types[i], NULL);
+		g_hash_table_insert (plugins->extension_sets, GINT_TO_POINTER(types[i]), extensions);
 
-			g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
-			g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
-		}
+		peas_extension_set_foreach (extensions, (PeasExtensionSetForeachFunc)on_extension_added, NULL);
+
+		g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
+		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
 	}
 
 	return plugins;
@@ -280,5 +277,14 @@ liferea_plugins_engine_enable_plugin (PeasPluginInfo *info, gboolean enabled)
 		peas_engine_load_plugin (plugins->engine, info);
 	} else {
 		peas_engine_unload_plugin (plugins->engine, info);
+	}
+}
+
+void
+liferea_plugins_engine_unregister_all (void)
+{
+	if (plugins->extension_sets) {
+		g_hash_table_destroy (plugins->extension_sets);
+		plugins->extension_sets = NULL;
 	}
 }

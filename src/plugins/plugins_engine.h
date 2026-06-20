@@ -34,11 +34,11 @@ G_DECLARE_FINAL_TYPE (LifereaPluginsEngine, liferea_plugins_engine, LIFEREA, PLU
 GType liferea_plugins_engine_get_type (void) G_GNUC_CONST;
 
 /**
- * liferea_plugins_engine_get: (skip)
+ * liferea_plugins_engine_new: (skip)
  * 
- * Get the Liferea plugins engine instance.
+ * Get the Liferea plugins engine instance. Initializes basic plugins.
  */
-LifereaPluginsEngine *liferea_plugins_engine_get (void);
+LifereaPluginsEngine *liferea_plugins_engine_new (void);
 
 /**
  * liferea_plugins_engine_register_shell_plugins: (skip)
@@ -83,6 +83,13 @@ PeasExtensionSet * liferea_plugins_engine_get_all_plugins (void);
  * @enabled:	TRUE to enable the plugin
  */
 void liferea_plugins_engine_enable_plugin (PeasPluginInfo *info, gboolean enabled);
+
+/**
+ * liferea_plugins_engine_unregister_all: (skip)
+ * 
+ * Unregister all plugins. To be used on app shutdown.
+ */
+void liferea_plugins_engine_unregister_all (void);
 
 G_END_DECLS
 

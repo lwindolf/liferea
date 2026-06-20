@@ -236,5 +236,8 @@ item_actions_create (LifereaShell *shell)
 
 	item_actions_item_updated (NULL, 0, ag);
 
+	g_object_unref (itemlist);
+	g_object_unref (feedlist);
+
 	return ag;
 }
