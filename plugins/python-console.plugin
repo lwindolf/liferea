@@ -1,0 +1,10 @@
+[Plugin]
+Module=python-console
+Icon=utilities-terminal
+Loader=python
+IAge=2
+Name=Python Console
+Description=Interactive Python console
+Copyright=Steve Frécinaux <steve@istique.net>;Sven Arvidsson <sa@whiz.se>
+Authors=James Henstridge <james@daa.com.au>;Adam Hooper <adamh@densi.com>;Raphaël Slinckx <raphael@slinckx.net>;Steve Frécinaux <steve@istique.net>;Sven Arvidsson <sa@whiz.se>
+Website=https://github.com/whizse/liferea-plugins

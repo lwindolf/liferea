@@ -14,6 +14,9 @@ To be released
 	* Convert OPML source and properties dialog to libadwaita
 	  (Lars Windolf)
 
+	* Add python-console plugin to make plugin development easier
+	  (Lars Windolf)
+
 	* Update of Javascript library DomPurify
 	  (Lars Windolf)
 
@@ -25,7 +28,6 @@ To be released
 	* #1551 full screen mode broken	
 	* #1518 Update counter gets stuck with command download errors
 	* many "Fatal: item to be removed not found in item id list!"
-	* Python console plugin broken
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>

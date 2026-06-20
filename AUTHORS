@@ -163,6 +163,9 @@ libstray		Charles Rocket
 PeerTube-GTK trayicon 	MorsMortium, Erwinjitsu and Other Contributors
 			(https://codeberg.org/The-World-Machine/PeerTube-GTK)
 
+Python Console		Steve Frécinaux
+			(https://github.com/GNOME/rhythmbox/blob/master/plugins/pythonconsole/pythonconsole.py)
+
 If we forgot to list you here, leave us a message on
 the mailing list and we'll include your name and email!
 
