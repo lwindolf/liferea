@@ -89,7 +89,8 @@ content_view_node_selected (GObject *obj, gchar *nodeId, gpointer user_data)
         // which we only want to process in case the currently displayed
         // node info or its source node has changed (to display auth state)
         Node *selected = feedlist_get_selected ();
-        if ((selected != node && selected != node->source->root) ||
+        if (!selected ||
+            (selected != node && selected != node->source->root) ||
             itemlist_get_selected () != NULL)
                 return;
 
