@@ -75,7 +75,9 @@ void webdav_upload_state (Node *root, const gchar *node_id);
 gchar * webdav_feed_json_url (Node *root, const gchar *node_id);
 gchar * webdav_state_json_url (Node *root, const gchar *node_id);
 gchar * webdav_index_url (Node *root);
+gchar * webdav_feed_dir_url (Node *root, const gchar *node_id);
 
+/* Synchronous helpers (internal use only for now, to be deprecated) */
 gchar * webdav_get (Node *root, const gchar *url, gint64 if_modified_since, gint64 *out_last_modified, guint *out_http_status);
 gboolean webdav_put (Node *root, const gchar *url, const gchar *data, const gchar *content_type);
 

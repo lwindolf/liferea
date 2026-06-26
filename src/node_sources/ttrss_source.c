@@ -414,7 +414,7 @@ ttrss_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_UNREAD, source->session_id, item_get_id(item), newStatus?0:1);
 	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
-	update_job_new (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
+	(void)update_job_new (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 
 	item_read_state_changed (item, newStatus);
 }

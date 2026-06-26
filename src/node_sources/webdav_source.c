@@ -205,7 +205,7 @@ webdav_is_state_upload_pending (Node *root, const gchar *node_id)
 	return de && de->state_timer_id;
 }
 
-static gchar *
+gchar *
 webdav_feed_dir_url (Node *root, const gchar *node_id)
 {
 	return g_strdup_printf (
@@ -368,24 +368,27 @@ webdav_source_login (Node *root, guint32 flags)
 		return FALSE;
 
 	node_source_set_state (root, NODE_SOURCE_STATE_IN_PROGRESS);
-	webdav_ensure_collection (root);
 
-	if (root->source->loginState == NODE_SOURCE_STATE_NO_AUTH)
-		return FALSE;
-
+	/* Phase 3: Async bootstrap sequence - MKCOL -> index fetch -> import.
+	 * Create async operation context to chain dependent requests without blocking. */
 	if (!GPOINTER_TO_INT (g_object_get_data (G_OBJECT (root), "initialImportDone"))) {
-		webdav_source_feed_list_import (root);
+		WebDAVAsyncOp *ctx = g_new0 (WebDAVAsyncOp, 1);
+		ctx->root = root;
+		ctx->flags = flags;
+		ctx->step = BOOTSTRAP_STEP_MKCOL;
+		ctx->pending_feeds = 0;
+		ctx->parsed_index = NULL;
 
-		if (root->source->loginState == NODE_SOURCE_STATE_NO_AUTH)
-			return FALSE;
-
-		g_object_set_data (G_OBJECT (root), "initialImportDone", GINT_TO_POINTER (TRUE));
+		/* Start async bootstrap sequence */
+		webdav_request_mkcol_bootstrap (root, ctx);
+	} else {
+		/* Already imported, just set active and trigger updates */
+		node_source_set_state (root, NODE_SOURCE_STATE_ACTIVE);
+		
+		/* Trigger update via subscription callback (which now uses queued requests) */
+		if (!(flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
+			subscription_update (root->subscription, flags);
 	}
-
-	node_source_set_state (root, NODE_SOURCE_STATE_ACTIVE);
-
-	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
-		subscription_update (root->subscription, flags);
 
 	return TRUE;
 }
@@ -472,7 +475,7 @@ webdav_get (Node *root, const gchar *url, gint64 if_modified_since, gint64 *out_
  * This replaces the previous per-item file approach.  Items are read once
  * per upload (daily cadence) so the O(n) cost is acceptable.
  */
-static gchar *
+gchar *
 webdav_build_feed_json (Node *node)
 {
 	JsonBuilder *b = json_builder_new ();
@@ -546,7 +549,7 @@ webdav_build_feed_json (Node *node)
  * This file is written on every item-state change (O(n) items, small output).
  * Merge strategy on import is union: a bit can only be set, never cleared.
  */
-static gchar *
+gchar *
 webdav_build_state_json (Node *node)
 {
 	JsonBuilder *b = json_builder_new ();
@@ -670,7 +673,7 @@ webdav_upload_state (Node *root, const gchar *node_id)
 }
 
 /* ------------------------------------------------------------------ */
-/*  Lazy sync flush callbacks                                           */
+/*  Lazy sync flush callbacks (Phase 4: enqueue async jobs)             */
 /* ------------------------------------------------------------------ */
 
 typedef struct {
@@ -685,6 +688,10 @@ flush_ctx_free (FlushCtx *ctx)
 	g_free (ctx);
 }
 
+/**
+ * Phase 4: Async flush feed callback.
+ * Instead of calling webdav_upload_feed (blocking), enqueue async upload.
+ */
 static gboolean
 webdav_flush_feed_cb (gpointer user_data)
 {
@@ -694,11 +701,18 @@ webdav_flush_feed_cb (gpointer user_data)
 	if (de)
 		de->feed_timer_id = 0;
 
-	webdav_upload_feed (ctx->root, ctx->node_id);
+	/* Phase 4: Queue async feed upload instead of blocking PUT */
+	debug (DEBUG_UPDATE, "webdav_flush_feed_cb: queuing async upload for %s", ctx->node_id);
+	webdav_async_upload_feed (ctx->root, ctx->node_id, FALSE, TRUE);
+
 	flush_ctx_free (ctx);
 	return G_SOURCE_REMOVE;
 }
 
+/**
+ * Phase 4: Async flush state callback.
+ * Instead of calling webdav_upload_state (blocking), enqueue async upload.
+ */
 static gboolean
 webdav_flush_state_cb (gpointer user_data)
 {
@@ -708,7 +722,10 @@ webdav_flush_state_cb (gpointer user_data)
 	if (de)
 		de->state_timer_id = 0;
 
-	webdav_upload_state (ctx->root, ctx->node_id);
+	/* Phase 4: Queue async state upload instead of blocking PUT */
+	debug (DEBUG_UPDATE, "webdav_flush_state_cb: queuing async upload for %s", ctx->node_id);
+	webdav_async_upload_feed (ctx->root, ctx->node_id, TRUE, FALSE);
+
 	flush_ctx_free (ctx);
 	return G_SOURCE_REMOVE;
 }
@@ -764,7 +781,7 @@ webdav_on_node_updated (FeedList *fl, const gchar *node_id, gpointer user_data)
 		return;
 
 	if (IS_FOLDER (node)) {
-		/* Folders only affect hierarchy and must be persisted via index.json only. */
+		/* Folders and root only affect hierarchy and must be persisted via index.json only. */
 		webdav_source_feed_list_upload (root);
 		return;
 	}

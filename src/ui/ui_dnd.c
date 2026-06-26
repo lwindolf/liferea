@@ -158,7 +158,6 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, c
 			g_assert (oldParent);
 			oldPos = g_slist_index (oldParent->children, node);
 			oldParent->children = g_slist_remove (oldParent->children, node);
-			node_update_counters (oldParent);
 
 			if (0 == g_slist_length (oldParent->children))
 				feed_list_view_add_empty_node (feed_list_view_to_iter (oldParent->id));
@@ -226,12 +225,15 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, c
 			}
 
 			db_node_update (node);
-			node_update_counters (newParent);
 
 			if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_REPARENT_NODE)
 				NODE_SOURCE_TYPE (node)->reparent_node(node, oldParent, newParent);
 
-			feedlist_schedule_save ();
+			/* It is important to emit all three so remote node sources can track 
+			   feed migrations. */
+			feedlist_node_was_updated (node);
+			feedlist_node_was_updated (oldParent);
+			feedlist_node_was_updated (newParent);
 		}
 	}
 

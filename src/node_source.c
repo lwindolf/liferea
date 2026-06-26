@@ -98,7 +98,7 @@ node_source_import_feedlist (Node *node)
 void
 node_source_export_feedlist (void)
 {
-	g_autofree gchar *filename;
+	g_autofree gchar *filename = NULL;
 	
 	if (feedlistImport)
 		return;

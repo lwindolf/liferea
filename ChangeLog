@@ -28,6 +28,7 @@ To be released
 	* #1551 full screen mode broken	
 	* #1518 Update counter gets stuck with command download errors
 	* many "Fatal: item to be removed not found in item id list!"
+	* contentUpdateDate metadata is not stored unique for Atom
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>
