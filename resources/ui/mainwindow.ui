@@ -7,7 +7,7 @@
   <object class="GtkApplicationWindow" id="mainwindow">
     <property name="default-height">480</property>
     <property name="default-width">640</property>
-    <property name="icon-name">liferea</property>
+    <property name="icon-name">net.sf.liferea</property>
     <property name="title" translatable="yes">Liferea</property>
     <property name="titlebar">
       <object class="GtkHeaderBar" id="headerbar">
