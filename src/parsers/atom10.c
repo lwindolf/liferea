@@ -2,7 +2,7 @@
  * @file atom10.c  Atom 1.0 Parser
  *
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -322,26 +322,21 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 static void
 atom10_parse_entry_author (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *author;
-
-	author = atom10_parse_person_construct (cur);
-	if (author) {
+	g_autofree gchar *author = atom10_parse_person_construct (cur);
+	if (author)
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "author", author);
-		g_free (author);
-	}
 }
 
 static void
 atom10_parse_entry_category (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *category = NULL;
+	g_autofree gchar *category = xml_get_ns_attribute (cur, "label", NULL);
 
-	category = xml_get_ns_attribute (cur, "label", NULL);
 	if (!category)
 		category = xml_get_ns_attribute (cur, "term", NULL);
 
 	if (category) {
-		gchar *escaped = g_markup_escape_text (category, -1);
+		g_autofree gchar *escaped = g_markup_escape_text (category, -1);
 
 		/* Black-list some categories used by Google Reader clone online
 		   readers that should not be visible to the end-user */
@@ -349,48 +344,34 @@ atom10_parse_entry_category (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom
 		    !g_str_equal (category, "read") &&
 		    !strstr(category, "user/-/label/"))
 			ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "category", escaped);
-
-		g_free (escaped);
-		xmlFree (category);
 	}
 }
 
 static void
 atom10_parse_entry_content (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *content;
-
-	content = atom10_parse_content_construct (cur, ctxt);
-	if (content) {
+	g_autofree gchar *content = atom10_parse_content_construct (cur, ctxt);
+	if (content)
 		item_set_description (ctxt->item, content);
-		g_free (content);
-	}
 }
 
 static void
 atom10_parse_entry_contributor (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *contributor;
-
-	contributor = atom10_parse_person_construct (cur);
-	if (contributor) {
+	g_autofree gchar *contributor = atom10_parse_person_construct (cur);
+	if (contributor)
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "contributor", contributor);
-		g_free (contributor);
-	}
 }
 
 static void
 atom10_parse_entry_id (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *id;
-
-	id = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+	g_autofree gchar *id = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (id) {
 		if (strlen (id) > 0) {
 			item_set_id (ctxt->item, id);
 			ctxt->item->validGuid = TRUE;
 		}
-		g_free (id);
 	}
 }
 
@@ -412,26 +393,19 @@ atom10_parse_entry_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Pa
 static void
 atom10_parse_entry_published (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *datestr;
-
-	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+	g_autofree gchar *datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (datestr) {
 		item_set_time (ctxt->item, date_parse_ISO8601 (datestr));
-		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "pubDate", datestr);
-		g_free (datestr);
+		metadata_list_set (&ctxt->item->metadata, "pubDate", datestr);
 	}
 }
 
 static void
 atom10_parse_entry_rights (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *rights;
-
-	rights = atom10_parse_text_construct (cur, FALSE);
-	if (rights) {
-		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "copyright", rights);
-		g_free (rights);
-	}
+	g_autofree gchar *rights = atom10_parse_text_construct (cur, FALSE);
+	if (rights)
+		metadata_list_set (&ctxt->item->metadata, "copyright", rights);
 }
 
 /* <summary> can be used for short text descriptions, if there is no
@@ -439,41 +413,31 @@ atom10_parse_entry_rights (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10
 static void
 atom10_parse_entry_summary (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *summary;
-
-	summary = atom10_parse_text_construct (cur, TRUE);
-	if (summary) {
+	g_autofree gchar *summary = atom10_parse_text_construct (cur, TRUE);
+	if (summary)
 		item_set_description (ctxt->item, summary);
-		g_free (summary);
-	}
+
 	/* FIXME: set a flag to show a "Read more" link to the user; but where? */
 }
 
 static void
 atom10_parse_entry_title (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *title;
-
-	title = atom10_parse_text_construct(cur, FALSE);
-	if (title) {
+	g_autofree gchar *title = atom10_parse_text_construct(cur, FALSE);
+	if (title)
 		item_set_title (ctxt->item, title);
-		g_free (title);
-	}
 }
 
 static void
 atom10_parse_entry_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *datestr;
+	g_autofree gchar *datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 
-	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
-	/* if pubDate is already set, don't overwrite it */
-	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate")) {
+	/* if "pubDate" is already set, don't overwrite item time */
+	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate"))
 		item_set_time (ctxt->item, date_parse_ISO8601 (datestr));
-		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "contentUpdateDate", datestr);
-	}
 
-	g_free (datestr);
+	metadata_list_set (&ctxt->item->metadata, "contentUpdateDate", datestr);
 }
 
 /* <content> tag support, FIXME: base64 not supported */
@@ -560,12 +524,9 @@ atom10_parse_entry (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 static void
 atom10_parse_feed_author (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip, struct atom10ParserState *state)
 {
-	/* parse feed author */
-	gchar *author = atom10_parse_person_construct (cur);
-	if (author) {
+	g_autofree gchar *author = atom10_parse_person_construct (cur);
+	if (author)
 		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "author", author);
-		g_free (author);
-	}
 	/* FIXME: make item parsing use this author if not specified elsewhere */
 }
 
@@ -618,7 +579,7 @@ atom10_parse_feed_generator (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip,
 			g_free (ret);
 			ret = tmp;
 		}
-		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "feedgenerator", tmp);
+		metadata_list_set (&ctxt->subscription->metadata, "feedgenerator", tmp);
 	}
 	g_free (ret);
 }
@@ -626,14 +587,10 @@ atom10_parse_feed_generator (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip,
 static void
 atom10_parse_feed_icon (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *icon_uri;
-
-	icon_uri = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
-
+	g_autofree gchar *icon_uri = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (icon_uri) {
 		debug (DEBUG_PARSING, "icon URI found in atom feed: %s", icon_uri);
-		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata,
-								     "icon", icon_uri);
+		metadata_list_set (&ctxt->subscription->metadata, "icon", icon_uri);
 	}
 }
 
@@ -669,45 +626,31 @@ atom10_parse_feed_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Par
 static void
 atom10_parse_feed_logo (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *logoUrl;
-
-	logoUrl = atom10_parse_text_construct (cur, FALSE);
-	if (logoUrl) {
+	g_autofree gchar *logoUrl = atom10_parse_text_construct (cur, FALSE);
+	if (logoUrl)
 		metadata_list_set (&ctxt->subscription->metadata, "imageUrl", logoUrl);
-		g_free (logoUrl);
-	}
 }
 
 static void
 atom10_parse_feed_rights (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *rights;
-
-	rights = atom10_parse_text_construct (cur, FALSE);
-	if (rights) {
-		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "copyright", rights);
-		g_free (rights);
-	}
+	g_autofree gchar *rights = atom10_parse_text_construct (cur, FALSE);
+	if (rights)
+		metadata_list_set (&ctxt->subscription->metadata, "copyright", rights);
 }
 
 static void
 atom10_parse_feed_subtitle (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *subtitle;
-
-	subtitle = atom10_parse_text_construct (cur, TRUE);
-	if (subtitle) {
+	g_autofree gchar *subtitle = atom10_parse_text_construct (cur, TRUE);
+	if (subtitle)
  		metadata_list_set (&ctxt->subscription->metadata, "description", subtitle);
-		g_free (subtitle);
-	}
 }
 
 static void
 atom10_parse_feed_title (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *title;
-
-	title = atom10_parse_text_construct(cur, FALSE);
+	gchar *title = atom10_parse_text_construct(cur, FALSE);
 	if (title) {
 		if (ctxt->title)
 			g_free (ctxt->title);
@@ -740,13 +683,10 @@ atom10_item_sort_by_date (gconstpointer a, gconstpointer b)
 static void
 atom10_parse_feed_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *timestamp;
-
-	timestamp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+	g_autofree gchar *timestamp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (timestamp) {
-		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "contentUpdateDate", timestamp);
+		metadata_list_set (&ctxt->subscription->metadata, "contentUpdateDate", timestamp);
 		ctxt->subscription->time = date_parse_ISO8601 (timestamp);
-		g_free (timestamp);
 	}
 }
 
