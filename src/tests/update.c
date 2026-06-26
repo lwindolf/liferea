@@ -71,7 +71,7 @@ tc_update_job_new (gpointer user_data)
 	tcPtr			tc = (tcPtr)user_data;
         UpdateRequest	        *request;
 
-	request = update_request_new (tc->url, NULL, NULL);
+	request = update_request_new ("GET", tc->url, NULL, NULL);
         request->filtercmd = g_strdup(tc->filtercmd);
 
         // script handling

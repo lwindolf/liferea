@@ -263,6 +263,7 @@ reedah_source_opml_quick_update(ReedahSourcePtr source)
 	subscriptionPtr subscription = source->root->subscription;
 
 	UpdateRequest *request = update_request_new (
+		"GET",
 		source->root->source->api.unread_count,
 		subscription->updateState,
 		subscription->updateOptions

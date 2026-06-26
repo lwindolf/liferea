@@ -209,6 +209,7 @@ comments_refresh (itemPtr item)
 		}
 
 		request = update_request_new (
+			"GET",
 			url,
 			commentFeed->updateState,
 			NULL	// FIXME: use copy of parent subscription options

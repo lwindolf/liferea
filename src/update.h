@@ -77,7 +77,8 @@ struct _UpdateRequest {
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
 					     filename. */
-	gchar           *postdata;      /*<< HTTP POST request data (NULL for non-POST requests) */
+	gchar		*method;	/*<< defaults to "GET" */
+	gchar           *postdata;      /*<< HTTP request body data */
 	gchar	        *contentType;   /*<< HTTP request content type (optional) */
 	gchar           *authValue;     /*<< Custom value for Authorization: header */
 	updateOptionsPtr options;	/*<< Update options for the request */
@@ -150,6 +151,7 @@ void update_options_free (updateOptionsPtr options);
 
 /**
  * update_request_new:
+ * @method:     "GET" / "POST" ...
  * @source:	URI to download
  * @state:	a previous update state of the requested URL (or NULL) will not be owned, but copied!
  * @options:	update options to be used (or NULL) will not be owned but copied!
@@ -158,7 +160,7 @@ void update_options_free (updateOptionsPtr options);
  *
  * Returns: a new request GObject to be passed to update_execute_request()
  */
-UpdateRequest * update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options);
+UpdateRequest * update_request_new (const gchar *method, const gchar *source, updateStatePtr state, updateOptionsPtr options);
 
 /**
  * update_request_set_source:

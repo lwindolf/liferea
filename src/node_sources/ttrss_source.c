@@ -145,6 +145,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 
 	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
+		"POST",
 		source_uri,
 		NULL,	// updateState
 		subscription->updateOptions
@@ -232,6 +233,7 @@ ttrss_source_add_subscription (Node *root, subscriptionPtr subscription)
 
 	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
+		"POST",
 		source_uri,
 		NULL,
 		root->subscription->updateOptions
@@ -296,6 +298,7 @@ ttrss_source_remove_node (Node *root, Node *node)
 
 	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
+		"POST",
 		source_uri,
 		NULL,
 		root->subscription->updateOptions
@@ -379,6 +382,7 @@ ttrss_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 
 	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
+		"POST",
 		source_uri,
 		NULL,
 		root->subscription->updateOptions
@@ -401,6 +405,7 @@ ttrss_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 
 	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
+		"POST",
 		source_uri,
 		NULL,
 		root->subscription->updateOptions

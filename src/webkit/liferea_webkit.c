@@ -401,7 +401,7 @@ liferea_webkit_handle_gopher_scheme (WebKitURISchemeRequest *request, gpointer u
 
 	update_job_new (
 		NULL,
-		update_request_new (path, NULL, NULL),
+		update_request_new ("GET", path, NULL, NULL),
 		liferea_webkit_handle_gopher_scheme_cb,
 		request,
 		UPDATE_REQUEST_NO_FEED

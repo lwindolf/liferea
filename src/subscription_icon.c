@@ -194,6 +194,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 		debug (DEBUG_UPDATE, "Icon '%s' trying URL: '%s'", ctxt->id, url);
 
 		request = update_request_new (
+			"GET",
 			url,
 			NULL, 	// updateState
 			ctxt->options

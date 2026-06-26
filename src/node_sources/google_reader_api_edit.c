@@ -327,6 +327,7 @@ google_reader_api_edit_token_cb (const UpdateResult * const result, gpointer use
 	action = g_queue_peek_head (node->source->actionQueue);
 
 	request = update_request_new (
+		"POST",
 		"NOT THE REAL URL",	// real URL will be set later based on action
 		node->subscription->updateState,
 		node->subscription->updateOptions
@@ -369,6 +370,7 @@ google_reader_api_edit_process (nodeSourcePtr source)
  	* google_reader_api_edit_token_cb
 	 */
 	request = update_request_new (
+		"GET",
 		source->api.token,
 		source->root->subscription->updateState,
 		source->root->subscription->updateOptions

@@ -211,6 +211,7 @@ ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr su
 
 	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	request = update_request_new (
+		"POST",
 		source_uri,
 		subscription->updateState,
 		subscription->updateOptions

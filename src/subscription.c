@@ -178,9 +178,10 @@ subscription_set_blogroll (subscriptionPtr subscription, const gchar *blogroll)
 	metadata_list_set (&(subscription->metadata), "blogroll", url);
 
 	request = update_request_new(
-	    url,
-	    NULL,
-	    NULL // do not pass subscription update options as it is to dangerous (see Github #678)!
+		"GET",
+		url,
+		NULL,
+		NULL // do not pass subscription update options as it is to dangerous (see Github #678)!
 	);
 	update_job_new (subscription, request, subscription_process_update_blogroll_result, subscription, 0 /* flags */);
 }
@@ -325,6 +326,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		subscription_reset_update_counter (subscription, &now);
 
 		request = update_request_new (
+			"GET",
 			subscription_get_source (subscription),
 			subscription->updateState,
 			subscription->updateOptions
@@ -737,6 +739,7 @@ subscription_enrich_item (subscriptionPtr subscription, itemPtr item)
 	// Fetch item->link document and try to parse it as XHTML
 	debug (DEBUG_PARSING, "Fetching content for %ld %s : %s", item->id, item->title, item->source);
 	request = update_request_new (
+		"GET",
 		item->source,
 		NULL,	// updateState
 		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)

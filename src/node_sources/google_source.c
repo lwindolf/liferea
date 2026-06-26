@@ -203,9 +203,10 @@ google_source_login (GoogleSourcePtr source, guint32 flags)
 	}
 
 	request = update_request_new (
+		"POST",
 		source->root->source->api.login,
 		subscription->updateState,
-		NULL	// auth is done via POST below!
+		NULL	// auth is done via postdata below!
 	);
 
 	/* escape user and password as both are passed using an URI */

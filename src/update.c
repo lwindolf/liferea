@@ -170,11 +170,12 @@ update_request_init (UpdateRequest *request)
 }
 
 UpdateRequest *
-update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options)
+update_request_new (const gchar *method, const gchar *source, updateStatePtr state, updateOptionsPtr options)
 {
 	UpdateRequest *request = UPDATE_REQUEST (g_object_new (UPDATE_REQUEST_TYPE, NULL));
 
 	request->source = g_strdup (source);
+	request->method = g_strdup (method);
 
 	if (state)
 		request->updateState = update_state_copy (state);
@@ -211,6 +212,8 @@ update_request_set_postdata (UpdateRequest *request, const gchar *postdata, cons
 	request->postdata = g_strdup (postdata);
 	g_free (request->contentType);
 	request->contentType = contentType?g_strdup (contentType):NULL;
+
+	g_assert (!g_str_equal (request->method, "GET"));
 }
 
 void

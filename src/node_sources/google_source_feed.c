@@ -223,6 +223,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents", root->subscription->source);
 		
 			request = update_request_new (
+				"POST",
 				url,
 				subscription->updateState,
 				subscription->updateOptions

@@ -134,6 +134,7 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 	}
 
 	request = update_request_new (
+		"POST",
 		REEDAH_READER_LOGIN_URL,
 		subscription->updateState,
 		NULL	// auth is done via POST below!

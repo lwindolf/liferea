@@ -292,7 +292,7 @@ network_process_request (UpdateJob *job)
 	gint			port;
 
 	g_assert (NULL != job->request);
-	debug (DEBUG_NET, "downloading %s", job->request->source);
+	debug (DEBUG_NET, "processing %s %s", job->request->method, job->request->source);
 	if (job->request->postdata && (debug_get_flags () & DEBUG_NET))
 		debug (DEBUG_NET, "   postdata=>>>%s<<< (content type: %s)", job->request->postdata, job->request->contentType?job->request->contentType:"NULL");
 
@@ -346,7 +346,7 @@ network_process_request (UpdateJob *job)
 
 	if (sourceUri) {
 		g_autofree gchar *uri_str = g_uri_to_string (sourceUri);
-		msg = soup_message_new (job->request->postdata?"POST":"GET", uri_str);
+		msg = soup_message_new (job->request->method, uri_str);
 	}
 	if (!msg) {
 		debug (DEBUG_NET, "invalid URI: %s", job->request->source);

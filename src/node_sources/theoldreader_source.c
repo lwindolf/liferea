@@ -135,6 +135,7 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 	}
 
 	request = update_request_new (
+		"POST",
 		THEOLDREADER_READER_LOGIN_URL,
 		NULL,
 		subscription->updateOptions
