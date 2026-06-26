@@ -47,7 +47,7 @@
 #include "node_sources/google_reader_api.h"
 #include "node_sources/opml_source.h"
 #include "node_sources/reedah_source.h"
-//#include "node_sources/webdav_source.h"
+#include "node_sources/webdav_source.h"
 #include "node_sources/theoldreader_source.h"
 #include "node_sources/ttrss_source.h"
 
@@ -110,7 +110,7 @@ node_source_export_feedlist (void)
 Node *
 node_source_root_from_node (Node *node)
 {
-	while (node->parent->source == node->source)
+	while (node->parent && node->parent->source == node->source)
 		node = node->parent;
 
 	return node;
@@ -163,7 +163,7 @@ node_source_setup_root (void)
 	node_source_type_register (reedah_source_get_type ());
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
-	// FIXME node_source_type_register (webdav_source_get_type ());
+	node_source_type_register (webdav_source_get_type ());
 	atexit(node_source_cleanup);
 
 	/* register all source types that are google like */

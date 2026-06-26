@@ -320,12 +320,19 @@ feedlist_get_parent_node (void)
 	if (!SELECTED)
 		return ROOTNODE;
 
+	// if it is a folder node, it can be parent
 	if (IS_FOLDER (SELECTED))
 		return SELECTED;
 
+	// if it is a source node, it can be parent
+	if (SELECTED->source->root == SELECTED)
+		return SELECTED;
+
+	// if it has a parent, use it
 	if (SELECTED->parent)
 		return SELECTED->parent;
 
+	// should never happen
 	return ROOTNODE;
 }
 

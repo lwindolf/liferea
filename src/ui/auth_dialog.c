@@ -56,8 +56,10 @@ auth_dialog_new (subscriptionPtr subscription, gint unused)
 	gchar			*source = NULL;
 	xmlURIPtr		uri;
 
-	if (subscription->activeAuth)
+	if (subscription->activeAuth) {
 		debug (DEBUG_UPDATE, "Missing/wrong authentication. Skipping, as a dialog is already active.");
+		return;
+	}
 	subscription->activeAuth = TRUE;
 
 	dialog = liferea_dialog_new ("auth");

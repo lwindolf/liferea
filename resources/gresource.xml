@@ -35,7 +35,7 @@
     <file compressed="true">ui/theoldreader_source.ui</file>
     <file compressed="true">ui/ttrss_source.ui</file>
     <file compressed="true">ui/update_monitor.ui</file>
-    <!--<file compressed="true">ui/webdav_source.ui</file>-->
+    <file compressed="true">ui/webdav_source.ui</file>
 
     <file compressed="true">help/about_en.html</file>
     <file compressed="true">help/concepts_en.html</file>
