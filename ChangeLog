@@ -2,6 +2,9 @@ To be released
 
 	Version 2.0-RC5
 
+	* Fixes #1534: icons cannot be found
+	  (AndyM48, Lars Windolf)
+
 	* Fixes #1533: refresh feed info on update broken
 	  (Lars Windolf)
 
