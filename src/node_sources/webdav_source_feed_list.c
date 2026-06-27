@@ -704,6 +704,32 @@ webdav_source_feed_list_import (Node *root)
 	webdav_source_flow_bootstrap_index (root, webdav_source_feed_list_index_fetch_cb);
 }
 
+void
+webdav_source_feed_list_update_feed_mtime (Node *root, const gchar *remote_id)
+{
+	gint64 now = (gint64)(g_get_real_time () / G_USEC_PER_SEC);
+	gint64 *ts = g_new (gint64, 1);
+	*ts = now;
+	g_hash_table_insert (
+		(GHashTable *)g_object_get_data (G_OBJECT (root), "feedMtimes"),
+		g_strdup (remote_id),
+		ts
+	);
+}
+
+void
+webdav_source_feed_list_update_state_mtime (Node *root, const gchar *remote_id)
+{
+	gint64 now = (gint64)(g_get_real_time () / G_USEC_PER_SEC);
+	gint64 *ts = g_new (gint64, 1);
+	*ts = now;
+	g_hash_table_insert (
+		(GHashTable *)g_object_get_data (G_OBJECT (root), "stateMtimes"),
+		g_strdup (remote_id),
+		ts
+	);
+}
+
 static void
 webdav_request_put_index (Node *root, const gchar *json, gpointer callback_data)
 {

@@ -290,6 +290,24 @@ webdav_flush_feed_cb (gpointer user_data)
 	return G_SOURCE_REMOVE;
 }
 
+static gboolean
+webdav_flush_state_cb (gpointer user_data)
+{
+	FlushCtx   *ctx = (FlushCtx *)user_data;
+	GHashTable *dirtyFeeds = (GHashTable *)g_object_get_data (G_OBJECT (ctx->root), "dirtyFeeds");
+	DirtyEntry *de  = g_hash_table_lookup (dirtyFeeds, ctx->node_id);
+	if (de)
+		de->state_timer_id = 0;
+
+	debug (DEBUG_UPDATE, "webdav_flush_state_cb: queuing async state upload for %s", ctx->node_id);
+	webdav_source_flow_upload_feed (ctx->root, ctx->node_id, TRUE, FALSE);
+
+	g_free (ctx->node_id);
+	g_free (ctx);
+
+	return G_SOURCE_REMOVE;
+}
+
 static void
 webdav_mark_dirty_feed (Node *root, const gchar *node_id)
 {
@@ -319,7 +337,7 @@ webdav_mark_dirty_state (Node *root, const gchar *node_id)
 	ctx->root         = root;
 	ctx->node_id      = g_strdup (node_id);
 	de->state_timer_id = g_timeout_add_seconds (WEBDAV_STATE_SYNC_DELAY_S,
-	                                             webdav_flush_feed_cb, ctx);
+	                                             webdav_flush_state_cb, ctx);
 
 	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ds)", node_id, WEBDAV_STATE_SYNC_DELAY_S);
 }

@@ -24,6 +24,7 @@
 #include "update.h"
 #include "node_providers/feed.h"
 #include "webdav_source.h"
+#include "webdav_source_feed_list.h"
 
 /* data helpers */
 
@@ -239,36 +240,32 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
                 }
                 case UPLOAD_FEED_PUT_NODE: {
                         g_autofree gchar *json = webdav_build_feed_json (node);
-	                g_autofree gchar *url = webdav_feed_json_url (flow->root, flow->node_id);
+	                g_autofree gchar *url = webdav_feed_json_url (flow->root, flow->remote_id);
 
                         update_request_set_method (job->request, "PUT");
                         update_request_set_source (job->request, url);
         	        update_request_set_postdata (job->request, json, "application/json");
                         
                         flow->feed_dirty = FALSE;
+
+                        webdav_source_feed_list_update_feed_mtime (flow->root, flow->remote_id);
                         break;
                 }
                 case UPLOAD_FEED_PUT_STATE: {
                         g_autofree gchar *json = webdav_build_state_json (node);
-	                g_autofree gchar *url = webdav_state_json_url (flow->root, flow->node_id);
+	                g_autofree gchar *url = webdav_state_json_url (flow->root, flow->remote_id);
 
                         update_request_set_method (job->request, "PUT");
                         update_request_set_source (job->request, url);
         	        update_request_set_postdata (job->request, json, "application/json");
                         
                         flow->state_dirty = FALSE;
+
+                        webdav_source_feed_list_update_state_mtime (flow->root, flow->remote_id);
                         break;
                 }
                 case UPLOAD_FEED_FINISH: {
-                        // FIXME: this mtime handling would be better in a callback and in webdav_source_feed_list.c
-                        gint64 *ts = g_new (gint64, 1);
-                        *ts = (gint64)(g_get_real_time () / G_USEC_PER_SEC);
-                        g_hash_table_insert (
-                                (GHashTable *)g_object_get_data (G_OBJECT (flow->root), "feedMtimes"),
-                                g_strdup (flow->remote_id),
-                                ts
-                        );
-
+                        webdav_source_feed_list_upload (flow->root);
                         return TRUE;
                         break;
                 }
