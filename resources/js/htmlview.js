@@ -348,6 +348,20 @@ async function load_item(data, baseURL, direction) {
 	}
 }
 
+async function load_update_monitor(data, baseURL, direction) {
+	try {
+		const feedlist = JSON.parse(decodeURIComponent(data));
+		render("body", templateFix (document.getElementById('template').innerHTML), {
+			feedlist
+		});
+	} catch (e) {
+		document.body.innerHTML = `<div id="errors">Error: Failed to load update monitor! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
+		console.error(e.stack);
+		window.data = data;
+		return false;
+	}
+}
+
 /**
  * Different content cleanup tasks
  */
@@ -398,4 +412,4 @@ function contentCleanup() {
 		});
 }
 
-export { load_node, load_item };
+export { load_node, load_item, load_update_monitor };

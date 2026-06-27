@@ -68,11 +68,11 @@ typedef enum {
 
 /* node source state model */
 typedef enum {
-	NODE_SOURCE_STATE_NONE 		= 0,		/*<< no authentication tried so far */
-	NODE_SOURCE_STATE_IN_PROGRESS	= (1<<0),	/*<< authentication in progress */
-	NODE_SOURCE_STATE_ACTIVE	= (1<<1),	/*<< authentication succeeded */
-	NODE_SOURCE_STATE_NO_AUTH	= (1<<2),	/*<< authentication has failed */
-	NODE_SOURCE_STATE_MIGRATE	= (1<<3)	/*<< source will be migrated, do not do anything anymore! */
+	NODE_SOURCE_STATE_NONE 		= 0,	/*<< no authentication tried so far */
+	NODE_SOURCE_STATE_IN_PROGRESS	= 1,	/*<< authentication in progress */
+	NODE_SOURCE_STATE_ACTIVE	= 2,	/*<< authentication succeeded */
+	NODE_SOURCE_STATE_NO_AUTH	= 3,	/*<< authentication has failed */
+	NODE_SOURCE_STATE_MIGRATE	= 4	/*<< source will be migrated, do not do anything anymore! */
 } nodeSourceState;
 
 /* node source subscription update flags */

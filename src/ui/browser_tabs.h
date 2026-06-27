@@ -69,6 +69,39 @@ void browser_tabs_show_headlines (void);
  */
 LifereaBrowser * browser_tabs_get_active_htmlview (void);
 
+/**
+ * browser_tabs_set_tab_name:
+ * @htmlview:   the LifereaBrowser
+ * @name:       the name
+ * 
+ * Associates the tab with an name to be used with 
+ * browser_tabs_get/raise_tab()
+ */
+void browser_tabs_set_tab_name (LifereaBrowser *htmlview, const gchar *name);
+
+/**
+ * browser_tabs_get_tab:
+ * @name:       the name
+ * 
+ * If you have set a "name" on a htmlview with g_object_set_data()
+ * you can search for it using this function.
+ * 
+ * Returns: (transfer none) (nullable): LifereaBrowser widget or NULL
+ */
+LifereaBrowser * browser_tabs_get_tab (const gchar *name);
+
+/**
+ * browser_tabs_focus_tab:
+ * @name:       the name
+ * 
+ * If you have set a "name" on a htmlview with g_object_set_data()
+ * you can raise the tab for it using this function. It also returns
+ * the browser widget.
+ * 
+ * Returns: (transfer none) (nullable): LifereaBrowser widget or NULL
+ */
+LifereaBrowser * browser_tabs_focus_tab (const gchar *name);
+
 G_END_DECLS
 
 #endif

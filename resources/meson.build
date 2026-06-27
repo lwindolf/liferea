@@ -30,6 +30,20 @@ liferea_resources = gnome.compile_resources(
                         '@INPUT@',
                         '@OUTPUT@',
                 ]
+        ),
+        custom_target(
+                input: 'update_monitor.xml.in',
+                output: 'update_monitor.xml',
+                command: [
+                        find_program('intltool-merge'),
+                        '-x',
+                        '-u',
+                        '-c',
+                        join_paths(meson.project_source_root(), 'po/.intltool-merge-cache'),
+                        join_paths(meson.project_source_root(), 'po'),
+                        '@INPUT@',
+                        '@OUTPUT@',
+                ]
         )
   ]
 )

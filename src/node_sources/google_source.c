@@ -145,10 +145,11 @@ google_source_new (Node *node)
 	node->data = (gpointer)source;
 }
 
-static void
-google_source_login_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
+static gboolean
+google_source_login_cb (UpdateJob *job)
 {
-	Node		*node = (Node *) userdata;
+	UpdateResult	*result = job->result;
+	Node		*node = (Node *) job->user_data;
 	gchar		*tmp = NULL;
 	subscriptionPtr subscription = node->subscription;
 		
@@ -166,8 +167,8 @@ google_source_login_cb (const UpdateResult * const result, gpointer userdata, up
 		node_source_set_state (subscription->node, NODE_SOURCE_STATE_ACTIVE);
 
 		/* now that we are authenticated trigger updating to start data retrieval */
-		if (!(flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN))
-			subscription_update (subscription, flags);
+		if (!(job->flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN))
+			subscription_update (subscription, job->flags);
 
 		/* process any edits waiting in queue */
 		google_reader_api_edit_process (node->source);
@@ -180,8 +181,10 @@ google_source_login_cb (const UpdateResult * const result, gpointer userdata, up
 		subscription->updateError = g_strdup (_("Login failed!"));
 		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
 		
-		auth_dialog_new (subscription, flags);
+		auth_dialog_new (subscription, job->flags);
 	}
+
+	return TRUE;
 }
 
 /**

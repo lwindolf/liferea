@@ -324,17 +324,18 @@ liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer 
 	}
 }
 
-static void
+static gboolean
 liferea_webkit_handle_gopher_scheme_cb
-(const UpdateResult * const result, gpointer user_data, updateFlags flags)
+(UpdateJob *job)
 {
-	WebKitURISchemeRequest *request = (WebKitURISchemeRequest *) user_data;
+	UpdateResult *result = job->result;
+	WebKitURISchemeRequest *request = (WebKitURISchemeRequest *) job->user_data;
 	const gchar *path = webkit_uri_scheme_request_get_uri (request);
 
 	if (!result->data || result->size <= 0) {
 		g_autoptr(GError) error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "Gopher fetch failed");
 		webkit_uri_scheme_request_finish_error (request, error);
-		return;
+		return TRUE;
 	} else {
 		gchar **uriFields = g_strsplit (path, "/", -1);
 		g_autoptr(GInputStream) stream = NULL;
@@ -392,6 +393,8 @@ liferea_webkit_handle_gopher_scheme_cb
 
 		g_strfreev (uriFields);
 	}
+
+	return TRUE;
 }
 
 static void

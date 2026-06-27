@@ -1,0 +1,45 @@
+/**
+ * @file webdav_source.h  WebDAV source request flows
+ *
+ * Copyright (C) 2026 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
+#ifndef _WEBDAV_SOURCE_FLOWS_H
+#define _WEBDAV_SOURCE_FLOWS_H
+
+#include "node.h"
+
+/**
+ * callback for webdav_source_flow_bootstrap_index 
+ * 
+ * @root:          root node
+ * @jsonStr:       can be null
+ */
+typedef void (*indexFetchCallback) (Node *root, const gchar *jsonStr);
+
+/**
+ * Performs initial feed list import right after login.
+ * Ensures proper index structure on remote side.
+ */
+void webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb);
+
+/**
+ * Perform asynchronous feed upload
+ */
+void webdav_source_flow_upload_feed (Node *root, const gchar *node_id, gboolean upload_state, gboolean upload_feed);
+
+#endif

@@ -408,6 +408,9 @@ update_job_finalize (GObject *object)
 
         update_job_queue_remove (job);
 
+	if (job->user_data && job->destroy)
+		g_clear_pointer (&job->user_data, job->destroy);
+
 	g_object_unref (job->request);
 	g_object_unref (job->result);
 
@@ -494,7 +497,7 @@ update_job_execute (UpdateJob *job)
 UpdateJob *
 update_job_new (gpointer owner,
                 UpdateRequest *request,
-		update_result_cb callback,
+		update_flow_cb callback,
 		gpointer user_data,
 		updateFlags flags)
 {
@@ -518,6 +521,53 @@ update_job_new (gpointer owner,
 	return job;
 }
 
+UpdateJob *
+update_job_new_flow (gpointer owner,
+		     update_flow_cb callback,
+		     gpointer user_data,
+		     GDestroyNotify destroy,
+		     updateFlags flags)
+{
+	UpdateJob *job = UPDATE_JOB (g_object_new (UPDATE_JOB_TYPE, NULL));
+
+	job->owner = owner;
+	job->result = update_result_new ();
+	job->callback = callback;
+	job->user_data = user_data;
+	job->destroy = destroy;
+	job->flags = flags;
+	job->state = JOB_STATE_PENDING;
+
+	job->cmd.fd = -1;
+	job->cmd.pid = 0;
+
+	/* For a flow we have no request yet, we directly trigger the callback
+	   so it prepares the first request and then we can schedule the job */
+	gboolean result = (job->callback) (job);
+	g_assert (result == FALSE);
+	g_assert (job->request);
+
+        update_job_queue_add ((gpointer)job, flags);
+
+	return job;
+}
+
+/* Continuing a flow means the user has changed the request and we reset
+   job state, empty the result and reschedule */
+static void
+update_job_continue_flow (UpdateJob *job)
+{
+	g_assert (job->state == JOB_STATE_FINISHED || job->state == JOB_STATE_FAILED);
+	g_assert (job->request);
+	g_assert (job->result);
+
+	g_free (job->result);
+	job->result = update_result_new ();
+	job->state = JOB_STATE_PENDING;
+
+	update_job_queue_add ((gpointer)job, job->flags);
+}
+
 gint
 update_job_get_state (UpdateJob *job)
 {
@@ -528,11 +578,16 @@ static gboolean
 update_job_process_result_idle_cb (gpointer user_data)
 {
 	UpdateJob *job = (UpdateJob *)user_data;
+	gboolean done = TRUE;
 	  
 	if (job->callback)
-		(job->callback) (job->result, job->user_data, job->flags);
+		done = (job->callback) (job);
 
-	g_object_unref (job);
+	/* If a job callback returns FALSE it wants to be rescheduled */
+	if (!done)
+		update_job_continue_flow (job);
+	else
+		g_object_unref (job);
 
 	return FALSE;
 }

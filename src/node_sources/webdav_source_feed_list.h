@@ -22,51 +22,15 @@
 #define _WEBDAV_SOURCE_FEED_LIST_H
 
 #include "node_sources/webdav_source.h"
+
 #include "subscription.h"
 #include "update.h"
 
-/**
- * WebDAV async operation context for chaining dependent requests.
- * Used to track multi-step operations (e.g., MKCOL -> fetch index -> merge) without blocking.
- */
-typedef struct {
-	Node           *root;           /* Source root node */
-	guint32         flags;          /* Update flags (priority, etc.) */
-	int             step;           /* Current operation step */
-	gint            pending_feeds;  /* Pending feed/state fetch count */
-	GList          *parsed_index;   /* Parsed index entries from last fetch */
-} WebDAVAsyncOp;
-
-/**
- * Bootstrap operation step values.
- */
-enum {
-	BOOTSTRAP_STEP_MKCOL = 0,
-	BOOTSTRAP_STEP_INDEX = 1,
-	BOOTSTRAP_STEP_IMPORT = 2,
-	BOOTSTRAP_STEP_DONE = 3
-};
-
-void webdav_source_feed_list_import (Node *root);
 void webdav_source_feed_list_upload (Node *root);
+void webdav_source_feed_list_import (Node *root);
 
-/* Async request wrappers to replace synchronous webdav_get/put/mkcol calls */
-void webdav_request_get_index (Node *root, gpointer callback_data);
-void webdav_request_put_index (Node *root, const gchar *json, gpointer callback_data);
-
-void webdav_async_upload_feed (Node *root, const gchar *node_id, gboolean upload_state, gboolean upload_feed);
-
-/* Async request wrappers with custom callbacks (Phase 5) */
-void webdav_request_put_state_with_callback (Node *root, const gchar *feed_id, const gchar *json, update_result_cb callback, gpointer callback_data);
-void webdav_request_put_feed_with_callback (Node *root, const gchar *feed_id, const gchar *json, update_result_cb callback, gpointer callback_data);
-void webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_result_cb callback, gpointer callback_data);
-void webdav_request_get_state_with_callback (Node *root, const gchar *feed_id, update_result_cb callback, gpointer callback_data);
-
-gchar *webdav_build_feed_json (Node *node);
-gchar *webdav_build_state_json (Node *node);
-
-void webdav_request_mkcol_bootstrap (Node *root, WebDAVAsyncOp *ctx);
-void webdav_request_get_index_bootstrap (Node *root, WebDAVAsyncOp *ctx);
+void webdav_source_feed_list_update_feed_mtime (Node *root, const gchar *remote_id);
+void webdav_source_feed_list_update_state_mtime (Node *root, const gchar *remote_id);
 
 gboolean webdav_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request);
 void webdav_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags);

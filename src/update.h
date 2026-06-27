@@ -163,6 +163,15 @@ void update_options_free (updateOptionsPtr options);
 UpdateRequest * update_request_new (const gchar *method, const gchar *source, updateStatePtr state, updateOptionsPtr options);
 
 /**
+ * update_request_set_method:
+ * @request:       the update request
+ * @method:        the new method
+ * 
+ * Sets the method for an updateRequest to a new value.
+ */
+void update_request_set_method (UpdateRequest *request, const gchar *method);
+
+/**
  * update_request_set_source:
  * @request:       the update request
  * @source:        the new source URL
@@ -224,18 +233,6 @@ struct _UpdateResult {
 	gchar		*updateError;	/*<< Error messages from general update processing */
 	updateStatePtr	updateState;	/*<< New update state of the requested object (etags, last modified...) */
 };
-
-/**
- * update_result_cb:
- * @result:	the update result
- * @user_data:	update processing callback data
- * @flags:	update processing flags
- *
- * Generic update result processing callback type.
- * This callback must not free the result structure. It will be
- * free'd by the download system after the callback returns.
- */
-typedef void (*update_result_cb) (const UpdateResult * const result, gpointer user_data, updateFlags flags);
 
 #define update_result_new() UPDATE_RESULT (g_object_new (UPDATE_RESULT_TYPE, NULL))
 

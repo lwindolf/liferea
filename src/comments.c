@@ -90,16 +90,17 @@ comment_feed_from_id (const gchar *id)
 	return (commentFeedPtr) g_hash_table_lookup (commentFeeds, id);
 }
 
-static void
-comments_process_update_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+comments_process_update_result (UpdateJob *job)
 {
+	UpdateResult		*result = job->result;
 	feedParserCtxtPtr	ctxt;
-	commentFeedPtr		commentFeed = (commentFeedPtr)user_data;
+	commentFeedPtr		commentFeed = (commentFeedPtr)job->user_data;
 	itemPtr			item;
 	Node			*node;
 
 	if(!(item = item_load (commentFeed->itemId)))
-		return;		/* item was deleted since */
+		return TRUE;	/* item was deleted since */
 
 	/* note this is to update the feed URL on permanent redirects */
 	if (result->source && !g_strcmp0 (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
@@ -168,6 +169,7 @@ comments_process_update_result (const UpdateResult * const result, gpointer user
 
 	item_unload (item);
 
+	return TRUE;
 }
 
 void

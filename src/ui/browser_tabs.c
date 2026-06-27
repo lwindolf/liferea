@@ -132,7 +132,7 @@ on_tab_key_press (GtkEventControllerKey *controller,
 static void
 on_browser_tab_close (gpointer object, gpointer user_data)
 {
-	browser_tabs_close_tab(user_data);
+	browser_tabs_close_tab (user_data);
 }
 
 static void
@@ -177,6 +177,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	g_signal_connect ((gpointer)close_button, "clicked", G_CALLBACK (on_browser_tab_close), NULL);
 	g_object_set_data_full (G_OBJECT (close_button), "controller", controller, (GDestroyNotify)g_object_unref);
 	g_object_set_data_full (G_OBJECT (widget), "htmlview", htmlview, (GDestroyNotify)g_object_unref);
+	g_object_set_data_full (G_OBJECT (htmlview), "name", NULL, (GDestroyNotify)g_free);
 
 	i = gtk_notebook_append_page (tabs->notebook, widget, labelBox);
 	g_signal_connect (controller, "key-pressed", G_CALLBACK (on_tab_key_press), widget);
@@ -212,4 +213,54 @@ browser_tabs_get_active_htmlview (void)
 		g_object_get (G_OBJECT (liferea_shell_get_instance()), "htmlview", &htmlview, NULL);
 
 	return LIFEREA_BROWSER (htmlview);
+}
+
+void
+browser_tabs_set_tab_name (LifereaBrowser *htmlview, const gchar *name)
+{
+	g_object_set_data (G_OBJECT (htmlview), "name", g_strdup (name));
+}
+
+LifereaBrowser *
+browser_tabs_get_tab (const gchar *name)
+{
+	gint n_pages, i;
+	GtkWidget *child;
+	const gchar *page_name;
+	LifereaBrowser *htmlview;
+
+	n_pages = gtk_notebook_get_n_pages (tabs->notebook);
+	// i=1 is intentionaly to skip "Headlines"
+	for (i = 1; i < n_pages; i++) {
+		child = gtk_notebook_get_nth_page (tabs->notebook, i);
+		htmlview = g_object_get_data (G_OBJECT (child), "htmlview");
+		page_name = g_object_get_data (G_OBJECT (htmlview), "name");
+		if (page_name && !g_strcmp0 (page_name, name))
+			return LIFEREA_BROWSER (htmlview);
+	}
+
+	return NULL;
+}
+
+LifereaBrowser *
+browser_tabs_focus_tab (const gchar *name)
+{
+	LifereaBrowser *htmlview;
+	gint n_pages, i;
+	GtkWidget *child;
+	const gchar *page_name;
+
+	n_pages = gtk_notebook_get_n_pages (tabs->notebook);
+	// i=1 is intentionaly to skip "Headlines"
+	for (i = 1; i < n_pages; i++) {
+		child = gtk_notebook_get_nth_page (tabs->notebook, i);
+		htmlview = g_object_get_data (G_OBJECT (child), "htmlview");
+		page_name = g_object_get_data (G_OBJECT (htmlview), "name");
+		if (page_name && !g_strcmp0 (page_name, name)) {
+			gtk_notebook_set_current_page (tabs->notebook, i);
+			return LIFEREA_BROWSER (htmlview);
+		}
+	}
+
+	return NULL;
 }

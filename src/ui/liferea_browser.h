@@ -49,6 +49,7 @@ struct _LifereaBrowser {
 
 	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
 
+	gchar		*name;			/*<< optional widget name (should be unique) */
 	gchar		*url;			/*<< the URL of the content rendered right now */
 	gchar 		*content;		/*<< current HTML content (excluding decorations, content passed to Readability.js) */
 };

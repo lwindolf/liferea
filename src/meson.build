@@ -68,6 +68,7 @@ liferea_sources = files(
   'node_sources/opml_source.c',
   'node_sources/webdav_source.c',
   'node_sources/webdav_source_feed_list.c',
+  'node_sources/webdav_source_flows.c',
   'parsers/atom10.c',
   'parsers/gopher.c',
   'parsers/html5_feed.c',
@@ -120,7 +121,6 @@ liferea_sources = files(
   'ui/subscription_dialog.c',
   'ui/ui_common.c',
   'ui/ui_dnd.c',
-  'ui/ui_update.c',
   'webkit/liferea_webkit.c',
   'webkit/liferea_web_view.c'
 )

@@ -42,12 +42,12 @@
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/item_list_view.h"
+#include "ui/liferea_browser.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_update.h"
 #include "webkit/liferea_web_view.h"
 
 static void
@@ -181,6 +181,32 @@ static void
 on_menu_export (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	export_OPML_file ();
+}
+
+static gboolean
+update_monitor_refresh_cb (gpointer user_data)
+{
+	LifereaBrowser *b = browser_tabs_get_tab ("Update Monitor");
+	if (!b)
+		return FALSE; 	// probably closed by user, stop callback
+
+	g_autofree gchar *json = feedlist_to_json ();
+	// FIXME: do Javascript based reload instead of redrawing the page each time
+        liferea_browser_set_view (b, "update_monitor", json, "file://", NULL);
+	return TRUE;
+}
+
+static void
+on_menu_show_update_monitor (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	LifereaBrowser *b = browser_tabs_focus_tab ("Update Monitor");
+	if (b)
+		return;
+	
+	b = browser_tabs_add_new (NULL, _("Update Monitor"), TRUE);
+	browser_tabs_set_tab_name (b, "Update Monitor");
+	update_monitor_refresh_cb (b);
+	g_timeout_add (2000, update_monitor_refresh_cb, NULL);
 }
 
 static void
