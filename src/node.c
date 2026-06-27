@@ -204,14 +204,6 @@ node_auto_update_subscription (Node *node)
 	node_foreach_child (node, node_auto_update_subscription);
 }
 
-void
-node_reset_update_counter (Node *node, guint64 *now)
-{
-	subscription_reset_update_counter (node->subscription, now);
-
-	node_foreach_child_data (node, node_reset_update_counter, now);
-}
-
 gboolean
 node_is_ancestor (Node *node1, Node *node2)
 {

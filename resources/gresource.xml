@@ -3,6 +3,7 @@
   <gresource prefix="/org/gnome/liferea/templates">
     <file compressed="true">item.xml</file>
     <file compressed="true">node.xml</file>
+    <file compressed="true">update_monitor.xml</file>
     <file compressed="true">i18n-filter.xslt</file>
   </gresource>
   <gresource prefix="/org/gnome/liferea">
@@ -34,7 +35,6 @@
     <file compressed="true">ui/simple_subscription.ui</file>
     <file compressed="true">ui/theoldreader_source.ui</file>
     <file compressed="true">ui/ttrss_source.ui</file>
-    <file compressed="true">ui/update_monitor.ui</file>
     <file compressed="true">ui/webdav_source.ui</file>
 
     <file compressed="true">help/about_en.html</file>

@@ -57,7 +57,6 @@
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_update.h"
 
 extern gboolean searchFolderRebuild; /* db.c */
 
@@ -877,6 +876,10 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 10. Load feedlist and enable signals for feedListView */
 	gtk_widget_set_sensitive (liferea_shell_lookup ("feedlist"), TRUE);
+
+	/* 11. Debugging help */
+	if (debug_get_flags () & DEBUG_UPDATE)
+		gtk_widget_activate_action (GTK_WIDGET (shell->window), "app.show-update-monitor", NULL);
 
 	return shell;
 }

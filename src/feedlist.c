@@ -28,11 +28,13 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "itemlist.h"
+#include "json.h"
 #include "net_monitor.h"
 #include "node.h"
 #include "node_providers/feed.h"
 #include "node_providers/folder.h"
 #include "node_providers/vfolder.h"
+#include "node_provider.h"
 #include "node_source.h" 
 #include "update.h"
 #include "ui/feed_list_view.h"
@@ -256,8 +258,7 @@ feedlist_init (FeedList *fl)
 			debug (DEBUG_UPDATE, "initial update: prevented because we are offline");
 		}
 	} else {
-		debug (DEBUG_UPDATE, "initial update: resetting feed counter");
-		feedlist_reset_update_counters (NULL);
+		debug (DEBUG_UPDATE, "initial update: disabled");
 	}
 
 	/* 5. Purge old nodes from the database */
@@ -669,10 +670,79 @@ feedlist_save (void)
 	feedlist_schedule_save_cb (NULL);
 }
 
-void
-feedlist_reset_update_counters (Node *node)
+static void
+feedlist_to_json_collect_subscriptions (Node *node, JsonBuilder *b)
 {
-	guint64 now = g_get_real_time ();
+	if (!node)
+		return;
 
-	node_foreach_child_data (node?node:feedlist_get_root (), node_reset_update_counter, &now);
+	if (node->subscription && node->subscription->source) {
+		gint64 last_poll = 0;
+		if (node->subscription->updateState)
+			last_poll = node->subscription->updateState->lastPoll;
+
+		// determine effective update interval in [min]
+		gint interval = subscription_get_update_interval (node->subscription);
+		if (-1 == interval)
+			interval = subscription_get_default_update_interval (node->subscription);
+		if (-1 == interval)
+			conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
+
+		json_builder_begin_object (b);
+		json_builder_set_member_name (b, "id");
+		json_builder_add_string_value (b, node->id);
+		json_builder_set_member_name (b, "title");
+		json_builder_add_string_value (b, node_get_title (node));
+		json_builder_set_member_name (b, "source");
+		json_builder_add_string_value (b, subscription_get_source (node->subscription));
+		json_builder_set_member_name (b, "interval");
+		json_builder_add_int_value (b, interval * 60);
+		json_builder_set_member_name (b, "age");
+		json_builder_add_int_value (b, (g_get_real_time () - last_poll) / G_USEC_PER_SEC);
+		json_builder_end_object (b);
+	}
+
+	for (GSList *iter = node->children; iter; iter = g_slist_next (iter))
+		feedlist_to_json_collect_subscriptions ((Node *)iter->data, b);
+}
+
+static void
+feedlist_to_json_collect_sources (Node *node, JsonBuilder *b)
+{
+	if (IS_NODE_SOURCE (node)) {
+		json_builder_begin_object (b);
+		json_builder_set_member_name (b, "id");
+		json_builder_add_string_value (b, node->id);
+		json_builder_set_member_name (b, "title");
+		json_builder_add_string_value (b, node_get_title (node));
+		json_builder_set_member_name (b, "state");
+		json_builder_add_int_value (b, node->source->loginState);
+		json_builder_end_object (b);
+	}
+
+	for (GSList *iter = node->children; iter; iter = g_slist_next (iter))
+		feedlist_to_json_collect_sources ((Node *)iter->data, b);
+}
+
+gchar *
+feedlist_to_json (void)
+{
+	g_autoptr(JsonBuilder) b = json_builder_new ();
+	Node *root = feedlist_get_root ();
+
+	json_builder_begin_object (b);
+
+	json_builder_set_member_name (b, "subscriptions");
+	json_builder_begin_array (b);
+	feedlist_to_json_collect_subscriptions (root, b);
+	json_builder_end_array (b);
+
+	json_builder_set_member_name (b, "nodeSources");
+	json_builder_begin_array (b);
+	feedlist_to_json_collect_sources (root, b);
+	json_builder_end_array (b);
+
+	json_builder_end_object (b);
+
+	return json_dump (b);
 }

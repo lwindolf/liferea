@@ -121,7 +121,6 @@ liferea_sources = files(
   'ui/subscription_dialog.c',
   'ui/ui_common.c',
   'ui/ui_dnd.c',
-  'ui/ui_update.c',
   'webkit/liferea_webkit.c',
   'webkit/liferea_web_view.c'
 )

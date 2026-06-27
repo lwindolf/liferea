@@ -293,6 +293,16 @@ Node * feedlist_find_unread_feed (Node *folder);
  */
 void feedlist_new_items (guint newCount);
 
+/**
+ * feedlist_to_json:
+ * 
+ * Serialize feedlist to JSON with infos on feed updates and node
+ * source sync states. Primarily used by update monitor.
+ * 
+ * Returns: a JSON string, to be free'd using g_free()
+ */
+gchar * feedlist_to_json (void);
+
 G_END_DECLS
 
 #endif

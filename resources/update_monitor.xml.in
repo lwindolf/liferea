@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script src='/js/vendor/handlebars.min.js'></script>
+        
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline' 'unsafe-eval' *; style-src 'unsafe-inline'; img-src *; media-src *; object-src 'none'"/>
+
+        <style>
+                .update_monitor_feed {
+                        float: left;
+                        width: 0.8rem;
+                        height: 0.8rem;
+                        border: 1px solid gray;
+                        margin-right: 0.1rem;
+                        margin-bottom: 0.1rem;
+                }
+
+                h2, h3 {
+                        clear: both;
+                        margin-bottom: 0.6rem;
+                        margin-top: 0.6rem;
+                }
+
+                .update_monitor_status {
+                        border: 1px solid gray;
+                        padding: 0.1rem;
+                        display: inline-block;
+                }
+                .ok {
+                        background: #77f;
+                        color: black;
+                }
+                .warn {
+                        background: yellow;
+                        color: black;
+                }
+                .bad {
+                        background: red;
+                        color: white;
+                }
+        </style>
+
+        <script id="template" type="text/x-handlebars-template">
+                <div class="item" dir="{{direction}}">
+                        <header class="content">
+                                <h1>
+                                        Update Monitor
+                                </h1>
+
+                                <h2>Refresh State</h2>
+
+                                <div id="update_monitor_feeds">
+                                        {{#each feedlist.subscriptions}}
+                                                <div class="update_monitor_feed update_monitor_status {{#compare age 'lt' interval}}ok{{else}}warn{{/compare}}" title="{{title}} age={{age}} interval={{interval}}"></div>
+                                        {{/each}}
+                                </div>
+
+                                <h2>Account Sync State</h2>
+
+                                <div id="update_monitor_accounts">
+                                        {{#each feedlist.nodeSources}}
+                                                <h3>
+                                                        {{title}}
+                                                        <span>
+                                                                {{#compare state '==' 0}}<span class="update_monitor_status warn">Not connected yet.</span>{{/compare}}
+                                                                {{#compare state '==' 1}}<span class="update_monitor_status warn">Logging in...</span>{{/compare}}
+                                                                {{#compare state '==' 2}}<span class="update_monitor_status ok">Active</span>{{/compare}}
+                                                                {{#compare state '==' 3}}<span class="update_monitor_status bad">Login failed!</span>{{/compare}}
+                                                                {{#compare state '>' 3}}<span class="update_monitor_status warn">code {{state}}</span>{{/compare}}
+                                                        </span>
+                                                </h3>
+                                        {{else}}
+                                                You currently have no online accounts configured.
+                                        {{/each}}
+                                </div>
+                        </header>			
+
+                        <div id="content" class="content">
+                        </div>
+                </div>
+        </script>
+</head>
+<body>
+        <noscript>ERROR: Javascript needs to be activated. Please report an issue with Liferea!</noscript>
+</body>
+<script type="module">
+        import { load_update_monitor } from '/js/htmlview.js';
+
+        window.load_update_monitor = load_update_monitor;
+        window.onload = (e) => {
+                REPLACE_MARKER
+        };
+</script>
+</html>
