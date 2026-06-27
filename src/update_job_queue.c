@@ -50,9 +50,9 @@ update_job_queue_add (gpointer data, updateFlags flags)
 		currentJobCount++;
 
 	if (flags & UPDATE_REQUEST_PRIORITY_HIGH)
-		g_thread_pool_push (priorityPool, (gpointer)job, NULL);
+		g_thread_pool_push (priorityPool, data, NULL);
 	else
-		g_thread_pool_push (normalPool, (gpointer)job, NULL);
+		g_thread_pool_push (normalPool, data, NULL);
 }
 
 void

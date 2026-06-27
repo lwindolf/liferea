@@ -103,7 +103,6 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 
 				gchar *type = xml_get_attribute (cur, "type");
 				gchar *lengthStr = xml_get_attribute (cur, "length");
-				gchar *enclStr = NULL;
 				gssize length = 0;
 				if (lengthStr)
 					length = atol (lengthStr);

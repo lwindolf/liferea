@@ -68,10 +68,12 @@ ttrss_source_set_login_error (ttrssSourcePtr source, gchar *msg)
 	node_source_set_state (source->root, NODE_SOURCE_STATE_NONE);
 }
 
-static void
-ttrss_source_login_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
+static gboolean
+ttrss_source_login_cb (UpdateJob *job)
 {
-	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
+	UpdateResult *result = job->result;
+	ttrssSourcePtr	source = (ttrssSourcePtr) job->user_data;
+	updateFlags flags = job->flags;
 	subscriptionPtr subscription = source->root->subscription;
 	JsonParser	*parser;
 
@@ -81,13 +83,14 @@ ttrss_source_login_cb (const UpdateResult * const result, gpointer userdata, upd
 
 	if (!(result->data && result->httpstatus == 200)) {
 		ttrss_source_set_login_error (source, g_strdup_printf ("Login request failed with HTTP error %d", result->httpstatus));
-		return;
+		return TRUE;
 	}
 
 	parser = json_parser_new ();
 	if (!json_parser_load_from_data (parser, result->data, -1, NULL)) {
 		ttrss_source_set_login_error (source, g_strdup ("Invalid JSON returned on login!"));
-		return;
+		g_object_unref (parser);
+		return TRUE;
 	}
 
 	JsonNode *node = json_parser_get_root (parser);
@@ -97,10 +100,11 @@ ttrss_source_login_cb (const UpdateResult * const result, gpointer userdata, upd
 		const gchar *error = json_get_string (json_get_node (node, "content"), "error");
 
 		ttrss_source_set_login_error (source, g_strdup (error));
-		if (g_str_equal (error, "LOGIN_ERROR"))
+		if (error && g_str_equal (error, "LOGIN_ERROR"))
 			auth_dialog_new (source->root->subscription, flags);
 
-		return;
+		g_object_unref (parser);
+		return TRUE;
 	}
 
 	/* Success! Get SID and API Level. */
@@ -119,6 +123,7 @@ ttrss_source_login_cb (const UpdateResult * const result, gpointer userdata, upd
 	}
 
 	g_object_unref (parser);
+	return TRUE;
 }
 
 /**
@@ -190,28 +195,32 @@ ttrss_source_init (void)
 	metadata_type_register ("ttrss-feed-id", METADATA_TYPE_TEXT);
 }
 
-static void
-ttrss_source_subscribe_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
+static gboolean
+ttrss_source_subscribe_cb (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer userdata = job->user_data;
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
 
 	debug (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
 	if (200 != result->httpstatus) {
 		ui_show_error_box (_("TinyTinyRSS HTTP API not reachable!"));
-		return;
+		return TRUE;
 	}
 
 	/* Result should be {"seq":0,"status":0,"content":{"status":{"code":1}}} */
 	// FIXME: poor mans matching
 	if (!strstr (result->data, "\"code\":1")) {
 		ui_show_error_box (_("TinyTinyRSS subscribing to feed failed! Check if you really passed a feed URL!"));
-		return;
+		return TRUE;
 	}
 
 	/* As TinyTinyRSS does not return the id of the newly subscribed feed
 	   we need to reload the entire feed list. */
 	node_source_update (subscription->node->source->root);
+
+	return TRUE;
 }
 
 static Node *
@@ -254,26 +263,29 @@ ttrss_source_add_subscription (Node *root, subscriptionPtr subscription)
 	return NULL;
 }
 
-static void
-ttrss_source_remove_node_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
+static gboolean
+ttrss_source_remove_node_cb (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer userdata = job->user_data;
 	Node *node = (Node *) userdata;
 
 	debug (DEBUG_UPDATE, "TinyTinyRSS remove node result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
 	if (200 != result->httpstatus) {
 		ui_show_error_box (_("TinyTinyRSS HTTP API not reachable!"));
-		return;
+		return TRUE;
 	}
 
 	/* We expect the following {"seq":0,"status":0,"content":{"status":"OK"}} */
 	// FIXME: poor mans matching
 	if (!strstr (result->data, "\"status\":0")) {
 		ui_show_error_box (_("TinyTinyRSS unsubscribing feed failed!"));
-		return;
+		return TRUE;
 	}
 
 	feedlist_node_removed (node);
+	return TRUE;
 }
 
 static void
@@ -365,10 +377,12 @@ ttrss_source_free (Node *node)
 	g_free (source);
 }
 
-static void
-ttrss_source_remote_update_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
+static gboolean
+ttrss_source_remote_update_cb (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
 	debug (DEBUG_UPDATE, "TinyTinyRSS update result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+	return TRUE;
 }
 
 /* FIXME: Only simple synchronous item change requests... Get async! */

@@ -42,13 +42,25 @@ G_BEGIN_DECLS
 #define UPDATE_JOB_TYPE (update_job_get_type ())
 G_DECLARE_FINAL_TYPE (UpdateJob, update_job, UPDATE, JOB, GObject)
 
+/**
+ * update_flow_cb:
+ * @job:	the update job
+ *
+ * Generic update flow processing callback type.
+ * This callback must not free the result structure. It will be
+ * free'd by the download system after the flow finishes returns.
+ * 
+ * Returns: TRUE if the flow is finished
+ */
+typedef gboolean (*update_flow_cb) (UpdateJob *job);
+
 struct _UpdateJob {
 	GObject parent_instance;
 
 	UpdateRequest		*request;
 	UpdateResult		*result;
 	gpointer		owner;		/*<< owner of this job (used for matching when cancelling) */
-	update_result_cb	callback;	/*<< result processing callback */
+	update_flow_cb		callback;	/*<< result processing callback */
 	gpointer		user_data;	/*<< result processing user data */
 	updateFlags		flags;		/*<< request and result processing flags */
 	gint			state;		/*<< State of the job (enum request_state) */
@@ -70,9 +82,27 @@ struct _UpdateJob {
  */
 UpdateJob * update_job_new (gpointer owner,
                             UpdateRequest *request,
-                            update_result_cb callback,
+                            update_flow_cb callback,
                             gpointer user_data,
                             updateFlags flags);
+
+/**
+ * update_job_new_flow:
+ * @owner: (nullable):		request owner (allows cancelling)
+ * @callback: (scope forever):	flow processing callback
+ * @user_data: (nullable):	flow processing callback parameters
+ * @flags:			request/result processing flags
+ * 
+ * Starts a given request flow using the flow callback. The start might be
+ * delayed if other requests are pending. Runs the flow callback until
+ * it returns TRUE, only then will the UpdateJob be completed.
+ *
+ * Returns: a new update job
+ */
+UpdateJob * update_job_new_flow (gpointer owner,
+                                 update_flow_cb callback,
+                                 gpointer user_data,
+                                 updateFlags flags);
 
 /**
  * update_job_execute: (skip)

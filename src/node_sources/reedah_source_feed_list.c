@@ -233,21 +233,22 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	xmlFree (id);
 }
 
-static void
-reedah_source_opml_quick_update_cb (const UpdateResult* const result, gpointer userdata, updateFlags flags)
+static gboolean
+reedah_source_opml_quick_update_cb (UpdateJob *job)
 {
-	ReedahSourcePtr gsource = (ReedahSourcePtr) userdata;
+	UpdateResult *result = job->result;
+	ReedahSourcePtr gsource = (ReedahSourcePtr) job->user_data;
 	xmlDocPtr       doc;
 
 	if (!result->data) {
 		/* what do I do? */
 		debug (DEBUG_UPDATE, "ReedahSource: Unable to get unread counts, this update is aborted.");
-		return;
+		return TRUE;
 	}
 	doc = xml_parse (result->data, result->size, NULL);
 	if (!doc) {
 		debug (DEBUG_UPDATE, "ReedahSource: The XML failed to parse, maybe the session has expired. (FIXME)");
-		return;
+		return TRUE;
 	}
 
 	xpath_foreach_match (xmlDocGetRootElement (doc),
@@ -255,6 +256,8 @@ reedah_source_opml_quick_update_cb (const UpdateResult* const result, gpointer u
 			    reedah_source_opml_quick_update_helper, gsource);
 
 	xmlFreeDoc (doc);
+
+	return TRUE;
 }
 
 gboolean

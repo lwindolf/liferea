@@ -350,7 +350,7 @@ network_process_request (UpdateJob *job)
 	}
 	if (!msg) {
 		debug (DEBUG_NET, "invalid URI: %s", job->request->source);
-		update_job_failed ((UpdateJob *)job, g_strdup (_("The source URI is invalid!")));
+		update_job_failed (job, g_strdup (_("The source URI is invalid!")));
 		return;
 	}
 

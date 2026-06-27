@@ -47,24 +47,16 @@ enum {
 	BOOTSTRAP_STEP_DONE = 3
 };
 
-void webdav_source_feed_list_import (Node *root);
 void webdav_source_feed_list_upload (Node *root);
 
 /* Async request wrappers to replace synchronous webdav_get/put/mkcol calls */
 void webdav_request_get_index (Node *root, gpointer callback_data);
 void webdav_request_put_index (Node *root, const gchar *json, gpointer callback_data);
 
-void webdav_async_upload_feed (Node *root, const gchar *node_id, gboolean upload_state, gboolean upload_feed);
+void webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data);
+void webdav_request_get_state_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data);
 
-/* Async request wrappers with custom callbacks (Phase 5) */
-void webdav_request_put_state_with_callback (Node *root, const gchar *feed_id, const gchar *json, update_result_cb callback, gpointer callback_data);
-void webdav_request_put_feed_with_callback (Node *root, const gchar *feed_id, const gchar *json, update_result_cb callback, gpointer callback_data);
-void webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_result_cb callback, gpointer callback_data);
-void webdav_request_get_state_with_callback (Node *root, const gchar *feed_id, update_result_cb callback, gpointer callback_data);
-
-gchar *webdav_build_feed_json (Node *node);
-gchar *webdav_build_state_json (Node *node);
-
+void webdav_request_mkcol_with_callback (Node *root, const gchar *url, update_flow_cb callback, gpointer callback_data);
 void webdav_request_mkcol_bootstrap (Node *root, WebDAVAsyncOp *ctx);
 void webdav_request_get_index_bootstrap (Node *root, WebDAVAsyncOp *ctx);
 

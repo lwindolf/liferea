@@ -44,6 +44,7 @@
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
 #include "node_sources/webdav_source_feed_list.h"
+#include "node_sources/webdav_source_tasks.h"
 
 /*
  * Syncs a Liferea feed list to a "Liferea Sync" collection on a WebDAV
@@ -65,6 +66,44 @@
  *
  * Change detection uses GET index.json (O(1) round-trips per poll cycle)
  * instead of PROPFIND depth-1, which avoids per-feed round-trips.
+ *
+ * Request flows
+ * =============
+ *
+ * 1. initial import:
+ *    - webdav_source_login()
+ *    - webdav_request_mkcol_bootstrap()           -> MKCOL {collection_url}
+ *    - webdav_bootstrap_mkcol_result()
+ *    - webdav_request_get_index_bootstrap()       -> GET {collection_url}/index.json
+ *      - webdav_request_get_feed_with_callback()
+ *      - webdav_request_get_state_with_callback()
+ *
+ * 2. user adds new feed:
+ *    - webdav_flush_feed_cb() 
+ *    - webdav_async_upload_feed()          -> MKCOL {node_id_dir}
+ *    - webdav_async_upload_mkcol_result()  -> PUT {collection_url}/{node_id}/node.json
+ *    - webdav_async_upload_feed_result()   -> PUT {collection_url}/index.json
+ *
+ * 3. user removes a feed:
+ *    - webdav_source_feed_list_upload()    -> PUT {collection_url}/index.json
+ *    - Remote entries not in index are NOT explicitly deleted
+ *      (lazy cleanup: server can periodically remove orphaned {node_id}/ folders)
+ *
+ * 4. user adds/removes a folder:
+ *    - During next sync, webdav_async_upload_feed() ensures folder exists -> MKCOL {node_id_dir}
+ *    - Deleted folders cleaned by webdav_cleanup_stale_folders()
+ *
+ * 5. feed updates:
+ *    - webdav_subscription_prepare_update_request()  -> GET {collection_url}/index.json
+ *    - webdav_subscription_process_update_result()   -> GET {collection_url}/{node_id}/node.json (multiple)
+ *    - webdav_async_merge_feed_result()
+ *
+ * 6. user marks item read/flagged:
+ *    - item_state_cb()
+ *    - webdav_item_state_changed()
+ *    - webdav_flush_state_cb()
+ *    - webdav_async_upload_feed()         -> MKCOL {node_id_dir}
+ *    - webdav_async_upload_mkcol_result() -> PUT {node_id_dir}/state.json
  */
 
 /* ------------------------------------------------------------------ */
@@ -88,12 +127,6 @@ dirty_entry_get_or_create (Node *root, const gchar *node_id)
 	}
 	return de;
 }
-
-/* ------------------------------------------------------------------ */
-/*  Module-level libsoup session                                        */
-/* ------------------------------------------------------------------ */
-
-static SoupSession *webdav_soup_session = NULL;
 
 const gchar *
 webdav_feed_remote_id (Node *node)
@@ -126,14 +159,6 @@ webdav_feed_set_remote_id (Node *node, const gchar *remote_id)
 		return;
 
 	metadata_list_set (&node->subscription->metadata, WEBDAV_REMOTE_FEED_ID_METADATA, remote_id);
-}
-
-static SoupSession *
-webdav_get_session (void)
-{
-	if (!webdav_soup_session)
-		webdav_soup_session = soup_session_new ();
-	return webdav_soup_session;
 }
 
 static void
@@ -170,6 +195,22 @@ webdav_handle_auth_401 (Node *root, guint flags)
 	root->available = FALSE;
 	node_source_set_state (root, NODE_SOURCE_STATE_NO_AUTH);
 	auth_dialog_new (root->subscription, flags);
+}
+
+void
+webdav_request_set_basic_auth (UpdateRequest *request, Node *root)
+{
+	if (!root || !root->subscription || !root->subscription->updateOptions)
+		return;
+
+	const gchar *username = root->subscription->updateOptions->username;
+	const gchar *password = root->subscription->updateOptions->password;
+	if (!username || !*username)
+		return;
+
+	g_autofree gchar *credentials = g_strdup_printf ("%s:%s", username, password ? password : "");
+	g_autofree gchar *encoded = g_base64_encode ((const guchar *)credentials, strlen (credentials));
+	request->authValue = g_strdup_printf ("Basic %s", encoded);
 }
 
 /* ------------------------------------------------------------------ */
@@ -222,7 +263,7 @@ webdav_feed_json_url (Node *root, const gchar *node_id)
 		"%s/%s/node.json",
 		(const gchar *)g_object_get_data (G_OBJECT (root), "collectionUrl"),
 		node_id
-	);	
+	);
 }
 
 gchar *
@@ -242,120 +283,6 @@ webdav_index_url (Node *root)
 		"%s/index.json",
 		(const gchar *)g_object_get_data (G_OBJECT (root), "collectionUrl")
 	);
-}
-
-/* ------------------------------------------------------------------ */
-/*  Libsoup-3 RFC-1123 date helpers                                     */
-/* ------------------------------------------------------------------ */
-
-static gint64
-parse_http_date (const gchar *date_str)
-{
-	if (!date_str)
-		return 0;
-	GDateTime *dt = soup_date_time_new_from_http_string (date_str);
-	if (!dt)
-		return 0;
-	gint64 ts = g_date_time_to_unix (dt);
-	g_date_time_unref (dt);
-	return ts;
-}
-
-static gchar *
-format_http_date (gint64 unix_ts)
-{
-	GDateTime *dt = g_date_time_new_from_unix_utc (unix_ts);
-	if (!dt)
-		return NULL;
-	gchar *s = soup_date_time_to_string (dt, SOUP_DATE_HTTP);
-	g_date_time_unref (dt);
-	return s;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Synchronous PUT helper                                              */
-/* ------------------------------------------------------------------ */
-
-gboolean
-webdav_put (Node *root, const gchar *url, const gchar *data, const gchar *content_type)
-{
-	SoupMessage *msg;
-	GBytes      *bytes;
-	GError      *err = NULL;
-	gboolean     ok  = FALSE;
-
-	msg = soup_message_new (SOUP_METHOD_PUT, url);
-	if (!msg) {
-		debug (DEBUG_UPDATE, "webdav_put: invalid URL %s", url);
-		return FALSE;
-	}
-
-	webdav_add_auth_header (root, msg);
-
-	bytes = g_bytes_new_static (data, strlen (data));
-	soup_message_set_request_body_from_bytes (msg, content_type, bytes);
-	g_bytes_unref (bytes);
-
-	g_autoptr(GBytes) response = soup_session_send_and_read (webdav_get_session (), msg, NULL, &err);
-	guint status = soup_message_get_status (msg);
-
-	if (err) {
-		debug (DEBUG_UPDATE, "webdav_put(%s): network error: %s", url, err->message);
-		g_error_free (err);
-	} else if (status == 401) {
-		debug (DEBUG_UPDATE, "webdav_put(%s): HTTP 401 Unauthorized", url);
-		webdav_handle_auth_401 (root, 0);
-	} else if (status >= 200 && status < 300) {
-		ok = TRUE;
-		debug (DEBUG_UPDATE, "webdav_put(%s): HTTP %u OK", url, status);
-	} else {
-		debug (DEBUG_UPDATE, "webdav_put(%s): HTTP %u", url, status);
-	}
-
-	g_object_unref (msg);
-	return ok;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Synchronous MKCOL helper                                            */
-/* ------------------------------------------------------------------ */
-
-static void
-webdav_mkcol (Node *root, const gchar *url)
-{
-	SoupMessage *msg;
-	GError      *err = NULL;
-
-	msg = soup_message_new ("MKCOL", url);
-	if (!msg)
-		return;
-
-	webdav_add_auth_header (root, msg);
-
-	g_autoptr(GBytes) response = soup_session_send_and_read (webdav_get_session (), msg, NULL, &err);
-	guint status = soup_message_get_status (msg);
-
-	if (err) {
-		debug (DEBUG_UPDATE, "webdav_mkcol(%s): %s", url, err->message);
-		g_error_free (err);
-	} else if (status == 401) {
-		debug (DEBUG_UPDATE, "webdav_mkcol(%s): HTTP 401 Unauthorized", url);
-		webdav_handle_auth_401 (root, 0);
-	} else {
-		debug (DEBUG_UPDATE, "webdav_mkcol(%s): HTTP %u", url, status);
-	}
-
-	g_object_unref (msg);
-}
-
-static void
-webdav_ensure_collection (Node *root)
-{
-	g_autofree gchar *url = g_strdup_printf (
-		"%s/",
-		(const gchar *)g_object_get_data (G_OBJECT (root), "collectionUrl")
-	);
-	webdav_mkcol (root, url);
 }
 
 gboolean
@@ -394,285 +321,6 @@ webdav_source_login (Node *root, guint32 flags)
 }
 
 /* ------------------------------------------------------------------ */
-/*  Synchronous GET helper with optional If-Modified-Since              */
-/* ------------------------------------------------------------------ */
-
-/**
- * GET @url and return the response body as a newly-allocated string,
- * or NULL on error or when the server returns 304 Not Modified.
- *
- * Pass @if_modified_since > 0 to send an If-Modified-Since header; a 304
- * response is treated as "nothing changed" and returns NULL.
- *
- * If @out_last_modified is non-NULL it is filled with the response
- * Last-Modified Unix timestamp (0 if the header is absent).
- */
-gchar *
-webdav_get (Node *root, const gchar *url, gint64 if_modified_since, gint64 *out_last_modified, guint *out_http_status)
-{
-	SoupMessage *msg;
-	GError      *err = NULL;
-	gchar       *result = NULL;
-
-	msg = soup_message_new (SOUP_METHOD_GET, url);
-	if (!msg)
-		return NULL;
-
-	webdav_add_auth_header (root, msg);
-
-	if (if_modified_since > 0) {
-		g_autofree gchar *hdr = format_http_date (if_modified_since);
-		if (hdr)
-			soup_message_headers_append (soup_message_get_request_headers (msg),
-			                             "If-Modified-Since", hdr);
-	}
-
-	g_autoptr(GBytes) response = soup_session_send_and_read (webdav_get_session (), msg, NULL, &err);
-	guint status = soup_message_get_status (msg);
-	if (out_http_status)
-		*out_http_status = status;
-
-	if (err) {
-		debug (DEBUG_UPDATE, "webdav_get(%s): %s", url, err->message);
-		g_error_free (err);
-	} else if (status == 401) {
-		debug (DEBUG_UPDATE, "webdav_get(%s): HTTP 401 Unauthorized", url);
-		webdav_handle_auth_401 (root, 0);
-	} else if (status == 304) {
-		debug (DEBUG_UPDATE, "webdav_get(%s): 304 Not Modified", url);
-		/* result stays NULL — caller treats as "no change" */
-	} else if (status == 200 && response) {
-		gsize len = 0;
-		const gchar *data = g_bytes_get_data (response, &len);
-		result = g_strndup (data, len);
-
-		if (out_last_modified) {
-			const gchar *lm = soup_message_headers_get_one (
-			    soup_message_get_response_headers (msg), "Last-Modified");
-			*out_last_modified = parse_http_date (lm);
-		}
-	} else {
-		debug (DEBUG_UPDATE, "webdav_get(%s): HTTP %u", url, status);
-	}
-
-	g_object_unref (msg);
-	return result;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Build combined node.json (node metadata + items array)              */
-/* ------------------------------------------------------------------ */
-
-/**
- * Build a JSON string containing the node's metadata and all its items.
- *
- * Format:
- *   {
- *     "node":  { ...node_to_json() output... },
- *     "items": [ ...item_to_json() per item... ]
- *   }
- *
- * This replaces the previous per-item file approach.  Items are read once
- * per upload (daily cadence) so the O(n) cost is acceptable.
- */
-gchar *
-webdav_build_feed_json (Node *node)
-{
-	JsonBuilder *b = json_builder_new ();
-	json_builder_begin_object (b);
-
-	/* Embed node_to_json() output as a nested "node" object */
-	json_builder_set_member_name (b, "node");
-	g_autofree gchar *node_json = node_to_json (node);
-	if (node_json) {
-		JsonParser *np  = json_parser_new ();
-		GError     *err = NULL;
-		if (json_parser_load_from_data (np, node_json, -1, &err)) {
-			json_builder_add_value (b, json_node_copy (json_parser_get_root (np)));
-		} else {
-			g_warning ("webdav: node_to_json parse error: %s", err->message);
-			g_error_free (err);
-			json_builder_add_null_value (b);
-		}
-		g_object_unref (np);
-	} else {
-		json_builder_add_null_value (b);
-	}
-
-	/* Embed all items as a JSON array */
-	json_builder_set_member_name (b, "items");
-	json_builder_begin_array (b);
-
-	itemSetPtr itemset = node_get_itemset (node);
-	if (itemset) {
-		for (GList *iter = itemset->ids; iter; iter = g_list_next (iter)) {
-			gulong       item_id  = GPOINTER_TO_UINT (iter->data);
-			LifereaItem *item     = item_load (item_id);
-			if (!item)
-				continue;
-
-			g_autofree gchar *item_json = item_to_json (item);
-			if (item_json) {
-				JsonParser *ip  = json_parser_new ();
-				GError     *err = NULL;
-				if (json_parser_load_from_data (ip, item_json, -1, &err)) {
-					json_builder_add_value (b, json_node_copy (json_parser_get_root (ip)));
-				} else {
-					g_warning ("webdav: item_to_json parse error: %s", err->message);
-					g_error_free (err);
-				}
-				g_object_unref (ip);
-			}
-			g_object_unref (item);
-		}
-		itemset_free (itemset);
-	}
-
-	json_builder_end_array (b);
-	json_builder_end_object (b);
-
-	gchar *result = json_dump (b);
-	g_object_unref (b);
-	return result;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Build state.json (compact read/flagged state for all items)         */
-/* ------------------------------------------------------------------ */
-
-/**
- * Build a JSON string mapping each item's sourceId to its read/flagged state.
- *
- * Format:
- *   { "<sourceId>": { "read": true, "flagged": false }, ... }
- *
- * This file is written on every item-state change (O(n) items, small output).
- * Merge strategy on import is union: a bit can only be set, never cleared.
- */
-gchar *
-webdav_build_state_json (Node *node)
-{
-	JsonBuilder *b = json_builder_new ();
-	json_builder_begin_object (b);
-
-	itemSetPtr itemset = node_get_itemset (node);
-	if (itemset) {
-		for (GList *iter = itemset->ids; iter; iter = g_list_next (iter)) {
-			gulong       item_id = GPOINTER_TO_UINT (iter->data);
-			LifereaItem *item    = item_load (item_id);
-			if (!item)
-				continue;
-
-			const gchar *src_id = item_get_id (item);
-			if (src_id && *src_id) {
-				json_builder_set_member_name (b, src_id);
-				json_builder_begin_object (b);
-				json_builder_set_member_name (b, "read");
-				json_builder_add_boolean_value (b, item->readStatus);
-				json_builder_set_member_name (b, "flagged");
-				json_builder_add_boolean_value (b, item->flagStatus);
-				json_builder_end_object (b);
-			}
-			g_object_unref (item);
-		}
-		itemset_free (itemset);
-	}
-
-	json_builder_end_object (b);
-	gchar *result = json_dump (b);
-	g_object_unref (b);
-	return result;
-}
-
-/* ------------------------------------------------------------------ */
-/*  Upload helpers                                                      */
-/* ------------------------------------------------------------------ */
-
-void
-webdav_upload_feed (Node *root, const gchar *node_id)
-{
-	Node *node = node_from_id (node_id);
-	const gchar *remote_id;
-	if (!node) {
-		debug (DEBUG_UPDATE, "webdav_upload_feed: node %s no longer exists", node_id);
-		return;
-	}
-
-	if (!IS_FEED (node)) {
-		debug (DEBUG_UPDATE, "webdav_upload_feed: skip non-feed node %s", node_id);
-		return;
-	}
-
-	remote_id = webdav_feed_remote_id (node);
-	if (!remote_id || !*remote_id)
-		return;
-
-	debug (DEBUG_UPDATE, "webdav_upload_feed: uploading local=%s remote=%s (%s)",
-	       node_id, remote_id, node_get_title (node));
-
-	/* Retry creating top-level collection in case startup MKCOL previously failed. */
-	webdav_ensure_collection (root);
-
-	/* Ensure the per-feed directory exists */
-	g_autofree gchar *feed_dir = webdav_feed_dir_url (root, remote_id);
-	webdav_mkcol (root, feed_dir);
-
-	g_autofree gchar *json     = webdav_build_feed_json (node);
-	if (json) {
-		g_autofree gchar *feed_url = webdav_feed_json_url (root, remote_id);
-		if (webdav_put (root, feed_url, json, "application/json")) {
-			gint64 *ts = g_new (gint64, 1);
-			*ts = (gint64)(g_get_real_time () / G_USEC_PER_SEC);
-			g_hash_table_insert (
-				(GHashTable *)g_object_get_data (G_OBJECT (root), "feedMtimes"),
-				g_strdup (remote_id), ts
-			);
-		}
-	}
-}
-
-void
-webdav_upload_state (Node *root, const gchar *node_id)
-{
-	Node *node = node_from_id (node_id);
-	const gchar *remote_id;
-
-	if (!node) {
-		debug (DEBUG_UPDATE, "webdav_upload_state: node %s no longer exists", node_id);
-		return;
-	}
-
-	if (!IS_FEED (node)) {
-		debug (DEBUG_UPDATE, "webdav_upload_state: skip non-feed node %s", node_id);
-		return;
-	}
-
-	remote_id = webdav_feed_remote_id (node);
-	if (!remote_id || !*remote_id)
-		return;
-
-	debug (DEBUG_UPDATE, "webdav_upload_state: uploading state for local=%s remote=%s", node_id, remote_id);
-
-	/* Retry creating top-level collection in case startup MKCOL previously failed. */
-	webdav_ensure_collection (root);
-
-	g_autofree gchar *json = webdav_build_state_json (node);
-	if (json) {
-		g_autofree gchar *state_url = webdav_state_json_url (root, remote_id);
-		if (webdav_put (root, state_url, json, "application/json")) {
-			gint64 *ts = g_new (gint64, 1);
-			*ts = (gint64)(g_get_real_time () / G_USEC_PER_SEC);
-
-			g_hash_table_insert (
-				(GHashTable *)g_object_get_data (G_OBJECT (root), "stateMtimes"),
-				g_strdup (remote_id),
-				ts
-			);
-		}
-	}
-}
-
-/* ------------------------------------------------------------------ */
 /*  Lazy sync flush callbacks (Phase 4: enqueue async jobs)             */
 /* ------------------------------------------------------------------ */
 
@@ -681,17 +329,6 @@ typedef struct {
 	gchar	*node_id;
 } FlushCtx;
 
-static void
-flush_ctx_free (FlushCtx *ctx)
-{
-	g_free (ctx->node_id);
-	g_free (ctx);
-}
-
-/**
- * Phase 4: Async flush feed callback.
- * Instead of calling webdav_upload_feed (blocking), enqueue async upload.
- */
 static gboolean
 webdav_flush_feed_cb (gpointer user_data)
 {
@@ -701,32 +338,12 @@ webdav_flush_feed_cb (gpointer user_data)
 	if (de)
 		de->feed_timer_id = 0;
 
-	/* Phase 4: Queue async feed upload instead of blocking PUT */
 	debug (DEBUG_UPDATE, "webdav_flush_feed_cb: queuing async upload for %s", ctx->node_id);
-	webdav_async_upload_feed (ctx->root, ctx->node_id, FALSE, TRUE);
+	webdav_source_flow_upload_feed (ctx->root, ctx->node_id, FALSE, TRUE);
 
-	flush_ctx_free (ctx);
-	return G_SOURCE_REMOVE;
-}
+	g_free (ctx->node_id);
+	g_free (ctx);
 
-/**
- * Phase 4: Async flush state callback.
- * Instead of calling webdav_upload_state (blocking), enqueue async upload.
- */
-static gboolean
-webdav_flush_state_cb (gpointer user_data)
-{
-	FlushCtx   *ctx = (FlushCtx *)user_data;
-	GHashTable *dirtyFeeds = (GHashTable *)g_object_get_data (G_OBJECT (ctx->root), "dirtyFeeds");
-	DirtyEntry *de  = g_hash_table_lookup (dirtyFeeds, ctx->node_id);
-	if (de)
-		de->state_timer_id = 0;
-
-	/* Phase 4: Queue async state upload instead of blocking PUT */
-	debug (DEBUG_UPDATE, "webdav_flush_state_cb: queuing async upload for %s", ctx->node_id);
-	webdav_async_upload_feed (ctx->root, ctx->node_id, TRUE, FALSE);
-
-	flush_ctx_free (ctx);
 	return G_SOURCE_REMOVE;
 }
 
@@ -759,7 +376,7 @@ webdav_mark_dirty_state (Node *root, const gchar *node_id)
 	ctx->root         = root;
 	ctx->node_id      = g_strdup (node_id);
 	de->state_timer_id = g_timeout_add_seconds (WEBDAV_STATE_SYNC_DELAY_S,
-	                                             webdav_flush_state_cb, ctx);
+	                                             webdav_flush_feed_cb, ctx);
 
 	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ds)", node_id, WEBDAV_STATE_SYNC_DELAY_S);
 }
@@ -949,15 +566,6 @@ ui_webdav_source_get_url (void)
 			  G_CALLBACK (adw_dialog_close), dialog);
 }
 
-static void
-webdav_source_deinit (void)
-{
-	if (webdav_soup_session) {
-		g_object_unref (webdav_soup_session);
-		webdav_soup_session = NULL;
-	}
-}
-
 static struct nodeSourceType nst = {
 	.id                  = "fl_webdav",
 	.name                = N_("WebDAV Sync"),
@@ -969,7 +577,7 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST,
 	.sourceSubscriptionType = &webdavSourceSubscriptionType,
 	.source_type_init    = NULL,
-	.source_type_deinit  = webdav_source_deinit,
+	.source_type_deinit  = NULL,
 	.source_new	     = webdav_source_new,
 	.source_create       = ui_webdav_source_get_url,
 	.source_delete       = opml_source_remove,

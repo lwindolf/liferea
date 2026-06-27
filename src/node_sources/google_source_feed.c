@@ -97,10 +97,11 @@ google_source_feed_item_cb (JsonNode *node, itemPtr item)
 	}
 }
 
-static void
-google_source_feed_subscription_process_update_result (const UpdateResult* const result, gpointer user_data, updateFlags flags)
+static gboolean
+google_source_feed_subscription_process_update_result (UpdateJob *job)
 {
-	subscriptionPtr	subscription = (subscriptionPtr)user_data;
+	UpdateResult *result = job->result;
+	subscriptionPtr	subscription = (subscriptionPtr)job->user_data;
 	
 	if (result->data && result->httpstatus == 200) {
 		GList		*items = NULL;
@@ -158,6 +159,8 @@ google_source_feed_subscription_process_update_result (const UpdateResult* const
 		subscription->node->available = FALSE;
 		g_string_append (subscription->parseErrors, _("Could not parse JSON returned by Google Reader API!"));
 	}
+
+	return TRUE;
 }
 
 static void

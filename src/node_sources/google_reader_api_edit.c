@@ -145,9 +145,11 @@ google_reader_api_action_context_free (GoogleReaderActionCtxtPtr ctxt)
 	g_slice_free (struct GoogleReaderActionCtxt, ctxt);
 }
 
-static void
-google_reader_api_edit_action_complete (const UpdateResult* const result, gpointer userdata, updateFlags flags)
+static gboolean
+google_reader_api_edit_action_complete (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer userdata = job->user_data;
 	GoogleReaderActionCtxtPtr	editCtxt = (GoogleReaderActionCtxtPtr) userdata;
 	GoogleReaderActionPtr		action = editCtxt->action;
 	Node				*node = node_from_id (editCtxt->nodeId);
@@ -157,7 +159,7 @@ google_reader_api_edit_action_complete (const UpdateResult* const result, gpoint
 
 	if (!node) {
 		google_reader_api_action_free (action);
-		return; /* probably got deleted before this callback */
+		return TRUE; /* probably got deleted before this callback */
 	}
 
 	if (result->data == NULL) {
@@ -196,11 +198,13 @@ google_reader_api_edit_action_complete (const UpdateResult* const result, gpoint
 
 	if (failed) {
 		debug (DEBUG_UPDATE, "The edit action failed with result: %s", result->data);
-		return; /** @todo start a timer for next processing */
+		return TRUE; /** @todo start a timer for next processing */
 	}
 
 	/* process anything else waiting on the edit queue */
 	google_reader_api_edit_process (node->source);
+
+	return TRUE;
 }
 
 /* the following google_reader_api_* functions are simply functions that
@@ -300,9 +304,11 @@ google_reader_api_edit_tag (GoogleReaderActionPtr action, UpdateRequest *request
 	request->postdata = postdata;
 }
 
-static void
-google_reader_api_edit_token_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
+static gboolean
+google_reader_api_edit_token_cb (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer userdata = job->user_data;
 	Node			*node;
 	const gchar		*token;
 	GoogleReaderActionPtr	action;
@@ -310,19 +316,19 @@ google_reader_api_edit_token_cb (const UpdateResult * const result, gpointer use
 
 	if (result->httpstatus != 200 || result->data == NULL) {
 		/* FIXME: What is the behaviour that should go here? */
-		return;
+		return TRUE;
 	}
 
 	node = node_from_id ((gchar*) userdata);
 	g_free (userdata);
 
 	if (!node)
-		return;
+		return TRUE;
 
 	token = result->data;
 
 	if (!node->source || g_queue_is_empty (node->source->actionQueue))
-		return;
+		return TRUE;
 
 	action = g_queue_peek_head (node->source->actionQueue);
 
@@ -352,6 +358,8 @@ google_reader_api_edit_token_cb (const UpdateResult * const result, gpointer use
 	update_job_new (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), UPDATE_REQUEST_NO_FEED);
 
 	action = g_queue_pop_head (node->source->actionQueue);
+
+	return TRUE;
 }
 
 void

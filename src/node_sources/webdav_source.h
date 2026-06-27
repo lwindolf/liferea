@@ -23,6 +23,7 @@
 
 #include "node.h"
 #include "node_source.h"
+#include "update.h"
 
 /** Name of the collection created/used on the WebDAV server. */
 #define WEBDAV_SYNC_COLLECTION  "Liferea Sync"
@@ -69,17 +70,12 @@
 gboolean webdav_source_login (Node *root, guint32 flags);
 const gchar *webdav_feed_remote_id (Node *node);
 void webdav_feed_set_remote_id (Node *node, const gchar *remote_id);
-void webdav_upload_feed (Node *root, const gchar *node_id);
-void webdav_upload_state (Node *root, const gchar *node_id);
-
 gchar * webdav_feed_json_url (Node *root, const gchar *node_id);
 gchar * webdav_state_json_url (Node *root, const gchar *node_id);
 gchar * webdav_index_url (Node *root);
 gchar * webdav_feed_dir_url (Node *root, const gchar *node_id);
+void webdav_request_set_basic_auth (UpdateRequest *request, Node *root);
 
-/* Synchronous helpers (internal use only for now, to be deprecated) */
-gchar * webdav_get (Node *root, const gchar *url, gint64 if_modified_since, gint64 *out_last_modified, guint *out_http_status);
-gboolean webdav_put (Node *root, const gchar *url, const gchar *data, const gchar *content_type);
 
 gboolean webdav_is_feed_upload_pending (Node *root, const gchar *node_id);
 gboolean webdav_is_state_upload_pending (Node *root, const gchar *node_id);

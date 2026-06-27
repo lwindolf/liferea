@@ -57,12 +57,15 @@ static struct tc tc_filter_missing     = { .url = "https://lzone.de/", .filtercm
 static int result = 1;
 static GMainLoop *loop = NULL;
 
-static void
-tc_update_cb (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+tc_update_cb (UpdateJob *job)
 {
-        tcPtr   tc = (tcPtr)user_data;
+        UpdateResult *result = job->result;
+        tcPtr   tc = (tcPtr)job->user_data;
 
         g_print("update result %s (HTTP %d, size=%ld, body=%p, state=%d)\n", result->source, result->httpstatus, result->size, result->data, tc->job->state);
+
+	return TRUE;
 }
 
 static void

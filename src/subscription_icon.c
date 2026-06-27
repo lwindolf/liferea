@@ -156,9 +156,13 @@ subscription_icon_download_html_cb (const UpdateResult * const result, gpointer 
 static GRegex *image_extension_match = NULL;
 static GRegex *image_mime_type_match = NULL;
 
-static void
-subscription_icon_handle_response (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+subscription_icon_handle_response (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
+	updateFlags flags = job->flags;
+
 	if (!image_extension_match)
 		image_extension_match = g_regex_new ("\\.(ico|png|gif|jpg|svg)$", G_REGEX_CASELESS, 0, NULL);
 
@@ -171,6 +175,8 @@ subscription_icon_handle_response (const UpdateResult * const result, gpointer u
 	} else {
 		subscription_icon_download_html_cb(result, user_data, flags);
 	}
+
+	return TRUE;
 }
 
 /* Performs a download of the first URL in ctxt->urls */

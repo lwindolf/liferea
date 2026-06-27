@@ -110,9 +110,12 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 
 /* source subscription type implementation */
 
-static void
-ttrss_source_subscription_list_cb (const UpdateResult * const result, gpointer user_data, guint32 flags)
+static gboolean
+ttrss_source_subscription_list_cb (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
+	guint32 flags = job->flags;
 	subscriptionPtr subscription = (subscriptionPtr) user_data;
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
 
@@ -156,7 +159,8 @@ ttrss_source_subscription_list_cb (const UpdateResult * const result, gpointer u
 			if (!content || (JSON_NODE_TYPE (content) != JSON_NODE_ARRAY)) {
 				debug (DEBUG_UPDATE, "ttrss_subscription_cb(): Failed to get subscription list!");
 				subscription->node->available = FALSE;
-				return;
+				g_object_unref (parser);
+				return TRUE;
 			}
 
 			array = json_node_get_array (content);
@@ -202,6 +206,8 @@ ttrss_source_subscription_list_cb (const UpdateResult * const result, gpointer u
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
+
+	return TRUE;
 }
 
 static void

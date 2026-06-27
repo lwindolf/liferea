@@ -192,6 +192,13 @@ update_request_new (const gchar *method, const gchar *source, updateStatePtr sta
 }
 
 void
+update_request_set_method (UpdateRequest *request, const gchar *method)
+{
+	g_free (request->method);
+	request->method = g_strdup (method);
+}
+
+void
 update_request_set_source (UpdateRequest *request, const gchar *source)
 {
 	g_free (request->source);

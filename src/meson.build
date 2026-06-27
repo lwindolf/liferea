@@ -68,6 +68,7 @@ liferea_sources = files(
   'node_sources/opml_source.c',
   'node_sources/webdav_source.c',
   'node_sources/webdav_source_feed_list.c',
+  'node_sources/webdav_source_tasks.c',
   'parsers/atom10.c',
   'parsers/gopher.c',
   'parsers/html5_feed.c',

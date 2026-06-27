@@ -144,15 +144,16 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 	debug(DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
 }
 
-static void
-subscription_process_update_blogroll_result(const UpdateResult *const result, gpointer user_data, guint32 flags)
+static gboolean
+subscription_process_update_blogroll_result (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
 	g_autofree gchar *now = g_strdup_printf("%ld", g_get_real_time());
-	subscriptionPtr subscription = (subscriptionPtr)user_data;
+	subscriptionPtr subscription = (subscriptionPtr)job->user_data;
 
 	if (result->httpstatus >= 400 || !result->data)	{
 		debug(DEBUG_UPDATE, "Blogroll update failed for subscription %s: %d", subscription->source, result->httpstatus);
-		return;
+		return TRUE;
 	}
 
 	// No parsing here, we just store the blogroll XML
@@ -164,6 +165,8 @@ subscription_process_update_blogroll_result(const UpdateResult *const result, gp
 	db_subscription_update (subscription);
 
 	debug(DEBUG_UPDATE, "Blogroll update success for subscription %s", subscription->source);
+
+	return TRUE;
 }
 
 void
@@ -225,10 +228,12 @@ subscription_update_error_status (subscriptionPtr subscription,
 		subscription->httpError = g_strdup (network_strerror (httpstatus));
 }
 
-static void
-subscription_process_update_result (const UpdateResult * const result, gpointer user_data, guint32 flags)
+static gboolean
+subscription_process_update_result (UpdateJob *job)
 {
-	subscriptionPtr subscription = (subscriptionPtr)user_data;
+	UpdateResult	*result = job->result;
+	updateFlags	flags = job->flags;
+	subscriptionPtr subscription = (subscriptionPtr)job->user_data;
 	Node		*node = subscription->node;
 	gboolean	processing = FALSE;
 	guint		count, maxcount;
@@ -304,6 +309,8 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 		feedlist_new_items (node->newCount);
 		feedlist_node_was_updated (node);
 	}
+
+	return TRUE;
 }
 
 void
@@ -667,17 +674,20 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 
 // content scraping
 
-static void
-subscription_html5_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags) {
+static gboolean
+subscription_html5_enrich_item_cb (UpdateJob *job)
+{
+	UpdateResult *result = job->result;
+	gpointer userdata = job->user_data;
 	itemPtr item;
 	gchar	*article;
 
 	if (!result->data || result->httpstatus >= 400)
-		return;
+		return TRUE;
 
 	item = item_load (GPOINTER_TO_UINT (userdata));
 	if (!item)
-		return;
+		return TRUE;
 
 	article = xhtml_extract_from_string (result->data, result->source);
 	if (article) {
@@ -693,19 +703,23 @@ subscription_html5_enrich_item_cb (const UpdateResult * const result, gpointer u
 		g_free (article);
 	}
 	item_unload (item);
+
+	return TRUE;
 }
 
-static void
-subscription_text_enrich_item_cb (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+subscription_text_enrich_item_cb (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
         if (!result->data || result->size <= 0) {
                 debug (DEBUG_UPDATE, "text fetch failed: %s", result->source);
-                return;
+		return TRUE;
         }
 
         itemPtr item = item_load (GPOINTER_TO_UINT (user_data));
         if (!item)
-                return;
+		return TRUE;
 
         g_autoptr(GString) description = g_string_new ("<pre>");
         g_string_append_len (description, result->data, result->size);
@@ -714,6 +728,8 @@ subscription_text_enrich_item_cb (const UpdateResult * const result, gpointer us
         db_item_update (item);
 
         item_unload (item);
+
+		return TRUE;
 }
 
 

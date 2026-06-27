@@ -47,13 +47,6 @@ typedef struct {
 } IndexEntry;
 
 typedef struct {
-	Node           *root;
-	GHashTable     *remote_feed_ids;
-	GHashTable     *remote_folder_ids;
-	gboolean        uploaded_missing;
-} MissingSyncCtx;
-
-typedef struct {
 	Node       *root;
 	GHashTable *remote_folder_ids;
 } FolderCleanupCtx;
@@ -89,26 +82,6 @@ typedef struct {
 	gint64         remote_mtime;
 } WebDAVStateFetchCtx;
 
-/**
- * Set HTTP Basic Authentication header on UpdateRequest.
- * Encodes username:password in Base64 and sets authValue.
- */
-static void
-webdav_request_set_basic_auth (UpdateRequest *request, Node *root)
-{
-	if (!root || !root->subscription || !root->subscription->updateOptions)
-		return;
-
-	const gchar *username = root->subscription->updateOptions->username;
-	const gchar *password = root->subscription->updateOptions->password;
-	if (!username || !*username)
-		return;
-
-	g_autofree gchar *credentials = g_strdup_printf ("%s:%s", username, password ? password : "");
-	g_autofree gchar *encoded = g_base64_encode ((const guchar *)credentials, strlen (credentials));
-	request->authValue = g_strdup_printf ("Basic %s", encoded);
-}
-
 static void
 index_entry_free (IndexEntry *e)
 {
@@ -117,35 +90,6 @@ index_entry_free (IndexEntry *e)
 	g_free (e->parent_id);
 	g_free (e->node_id);
 	g_free (e);
-}
-
-static void
-webdav_upload_missing_remote_entries (Node *parent, MissingSyncCtx *ctx)
-{
-	for (GSList *iter = parent->children; iter; iter = g_slist_next (iter)) {
-		Node *node = (Node *)iter->data;
-
-		if (IS_FOLDER (node)) {
-			if (!g_hash_table_contains (ctx->remote_folder_ids, node->id)) {
-				debug (DEBUG_UPDATE, "webdav_initial_sync: folder %s missing remotely", node->id);
-				ctx->uploaded_missing = TRUE;
-			}
-			webdav_upload_missing_remote_entries (node, ctx);
-			continue;
-		}
-
-		if (!IS_FEED (node) || !node->subscription)
-			continue;
-
-		const gchar *remote_id = webdav_feed_remote_id (node);
-		if (remote_id && g_hash_table_contains (ctx->remote_feed_ids, remote_id))
-			continue;
-
-		debug (DEBUG_UPDATE, "webdav_initial_sync: uploading missing remote feed local=%s remote=%s", node->id, remote_id ? remote_id : "(null)");
-		webdav_upload_feed (ctx->root, node->id);
-		webdav_upload_state (ctx->root, node->id);
-		ctx->uploaded_missing = TRUE;
-	}
 }
 
 static Node *
@@ -263,24 +207,6 @@ webdav_parse_index_json (const gchar *json_str)
 	return g_list_reverse (result);
 }
 
-static GList *
-webdav_read_index (Node *root)
-{
-	g_autofree gchar *url = webdav_index_url (root);
-	guint http_status = 0;
-	g_autofree gchar *json = webdav_get (root, url, 0, NULL, &http_status);
-
-	if (!json) {
-		if (http_status == 404) {
-			debug (DEBUG_UPDATE, "webdav_read_index: index.json missing, creating empty index");
-			webdav_put (root, url, "{\"nodes\":[]}", "application/json");
-		}
-		return NULL;
-	}
-
-	return webdav_parse_index_json (json);
-}
-
 static Node *
 webdav_node_from_feed_json (const gchar *json_str, Node *parent, const gchar *remote_id)
 {
@@ -351,137 +277,6 @@ webdav_node_from_feed_json (const gchar *json_str, Node *parent, const gchar *re
 
 	g_object_unref (parser);
 	return node;
-}
-
-static void
-webdav_merge_feed (Node *root, const gchar *node_id,
-	               gint64 remote_mtime, Node *target_parent)
-{
-	gint64  local_mtime = 0;
-	gint64 *stored;
-	gint64  actual_mtime = 0;
-	g_autofree gchar *feed_url = NULL;
-	g_autofree gchar *json = NULL;
-	gint64 *ts;
-	Node *local_node = webdav_find_feed_by_remote_id (root, node_id);
-
-	if (local_node && webdav_is_feed_upload_pending (root, local_node->id)) {
-		debug (DEBUG_UPDATE, "webdav_merge_feed: %s has pending upload, skipping", node_id);
-		return;
-	}
-
-	GHashTable *feedMtimes = (GHashTable *)g_object_get_data (G_OBJECT (root), "feedMtimes");
-	stored = g_hash_table_lookup (feedMtimes, node_id);
-	if (stored)
-		local_mtime = *stored;
-
-	if (remote_mtime > 0 && remote_mtime <= local_mtime) {
-		debug (DEBUG_UPDATE, "webdav_merge_feed: %s local same/newer, skipping", node_id);
-		return;
-	}
-
-	feed_url = webdav_feed_json_url (root, node_id);
-	json = webdav_get (root, feed_url, local_mtime, &actual_mtime, NULL);
-	if (!json)
-		return;
-
-	if (!webdav_node_from_feed_json (json, target_parent, node_id))
-		return;
-
-	ts = g_new (gint64, 1);
-	*ts = actual_mtime ? actual_mtime : remote_mtime;
-	g_hash_table_insert (feedMtimes, g_strdup (node_id), ts);
-}
-
-static void
-webdav_merge_state (Node *root, const gchar *node_id, gint64 remote_mtime)
-{
-	gint64  local_mtime = 0;
-	gint64 *stored;
-	gint64  actual_mtime = 0;
-	g_autofree gchar *state_url = NULL;
-	g_autofree gchar *json = NULL;
-	Node *node;
-	JsonParser *parser;
-	JsonNode *jroot;
-	JsonObject *obj;
-	itemSetPtr itemset;
-	GError *err = NULL;
-	gint64 *ts;
-
-	node = webdav_find_feed_by_remote_id (root, node_id);
-
-	if (node && webdav_is_state_upload_pending (root, node->id)) {
-		debug (DEBUG_UPDATE, "webdav_merge_state: %s has pending state upload, skipping", node_id);
-		return;
-	}
-
-	GHashTable *stateMtimes = (GHashTable *)g_object_get_data (G_OBJECT (root), "stateMtimes");
-	stored = g_hash_table_lookup (stateMtimes, node_id);
-	if (stored)
-		local_mtime = *stored;
-
-	if (remote_mtime > 0 && remote_mtime <= local_mtime) {
-		debug (DEBUG_UPDATE, "webdav_merge_state: %s local same/newer, skipping", node_id);
-		return;
-	}
-
-	state_url = webdav_state_json_url (root, node_id);
-	json = webdav_get (root, state_url, local_mtime, &actual_mtime, NULL);
-	if (!json)
-		return;
-
-	if (!node)
-		return;
-
-	parser = json_parser_new ();
-	if (!json_parser_load_from_data (parser, json, -1, &err)) {
-		debug (DEBUG_UPDATE, "webdav_merge_state(%s): parse error: %s", node_id, err->message);
-		g_error_free (err);
-		g_object_unref (parser);
-		return;
-	}
-
-	jroot = json_parser_get_root (parser);
-	if (!JSON_NODE_HOLDS_OBJECT (jroot)) {
-		g_object_unref (parser);
-		return;
-	}
-
-	obj = json_node_get_object (jroot);
-	itemset = node_get_itemset (node);
-	if (itemset) {
-		for (GList *iter = itemset->ids; iter; iter = g_list_next (iter)) {
-			gulong item_id = GPOINTER_TO_UINT (iter->data);
-			LifereaItem *item = item_load (item_id);
-			if (!item)
-				continue;
-
-			const gchar *src_id = item_get_id (item);
-			if (src_id && *src_id && json_object_has_member (obj, src_id)) {
-				JsonObject *state = json_object_get_object_member (obj, src_id);
-				if (state) {
-					if (!item->readStatus &&
-					    json_object_has_member (state, "read") &&
-					    json_object_get_boolean_member (state, "read"))
-						item_set_read_state (item, TRUE);
-
-					if (!item->flagStatus &&
-					    json_object_has_member (state, "flagged") &&
-					    json_object_get_boolean_member (state, "flagged"))
-						item_set_flag_state (item, TRUE);
-				}
-			}
-			g_object_unref (item);
-		}
-		itemset_free (itemset);
-	}
-
-	g_object_unref (parser);
-
-	ts = g_new (gint64, 1);
-	*ts = actual_mtime ? actual_mtime : remote_mtime;
-	g_hash_table_insert (stateMtimes, g_strdup (node_id), ts);
 }
 
 typedef struct {
@@ -557,8 +352,7 @@ webdav_source_feed_list_upload (Node *root)
 	g_object_unref (ctx.builder);
 
 	if (json) {
-		g_autofree gchar *url = webdav_index_url (root);
-		webdav_put (root, url, json, "application/json");
+		webdav_request_put_index (root, json, NULL);
 	}
 }
 
@@ -666,54 +460,12 @@ webdav_merge_index (Node *root, GList *index)
 			webdav_resolve_folder_node (&resolve, e->node_id);
 	}
 
-	for (GList *l = index; l; l = g_list_next (l)) {
-		IndexEntry *e = (IndexEntry *)l->data;
-		Node *target_parent;
-
-		if (e->is_folder)
-			continue;
-
-		target_parent = webdav_resolve_folder_node (&resolve, e->parent_id);
-		webdav_merge_feed (root, e->node_id, e->feed_mtime, target_parent);
-		webdav_merge_state (root, e->node_id, e->state_mtime);
-	}
-
 	node_foreach_child_data (root, webdav_cleanup_stale_folders, &cleanup);
 
 	g_hash_table_destroy (cleanup.remote_folder_ids);
 	g_hash_table_destroy (resolve.visiting);
 	g_hash_table_destroy (resolve.ensured_folders);
 	g_hash_table_destroy (resolve.entries_by_id);
-}
-
-void
-webdav_source_feed_list_import (Node *root)
-{
-	GList *index = webdav_read_index (root);
-	MissingSyncCtx ctx = { 0 };
-
-	ctx.root = root;
-	ctx.remote_feed_ids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-	ctx.remote_folder_ids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-	for (GList *l = index; l; l = g_list_next (l)) {
-		IndexEntry *e = (IndexEntry *)l->data;
-		if (e->is_folder)
-			g_hash_table_insert (ctx.remote_folder_ids, g_strdup (e->node_id), GINT_TO_POINTER (1));
-		else
-			g_hash_table_insert (ctx.remote_feed_ids, g_strdup (e->node_id), GINT_TO_POINTER (1));
-	}
-
-	webdav_upload_missing_remote_entries (root, &ctx);
-
-	if (ctx.uploaded_missing)
-		webdav_source_feed_list_upload (root);
-
-	webdav_merge_index (root, index);
-
-	g_list_free_full (index, (GDestroyNotify)index_entry_free);
-	g_hash_table_destroy (ctx.remote_feed_ids);
-	g_hash_table_destroy (ctx.remote_folder_ids);
 }
 
 /**
@@ -735,107 +487,14 @@ enum {
 	ASYNC_UPLOAD_STEP_DONE = 3
 };
 
-/* Forward declarations for result handlers that reference each other */
-static void webdav_async_upload_mkcol_result (const UpdateResult * const result, gpointer user_data, updateFlags flags);
-static void webdav_async_upload_state_result (const UpdateResult * const result, gpointer user_data, updateFlags flags);
-static void webdav_async_upload_feed_result (const UpdateResult * const result, gpointer user_data, updateFlags flags);
-
-static void
-webdav_async_upload_mkcol_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+webdav_async_upload_feed_result (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
 	AsyncUploadCtx *ctx = (AsyncUploadCtx *)user_data;
 	if (!ctx || !ctx->root)
-		return;
-
-	debug (DEBUG_UPDATE, "webdav_async_upload_mkcol_result: status=%d", result->httpstatus);
-
-	/* MKCOL succeeds with 201 (created) or 405 (already exists) */
-	if ((result->httpstatus >= 200 && result->httpstatus < 300) || result->httpstatus == 405) {
-		/* Proceed to state upload */
-		if (ctx->state_dirty) {
-			ctx->step = ASYNC_UPLOAD_STEP_STATE;
-			Node *node = node_from_id (ctx->node_id);
-			if (node) {
-				g_autofree gchar *json = webdav_build_state_json (node);
-				const gchar *remote_id = webdav_feed_remote_id (node);
-				if (json && remote_id) {
-					webdav_request_put_state_with_callback (ctx->root, remote_id, json, webdav_async_upload_state_result, ctx);
-				}
-			}
-		} else if (ctx->feed_dirty) {
-			/* Skip state, go directly to feed */
-			ctx->step = ASYNC_UPLOAD_STEP_FEED;
-			Node *node = node_from_id (ctx->node_id);
-			if (node) {
-				g_autofree gchar *json = webdav_build_feed_json (node);
-				const gchar *remote_id = webdav_feed_remote_id (node);
-				if (json && remote_id) {
-					webdav_request_put_feed_with_callback (ctx->root, remote_id, json, webdav_async_upload_feed_result, ctx);
-				}
-			}
-		} else {
-			/* Nothing to upload */
-			ctx->step = ASYNC_UPLOAD_STEP_DONE;
-			g_free (ctx->node_id);
-			g_free (ctx);
-		}
-	} else {
-		debug (DEBUG_UPDATE, "webdav_async_upload_mkcol_result: MKCOL failed with status %d", result->httpstatus);
-		ctx->step = ASYNC_UPLOAD_STEP_DONE;
-		g_free (ctx->node_id);
-		g_free (ctx);
-	}
-}
-
-static void
-webdav_async_upload_state_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
-{
-	AsyncUploadCtx *ctx = (AsyncUploadCtx *)user_data;
-	if (!ctx || !ctx->root)
-		return;
-
-	debug (DEBUG_UPDATE, "webdav_async_upload_state_result: status=%d", result->httpstatus);
-
-	if (result->httpstatus >= 200 && result->httpstatus < 300) {
-		Node *node = node_from_id (ctx->node_id);
-		if (node) {
-			const gchar *remote_id = webdav_feed_remote_id (node);
-			if (remote_id) {
-				gint64 *ts = g_new (gint64, 1);
-				*ts = (gint64)(g_get_real_time () / G_USEC_PER_SEC);
-				g_hash_table_insert (
-					(GHashTable *)g_object_get_data (G_OBJECT (ctx->root), "stateMtimes"),
-					g_strdup (remote_id),
-					ts
-				);
-			}
-		}
-	}
-
-	if (ctx->feed_dirty) {
-		ctx->step = ASYNC_UPLOAD_STEP_FEED;
-		Node *node = node_from_id (ctx->node_id);
-		if (node) {
-			g_autofree gchar *json = webdav_build_feed_json (node);
-			const gchar *remote_id = webdav_feed_remote_id (node);
-			if (json && remote_id) {
-				webdav_request_put_feed_with_callback (ctx->root, remote_id, json, webdav_async_upload_feed_result, ctx);
-			}
-		}
-	} else {
-		/* No feed upload needed, done */
-		ctx->step = ASYNC_UPLOAD_STEP_DONE;
-		g_free (ctx->node_id);
-		g_free (ctx);
-	}
-}
-
-static void
-webdav_async_upload_feed_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
-{
-	AsyncUploadCtx *ctx = (AsyncUploadCtx *)user_data;
-	if (!ctx || !ctx->root)
-		return;
+		return TRUE;
 
 	debug (DEBUG_UPDATE, "webdav_async_upload_feed_result: status=%d", result->httpstatus);
 
@@ -858,38 +517,12 @@ webdav_async_upload_feed_result (const UpdateResult * const result, gpointer use
 	ctx->step = ASYNC_UPLOAD_STEP_DONE;
 	g_free (ctx->node_id);
 	g_free (ctx);
+
+	return TRUE;
 }
 
 void
-webdav_request_put_state_with_callback (Node *root, const gchar *feed_id, const gchar *json, update_result_cb callback, gpointer callback_data)
-{
-	UpdateRequest *request;
-	g_autofree gchar *url = NULL;
-
-	url = webdav_state_json_url (root, feed_id);
-	request = update_request_new ("PUT", url, NULL, NULL);
-	update_request_set_postdata (request, json, "application/json");
-	webdav_request_set_basic_auth (request, root);
-
-	(void)update_job_new (root, request, callback, callback_data, 0);
-}
-
-void
-webdav_request_put_feed_with_callback (Node *root, const gchar *feed_id, const gchar *json, update_result_cb callback, gpointer callback_data)
-{
-	UpdateRequest *request;
-	g_autofree gchar *url = NULL;
-
-	url = webdav_feed_json_url (root, feed_id);
-	request = update_request_new ("PUT", url, NULL, NULL);
-	update_request_set_postdata (request, json, "application/json");
-	webdav_request_set_basic_auth (request, root);
-
-	(void)update_job_new (root, request, callback, callback_data, 0);
-}
-
-void
-webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_result_cb callback, gpointer callback_data)
+webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data)
 {
 	UpdateRequest *request;
 	g_autofree gchar *url = NULL;
@@ -902,7 +535,7 @@ webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_
 }
 
 void
-webdav_request_get_state_with_callback (Node *root, const gchar *feed_id, update_result_cb callback, gpointer callback_data)
+webdav_request_get_state_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data)
 {
 	UpdateRequest *request;
 	g_autofree gchar *url = NULL;
@@ -960,14 +593,16 @@ webdav_merge_op_complete_one (WebDAVMergeOp *op)
 		webdav_merge_op_finalize (op);
 }
 
-static void
-webdav_async_merge_feed_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+webdav_async_merge_feed_result (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
 	WebDAVFeedFetchCtx *ctx = (WebDAVFeedFetchCtx *)user_data;
 	WebDAVMergeOp *op = ctx ? ctx->op : NULL;
 
 	if (!ctx || !op)
-		return;
+		return TRUE;
 
 	if (result->httpstatus == 200 && result->data && result->size > 0) {
 		Node *target_parent = webdav_merge_op_resolve_parent (op, ctx->parent_id);
@@ -990,16 +625,20 @@ webdav_async_merge_feed_result (const UpdateResult * const result, gpointer user
 	g_free (ctx->feed_id);
 	g_free (ctx->parent_id);
 	g_free (ctx);
+
+	return TRUE;
 }
 
-static void
-webdav_async_merge_state_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+webdav_async_merge_state_result (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
 	WebDAVStateFetchCtx *ctx = (WebDAVStateFetchCtx *)user_data;
 	WebDAVMergeOp *op = ctx ? ctx->op : NULL;
 
 	if (!ctx || !op)
-		return;
+		return TRUE;
 
 	if (result->httpstatus == 200 && result->data && result->size > 0) {
 		Node *node = webdav_find_feed_by_remote_id (op->root, ctx->feed_id);
@@ -1067,69 +706,37 @@ webdav_async_merge_state_result (const UpdateResult * const result, gpointer use
 	webdav_merge_op_complete_one (op);
 	g_free (ctx->feed_id);
 	g_free (ctx);
+
+	return TRUE;
 }
 
-/**
- * Start async upload sequence for a dirty node.
- * Sequence: state.json -> feed.json (as needed)
- */
-void
-webdav_async_upload_feed (Node *root, const gchar *node_id, gboolean upload_state, gboolean upload_feed)
+static gboolean
+webdav_update_result_wrapper (UpdateJob *job)
 {
-	Node *node = node_from_id (node_id);
-	if (!node) {
-		debug (DEBUG_UPDATE, "webdav_async_upload_feed: node %s no longer exists", node_id);
-		return;
-	}
-
-	if (!IS_FEED (node)) {
-		debug (DEBUG_UPDATE, "webdav_async_upload_feed: skip non-feed node %s", node_id);
-		return;
-	}
-
-	const gchar *remote_id = webdav_feed_remote_id (node);
-	if (!remote_id || !*remote_id)
-		return;
-
-	debug (DEBUG_UPDATE, "webdav_async_upload_feed: state=%d feed=%d for node %s", upload_state, upload_feed, node_id);
-
-	/* Create async context to track upload sequence */
-	AsyncUploadCtx *ctx = g_new0 (AsyncUploadCtx, 1);
-	ctx->root = root;
-	ctx->node_id = g_strdup (node_id);
-	ctx->step = ASYNC_UPLOAD_STEP_MKCOL;
-	ctx->state_dirty = upload_state;
-	ctx->feed_dirty = upload_feed;
-
-	/* Start with MKCOL to create node folder */
-	g_autofree gchar *node_dir = webdav_feed_dir_url (root, remote_id);
-	UpdateRequest *request = update_request_new ("MKCOL", node_dir, NULL, NULL);
-	webdav_request_set_basic_auth (request, root);
-	debug (DEBUG_UPDATE, "webdav_async_upload_feed: queued MKCOL %s", node_dir);
-	(void)update_job_new (root, request, webdav_async_upload_mkcol_result, ctx, 0);
-}
-
-static void
-webdav_update_result_wrapper (const UpdateResult * const result, gpointer user_data, updateFlags flags)
-{
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	if (!subscription)
-		return;
+		return TRUE;
 
 	/* Call the subscription's process_update_result callback */
-	subscription->type->process_update_result (subscription, result, flags);
+	subscription->type->process_update_result (subscription, result, job->flags);
+
+	return TRUE;
 }
 
 /**
  * Bootstrap MKCOL callback.
  * Accepts 2xx/405 (exists) as success, then queues index fetch.
  */
-static void
-webdav_bootstrap_mkcol_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+webdav_bootstrap_mkcol_result (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
 	WebDAVAsyncOp *ctx = (WebDAVAsyncOp *)user_data;
 	if (!ctx || !ctx->root)
-		return;
+		return TRUE;
 
 	debug (DEBUG_UPDATE, "webdav_bootstrap_mkcol_result: status=%d", result->httpstatus);
 
@@ -1153,18 +760,22 @@ webdav_bootstrap_mkcol_result (const UpdateResult * const result, gpointer user_
 		}
 		g_free (ctx);
 	}
+
+	return TRUE;
 }
 
 /**
  * Bootstrap index fetch callback.
  * Parse index, import data, mark initialImportDone, then transition to ACTIVE.
  */
-static void
-webdav_bootstrap_index_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
+static gboolean
+webdav_bootstrap_index_result (UpdateJob *job)
 {
+	UpdateResult *result = job->result;
+	gpointer user_data = job->user_data;
 	WebDAVAsyncOp *ctx = (WebDAVAsyncOp *)user_data;
 	if (!ctx || !ctx->root)
-		return;
+		return TRUE;
 
 	debug (DEBUG_UPDATE, "webdav_bootstrap_index_result: status=%d, size=%zu", result->httpstatus, result->size);
 
@@ -1210,6 +821,8 @@ webdav_bootstrap_index_result (const UpdateResult * const result, gpointer user_
 		debug (DEBUG_UPDATE, "webdav_bootstrap: index fetch failed with status %d", result->httpstatus);
 		g_free (ctx);
 	}
+
+	return TRUE;
 }
 
 void
@@ -1246,20 +859,22 @@ webdav_request_put_index (Node *root, const gchar *json, gpointer callback_data)
  * Queues MKCOL operation with bootstrap-specific callback.
  */
 void
+webdav_request_mkcol_with_callback (Node *root, const gchar *url, update_flow_cb callback, gpointer callback_data)
+{
+	UpdateRequest *request = update_request_new ("MKCOL", url, NULL, NULL);
+	webdav_request_set_basic_auth (request, root);
+	debug (DEBUG_UPDATE, "webdav_request_mkcol_with_callback: queued MKCOL %s", url);
+	(void)update_job_new (root, request, callback, callback_data, 0);
+}
+
+void
 webdav_request_mkcol_bootstrap (Node *root, WebDAVAsyncOp *ctx)
 {
-	UpdateRequest *request;
-	g_autofree gchar *url = NULL;
-
-	url = g_strdup_printf (
+	g_autofree gchar *url = g_strdup_printf (
 		"%s/",
 		(const gchar *)g_object_get_data (G_OBJECT (root), "collectionUrl")
 	);
-	request = update_request_new ("MKCOL", url, NULL, NULL);
-	webdav_request_set_basic_auth (request, root);
-
-	debug (DEBUG_UPDATE, "webdav_request_mkcol_bootstrap: queued MKCOL %s", url);
-	(void)update_job_new (root, request, webdav_bootstrap_mkcol_result, ctx, 0);
+	webdav_request_mkcol_with_callback (root, url, webdav_bootstrap_mkcol_result, ctx);
 }
 
 /**
