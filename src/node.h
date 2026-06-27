@@ -181,16 +181,6 @@ void node_update_subscription (Node *node, gpointer user_data);
 void node_auto_update_subscription (Node *node);
 
 /**
- * node_reset_update_counter:
- * @node:		the node
- * @now:		the current timestamp
- *
- * Helper function to be used with node_foreach_child()
- * to mass-auto-update subscriptions.
- */
-void node_reset_update_counter (Node *node, guint64 *now);
-
-/**
  * node_is_ancestor:
  * @node1:		the possible ancestor
  * @node2:		the possible child

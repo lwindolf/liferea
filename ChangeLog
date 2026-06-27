@@ -7,6 +7,13 @@ To be released
 
 	* Fixes node source update state after login for Reedah, TheOldReader, GoogleReader
 	  (Lars Windolf)
+
+	* Update Javascript dependency DomPurify
+	  (Lars Windolf)
+	
+	* Remove incorrect lastPoll resetting on startup when "Update all feeds 
+	  on startup" preference is disabled
+	  (Lars Windolf)
 	
 
 2026-06-16  Lars Windolf <lars.windolf@gmx.de>

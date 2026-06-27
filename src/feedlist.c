@@ -223,8 +223,7 @@ feedlist_init (FeedList *fl)
 			debug (DEBUG_UPDATE, "initial update: prevented because we are offline");
 		}
 	} else {
-		debug (DEBUG_UPDATE, "initial update: resetting feed counter");
-		feedlist_reset_update_counters (NULL);
+		debug (DEBUG_UPDATE, "initial update: none");
 	}
 
 	/* 5. Purge old nodes from the database */
@@ -654,14 +653,6 @@ feedlist_save (void)
 {
 	debug (DEBUG_CONF, "Forced feed list save");
 	feedlist_schedule_save_cb (NULL);
-}
-
-void
-feedlist_reset_update_counters (Node *node)
-{
-	guint64 now = g_get_real_time ();
-
-	node_foreach_child_data (node?node:feedlist_get_root (), node_reset_update_counter, &now);
 }
 
 FeedList *
