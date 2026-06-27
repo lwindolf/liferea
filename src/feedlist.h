@@ -231,14 +231,13 @@ void feedlist_node_removed (Node *node);
 void feedlist_schedule_save (void);
 
 /**
- * feedlist_reset_update_counters: (skip)
- * @node: (nullable):	the node (or NULL for whole feed list)
- *
- * Resets the update counter of all childs of the given node
- *
+ * feedlist_is_writable: (skip)
+ * 
+ * Checks relative to the selected node and its parent if a feed 
+ * list node can be added.
+ * 
+ * Returns: TRUE if yes
  */
-void feedlist_reset_update_counters (Node *node);
-
 gboolean feedlist_is_writable (void);
 
 /**
