@@ -32,9 +32,6 @@ void webdav_source_feed_list_import (Node *root);
 void webdav_source_feed_list_update_feed_mtime (Node *root, const gchar *remote_id);
 void webdav_source_feed_list_update_state_mtime (Node *root, const gchar *remote_id);
 
-void webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data);
-void webdav_request_get_state_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data);
-
 gboolean webdav_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request);
 void webdav_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags);
 

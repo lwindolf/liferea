@@ -66,6 +66,13 @@
  *
  * Change detection uses GET index.json (O(1) round-trips per poll cycle)
  * instead of PROPFIND depth-1, which avoids per-feed round-trips.
+ *
+ * Per-source instance data attached to the root node via g_object_set_data_full().
+ *
+ * collectionUrl     string
+ * dirtyFeeds  maps node-id (gchar*) -> DirtyEntry* (two lazy-upload timers).
+ * feedMtimes  maps node-id (gchar*) -> gint64*     (last feed.json upload time).
+ * stateMtimes maps node-id (gchar*) -> gint64*     (last state.json upload time).
  */
 
 /*  Per-node lazy-upload timers                                         */

@@ -470,7 +470,7 @@ webdav_merge_index (Node *root, GList *index)
 	g_hash_table_destroy (resolve.entries_by_id);
 }
 
-void
+static void
 webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data)
 {
 	UpdateRequest *request;
@@ -483,7 +483,7 @@ webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_
 	(void)update_job_new (root, request, callback, callback_data, 0);
 }
 
-void
+static void
 webdav_request_get_state_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data)
 {
 	UpdateRequest *request;

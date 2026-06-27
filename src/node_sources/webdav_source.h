@@ -48,25 +48,6 @@
 /** Metadata key that stores the stable remote feed id for WebDAV sync. */
 #define WEBDAV_REMOTE_FEED_ID_METADATA "remote-feed-id"
 
-/**
- * Per-source instance data attached to the node via g_object_set_data_full().
- *
- * Server layout:
- *   <collectionUrl>/
- *     index.json          -- { "feeds": [{ "id", "feed_mtime", "state_mtime" }] }
- *     <node_id>/
- *       feed.json         -- node metadata + embedded items array
- *       state.json        -- { "<sourceId>": { "read": bool, "flagged": bool } }
- * 
- * State is kept using GObject data fields:
- *
- * initialImportDone boolean
- * collectionUrl     string
- * dirtyFeeds  maps node-id (gchar*) -> DirtyEntry* (two lazy-upload timers).
- * feedMtimes  maps node-id (gchar*) -> gint64*     (last feed.json upload time).
- * stateMtimes maps node-id (gchar*) -> gint64*     (last state.json upload time).
- */
-
 gboolean webdav_source_login (Node *root, guint32 flags);
 const gchar *webdav_feed_remote_id (Node *node);
 void webdav_feed_set_remote_id (Node *node, const gchar *remote_id);
@@ -75,7 +56,6 @@ gchar * webdav_state_json_url (Node *root, const gchar *node_id);
 gchar * webdav_index_url (Node *root);
 gchar * webdav_feed_dir_url (Node *root, const gchar *node_id);
 void webdav_request_set_basic_auth (UpdateRequest *request, Node *root);
-
 
 gboolean webdav_is_feed_upload_pending (Node *root, const gchar *node_id);
 gboolean webdav_is_state_upload_pending (Node *root, const gchar *node_id);
