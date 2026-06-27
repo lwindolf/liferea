@@ -1,5 +1,5 @@
 /**
- * @file webdav_source.c  WebDAV source request flow tasks
+ * @file webdav_source.c  WebDAV source request flows
  *
  * Copyright (C) 2026 Lars Windolf <lars.windolf@gmx.de>
  *
@@ -18,31 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "webdav_source_tasks.h"
+#include "webdav_source_flows.h"
 
 #include "debug.h"
 #include "update.h"
 #include "node_providers/feed.h"
 #include "webdav_source.h"
 
-/* feed upload flow */
-
-typedef enum {
-        UPLOAD_FEED_START,
-        UPLOAD_FEED_MKCOL,
-        UPLOAD_FEED_PUT_NODE,
-        UPLOAD_FEED_PUT_STATE,
-        UPLOAD_FEED_FINISH
-} StepUploadFeed;
-
-typedef struct {
-        Node *root;
-        gchar *node_id;
-        gchar *remote_id;
-        gboolean feed_dirty;
-        gboolean state_dirty;
-        StepUploadFeed step;
-} FlowUploadFeed;
+/* data helpers */
 
 /* ------------------------------------------------------------------ */
 /*  Build combined node.json (node metadata + items array)              */
@@ -169,6 +152,25 @@ webdav_build_state_json (Node *node)
 	return result;
 }
 
+/* feed upload flow */
+
+typedef enum {
+        UPLOAD_FEED_START     = 0,
+        UPLOAD_FEED_MKCOL     = 1,
+        UPLOAD_FEED_PUT_NODE  = 2,
+        UPLOAD_FEED_PUT_STATE = 3,
+        UPLOAD_FEED_FINISH    = 4
+} StepUploadFeed;
+
+typedef struct {
+        Node *root;
+        gchar *node_id;
+        gchar *remote_id;
+        gboolean feed_dirty;
+        gboolean state_dirty;
+        StepUploadFeed step;
+} FlowUploadFeed;
+
 static gboolean
 webdav_source_flow_upload_feed_step (UpdateJob *job)
 {
@@ -176,19 +178,22 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
         FlowUploadFeed  *flow = (FlowUploadFeed *) job->user_data;
         Node            *node = node_from_id (flow->node_id);
 
-        if (!node) {
-                g_free (flow->node_id);
-                g_free (flow->remote_id);
-                g_free (flow);
+	debug (DEBUG_UPDATE, "webdav_source_flow_upload_feed: step=%d feed=%d state=%d for node '%s' (%s)", flow->step, flow->feed_dirty, flow->state_dirty, flow->node_id, node?node->title:"NULL");
+
+        if (!node)
+                return TRUE;
+
+        /* result processing */
+        if (result && result->httpstatus == 401) {
+                node_source_set_state (flow->root, NODE_SOURCE_STATE_NO_AUTH);
                 return TRUE;
         }
 
-        /* result processing */
         switch (flow->step) {
                 case UPLOAD_FEED_START:
                         break;
                 case UPLOAD_FEED_MKCOL:
-                        if (!(result->httpstatus == 210 || result->httpstatus == 405)) {
+                        if (!((result->httpstatus >= 200 && result->httpstatus < 300) || result->httpstatus == 405)) {
                                 // FIXME: provide better error for user
                                 flow->root->available = FALSE;
                                 flow->root->subscription->error = FETCH_ERROR_NET;
@@ -221,7 +226,7 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
                         break;
         }
 
-        /* request preparation*/
+        /* request preparation */
         switch (flow->step) {
                 case UPLOAD_FEED_START:
                 case UPLOAD_FEED_MKCOL: {
@@ -229,8 +234,7 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
 
                         g_assert (!job->request);
                         job->request = update_request_new ("MKCOL", url, NULL, NULL);
-                        webdav_request_set_basic_auth (job->request, flow->root);                        
-
+                        webdav_request_set_basic_auth (job->request, flow->root);
                         break;
                 }
                 case UPLOAD_FEED_PUT_NODE: {
@@ -265,9 +269,6 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
                                 ts
                         );
 
-                        g_free (flow->node_id);
-                        g_free (flow->remote_id);
-                        g_free (flow);
                         return TRUE;
                         break;
                 }
@@ -276,25 +277,33 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
         return FALSE;   /* continue the flow */
 }
 
+static void
+webdav_source_flow_upload_feed_free (gpointer data)
+{
+        FlowUploadFeed *flow = (FlowUploadFeed *)data;
+
+        g_free (flow->node_id);
+        g_free (flow->remote_id);
+        g_free (flow);
+}
+
 void
 webdav_source_flow_upload_feed (Node *root, const gchar *node_id, gboolean upload_state, gboolean upload_feed)
 {
 	Node *node = node_from_id (node_id);
 	if (!node) {
-		debug (DEBUG_UPDATE, "webdav_async_upload_feed: node %s no longer exists", node_id);
+		debug (DEBUG_UPDATE, "webdav_source_flow_upload_feed: node %s no longer exists", node_id);
 		return;
 	}
 
 	if (!IS_FEED (node)) {
-		debug (DEBUG_UPDATE, "webdav_async_upload_feed: skip non-feed node %s", node_id);
+		debug (DEBUG_UPDATE, "webdav_source_flow_upload_feed: skip non-feed node %s", node_id);
 		return;
 	}
 
 	const gchar *remote_id = webdav_feed_remote_id (node);
 	if (!remote_id || !*remote_id)
 		return;
-
-	debug (DEBUG_UPDATE, "webdav_async_upload_feed: state=%d feed=%d for node %s", upload_state, upload_feed, node_id);
 
         FlowUploadFeed *flow = g_new0(FlowUploadFeed, 1);
         flow->step = UPLOAD_FEED_START;
@@ -304,5 +313,132 @@ webdav_source_flow_upload_feed (Node *root, const gchar *node_id, gboolean uploa
         flow->state_dirty = upload_state;
 	flow->feed_dirty = upload_feed;
 
-        update_job_new_flow (root, webdav_source_flow_upload_feed_step, flow, 0);
+        update_job_new_flow (
+                root,
+                webdav_source_flow_upload_feed_step,
+                flow,
+                webdav_source_flow_upload_feed_free,
+                0);
+}
+
+/* index bootstrap flow */
+
+typedef enum {
+        BOOTSTRAP_STEP_START     = 0,
+	BOOTSTRAP_STEP_MKCOL     = 1,
+	BOOTSTRAP_STEP_GET_INDEX = 2,
+	BOOTSTRAP_STEP_FINISH    = 3
+} StepBootstrap;
+
+typedef struct {
+	Node           *root;           /* Source root node */
+	StepBootstrap   step;           /* Current operation step */
+        indexFetchCallback callback;       /* Callback for index.json result */
+} FlowBootstrap;
+
+static gboolean
+webdav_source_flow_bootstrap_step (UpdateJob *job)
+{
+        UpdateResult    *result = job->result;
+        FlowBootstrap   *flow = (FlowBootstrap *) job->user_data;
+
+	debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: step=%d for node '%s' (%s)", flow->step, flow->root->id, flow->root->title);
+
+        /* result processing */
+        if (result && result->httpstatus == 401) {
+                node_source_set_state (flow->root, NODE_SOURCE_STATE_NO_AUTH);
+                return TRUE;
+        }
+
+        switch (flow->step) {
+                case BOOTSTRAP_STEP_START:
+                        break;
+                case BOOTSTRAP_STEP_MKCOL:
+                        if (!((result->httpstatus >= 200 && result->httpstatus < 300) || result->httpstatus == 405)) {
+                                // FIXME: provide better error for user
+                                flow->root->available = FALSE;
+                                flow->root->subscription->error = FETCH_ERROR_NET;
+                                return TRUE;
+                        }
+                        break;
+
+                case BOOTSTRAP_STEP_GET_INDEX:
+                        // For index fetch we accept a 404 and a normal result
+                        if (!((result->httpstatus >= 200 && result->httpstatus < 400) || result->httpstatus == 404)) {
+                                // FIXME: provide better error for user
+                                flow->root->available = FALSE;
+                                flow->root->subscription->error = FETCH_ERROR_NET;
+                                return TRUE;
+                        }
+                        break;
+                default:
+                        break;
+        }
+        
+        /* state machine */
+        switch (flow->step) {
+                case BOOTSTRAP_STEP_START:
+                        /* Initially there is no result, skip to next step */
+                        flow->step = BOOTSTRAP_STEP_MKCOL;
+                        break;
+                case BOOTSTRAP_STEP_MKCOL:
+                        flow->step = BOOTSTRAP_STEP_GET_INDEX;
+                        break;
+                case BOOTSTRAP_STEP_GET_INDEX:
+                        flow->step = BOOTSTRAP_STEP_FINISH;
+                        break;
+                default:
+                        break;
+        }
+
+        /* request preparation */
+        switch (flow->step) {
+                case BOOTSTRAP_STEP_START:
+                case BOOTSTRAP_STEP_MKCOL: {
+                       	g_autofree gchar *url = g_strdup_printf (
+	                	"%s/",
+		                (const gchar *)g_object_get_data (G_OBJECT (flow->root), "collectionUrl")
+	                );
+
+                        g_assert(!job->request);
+                        job->request = update_request_new ("MKCOL", url, NULL, NULL);
+                        webdav_request_set_basic_auth (job->request, flow->root);
+                        break;
+                }
+                case BOOTSTRAP_STEP_GET_INDEX: {
+	                g_autofree gchar *url = webdav_index_url (flow->root);
+	                update_request_set_method (job->request, "GET");
+                        update_request_set_source (job->request, url);
+                        break;
+                }
+                case BOOTSTRAP_STEP_FINISH: {
+                        (flow->callback) (flow->root, result->data);
+                        return TRUE;
+                        break;
+                }
+        }
+
+        return FALSE;   /* continue the flow */
+}
+
+static void
+webdav_source_flow_bootstrap_free (gpointer data)
+{
+        g_free (data);
+}
+
+void
+webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb)
+{
+        FlowBootstrap *flow = g_new0(FlowBootstrap, 1);
+        flow->step = BOOTSTRAP_STEP_START;
+        flow->root = root;
+        flow->callback = cb;
+
+        update_job_new_flow (
+                root,
+                webdav_source_flow_bootstrap_step,
+                flow,
+                webdav_source_flow_bootstrap_free,
+                0);
 }

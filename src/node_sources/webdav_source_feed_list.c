@@ -35,6 +35,7 @@
 #include "update.h"
 #include "ui/auth_dialog.h"
 #include "net.h"
+#include "webdav_source_flows.h"
 
 typedef struct {
 	gboolean is_folder;
@@ -81,6 +82,8 @@ typedef struct {
 	gchar         *feed_id;
 	gint64         remote_mtime;
 } WebDAVStateFetchCtx;
+
+static void webdav_request_put_index (Node *root, const gchar *json, gpointer callback_data);
 
 static void
 index_entry_free (IndexEntry *e)
@@ -351,9 +354,8 @@ webdav_source_feed_list_upload (Node *root)
 	g_autofree gchar *json = json_dump (ctx.builder);
 	g_object_unref (ctx.builder);
 
-	if (json) {
+	if (json)
 		webdav_request_put_index (root, json, NULL);
-	}
 }
 
 static Node *
@@ -466,59 +468,6 @@ webdav_merge_index (Node *root, GList *index)
 	g_hash_table_destroy (resolve.visiting);
 	g_hash_table_destroy (resolve.ensured_folders);
 	g_hash_table_destroy (resolve.entries_by_id);
-}
-
-/**
- * Async upload context for sequencing state -> feed -> index uploads.
- * Used to track multi-part upload sequence for a dirty node.
- */
-typedef struct {
-	Node       *root;           /* Source root */
-	gchar      *node_id;        /* Local node ID */
-	int         step;           /* Current upload step */
-	gboolean    feed_dirty;     /* Feed JSON needs upload */
-	gboolean    state_dirty;    /* State JSON needs upload */
-} AsyncUploadCtx;
-
-enum {
-	ASYNC_UPLOAD_STEP_MKCOL = 0,
-	ASYNC_UPLOAD_STEP_STATE = 1,
-	ASYNC_UPLOAD_STEP_FEED = 2,
-	ASYNC_UPLOAD_STEP_DONE = 3
-};
-
-static gboolean
-webdav_async_upload_feed_result (UpdateJob *job)
-{
-	UpdateResult *result = job->result;
-	gpointer user_data = job->user_data;
-	AsyncUploadCtx *ctx = (AsyncUploadCtx *)user_data;
-	if (!ctx || !ctx->root)
-		return TRUE;
-
-	debug (DEBUG_UPDATE, "webdav_async_upload_feed_result: status=%d", result->httpstatus);
-
-	if (result->httpstatus >= 200 && result->httpstatus < 300) {
-		Node *node = node_from_id (ctx->node_id);
-		if (node) {
-			const gchar *remote_id = webdav_feed_remote_id (node);
-			if (remote_id) {
-				gint64 *ts = g_new (gint64, 1);
-				*ts = (gint64)(g_get_real_time () / G_USEC_PER_SEC);
-				g_hash_table_insert (
-					(GHashTable *)g_object_get_data (G_OBJECT (ctx->root), "feedMtimes"),
-					g_strdup (remote_id),
-					ts
-				);
-			}
-		}
-	}
-
-	ctx->step = ASYNC_UPLOAD_STEP_DONE;
-	g_free (ctx->node_id);
-	g_free (ctx);
-
-	return TRUE;
 }
 
 void
@@ -726,120 +675,36 @@ webdav_update_result_wrapper (UpdateJob *job)
 }
 
 /**
- * Bootstrap MKCOL callback.
- * Accepts 2xx/405 (exists) as success, then queues index fetch.
- */
-static gboolean
-webdav_bootstrap_mkcol_result (UpdateJob *job)
-{
-	UpdateResult *result = job->result;
-	gpointer user_data = job->user_data;
-	WebDAVAsyncOp *ctx = (WebDAVAsyncOp *)user_data;
-	if (!ctx || !ctx->root)
-		return TRUE;
-
-	debug (DEBUG_UPDATE, "webdav_bootstrap_mkcol_result: status=%d", result->httpstatus);
-
-	/* Accept 2xx (created) or 405 (method not allowed / already exists) */
-	if (result->httpstatus >= 200 && result->httpstatus < 300) {
-		/* Success, proceed to index fetch */
-		ctx->step = BOOTSTRAP_STEP_INDEX;
-		webdav_request_get_index_bootstrap (ctx->root, ctx);
-	} else if (result->httpstatus == 405) {
-		/* Collection already exists, proceed to index fetch */
-		debug (DEBUG_UPDATE, "webdav_bootstrap: collection exists");
-		ctx->step = BOOTSTRAP_STEP_INDEX;
-		webdav_request_get_index_bootstrap (ctx->root, ctx);
-	} else {
-		/* Failed, mark NO_AUTH on 401 */
-		if (result->httpstatus == 401) {
-			ctx->root->source->loginState = NODE_SOURCE_STATE_NO_AUTH;
-			debug (DEBUG_UPDATE, "webdav_bootstrap: 401 during MKCOL");
-		} else {
-			debug (DEBUG_UPDATE, "webdav_bootstrap: MKCOL failed with status %d", result->httpstatus);
-		}
-		g_free (ctx);
-	}
-
-	return TRUE;
-}
-
-/**
  * Bootstrap index fetch callback.
  * Parse index, import data, mark initialImportDone, then transition to ACTIVE.
  */
-static gboolean
-webdav_bootstrap_index_result (UpdateJob *job)
+static void
+webdav_source_feed_list_index_fetch_cb (Node *root, const gchar *jsonStr)
 {
-	UpdateResult *result = job->result;
-	gpointer user_data = job->user_data;
-	WebDAVAsyncOp *ctx = (WebDAVAsyncOp *)user_data;
-	if (!ctx || !ctx->root)
-		return TRUE;
-
-	debug (DEBUG_UPDATE, "webdav_bootstrap_index_result: status=%d, size=%zu", result->httpstatus, result->size);
-
-	if (result->httpstatus == 200 && result->data && result->size > 0) {
-		/* Parse and import index */
-		ctx->step = BOOTSTRAP_STEP_IMPORT;
-		
-		/* Parse index.json into feed list */
-		GList *index = webdav_parse_index_json (result->data);
+	if (jsonStr) {
+		GList *index = webdav_parse_index_json (jsonStr);
 		if (index) {
-			webdav_merge_index (ctx->root, index);
+			webdav_merge_index (root, index);
 			/* GList is cleaned up by webdav_merge_index */
 		} else {
 			debug (DEBUG_UPDATE, "webdav_bootstrap: failed to parse index.json");
 		}
-
-		/* Mark import complete */
-		g_object_set_data (G_OBJECT (ctx->root), "initialImportDone", GINT_TO_POINTER (TRUE));
-		ctx->step = BOOTSTRAP_STEP_DONE;
-
-		/* Transition to ACTIVE and trigger normal subscription updates */
-		node_source_set_state (ctx->root, NODE_SOURCE_STATE_ACTIVE);
-		
-		/* Trigger subscription update (now using async queued requests) */
-		subscription_update (ctx->root->subscription, ctx->flags);
-		
-		g_free (ctx);
-	} else if (result->httpstatus == 401) {
-		/* Auth failure */
-		ctx->root->source->loginState = NODE_SOURCE_STATE_NO_AUTH;
-		debug (DEBUG_UPDATE, "webdav_bootstrap: 401 during index fetch");
-		g_free (ctx);
-	} else if (result->httpstatus == 404) {
-		/* No index yet (first login, empty server) — this is OK */
-		debug (DEBUG_UPDATE, "webdav_bootstrap: no index.json yet (404) — initializing empty");
-		g_object_set_data (G_OBJECT (ctx->root), "initialImportDone", GINT_TO_POINTER (TRUE));
-		ctx->step = BOOTSTRAP_STEP_DONE;
-		
-		node_source_set_state (ctx->root, NODE_SOURCE_STATE_ACTIVE);
-		subscription_update (ctx->root->subscription, ctx->flags);
-		g_free (ctx);
 	} else {
-		debug (DEBUG_UPDATE, "webdav_bootstrap: index fetch failed with status %d", result->httpstatus);
-		g_free (ctx);
+		/* even if we got no "index.json" from remote the subscription_update()
+		   below will trigger an initial sync */
 	}
-
-	return TRUE;
+	
+	node_source_set_state (root, NODE_SOURCE_STATE_ACTIVE);
+	subscription_update (root->subscription, 0);
 }
 
 void
-webdav_request_get_index (Node *root, gpointer callback_data)
+webdav_source_feed_list_import (Node *root)
 {
-	UpdateRequest *request;
-	g_autofree gchar *url = NULL;
-
-	url = webdav_index_url (root);
-	request = update_request_new ("GET", url, NULL, NULL);
-	webdav_request_set_basic_auth (request, root);
-
-	debug (DEBUG_UPDATE, "webdav_request_get_index: queued GET %s", url);
-	(void)update_job_new (root, request, webdav_update_result_wrapper, callback_data, 0);
+	webdav_source_flow_bootstrap_index (root, webdav_source_feed_list_index_fetch_cb);
 }
 
-void
+static void
 webdav_request_put_index (Node *root, const gchar *json, gpointer callback_data)
 {
 	UpdateRequest *request;
@@ -854,63 +719,18 @@ webdav_request_put_index (Node *root, const gchar *json, gpointer callback_data)
 	(void)update_job_new (root, request, webdav_update_result_wrapper, callback_data, 0);
 }
 
-/**
- * Bootstrap MKCOL request.
- * Queues MKCOL operation with bootstrap-specific callback.
- */
-void
-webdav_request_mkcol_with_callback (Node *root, const gchar *url, update_flow_cb callback, gpointer callback_data)
-{
-	UpdateRequest *request = update_request_new ("MKCOL", url, NULL, NULL);
-	webdav_request_set_basic_auth (request, root);
-	debug (DEBUG_UPDATE, "webdav_request_mkcol_with_callback: queued MKCOL %s", url);
-	(void)update_job_new (root, request, callback, callback_data, 0);
-}
-
-void
-webdav_request_mkcol_bootstrap (Node *root, WebDAVAsyncOp *ctx)
-{
-	g_autofree gchar *url = g_strdup_printf (
-		"%s/",
-		(const gchar *)g_object_get_data (G_OBJECT (root), "collectionUrl")
-	);
-	webdav_request_mkcol_with_callback (root, url, webdav_bootstrap_mkcol_result, ctx);
-}
-
-/**
- * Bootstrap index fetch request.
- * Queues GET index.json with bootstrap-specific callback.
- */
-void
-webdav_request_get_index_bootstrap (Node *root, WebDAVAsyncOp *ctx)
-{
-	UpdateRequest *request;
-	g_autofree gchar *url = NULL;
-
-	url = webdav_index_url (root);
-	request = update_request_new ("GET", url, NULL, NULL);
-	webdav_request_set_basic_auth (request, root);
-
-	debug (DEBUG_UPDATE, "webdav_request_get_index_bootstrap: queued GET %s", url);
-	(void)update_job_new (root, request, webdav_bootstrap_index_result, ctx, 0);
-}
-
-/* ================================================================ */
-/*  Subscription callbacks: orchestrate index fetch and merge       */
-/* ================================================================ */
-
 gboolean
 webdav_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	g_autofree gchar *index_url = NULL;
 
+	// FIXME: is this necessary? Isn't this handled by node_source.c
 	/* Only prepare request if login is already active; otherwise skip this round */
 	if (subscription->node->source->loginState != NODE_SOURCE_STATE_ACTIVE) {
 		debug (DEBUG_UPDATE, "webdav_subscription_prepare_update_request: login not active, skipping");
 		return FALSE;
 	}
 
-	/* Build request for index.json fetch */
 	index_url = webdav_index_url (subscription->node);
 	update_request_set_source (request, index_url);
 	debug (DEBUG_UPDATE, "webdav_subscription_prepare_update_request: queued index fetch from %s", index_url);

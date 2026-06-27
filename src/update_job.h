@@ -62,6 +62,7 @@ struct _UpdateJob {
 	gpointer		owner;		/*<< owner of this job (used for matching when cancelling) */
 	update_flow_cb		callback;	/*<< result processing callback */
 	gpointer		user_data;	/*<< result processing user data */
+	GDestroyNotify		destroy;	/*<< user data destroy function */
 	updateFlags		flags;		/*<< request and result processing flags */
 	gint			state;		/*<< State of the job (enum request_state) */
 	updateCommandState	cmd;		/*<< values for command feeds */
@@ -91,6 +92,7 @@ UpdateJob * update_job_new (gpointer owner,
  * @owner: (nullable):		request owner (allows cancelling)
  * @callback: (scope forever):	flow processing callback
  * @user_data: (nullable):	flow processing callback parameters
+ * @destroy: (nullable):        user_data destroy function
  * @flags:			request/result processing flags
  * 
  * Starts a given request flow using the flow callback. The start might be
@@ -102,6 +104,7 @@ UpdateJob * update_job_new (gpointer owner,
 UpdateJob * update_job_new_flow (gpointer owner,
                                  update_flow_cb callback,
                                  gpointer user_data,
+				 GDestroyNotify destroy,
                                  updateFlags flags);
 
 /**

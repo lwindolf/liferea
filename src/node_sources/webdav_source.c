@@ -44,7 +44,7 @@
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
 #include "node_sources/webdav_source_feed_list.h"
-#include "node_sources/webdav_source_tasks.h"
+#include "node_sources/webdav_source_flows.h"
 
 /*
  * Syncs a Liferea feed list to a "Liferea Sync" collection on a WebDAV
@@ -161,42 +161,6 @@ webdav_feed_set_remote_id (Node *node, const gchar *remote_id)
 	metadata_list_set (&node->subscription->metadata, WEBDAV_REMOTE_FEED_ID_METADATA, remote_id);
 }
 
-static void
-webdav_add_auth_header (Node *root, SoupMessage *msg)
-{
-	const gchar *username;
-	const gchar *password;
-	g_autofree gchar *credentials = NULL;
-	g_autofree gchar *encoded = NULL;
-	g_autofree gchar *auth = NULL;
-
-	if (!msg)
-		return;
-
-	if (!root->subscription->updateOptions)
-		return;
-
-	username = root->subscription->updateOptions->username;
-	password = root->subscription->updateOptions->password;
-	if (!username || !*username)
-		return;
-
-	credentials = g_strdup_printf ("%s:%s", username, password ? password : "");
-	encoded = g_base64_encode ((const guchar *)credentials, strlen (credentials));
-	auth = g_strdup_printf ("Basic %s", encoded);
-
-	soup_message_headers_replace (soup_message_get_request_headers (msg), "Authorization", auth);
-}
-
-static void
-webdav_handle_auth_401 (Node *root, guint flags)
-{
-	root->subscription->error = FETCH_ERROR_AUTH;
-	root->available = FALSE;
-	node_source_set_state (root, NODE_SOURCE_STATE_NO_AUTH);
-	auth_dialog_new (root->subscription, flags);
-}
-
 void
 webdav_request_set_basic_auth (UpdateRequest *request, Node *root)
 {
@@ -212,10 +176,6 @@ webdav_request_set_basic_auth (UpdateRequest *request, Node *root)
 	g_autofree gchar *encoded = g_base64_encode ((const guchar *)credentials, strlen (credentials));
 	request->authValue = g_strdup_printf ("Basic %s", encoded);
 }
-
-/* ------------------------------------------------------------------ */
-/*  URL helpers                                                         */
-/* ------------------------------------------------------------------ */
 
 gboolean
 webdav_is_feed_upload_pending (Node *root, const gchar *node_id)
@@ -245,6 +205,10 @@ webdav_is_state_upload_pending (Node *root, const gchar *node_id)
 		node_id);
 	return de && de->state_timer_id;
 }
+
+/* ------------------------------------------------------------------ */
+/*  URL helpers                                                         */
+/* ------------------------------------------------------------------ */
 
 gchar *
 webdav_feed_dir_url (Node *root, const gchar *node_id)
@@ -296,33 +260,12 @@ webdav_source_login (Node *root, guint32 flags)
 
 	node_source_set_state (root, NODE_SOURCE_STATE_IN_PROGRESS);
 
-	/* Phase 3: Async bootstrap sequence - MKCOL -> index fetch -> import.
-	 * Create async operation context to chain dependent requests without blocking. */
-	if (!GPOINTER_TO_INT (g_object_get_data (G_OBJECT (root), "initialImportDone"))) {
-		WebDAVAsyncOp *ctx = g_new0 (WebDAVAsyncOp, 1);
-		ctx->root = root;
-		ctx->flags = flags;
-		ctx->step = BOOTSTRAP_STEP_MKCOL;
-		ctx->pending_feeds = 0;
-		ctx->parsed_index = NULL;
-
-		/* Start async bootstrap sequence */
-		webdav_request_mkcol_bootstrap (root, ctx);
-	} else {
-		/* Already imported, just set active and trigger updates */
-		node_source_set_state (root, NODE_SOURCE_STATE_ACTIVE);
-		
-		/* Trigger update via subscription callback (which now uses queued requests) */
-		if (!(flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
-			subscription_update (root->subscription, flags);
-	}
+	webdav_source_feed_list_import (root);
 
 	return TRUE;
 }
 
-/* ------------------------------------------------------------------ */
-/*  Lazy sync flush callbacks (Phase 4: enqueue async jobs)             */
-/* ------------------------------------------------------------------ */
+/*  Lazy sync flushing */
 
 typedef struct {
 	Node	*root;
@@ -381,7 +324,7 @@ webdav_mark_dirty_state (Node *root, const gchar *node_id)
 	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ds)", node_id, WEBDAV_STATE_SYNC_DELAY_S);
 }
 
-// FIXME: nonsense implement set_flag and set_read to mark dirty and delay the upload instead of uploading immediately
+// FIXME: also implement set_flag and set_read to mark dirty and delay the upload instead of uploading immediately
 /* ------------------------------------------------------------------ */
 /*  feedlist "node-updated" signal handler                              */
 /* ------------------------------------------------------------------ */
@@ -414,9 +357,7 @@ webdav_on_node_updated (FeedList *fl, const gchar *node_id, gpointer user_data)
 	webdav_mark_dirty_feed  (root, node_id);
 }
 
-/* ------------------------------------------------------------------ */
-/*  nodeSourceType callbacks                                            */
-/* ------------------------------------------------------------------ */
+/*  nodeSourceType */
 
 static void
 webdav_source_new (Node *root)
@@ -435,7 +376,6 @@ webdav_source_new (Node *root)
 	gchar *collection_url = g_strdup_printf ("%s/%s", trimmed, escaped_collection);
 	g_free (trimmed);
 
-	g_object_set_data      (G_OBJECT (root), "initialImportDone", FALSE);
 	g_object_set_data_full (G_OBJECT (root), "collectionUrl", collection_url, g_free);
 	g_object_set_data_full (G_OBJECT (root), "dirtyFeeds",
 				g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -515,6 +455,20 @@ webdav_source_add_subscription (Node *node, subscriptionPtr subscription)
 	return child;
 }
 
+static void
+webdav_source_item_read_changed (Node *node, itemPtr item, gboolean newStatus)
+{
+	item_read_state_changed (item, newStatus);
+	webdav_mark_dirty_state (node->source->root, node->id);
+}
+
+static void
+webdav_source_item_flag_changed (Node *node, itemPtr item, gboolean newStatus)
+{
+	item_flag_state_changed (item, newStatus);
+	webdav_mark_dirty_state (node->source->root, node->id);
+}
+
 static Node *
 webdav_source_add_folder (Node *node, const gchar *title)
 {
@@ -576,15 +530,13 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ADD_FOLDER |
 	                       NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST,
 	.sourceSubscriptionType = &webdavSourceSubscriptionType,
-	.source_type_init    = NULL,
-	.source_type_deinit  = NULL,
 	.source_new	     = webdav_source_new,
 	.source_create       = ui_webdav_source_get_url,
 	.source_delete       = opml_source_remove,
 	.source_auto_update  = webdav_source_auto_update,
 	.source_free         = webdav_source_free,
-	.item_set_flag       = NULL,
-	.item_mark_read      = NULL,
+	.item_set_flag       = webdav_source_item_flag_changed,
+	.item_mark_read      = webdav_source_item_read_changed,
 	.add_folder          = webdav_source_add_folder,
 	.add_subscription    = webdav_source_add_subscription,
 	.remove_node         = webdav_source_remove_node,

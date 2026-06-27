@@ -18,10 +18,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _WEBDAV_SOURCE_TASKS_H
-#define _WEBDAV_SOURCE_TASKS_H
+#ifndef _WEBDAV_SOURCE_FLOWS_H
+#define _WEBDAV_SOURCE_FLOWS_H
 
 #include "node.h"
+
+/**
+ * callback for webdav_source_flow_bootstrap_index 
+ * 
+ * @root:          root node
+ * @jsonStr:       can be null
+ */
+typedef void (*indexFetchCallback) (Node *root, const gchar *jsonStr);
+
+/**
+ * Performs initial feed list import right after login.
+ * Ensures proper index structure on remote side.
+ */
+void webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb);
 
 /**
  * Perform asynchronous feed upload

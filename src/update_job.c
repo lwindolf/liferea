@@ -408,6 +408,9 @@ update_job_finalize (GObject *object)
 
         update_job_queue_remove (job);
 
+	if (job->user_data && job->destroy)
+		g_clear_pointer (&job->user_data, job->destroy);
+
 	g_object_unref (job->request);
 	g_object_unref (job->result);
 
@@ -522,6 +525,7 @@ UpdateJob *
 update_job_new_flow (gpointer owner,
 		     update_flow_cb callback,
 		     gpointer user_data,
+		     GDestroyNotify destroy,
 		     updateFlags flags)
 {
 	UpdateJob *job = UPDATE_JOB (g_object_new (UPDATE_JOB_TYPE, NULL));
@@ -530,6 +534,7 @@ update_job_new_flow (gpointer owner,
 	job->result = update_result_new ();
 	job->callback = callback;
 	job->user_data = user_data;
+	job->destroy = destroy;
 	job->flags = flags;
 	job->state = JOB_STATE_PENDING;
 
