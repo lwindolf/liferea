@@ -66,49 +66,9 @@
  *
  * Change detection uses GET index.json (O(1) round-trips per poll cycle)
  * instead of PROPFIND depth-1, which avoids per-feed round-trips.
- *
- * Request flows
- * =============
- *
- * 1. initial import:
- *    - webdav_source_login()
- *    - webdav_request_mkcol_bootstrap()           -> MKCOL {collection_url}
- *    - webdav_bootstrap_mkcol_result()
- *    - webdav_request_get_index_bootstrap()       -> GET {collection_url}/index.json
- *      - webdav_request_get_feed_with_callback()
- *      - webdav_request_get_state_with_callback()
- *
- * 2. user adds new feed:
- *    - webdav_flush_feed_cb() 
- *    - webdav_async_upload_feed()          -> MKCOL {node_id_dir}
- *    - webdav_async_upload_mkcol_result()  -> PUT {collection_url}/{node_id}/node.json
- *    - webdav_async_upload_feed_result()   -> PUT {collection_url}/index.json
- *
- * 3. user removes a feed:
- *    - webdav_source_feed_list_upload()    -> PUT {collection_url}/index.json
- *    - Remote entries not in index are NOT explicitly deleted
- *      (lazy cleanup: server can periodically remove orphaned {node_id}/ folders)
- *
- * 4. user adds/removes a folder:
- *    - During next sync, webdav_async_upload_feed() ensures folder exists -> MKCOL {node_id_dir}
- *    - Deleted folders cleaned by webdav_cleanup_stale_folders()
- *
- * 5. feed updates:
- *    - webdav_subscription_prepare_update_request()  -> GET {collection_url}/index.json
- *    - webdav_subscription_process_update_result()   -> GET {collection_url}/{node_id}/node.json (multiple)
- *    - webdav_async_merge_feed_result()
- *
- * 6. user marks item read/flagged:
- *    - item_state_cb()
- *    - webdav_item_state_changed()
- *    - webdav_flush_state_cb()
- *    - webdav_async_upload_feed()         -> MKCOL {node_id_dir}
- *    - webdav_async_upload_mkcol_result() -> PUT {node_id_dir}/state.json
  */
 
-/* ------------------------------------------------------------------ */
 /*  Per-node lazy-upload timers                                         */
-/* ------------------------------------------------------------------ */
 
 typedef struct {
 	guint feed_timer_id;    /**< pending node.json upload timer (0 = none) */
@@ -191,7 +151,6 @@ webdav_is_feed_upload_pending (Node *root, const gchar *node_id)
 	return de && de->feed_timer_id;
 }
 
-// FIXME: why is this the same as webdav_is_feed_upload_pending()?
 gboolean
 webdav_is_state_upload_pending (Node *root, const gchar *node_id)
 {
