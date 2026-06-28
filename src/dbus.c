@@ -92,7 +92,7 @@ liferea_dbus_get_new_items (LifereaDBus *self, GError **err)
 static gboolean
 liferea_dbus_refresh (LifereaDBus *self, GError **err)
 {
-	node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
+	node_auto_update_subscription (feedlist_get_root ());
 	return TRUE;
 }
 
