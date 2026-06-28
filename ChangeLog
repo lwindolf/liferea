@@ -37,8 +37,7 @@ To be released
 	
 	* #1518 Update counter gets stuck with command download errors
 	* many "Fatal: item to be removed not found in item id list!"
-	* GoogleReader HTTP 401 leads to AuthDialog and to a following basic
-	  auth which is not ok because a login token is required
+	* AuthDialog: password is not hidden, wrong widget type
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>

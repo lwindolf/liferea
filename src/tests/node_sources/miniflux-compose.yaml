@@ -1,0 +1,33 @@
+services:
+  miniflux:
+    image: miniflux/miniflux:latest
+    ports:
+      - "8088:8088"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - CREATE_ADMIN=1
+      - ADMIN_USERNAME=liferea
+      - ADMIN_PASSWORD=test123
+      - PORT=8088
+  db:
+    image: postgres:18
+    environment:
+      - POSTGRES_USER=miniflux
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=miniflux
+    volumes:
+      # You may have to adjust the volume path depending on the version of Postgres
+      # Postgres 18 uses /var/lib/postgresql
+      # Postgres 17 and below uses /var/lib/postgresql/data
+      # See https://hub.docker.com/_/postgres#pgdata
+      - miniflux-db:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "miniflux"]
+      interval: 10s
+      start_period: 30s
+volumes:
+  miniflux-db:
