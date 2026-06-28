@@ -458,6 +458,15 @@ on_window_resize_cb (gpointer user_data)
 }
 
 static gboolean
+on_window_close_cb (gpointer user_data)
+{
+	/* For controlled shutdown, block the window close and quit the application
+	   as shutdown sequence is handled in liferea_application.c */
+	liferea_application_shutdown ();
+	return TRUE;
+}
+
+static gboolean
 on_searchentry_key_pressed (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
 {
 	switch (keyval) {
@@ -851,6 +860,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (shell->window, "notify::default-height", G_CALLBACK (on_window_resize_cb), NULL);
 	g_signal_connect (shell->window, "notify::maximized", G_CALLBACK (on_window_resize_cb), NULL);
 	g_signal_connect (shell->window, "notify::fullscreened", G_CALLBACK (on_window_resize_cb), NULL);
+	g_signal_connect (shell->window, "close-request", G_CALLBACK (on_window_close_cb), NULL);
 
 	keypress = gtk_event_controller_key_new ();
 	gtk_widget_add_controller (GTK_WIDGET (shell->window), keypress);
