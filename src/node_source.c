@@ -449,7 +449,7 @@ node_source_update (Node *node)
 		/* Note that node sources are required to auto-update child
 		   nodes themselves once login and feed list update is fine. */
 	} else {
-		/* for default source */
+		/* only for default source we update all childs here */
 		node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
 	}
 }

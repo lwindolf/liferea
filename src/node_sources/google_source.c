@@ -51,10 +51,11 @@
 static void
 google_source_new (Node *node) 
 {
-	GoogleSourcePtr source = g_new0 (struct GoogleSource, 1) ;
-	source->root = node; 
-	source->actionQueue = g_queue_new (); 
-	source->folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+	GQueue *actionQueue = g_queue_new (); 
+	GHashTable *folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+	g_object_set_data_full (G_OBJECT (node), "actionQueue", actionQueue, (GDestroyNotify)g_queue_free);
+	g_object_set_data_full (G_OBJECT (node), "folderToCategory", folderToCategory, (GDestroyNotify)g_hash_table_destroy);
 	
 	/**
 	 * Google Source API URL's
@@ -141,8 +142,6 @@ google_source_new (Node *node)
 	node->source->api.edit_label			= g_strdup_printf("%s/reader/api/0/subscription/edit?client=liferea", node->subscription->source);
 	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s&async=true");
 	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s&async=true");
-
-	node->data = (gpointer)source;
 }
 
 static gboolean
@@ -186,44 +185,30 @@ google_source_login_cb (UpdateJob *job)
 	return TRUE;
 }
 
-/**
- * Perform a login to Google Reader, if the login completes the 
- * GoogleSource will have a valid Auth token and will have loginStatus to 
- * GOOGLE_SOURCE_LOGIN_ACTIVE.
- */
 void
-google_source_login (GoogleSourcePtr source, guint32 flags) 
+google_source_login (Node *root, guint32 flags) 
 { 
-	gchar			*username, *password;
 	UpdateRequest		*request;
-	subscriptionPtr		subscription = source->root->subscription;
+	subscriptionPtr		subscription = root->subscription;
 	
-	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
-		/* this should not happen, as of now, we assume the session
-		 * doesn't expire. */
-		debug (DEBUG_UPDATE, "Logging in while login state is %d", source->root->source->loginState);
-	}
+	g_assert (root->source->loginState == NODE_SOURCE_STATE_NONE);
 
 	request = update_request_new (
 		"POST",
-		source->root->source->api.login,
+		root->source->api.login,
 		subscription->updateState,
 		NULL	// auth is done via postdata below!
 	);
 
-	/* escape user and password as both are passed using an URI */
-	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
-	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
+	request->postdata = g_strdup_printf (
+		root->source->api.login_post,
+		subscription->updateOptions->username,
+		subscription->updateOptions->password
+	);
 
-	request->postdata = g_strdup_printf (source->root->source->api.login_post, username, password);
-	request->options = update_options_copy (subscription->updateOptions);
-	
-	g_free (username);
-	g_free (password);
-	
-	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
+	node_source_set_state (root, NODE_SOURCE_STATE_IN_PROGRESS);
 
-	update_job_new (source, request, google_source_login_cb, source->root, flags | UPDATE_REQUEST_NO_FEED);
+	update_job_new (root, request, google_source_login_cb, root, flags | UPDATE_REQUEST_NO_FEED);
 }
 
 /* node source type implementation */
@@ -264,14 +249,11 @@ google_source_get_stream_id_for_node (Node *node)
 }
 
 static void
-google_source_remove_node (Node *node, Node *child) 
+google_source_remove_node (Node *root, Node *child) 
 { 
 	g_autofree gchar	*url = NULL, *streamId = NULL;
-	GoogleSourcePtr		source = node->data;
 	
-	// FIXME: Check for login?
-
-	if (child == node) {
+	if (child == root) {
 		feedlist_node_removed (child);
 		return;
 	}
@@ -282,8 +264,8 @@ google_source_remove_node (Node *node, Node *child)
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
-	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
-		google_reader_api_edit_remove_subscription (node->source, streamId, google_source_get_stream_id_for_node);
+	if (!feedlist_find_node (root, NODE_BY_URL, url))
+		google_reader_api_edit_remove_subscription (root->source, streamId, google_source_get_stream_id_for_node);
 }
 
 /* GUI callbacks */
@@ -302,7 +284,7 @@ on_google_source_selected (GtkWidget *dialog,
 		liferea_dialog_entryrow_get (dialog, "usernameEntry"),
 		liferea_dialog_entryrow_get (dialog, "passwordEntry")
 	);
-	
+
 	google_source_new (node);
 	feedlist_node_added (node);
 	node_source_update (node);
@@ -317,14 +299,7 @@ ui_google_source_get_account_info (void)
 static void
 google_source_free (Node *node)
 {
-	GoogleSourcePtr gsource = (GoogleSourcePtr) node->data;
-	node->data = NULL;
-
-	update_job_cancel_by_owner (gsource);
-	
-	g_queue_free (gsource->actionQueue) ;
-	g_hash_table_destroy (gsource->folderToCategory);
-	g_free (gsource);
+	update_job_cancel_by_owner (node);
 }
 
 static void 

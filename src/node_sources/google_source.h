@@ -23,16 +23,6 @@
 
 #include "node_source.h"
 
-/**
- * A nodeSource specific for Google Reader
- */
-typedef struct GoogleSource {
-	Node		*root;		/**< the root node in the feed list */
-	GQueue		*actionQueue;
-	
-	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to Google Reader category id */
-} *GoogleSourcePtr;
-
 enum { 
 	/**
 	 * Update only the subscription list, and not each node underneath it.
@@ -72,12 +62,12 @@ extern struct subscriptionType googleSourceOpmlSubscriptionType;
 /**
  * Find a child node with the given feed source URL.
  *
- * @param gsource	GoogleSource
+ * @param root		GoogleSource node
  * @param source	a feed source URL to search
  *
  * @returns a node (or NULL)
  */
-Node *google_source_get_node_from_source (GoogleSourcePtr gsource, const gchar* source);
+Node *google_source_get_node_from_source (Node *root, const gchar* source);
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only
@@ -90,10 +80,10 @@ void google_source_migrate_node (Node *node);
 /**
  * Perform login for the given Google source.
  *
- * @param gsource	a GoogleSource
+ * @param root		the google source node
  * @param flags		network request flags
  */
-void google_source_login (GoogleSourcePtr gsource, guint32 flags);
+void google_source_login (Node *root, guint32 flags);
 
 #endif
 

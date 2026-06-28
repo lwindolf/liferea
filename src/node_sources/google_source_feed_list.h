@@ -1,6 +1,6 @@
 /**
  * Copyright (C) 2009 Adrian Bunk  <bunk@users.sourceforge.net>
- * Copyright (C) 2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2022-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,25 +22,5 @@
 
 #include "node_sources/google_source.h"
 
-/**
- * Find a node by the source id.
- *
- * @param gsource	the Google Reader source
- * @param source	the feed id to find
- *
- * @returns a node (or NULL)
- */
-Node *google_source_feed_list_get_node_by_source(GoogleSourcePtr gsource,
-					 const gchar *source);
-
-/**
- * Recursively find a node by the source id.
- *
- * @param gsource	the Google Reader source
- * @param source	the feed id to find 
- *
- * @returns a node (or NULL)
- */
-Node *google_source_feed_list_get_subnode_by_node(Node *node, const gchar *source);
 
 #endif
