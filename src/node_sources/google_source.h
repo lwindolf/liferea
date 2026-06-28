@@ -33,14 +33,6 @@ typedef struct GoogleSource {
 	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to Google Reader category id */
 } *GoogleSourcePtr;
 
-enum {
-	GOOGLE_SOURCE_STATE_NONE = 0,	/**< no authentication tried so far */
-	GOOGLE_SOURCE_STATE_IN_PROGRESS,	/**< authentication in progress */
-	GOOGLE_SOURCE_STATE_ACTIVE,	/**< authentication succeeded */
-	GOOGLE_SOURCE_STATE_NO_AUTH,	/**< authentication has failed */
-	GOOGLE_SOURCE_STATE_MIGRATE,	/**< source will be migrated, do not do anything anymore! */
-}; 
-
 enum { 
 	/**
 	 * Update only the subscription list, and not each node underneath it.
@@ -52,12 +44,6 @@ enum {
 	 */
 	GOOGLE_SOURCE_UPDATE_ONLY_LOGIN = (1<<17)
 };
-
-/**
- * Number of auth failures after which we stop bothering the user while
- * auto-updating until he manually updates again.
- */
-#define GOOGLE_SOURCE_MAX_AUTH_FAILURES		3
 
 /**
  * Acts like a feed, indicating all the posts shared by the Google Reader

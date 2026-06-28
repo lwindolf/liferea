@@ -164,7 +164,6 @@ google_source_login_cb (UpdateJob *job)
 		if (tmp)
 			*tmp = '\0';
 		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
-		node_source_set_state (subscription->node, NODE_SOURCE_STATE_ACTIVE);
 
 		/* now that we are authenticated trigger updating to start data retrieval */
 		if (!(job->flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN))
@@ -300,10 +299,10 @@ on_google_source_selected (GtkWidget *dialog,
 	
 	subscription_set_auth_info (
 		node->subscription,
-		liferea_dialog_entryrow_get (dialog, "userEntry"),
+		liferea_dialog_entryrow_get (dialog, "usernameEntry"),
 		liferea_dialog_entryrow_get (dialog, "passwordEntry")
 	);
-					
+	
 	google_source_new (node);
 	feedlist_node_added (node);
 	node_source_update (node);

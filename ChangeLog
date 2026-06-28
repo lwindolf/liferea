@@ -2,6 +2,9 @@ To be released
 
 	Version 2.0-RC5
 
+	* Fixes #1551 full screen mode for videos broken
+	  (Lars Windolf)
+
 	* Fixes #1534: icons cannot be found
 	  (AndyM48, Lars Windolf)
 
@@ -31,10 +34,11 @@ To be released
 	  (Fúlvio Alves)
 
 	Known problems
-
-	* #1551 full screen mode for videos broken
+	
 	* #1518 Update counter gets stuck with command download errors
 	* many "Fatal: item to be removed not found in item id list!"
+	* GoogleReader HTTP 401 leads to AuthDialog and to a following basic
+	  auth which is not ok because a login token is required
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>
