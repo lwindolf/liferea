@@ -83,6 +83,11 @@ typedef struct {
 	gint64         remote_mtime;
 } WebDAVStateFetchCtx;
 
+typedef struct {
+	Node       *root;
+	GHashTable *remote_feed_ids;
+} InitialImportUploadCtx;
+
 static void webdav_request_put_index (Node *root, const gchar *json, gpointer callback_data);
 
 static void
@@ -471,6 +476,19 @@ webdav_merge_index (Node *root, GList *index)
 }
 
 static void
+webdav_queue_initial_import_upload (Node *node, gpointer user_data)
+{
+	if (!IS_FEED (node))
+		return;
+
+	if (!(node->syncState & NODE_SYNC_STATE_INITIAL_IMPORT))
+		return;
+
+	webdav_source_mark_feed_dirty (node);
+	webdav_source_mark_items_dirty (node);
+}
+
+static void
 webdav_request_get_feed_with_callback (Node *root, const gchar *feed_id, update_flow_cb callback, gpointer callback_data)
 {
 	UpdateRequest *request;
@@ -676,7 +694,7 @@ webdav_update_result_wrapper (UpdateJob *job)
 
 /**
  * Bootstrap index fetch callback.
- * Parse index, import data, mark initialImportDone, then transition to ACTIVE.
+ * Parse index and import data then transition to ACTIVE.
  */
 static void
 webdav_source_feed_list_index_fetch_cb (Node *root, const gchar *jsonStr)
@@ -824,6 +842,9 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 
 		Node *local_node = webdav_find_feed_by_remote_id (op->root, e->node_id);
 
+		if (local_node && (local_node->syncState & NODE_SYNC_STATE_INITIAL_IMPORT))
+			local_node->syncState &= ~NODE_SYNC_STATE_INITIAL_IMPORT;
+
 		if (!local_node || !webdav_is_feed_upload_pending (op->root, local_node->id)) {
 			GHashTable *feed_mtimes = (GHashTable *)g_object_get_data (G_OBJECT (op->root), "feedMtimes");
 			stored = g_hash_table_lookup (feed_mtimes, e->node_id);
@@ -860,6 +881,8 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 			}
 		}
 	}
+
+	node_foreach_child (op->root, webdav_queue_initial_import_upload);
 
 	g_list_free_full (index, (GDestroyNotify)index_entry_free);
 

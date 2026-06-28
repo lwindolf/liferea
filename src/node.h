@@ -1,7 +1,7 @@
 /*
  * node.h  hierarchic feed list node interface
  * 
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -46,6 +46,14 @@ G_BEGIN_DECLS
 #define NODE_TYPE (node_get_type ())
 G_DECLARE_FINAL_TYPE (Node, node, LIFEREA, NODE, GObject)
 
+// sync state bitmask
+typedef enum {
+	NODE_SYNC_STATE_IN_SYNC		= 0,		/*<< node is fully synched */
+	NODE_SYNC_STATE_DIRTY_FEED	= (1<<0),	/*<< node itself needs to be synched (e.g. after update) */
+	NODE_SYNC_STATE_DIRTY_ITEMS	= (1<<1),	/*<< item state for this node needs to be synched (e.g. after user action) */
+	NODE_SYNC_STATE_INITIAL_IMPORT	= (1<<2),	/*<< inital reconciliation import for this node is pending */
+} nodeSyncState;
+
 /* generic feed list node structure */
 struct _Node {
 	GObject parent_instance;
@@ -74,6 +82,8 @@ struct _Node {
 	/* item list state properties of this node */
 	nodeViewSortType	sortColumn;	/*<< Node *specific item view sort attribute. */
 	gboolean		sortReversed;	/*<< Sort in the reverse order? */
+
+	nodeSyncState		syncState; 	/*<< sync state of this node, only used for online accounts */
 	
 	/* current state of this node */	
 	gboolean	needsUpdate;	/*<< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */

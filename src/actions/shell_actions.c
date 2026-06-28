@@ -208,7 +208,7 @@ on_menu_show_update_monitor (GSimpleAction *action, GVariant *parameter, gpointe
 	g_autofree gchar *json = feedlist_to_json ();
         liferea_browser_set_view (b, "update_monitor", json, "file://", NULL);
 
-	g_timeout_add (2000, update_monitor_refresh_cb, NULL);
+	g_timeout_add (1000, update_monitor_refresh_cb, NULL);
 }
 
 static void

@@ -204,6 +204,12 @@ node_source_set_feed_subscription_type (Node *folder, subscriptionTypePtr type)
 }
 
 static void
+node_source_set_initial_import_flag (Node *node)
+{
+	node->syncState = NODE_SYNC_STATE_INITIAL_IMPORT;
+}
+
+static void
 node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 {
 	nodeSourceTypePtr	type;
@@ -246,6 +252,8 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 
 			/* Set subscription type for all child nodes imported */
 			node_source_set_feed_subscription_type (node, type->feedSubscriptionType);
+
+			node_foreach_child (node, node_source_set_initial_import_flag);
 		}
 		
 		if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API)

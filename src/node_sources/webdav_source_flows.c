@@ -247,6 +247,9 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
         	        update_request_set_postdata (job->request, json, "application/json");
                         
                         flow->feed_dirty = FALSE;
+                        // FIXME: only do this on success
+                        node->syncState &= ~NODE_SYNC_STATE_DIRTY_FEED;
+                        node->syncState &= ~NODE_SYNC_STATE_INITIAL_IMPORT;
 
                         webdav_source_feed_list_update_feed_mtime (flow->root, flow->remote_id);
                         break;
@@ -260,6 +263,8 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
         	        update_request_set_postdata (job->request, json, "application/json");
                         
                         flow->state_dirty = FALSE;
+                        // FIXME: only do this on success
+                        node->syncState &= ~NODE_SYNC_STATE_DIRTY_ITEMS;
 
                         webdav_source_feed_list_update_state_mtime (flow->root, flow->remote_id);
                         break;

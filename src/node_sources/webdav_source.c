@@ -274,38 +274,42 @@ webdav_flush_state_cb (gpointer user_data)
 	return G_SOURCE_REMOVE;
 }
 
-static void
-webdav_mark_dirty_feed (Node *root, const gchar *node_id)
+void
+webdav_source_mark_feed_dirty (Node *node)
 {
-	DirtyEntry *de = dirty_entry_get_or_create (root, node_id);
+	DirtyEntry *de = dirty_entry_get_or_create (node->source->root, node->id);
 
 	if (de->feed_timer_id)
 		g_source_remove (de->feed_timer_id);
 
+	node->syncState |= NODE_SYNC_STATE_DIRTY_FEED;
+
 	FlushCtx *ctx     = g_new0 (FlushCtx, 1);
-	ctx->root         = root;
-	ctx->node_id      = g_strdup (node_id);
+	ctx->root         = node->source->root;
+	ctx->node_id      = g_strdup (node->id);
 	de->feed_timer_id = g_timeout_add_seconds (WEBDAV_LAZY_SYNC_DELAY_S,
 	                                            webdav_flush_feed_cb, ctx);
 
-	debug (DEBUG_UPDATE, "webdav: node %s feed dirty (%ds)", node_id, WEBDAV_LAZY_SYNC_DELAY_S);
+	debug (DEBUG_UPDATE, "webdav: node %s feed dirty (%ds)", node->id, WEBDAV_LAZY_SYNC_DELAY_S);
 }
 
-static void
-webdav_mark_dirty_state (Node *root, const gchar *node_id)
+void
+webdav_source_mark_items_dirty (Node *node)
 {
-	DirtyEntry *de = dirty_entry_get_or_create (root, node_id);
+	DirtyEntry *de = dirty_entry_get_or_create (node->source->root, node->id);
 
 	if (de->state_timer_id)
 		g_source_remove (de->state_timer_id);
 
+	node->syncState |= NODE_SYNC_STATE_DIRTY_ITEMS;
+
 	FlushCtx *ctx     = g_new0 (FlushCtx, 1);
-	ctx->root         = root;
-	ctx->node_id      = g_strdup (node_id);
+	ctx->root         = node->source->root;
+	ctx->node_id      = g_strdup (node->id);
 	de->state_timer_id = g_timeout_add_seconds (WEBDAV_STATE_SYNC_DELAY_S,
 	                                             webdav_flush_state_cb, ctx);
 
-	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ds)", node_id, WEBDAV_STATE_SYNC_DELAY_S);
+	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ds)", node->id, WEBDAV_STATE_SYNC_DELAY_S);
 }
 
 // FIXME: also implement set_flag and set_read to mark dirty and delay the upload instead of uploading immediately
@@ -333,12 +337,8 @@ webdav_on_node_updated (FeedList *fl, const gchar *node_id, gpointer user_data)
 	if (!IS_FEED (node))
 		return;
 
-	/*
-	 * State changes (item read/flagged) are frequent: upload state.json
-	 * quickly.  Structural feed changes are rare: defer node.json upload.
-	 */
-	webdav_mark_dirty_state (root, node_id);
-	webdav_mark_dirty_feed  (root, node_id);
+	webdav_source_mark_items_dirty (node);
+	webdav_source_mark_feed_dirty  (node);
 }
 
 /*  nodeSourceType */
@@ -430,10 +430,8 @@ webdav_source_add_subscription (Node *node, subscriptionPtr subscription)
 	subscription_update (subscription,
 	                     UPDATE_REQUEST_RESET_TITLE | UPDATE_REQUEST_PRIORITY_HIGH);
 
-	/* Ensure payload files get uploaded; index upload is done after flush/update. */
-	webdav_mark_dirty_feed  (node->source->root, child->id);
-	webdav_mark_dirty_state (node->source->root, child->id);
-
+	webdav_source_mark_feed_dirty  (child);
+	webdav_source_mark_items_dirty (child);
 	webdav_source_feed_list_upload (node->source->root);
 
 	return child;
@@ -443,14 +441,14 @@ static void
 webdav_source_item_read_changed (Node *node, itemPtr item, gboolean newStatus)
 {
 	item_read_state_changed (item, newStatus);
-	webdav_mark_dirty_state (node->source->root, node->id);
+	webdav_source_mark_items_dirty (node);
 }
 
 static void
 webdav_source_item_flag_changed (Node *node, itemPtr item, gboolean newStatus)
 {
 	item_flag_state_changed (item, newStatus);
-	webdav_mark_dirty_state (node->source->root, node->id);
+	webdav_source_mark_items_dirty (node);
 }
 
 static Node *

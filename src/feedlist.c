@@ -695,11 +695,18 @@ feedlist_to_json_collect_subscriptions (Node *node, JsonBuilder *b)
 		json_builder_add_string_value (b, node_get_title (node));
 		json_builder_set_member_name (b, "source");
 		json_builder_add_string_value (b, subscription_get_source (node->subscription));
+		json_builder_set_member_name (b, "syncState");
+		json_builder_add_int_value (b, node->syncState);
 		json_builder_set_member_name (b, "interval");
 		json_builder_add_int_value (b, interval * 60);
 		json_builder_set_member_name (b, "age");
 		json_builder_add_int_value (b, (g_get_real_time () - last_poll) / G_USEC_PER_SEC);
 
+		if (node->source) {
+			json_builder_set_member_name (b, "nodeSourceId");
+			json_builder_add_string_value (b, node->source->root->id);
+		}
+		
 		if (node->subscription->updateJob) {
 			json_builder_set_member_name (b, "updating");
 			json_builder_add_boolean_value (b, TRUE);

@@ -60,6 +60,9 @@ void webdav_request_set_basic_auth (UpdateRequest *request, Node *root);
 gboolean webdav_is_feed_upload_pending (Node *root, const gchar *node_id);
 gboolean webdav_is_state_upload_pending (Node *root, const gchar *node_id);
 
+void webdav_source_mark_feed_dirty (Node *node);
+void webdav_source_mark_items_dirty (Node *node);
+
 /**
  * webdav_source_get_type:
  *

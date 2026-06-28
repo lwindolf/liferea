@@ -14,6 +14,7 @@
                         border: 1px solid gray;
                         margin-right: 0.1rem;
                         margin-bottom: 0.1rem;
+                        display: block;
                 }
 
                 h2, h3 {
@@ -30,20 +31,29 @@
                 }
 
                 .ok {
-                        background: #77f;
+                        background: #ccf;
+                        border-color: #66f
                         color: black;
                 }
                 .warn {
                         background: yellow;
+                        border-color: #cc5;
                         color: black;
                 }
                 .bad {
                         background: red;
+                        border-color: #a00;
                         color: white;
                 }
                 .updating {
                         background: purple;
+                        border-color: #a0a;
                         color: white;
+                }
+
+                div {
+                        margin-bottom: 0.2rem;
+                        margin-top: 0.2rem;
                 }
         </style>
 
@@ -53,6 +63,13 @@
                         {{#if error}}bad{{else}}
                         {{#compare age 'lt' interval}}ok{{else}}warn{{/compare}}
                         {{/if}}{{/if}}
+                {{/inline}}
+
+                {{#*inline "syncStatus"}}
+                        {{#compare syncState '==' 0}}ok{{/compare}}
+                        {{#compare syncState '>' 3}}updating{{else}}
+                        {{#compare syncState '>' 0}}warn{{/compare}}
+                        {{/compare}}
                 {{/inline}}
 
                 <div class="item" dir="{{direction}}">
@@ -73,7 +90,7 @@
 
                                 <div id="update_monitor_feeds">
                                         {{#each feedlist.subscriptions}}
-                                                <div class="update_monitor_feed update_monitor_status {{> status}}" title="{{title}} age={{age}} interval={{interval}}"></div>
+                                                <span class="update_monitor_feed update_monitor_status {{> status}}" title="{{title}} age={{age}} interval={{interval}}"></span>
                                         {{/each}}
                                 </div>
 
@@ -83,14 +100,25 @@
                                         {{#each feedlist.nodeSources}}
                                                 <h3>
                                                         {{title}}
-                                                        <span>
-                                                                {{#compare state '==' 0}}<span class="update_monitor_status warn">Not connected yet.</span>{{/compare}}
-                                                                {{#compare state '==' 1}}<span class="update_monitor_status warn">Logging in...</span>{{/compare}}
-                                                                {{#compare state '==' 2}}<span class="update_monitor_status ok">Active</span>{{/compare}}
-                                                                {{#compare state '==' 3}}<span class="update_monitor_status bad">Login failed!</span>{{/compare}}
-                                                                {{#compare state '>' 3}}<span class="update_monitor_status warn">code {{state}}</span>{{/compare}}
-                                                        </span>
                                                 </h3>
+
+                                                <div>
+                                                        {{#compare state '==' 0}}<span class="update_monitor_status warn">Not connected yet.</span>{{/compare}}
+                                                        {{#compare state '==' 1}}<span class="update_monitor_status warn">Logging in...</span>{{/compare}}
+                                                        {{#compare state '==' 2}}<span class="update_monitor_status ok">Active</span>{{/compare}}
+                                                        {{#compare state '==' 3}}<span class="update_monitor_status bad">Login failed!</span>{{/compare}}
+                                                        {{#compare state '>' 3}}<span class="update_monitor_status warn">code {{state}}</span>{{/compare}}
+                                                </div>
+
+                                                <div class="update_monitor_sync_feeds">
+                                                        {{#each ../feedlist.subscriptions}}
+                                                                {{#compare nodeSourceId '===' ../id}}
+                                                                {{#compare nodeSourceId '!==' id}}
+                                                                        <span class="update_monitor_feed update_monitor_status {{> syncStatus}}" title="{{title}} syncState={{syncState}}"></span>
+                                                                {{/compare}}
+                                                                {{/compare}}
+                                                        {{/each}}
+                                                </div>
                                         {{else}}
                                                 You currently have no online accounts configured.
                                         {{/each}}

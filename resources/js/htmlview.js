@@ -74,12 +74,6 @@ function debug(text, obj) {
 			console.log(text);
 }
 
-function update() {
-	// Per default views do not support data updates. If needed override this
-	// function on view initialization and supply new data using liferea_browser_update_view()
-	alert("View does not support updating!");
-}
-
 function parse_opml(blogrollData) {
 	try {
 		const parser = new DOMParser();
