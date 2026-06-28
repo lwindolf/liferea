@@ -49,6 +49,12 @@
 
 #define BASE_URL "https://www.reedah.com/reader/api/0/"
 
+/* About this node source:
+
+   - feedlist sync strategy: remote is always right, no 2-way
+   - protocol: Google reader like, but a little bit different
+ */
+
 /** create a Reedah source with given node as root */
 static void
 reedah_source_new (Node *node)
@@ -180,11 +186,6 @@ reedah_source_auto_update (Node *node)
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll + NODE_SOURCE_UPDATE_INTERVAL <= now) {
 		subscription_update (node->subscription, 0);
-		source->lastQuickUpdate = g_get_real_time();
-	}
-	else if (source->lastQuickUpdate + REEDAH_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
-		reedah_source_opml_quick_update (source);
-		google_reader_api_edit_process (node->source);
 		source->lastQuickUpdate = g_get_real_time();
 	}
 }
