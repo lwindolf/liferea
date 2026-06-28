@@ -208,10 +208,9 @@ itemlist_class_init (ItemListClass *klass)
 		0,
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__POINTER,
+		g_cclosure_marshal_VOID__VOID,
 		G_TYPE_NONE,
-		1,
-		G_TYPE_POINTER);
+		0);
 
 	itemlist_signals[ITEM_BATCH_END] =
 		g_signal_new ("item-batch-end",
@@ -220,9 +219,10 @@ itemlist_class_init (ItemListClass *klass)
 		0,
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__VOID,
+		g_cclosure_marshal_VOID__POINTER,
 		G_TYPE_NONE,
-		0);
+		1,
+		G_TYPE_POINTER);
 }
 
 /* member wrappers */
@@ -375,7 +375,7 @@ itemlist_load (Node *node)
 
 	g_assert (!itemlist->priv->filter);
 
-	g_signal_emit_by_name (itemlist, "item-batch-start", node, 0);
+	g_signal_emit_by_name (itemlist, "item-batch-start", 0);
 
 	/* 1. Filter check. Don't continue if folder is selected and
 	   no folder viewing is configured. If folder viewing is enabled
@@ -410,7 +410,7 @@ itemlist_load (Node *node)
 
 	itemlist->priv->loading--;
 
-	g_signal_emit_by_name (itemlist, "item-batch-end", 0);
+	g_signal_emit_by_name (itemlist, "item-batch-end", node, 0);
 }
 
 void

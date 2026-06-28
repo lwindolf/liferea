@@ -505,10 +505,9 @@ item_list_view_item_removed (GObject *obj, gulong id, gpointer user_data)
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
 static void
-item_list_view_item_batch_started (GObject *obj, gpointer *n, gpointer user_data)
+item_list_view_item_batch_started (GObject *obj, gpointer user_data)
 {
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
-	Node			*node = (Node *)n;
 	GtkAdjustment		*adj;
 	GtkTreeStore		*itemstore;
 	GtkTreeSelection	*select;
@@ -539,17 +538,17 @@ item_list_view_item_batch_started (GObject *obj, gpointer *n, gpointer user_data
 	ilv->batch_itemstore = item_list_view_create_tree_store ();
 
 	gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (ilv->batch_itemstore), NULL, NULL, NULL);
-g_print("set node %s sort: %d %d\n", node->title, node->sortColumn, node->sortReversed);
-	item_list_view_set_sort_column (ilv, node->sortColumn, node->sortReversed);
 }
 
 static void
-item_list_view_item_batch_ended (GObject *obj, gpointer user_data)
+item_list_view_item_batch_ended (GObject *obj, gpointer *n, gpointer user_data)
 {
 	ItemListView *ilv = ITEM_LIST_VIEW (user_data);
+	Node *node = (Node *)n;
 
 	g_assert (ilv->batch_mode);
 	item_list_view_set_tree_store (ilv, ilv->batch_itemstore);
+	item_list_view_set_sort_column (ilv, node->sortColumn, node->sortReversed);
 	ilv->batch_mode = FALSE;
 }
 
