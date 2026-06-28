@@ -74,6 +74,7 @@ struct _LifereaShell {
 	GtkWindow	*window;		/*<< Liferea main window */
 
 	gboolean	autoLayout;		/*<< TRUE if automatic layout switching is active */
+	gboolean	layoutDisabled;		/*<< TRUE if any layout change is temporary disabled */
 	guint		currentLayoutMode;	/*<< effective layout mode (email or wide) */
 
 	ItemList	*itemlist;
@@ -98,6 +99,7 @@ enum {
 	PROP_HTML_VIEW,
 	PROP_BROWSER_TABS,
 	PROP_LAYOUT_MODE,
+	PROP_LAYOUT_DISABLED,
 	PROP_VISIBILITY,
 	PROP_BUILDER
 };
@@ -169,6 +171,9 @@ liferea_shell_get_property (GObject *object, guint prop_id, GValue *value, GPara
 		case PROP_LAYOUT_MODE:
 			g_value_set_int (value, shell->currentLayoutMode);
 			break;
+		case PROP_LAYOUT_DISABLED:
+			g_value_set_boolean (value, shell->layoutDisabled);
+			break;
 		case PROP_VISIBILITY:
 			g_value_set_boolean (value, shell->window && gtk_widget_get_visible (GTK_WIDGET (shell->window)));
 			break;
@@ -184,6 +189,9 @@ liferea_shell_set_property (GObject *object, guint prop_id, const GValue *value,
 	switch (prop_id) {
 		case PROP_LAYOUT_MODE:
 			liferea_shell_update_layout (g_value_get_int (value));
+			break;
+		case PROP_LAYOUT_DISABLED:
+			shell->layoutDisabled = g_value_get_boolean (value);
 			break;
 		case PROP_VISIBILITY:
 			if (shell->window) {
@@ -257,6 +265,14 @@ liferea_shell_class_init (LifereaShellClass *klass)
 							     G_MAXINT,
 		                                             NODE_VIEW_MODE_AUTO,
 		                                             G_PARAM_READWRITE));
+
+	g_object_class_install_property (object_class,
+		                         PROP_LAYOUT_DISABLED,
+		                         g_param_spec_boolean ("layout-disabled",
+		                                               "Layout disabled",
+		                                               "If set TRUE layout won't change",
+							       FALSE,
+		                                               G_PARAM_READWRITE));
 
 	g_object_class_install_property (object_class,
 		                         PROP_VISIBILITY,
@@ -364,6 +380,9 @@ liferea_shell_update_layout (nodeViewType newMode)
 	const gchar	*htmlWidgetName, *ilWidgetName;
 	Node		*node;
 	nodeViewType	effectiveMode;
+
+	if (shell->layoutDisabled)
+		return;
 
 	browser_tabs_show_headlines ();
 

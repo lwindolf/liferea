@@ -384,6 +384,10 @@ fullscreen_toggle_parent_visible(GtkWidget *me, gboolean visible) {
 	struct FullscreenData *fdata;
 	fdata = (struct FullscreenData *)g_new0(struct FullscreenData, 1);
 
+	// we need to disable shell layouting as the rerender caused 
+	// by a re-layout would cancel the fullscreening
+	g_object_set (liferea_shell_get_instance (), "layout-disabled", !visible, NULL);
+
 	// Flag fullscreen status
 	g_object_set_data(G_OBJECT(me), "fullscreen_on", GINT_TO_POINTER(!visible));
 
