@@ -85,7 +85,6 @@ void update_deinit (void);
 
 /**
  * update_job_queue_to_json:
- * 
  * @b:  a JsonBuilder to append to
  */
 void update_job_queue_to_json (gpointer b);

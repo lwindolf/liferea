@@ -226,7 +226,6 @@ void liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const
 
 /**
  * liferea_browser_update_view: (skip)
- * 
  * @browser:	HTML view to update
  * @json:	New JSON data
  * 
