@@ -599,6 +599,18 @@ liferea_browser_get_template (LifereaBrowser *browser, const gchar *name) {
 }
 
 void
+liferea_browser_update_view (LifereaBrowser *browser, const gchar *json)
+{
+	g_autofree gchar	*encoded_json = NULL;
+	g_autofree gchar	*script = NULL;
+	
+	encoded_json = g_uri_escape_string (json, NULL, TRUE);
+	script = g_strdup_printf ("update('%s');\n", encoded_json);
+	
+	liferea_webkit_run_javascript (browser->renderWidget, script);
+}
+
+void
 liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gchar *json, const gchar *baseURL, const gchar *direction)
 {
 	g_autofree gchar	*script = NULL;

@@ -191,8 +191,7 @@ update_monitor_refresh_cb (gpointer user_data)
 		return FALSE; 	// probably closed by user, stop callback
 
 	g_autofree gchar *json = feedlist_to_json ();
-	// FIXME: do Javascript based reload instead of redrawing the page each time
-        liferea_browser_set_view (b, "update_monitor", json, "file://", NULL);
+        liferea_browser_update_view (b, json);
 	return TRUE;
 }
 
@@ -205,7 +204,10 @@ on_menu_show_update_monitor (GSimpleAction *action, GVariant *parameter, gpointe
 	
 	b = browser_tabs_add_new (NULL, _("Update Monitor"), TRUE);
 	browser_tabs_set_tab_name (b, "Update Monitor");
-	update_monitor_refresh_cb (b);
+
+	g_autofree gchar *json = feedlist_to_json ();
+        liferea_browser_set_view (b, "update_monitor", json, "file://", NULL);
+
 	g_timeout_add (2000, update_monitor_refresh_cb, NULL);
 }
 

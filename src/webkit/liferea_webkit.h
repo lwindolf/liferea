@@ -132,6 +132,15 @@ void liferea_webkit_reload (GtkWidget *webview);
 void liferea_webkit_write_html (GtkWidget *webview, const gchar *string, const guint length, const gchar *base, const gchar *content_type);
 
 /**
+ * liferea_webkit_run_javascript:
+ * @webview: the WebkitWebView
+ * @script: the JavaScript source
+ *
+ * Execute JavaScript in the current document.
+ */
+void liferea_webkit_run_javascript (GtkWidget *webview, const gchar *script);
+
+/**
  * liferea_webkit_clear:
  * @webview:	the WebkitWebView
  *

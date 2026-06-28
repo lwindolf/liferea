@@ -496,6 +496,34 @@ liferea_webkit_clear (GtkWidget *webview)
 	webkit_web_view_load_html (WEBKIT_WEB_VIEW (webview), "", NULL);
 }
 
+static void
+liferea_webkit_run_javascript_cb (GObject *source_object, GAsyncResult *result, gpointer user_data)
+{
+	g_autoptr(GError) error = NULL;
+
+	webkit_web_view_evaluate_javascript_finish (WEBKIT_WEB_VIEW (source_object), result, &error);
+
+	if (error)
+		debug (DEBUG_HTML, "JavaScript evaluation failed: %s", error->message);
+}
+
+void
+liferea_webkit_run_javascript (GtkWidget *webview, const gchar *script)
+{
+	g_return_if_fail (WEBKIT_IS_WEB_VIEW (webview));
+	g_return_if_fail (script != NULL);
+
+	webkit_web_view_evaluate_javascript (
+		WEBKIT_WEB_VIEW (webview),
+		script,
+		-1,
+		NULL,
+		NULL,
+		NULL,
+		liferea_webkit_run_javascript_cb,
+		NULL);
+}
+
 /**
  * Reset settings to safe preferences
  */

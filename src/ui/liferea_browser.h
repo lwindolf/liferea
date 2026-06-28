@@ -212,7 +212,7 @@ void liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom);
 
 /**
  * liferea_browser_set_view: (skip)
- * @browser	HTML view to render to
+ * @browser:	HTML view to render to
  * @name:	template to use (e.g. "item" or "node")
  * @json:	JSON data to pass to the function
  * @baseURL:	base URL for relative links
@@ -223,6 +223,16 @@ void liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom);
  * must exist.
  */
 void liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gchar *json, const gchar *baseURL, const gchar *direction);
+
+/**
+ * liferea_browser_update_view: (skip)
+ * 
+ * @browser:	HTML view to update
+ * @json:	New JSON data
+ * 
+ * Updates an internal view with new data
+ */
+void liferea_browser_update_view (LifereaBrowser *browser, const gchar *json);
 
 G_END_DECLS
 
