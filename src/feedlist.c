@@ -760,6 +760,8 @@ feedlist_to_json (void)
 	feedlist_to_json_collect_sources (root, b);
 	json_builder_end_array (b);
 
+	update_job_queue_to_json (b);
+
 	json_builder_end_object (b);
 
 	return json_dump (b);

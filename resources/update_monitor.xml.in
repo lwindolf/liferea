@@ -94,6 +94,14 @@
                                         {{/each}}
                                 </div>
 
+                                <h2>Request Queues</h2>
+
+                                <div id="update_monitor_queues">
+                                        {{#each feedlist.queues}}
+                                                <div>{{name}}: pending={{pending}} / running={{running}} / max={{max}}</div>
+                                        {{/each}}
+                                </div>
+
                                 <h2>Account Sync State</h2>
 
                                 <div id="update_monitor_accounts">

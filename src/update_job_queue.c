@@ -99,7 +99,7 @@ update_job_queue_get_count (guint *count, guint *max)
 	       g_thread_pool_unprocessed (resultPool),
 	       g_thread_pool_get_num_threads (normalPool),
 	       g_thread_pool_get_num_threads (priorityPool),
-	       g_thread_pool_get_num_threads (resultPool));
+	       g_thread_pool_get_num_threads (resultPool));	
 
 	*count = currentJobCount;
 	if (*count > maxcount)
@@ -109,6 +109,50 @@ update_job_queue_get_count (guint *count, guint *max)
 	    maxcount = 0; // reset max when no jobs are running
 
 	*max = maxcount;
+}
+
+void
+update_job_queue_to_json (gpointer builder)
+{
+	JsonBuilder *b = JSON_BUILDER (builder);
+
+	json_builder_set_member_name (b, "queues");
+	json_builder_begin_array (b);
+
+	json_builder_begin_object (b);
+	json_builder_set_member_name (b, "name");
+	json_builder_add_string_value (b, "high priority requests");
+	json_builder_set_member_name (b, "pending");
+	json_builder_add_int_value (b, g_thread_pool_unprocessed (priorityPool));
+	json_builder_set_member_name (b, "running");
+	json_builder_add_int_value (b, g_thread_pool_get_num_threads (priorityPool));
+	json_builder_set_member_name (b, "max");
+	json_builder_add_int_value (b, g_thread_pool_get_max_threads (priorityPool));
+	json_builder_end_object (b);
+
+	json_builder_begin_object (b);
+	json_builder_set_member_name (b, "name");
+	json_builder_add_string_value (b, "normal requests");
+	json_builder_set_member_name (b, "pending");
+	json_builder_add_int_value (b, g_thread_pool_unprocessed (normalPool));
+	json_builder_set_member_name (b, "running");
+	json_builder_add_int_value (b, g_thread_pool_get_num_threads (normalPool));
+	json_builder_set_member_name (b, "max");
+	json_builder_add_int_value (b, g_thread_pool_get_max_threads (normalPool));
+	json_builder_end_object (b);
+	
+	json_builder_begin_object (b);
+	json_builder_set_member_name (b, "name");
+	json_builder_add_string_value (b, "result processing");
+	json_builder_set_member_name (b, "pending");
+	json_builder_add_int_value (b, g_thread_pool_unprocessed (resultPool));
+	json_builder_set_member_name (b, "running");
+	json_builder_add_int_value (b, g_thread_pool_get_num_threads (resultPool));
+	json_builder_set_member_name (b, "max");
+	json_builder_add_int_value (b, g_thread_pool_get_max_threads (resultPool));
+	json_builder_end_object (b);
+
+	json_builder_end_array (b);
 }
 
 typedef void (*UpdateJobFunc)(gpointer job);

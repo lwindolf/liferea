@@ -353,6 +353,7 @@ async function load_update_monitor(data) {
 		window.update = load_update_monitor;
 
 		const feedlist = JSON.parse(decodeURIComponent(data));
+		console.log(feedlist);
 		render("body", templateFix (document.getElementById('template').innerHTML), {
 			feedlist
 		});
