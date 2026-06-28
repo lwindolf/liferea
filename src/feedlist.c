@@ -699,6 +699,17 @@ feedlist_to_json_collect_subscriptions (Node *node, JsonBuilder *b)
 		json_builder_add_int_value (b, interval * 60);
 		json_builder_set_member_name (b, "age");
 		json_builder_add_int_value (b, (g_get_real_time () - last_poll) / G_USEC_PER_SEC);
+
+		if (node->subscription->updateJob) {
+			json_builder_set_member_name (b, "updating");
+			json_builder_add_boolean_value (b, TRUE);
+		}
+
+		if (node->subscription->error) {
+			json_builder_set_member_name (b, "error");
+			json_builder_add_boolean_value (b, TRUE);
+		}
+
 		json_builder_end_object (b);
 	}
 

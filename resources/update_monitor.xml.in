@@ -24,9 +24,11 @@
 
                 .update_monitor_status {
                         border: 1px solid gray;
-                        padding: 0.1rem;
+                        padding-left: 0.1rem;
+                        padding-right: 0.1rem;
                         display: inline-block;
                 }
+
                 .ok {
                         background: #77f;
                         color: black;
@@ -39,20 +41,39 @@
                         background: red;
                         color: white;
                 }
+                .updating {
+                        background: purple;
+                        color: white;
+                }
         </style>
 
         <script id="template" type="text/x-handlebars-template">
+                {{#*inline "status"}}
+                        {{#if updating}}updating{{else}}
+                        {{#if error}}bad{{else}}
+                        {{#compare age 'lt' interval}}ok{{else}}warn{{/compare}}
+                        {{/if}}{{/if}}
+                {{/inline}}
+
                 <div class="item" dir="{{direction}}">
                         <header class="content">
                                 <h1>
                                         Update Monitor
                                 </h1>
 
+                                <div id="legend">
+                                        Legend:
+                                        <span class="update_monitor_status ok">OK</span>
+                                        <span class="update_monitor_status updating">Updating</span>
+                                        <span class="update_monitor_status warn">Outdated</span>
+                                        <span class="update_monitor_status bad">Error</span>
+                                </div>
+
                                 <h2>Refresh State</h2>
 
                                 <div id="update_monitor_feeds">
                                         {{#each feedlist.subscriptions}}
-                                                <div class="update_monitor_feed update_monitor_status {{#compare age 'lt' interval}}ok{{else}}warn{{/compare}}" title="{{title}} age={{age}} interval={{interval}}"></div>
+                                                <div class="update_monitor_feed update_monitor_status {{> status}}" title="{{title}} age={{age}} interval={{interval}}"></div>
                                         {{/each}}
                                 </div>
 
