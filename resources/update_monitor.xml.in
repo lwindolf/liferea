@@ -19,8 +19,6 @@
 
                 h2, h3 {
                         clear: both;
-                        margin-bottom: 0.6rem;
-                        margin-top: 0.6rem;
                 }
 
                 .update_monitor_status {
@@ -32,7 +30,7 @@
 
                 .ok {
                         background: #ccf;
-                        border-color: #66f
+                        border-color: #66f;
                         color: black;
                 }
                 .warn {
@@ -55,6 +53,23 @@
                         margin-bottom: 0.2rem;
                         margin-top: 0.2rem;
                 }
+
+                table {
+                        border-collapse: collapse;
+                }
+                
+                td, th {
+                        border: 1px solid gray;
+                        padding: 0.4rem;
+                }
+
+                div {
+                        clear: both;
+                }
+
+                #update_monitor_legend {
+                        font-size: 80%;
+                }
         </style>
 
         <script id="template" type="text/x-handlebars-template">
@@ -72,69 +87,83 @@
                         {{/compare}}
                 {{/inline}}
 
-                <div class="item" dir="{{direction}}">
-                        <header class="content">
-                                <h1>
-                                        Update Monitor
-                                </h1>
+                <div class="content" dir="{{direction}}">
+                        <h1>
+                                Update Monitor
+                        </h1>
 
-                                <div id="legend">
-                                        Legend:
-                                        <span class="update_monitor_status ok">OK</span>
-                                        <span class="update_monitor_status updating">Updating</span>
-                                        <span class="update_monitor_status warn">Outdated</span>
-                                        <span class="update_monitor_status bad">Error</span>
-                                </div>
+                        <p>Each box represents a subscription and color coded update state. Hover to see details.</p>
 
-                                <h2>Refresh State</h2>
+                        <table id="update_monitor_feeds">
+                                <tr>
+                                        <td>
+                                                {{#each feedlist.subscriptions}}
+                                                        <span class="update_monitor_feed update_monitor_status {{> status}}" title="{{title}} age={{age}} interval={{interval}}"></span>
+                                                {{/each}}
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td id="update_monitor_legend">
+                                                Legend
+                                                <span class="update_monitor_status ok">OK</span>
+                                                <span class="update_monitor_status updating">Updating</span>
+                                                <span class="update_monitor_status warn">Outdated</span>
+                                                <span class="update_monitor_status bad">Error</span>
+                                        </td>
+                                </tr>
+                        </table>
 
-                                <div id="update_monitor_feeds">
-                                        {{#each feedlist.subscriptions}}
-                                                <span class="update_monitor_feed update_monitor_status {{> status}}" title="{{title}} age={{age}} interval={{interval}}"></span>
-                                        {{/each}}
-                                </div>
+                        <h2>Account Sync</h2>
 
-                                <h2>Request Queues</h2>
+                        <table id="update_monitor_accounts">
+                                {{#each feedlist.nodeSources}}
+                                <tr>
+                                        <td>{{title}}</td>
+                                        <td class="update_monitor_source_state">
+                                                {{#compare state '==' 0}}<span class="update_monitor_status warn">Not connected yet.</span>{{/compare}}
+                                                {{#compare state '==' 1}}<span class="update_monitor_status warn">Logging in...</span>{{/compare}}
+                                                {{#compare state '==' 2}}<span class="update_monitor_status ok">Active</span>{{/compare}}
+                                                {{#compare state '==' 3}}<span class="update_monitor_status bad">Login failed!</span>{{/compare}}
+                                                {{#compare state '>' 3}}<span class="update_monitor_status warn">code {{state}}</span>{{/compare}}
+                                        </td>
+                                        <td class="update_monitor_sync_feeds">
+                                                {{#each ../feedlist.subscriptions}}
+                                                        {{#compare nodeSourceId '===' ../id}}
+                                                        {{#compare nodeSourceId '!==' id}}
+                                                                <span class="update_monitor_feed update_monitor_status {{> syncStatus}}" title="{{title}} syncState={{syncState}}"></span>
+                                                        {{/compare}}
+                                                        {{/compare}}
+                                                {{/each}}
+                                        </td>
+                                </tr>
+                                {{else}}
+                                        <tr><td>You currently have no accounts configured.</td></tr>
+                                {{/each}}
+                        </table>
 
-                                <div id="update_monitor_queues">
+
+                        <h2>Thread Pools</h2>
+
+                        <table id="update_monitor_queues">
+                                <thead>
+                                        <tr>
+                                                <th>Pool</th>
+                                                <th>Pending</th>
+                                                <th>Running</th>
+                                                <th>Max</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
                                         {{#each feedlist.queues}}
-                                                <div>{{name}}: pending={{pending}} / running={{running}} / max={{max}}</div>
+                                        <tr>
+                                                <td>{{name}}</td>
+                                                <td>{{pending}}</td>
+                                                <td>{{running}}</td>
+                                                <td>{{max}}</td>
+                                        </tr>
                                         {{/each}}
-                                </div>
-
-                                <h2>Account Sync State</h2>
-
-                                <div id="update_monitor_accounts">
-                                        {{#each feedlist.nodeSources}}
-                                                <h3>
-                                                        {{title}}
-                                                </h3>
-
-                                                <div>
-                                                        {{#compare state '==' 0}}<span class="update_monitor_status warn">Not connected yet.</span>{{/compare}}
-                                                        {{#compare state '==' 1}}<span class="update_monitor_status warn">Logging in...</span>{{/compare}}
-                                                        {{#compare state '==' 2}}<span class="update_monitor_status ok">Active</span>{{/compare}}
-                                                        {{#compare state '==' 3}}<span class="update_monitor_status bad">Login failed!</span>{{/compare}}
-                                                        {{#compare state '>' 3}}<span class="update_monitor_status warn">code {{state}}</span>{{/compare}}
-                                                </div>
-
-                                                <div class="update_monitor_sync_feeds">
-                                                        {{#each ../feedlist.subscriptions}}
-                                                                {{#compare nodeSourceId '===' ../id}}
-                                                                {{#compare nodeSourceId '!==' id}}
-                                                                        <span class="update_monitor_feed update_monitor_status {{> syncStatus}}" title="{{title}} syncState={{syncState}}"></span>
-                                                                {{/compare}}
-                                                                {{/compare}}
-                                                        {{/each}}
-                                                </div>
-                                        {{else}}
-                                                You currently have no online accounts configured.
-                                        {{/each}}
-                                </div>
-                        </header>			
-
-                        <div id="content" class="content">
-                        </div>
+                                </tbody>
+                        </table>
                 </div>
         </script>
 </head>
