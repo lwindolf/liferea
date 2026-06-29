@@ -3,7 +3,7 @@
 <!-- Created with Cambalache 1.0.2 -->
 <cambalache-project version="1.0.0" target_tk="gtk-4.0" depends="libadwaita-1,webkitgtk-6.0">
   <css is_global="1" filename="gtk-liferea.css" sha256="ce35b6c71817ef75601dcdb42e134c9054751e0d85f070825cb63e6f77b6dd0b"/>
-  <ui filename="auth.ui" sha256="919053c57f0ac27ba1e9d565e574d5ba029119fd32426dc2d6303512e851c89d"/>
+  <ui filename="auth.ui" sha256="f60cc48e946cfbc557e6445e1fe748dbb00c16c031cd7419e3812ca519f61546"/>
   <ui filename="google_source.ui" sha256="0ba22a49c7580b4991cfa646dbfaf928148136053f5d081dd53ac9753dcc0a7d"/>
   <ui filename="search.ui" sha256="17859583a4784ad90288cf83969cabf157b3e9e98b28fba07ef08d8e127a96aa">
     <css-provider>gtk-liferea.css</css-provider>
@@ -23,7 +23,7 @@
   <ui filename="about.ui" sha256="acb9ae69305d3c1efc81b0450b2f6b0d4875208b162f220ad1c696906822dfdc"/>
   <ui filename="theoldreader_source.ui" sha256="0b8ae21b4fd3b5c3c7d51494133a2c9af3f0279c728e670d06e122989433b9d8"/>
   <ui filename="ttrss_source.ui" sha256="a1bf29b1f3aa456f3bd4037b26b64ef35ec7955b24b9e796ba1e87d8b843ac69"/>
-  <ui filename="mainwindow.ui" sha256="84acef19f56669efad4468d87d5142cf9564cf6b8897c59c268d936b6ff75b5d"/>
+  <ui filename="mainwindow.ui" sha256="e56a3f58b5a4336c2c7937e2620af72b8fa1ac2a71932de28e472d1d7964c052"/>
   <ui filename="shortcuts.ui" sha256="6235bca30daa703ea5ee43166a609f54443c1d40cbdf116c74107345fe3a73ae"/>
   <ui filename="webdav_source.ui" sha256="4b0b27dd8bb0be4e7fec421394bc2d30039051c8ee5cf41c4216652cf88f9d36"/>
   <ui filename="properties.ui" sha256="5e443dc199fd639ee9f6e59401ce860f367ce1bb78952000ef2607c6fa2d613d"/>

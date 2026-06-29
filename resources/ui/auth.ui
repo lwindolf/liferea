@@ -35,7 +35,7 @@
           </object>
         </child>
         <child>
-          <object class="AdwEntryRow" id="passwordEntry">
+          <object class="AdwPasswordEntryRow" id="passwordEntry">
             <property name="title">Password</property>
           </object>
         </child>
