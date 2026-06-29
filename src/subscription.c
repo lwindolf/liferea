@@ -285,15 +285,16 @@ subscription_process_update_result (UpdateJob *job)
 	subscription->updateJob = NULL;
 
 	/* 2. call subscription type specific processing */
-	if (processing)
+	if (processing) {
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
                                   
-	/* 3. Update favicon monthly. Update only after subscription processing
-	      to ensure we have valid baseUrl for searching... 
+		/* 3. Update favicon monthly. Update only after subscription processing
+		to ensure we have valid baseUrl for searching... 
 
-	      Note: During favicon discovery blogrolls are also discovered and updated. */
-	if (g_get_real_time() > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
-		subscription_icon_update (subscription);
+		Note: During favicon discovery blogrolls are also discovered and updated. */
+		if (g_get_real_time() > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
+			subscription_icon_update (subscription);
+	}
 
 	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
