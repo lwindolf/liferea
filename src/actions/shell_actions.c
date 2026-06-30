@@ -98,7 +98,7 @@ on_about_activate (GSimpleAction *action, GVariant *parameter, gpointer user_dat
 static gchar *
 create_help_url (const gchar *file)
 {
-	gchar *filepattern = g_strdup_printf (PACKAGE_DATA_DIR "/doc/html/%s", file);
+	gchar *filepattern = g_strdup_printf (PACKAGE_DATA_DIR "/help/%s", file);
 	gchar *filename = common_get_localized_filename (filepattern);
 	gchar *fileuri = g_strdup_printf ("file://%s", filename);
 
