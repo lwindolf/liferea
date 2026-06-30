@@ -261,7 +261,7 @@ webdav_node_from_feed_json (const gchar *json_str, Node *parent, const gchar *re
 		return NULL;
 	}
 
-	Node *source_root = node_source_root_from_node (parent);
+	Node *source_root = parent->source->root;
 	if (remote_id)
 		node = webdav_find_feed_by_remote_id (source_root, remote_id);
 	if (!node && node_id)
@@ -328,6 +328,7 @@ build_index_entry (IndexBuildCtx *ctx, Node *node, const gchar *parent_id)
 
 		json_builder_set_member_name (ctx->builder, "source");
 		json_builder_add_string_value (ctx->builder, subscription_get_source (node->subscription));
+		// FIXME: also handle original source
 		json_builder_set_member_name (ctx->builder, "feed_mtime");
 		json_builder_add_int_value (ctx->builder, feed_mtime);
 		json_builder_set_member_name (ctx->builder, "state_mtime");
@@ -712,7 +713,6 @@ webdav_source_feed_list_index_fetch_cb (Node *root, const gchar *jsonStr)
 		   below will trigger an initial sync */
 	}
 	
-	node_source_set_state (root, NODE_SOURCE_STATE_ACTIVE);
 	subscription_update (root->subscription, 0);
 }
 
@@ -768,13 +768,6 @@ webdav_subscription_prepare_update_request (subscriptionPtr subscription, Update
 {
 	g_autofree gchar *index_url = NULL;
 
-	// FIXME: is this necessary? Isn't this handled by node_source.c
-	/* Only prepare request if login is already active; otherwise skip this round */
-	if (subscription->node->source->loginState != NODE_SOURCE_STATE_ACTIVE) {
-		debug (DEBUG_UPDATE, "webdav_subscription_prepare_update_request: login not active, skipping");
-		return FALSE;
-	}
-
 	index_url = webdav_index_url (subscription->node);
 	update_request_set_source (request, index_url);
 	debug (DEBUG_UPDATE, "webdav_subscription_prepare_update_request: queued index fetch from %s", index_url);
@@ -793,10 +786,8 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 	debug (DEBUG_UPDATE, "webdav_subscription_process_update_result");
 
 	if (!(result->data && result->httpstatus == 200)) {
-		subscription->node->available = FALSE;
 		if (result->httpstatus == 401) {
-			node_source_set_state (subscription->node, NODE_SOURCE_STATE_NO_AUTH);
-			auth_dialog_new (subscription, flags);
+			node_source_set_auth_failed (subscription->node, flags & UPDATE_REQUEST_PRIORITY_HIGH);
 		}
 		debug (DEBUG_UPDATE, "webdav_subscription_process_update_result(): failed to fetch index.json (HTTP %d)", result->httpstatus);
 		return;
@@ -805,6 +796,7 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 	index = webdav_parse_index_json (result->data);
 	if (!index) {
 		subscription->node->available = FALSE;
+		subscription->error = FETCH_ERROR_XML;
 		debug (DEBUG_UPDATE, "webdav_subscription_process_update_result(): invalid index.json");
 		return;
 	}

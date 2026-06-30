@@ -37,27 +37,6 @@
 #include "subscription.h"
 #include "xml.h"
 
-void
-reedah_source_migrate_node (Node *node)
-{
-	/* scan the node for bad ID's, if so, brutally remove the node */
-	itemSetPtr itemset = node_get_itemset (node);
-	GList *iter = itemset->ids;
-	for (; iter; iter = g_list_next (iter)) {
-		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug (DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
-				db_item_remove(GPOINTER_TO_UINT(iter->data));
-			}
-		}
-		if (item) item_unload (item);
-	}
-
-	/* cleanup */
-	itemset_free (itemset);
-}
-
 static void
 reedah_item_callback (JsonNode *node, itemPtr item)
 {
@@ -162,29 +141,23 @@ static gboolean
 reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                  UpdateRequest *request)
 {
-	debug (DEBUG_UPDATE, "preparing Reedah feed subscription for update");
-	ReedahSourcePtr source = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data;
+	Node *root = subscription->node->source->root;
+	const gchar *remoteId = metadata_list_get (subscription->metadata, "reedah-feed-id");
 
-	g_assert(source);
-	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
+	debug (DEBUG_UPDATE, "reedah_source: %s |%s| update feed", subscription->node->id, subscription->node->title);
+
+	if (!remoteId) {
+		g_warning ("Dropping Reedah feed '%s' (%s) without id!", subscription->origSource, subscription->node->id);
+		feedlist_node_removed (subscription->node);
 		return FALSE;
 	}
 
-	if (!metadata_list_get (subscription->metadata, "reedah-feed-id")) {
-		g_print ("Skipping Reedah feed '%s' (%s) without id!", subscription->source, subscription->node->id);
-		return FALSE;
-	}
-
-	gchar* source_escaped = g_uri_escape_string(metadata_list_get (subscription->metadata, "reedah-feed-id"), NULL, TRUE);
-	// FIXME: move to .h
+	g_autofree gchar* source_escaped = g_uri_escape_string(remoteId, NULL, TRUE);
+	// FIXME: move URL format to .h
 	// FIXME: do not use hard-coded 30
-	gchar* newUrl = g_strdup_printf ("https://www.reedah.com/reader/api/0/stream/contents/%s?client=liferea&n=30", source_escaped);
+	g_autofree gchar* newUrl = g_strdup_printf ("%s/api/0/stream/contents/%s?client=liferea&n=30", root->subscription->origSource, source_escaped);
 	update_request_set_source (request, newUrl);
-	g_free (newUrl);
-	g_free (source_escaped);
-
-	update_request_set_auth_value (request, source->root->source->authToken);
+	update_request_set_auth_value (request, root->source->authToken);
 	return TRUE;
 }
 

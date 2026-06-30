@@ -114,6 +114,7 @@ google_source_feed_list_subscription_process_update_result (subscriptionPtr subs
 		if (!result->data || result->httpstatus != 200) {
 			debug (DEBUG_UPDATE, "google_source: ERROR: failed to get subscription list!");
  			root->available = FALSE;
+			root->subscription->error = FETCH_ERROR_XML;
 			return;
 		}
 
@@ -121,6 +122,7 @@ google_source_feed_list_subscription_process_update_result (subscriptionPtr subs
 		if (!json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			debug (DEBUG_UPDATE, "google_source: Received invalid JSON!");
 			root->available = FALSE;
+			root->subscription->error = FETCH_ERROR_XML;
 			return;
 		}
 
@@ -182,10 +184,10 @@ google_source_feed_list_subscription_process_update_result (subscriptionPtr subs
 			/* ignore everything without a feed url */
 			if (json_get_string (node, "url")) {
 				google_source_merge_feed (root,
-								json_get_string (node, "url"),
-								json_get_string (node, "title"),
-								json_get_string (node, "id"),
-								folder);
+							json_get_string (node, "url"),
+							json_get_string (node, "title"),
+							json_get_string (node, "id"),
+							folder);
 			}
 			iter = g_list_next (iter);
 		}
@@ -206,12 +208,7 @@ google_source_feed_list_subscription_prepare_update_request (subscriptionPtr sub
 {
 	Node *root = subscription->node;
 
-	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug (DEBUG_UPDATE, "google_source: login needed first!");
-		google_source_login (root, 0);
-		return FALSE;
-	}
-	debug (DEBUG_UPDATE, "google_source: updating subscription list (node id %s)", root->id);
+	debug (DEBUG_UPDATE, "google_source: %s |%s| updating subscription list", root->id, root->title);
 	
 	update_request_set_source (request, root->source->api.subscription_list);
 	update_request_set_auth_value (request, root->source->authToken);

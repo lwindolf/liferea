@@ -47,10 +47,27 @@
    all other node source instances at their insertion nodes in
    the feed list.
 
+   Every node source schedules updates of all it's children that are 
+   not node sources themselves. The default node source initiates all
+   peridioc updating. For now only the default node source can have
+   node sources as children.
+
    Each source type has to be able to serve user requests and is
    responsible for keeping its feed list node's states up-to-date.
    A source type implementation can omit all callbacks marked as
-   optional. */
+   optional.
+
+   All node source subtrees are persisted in own OPML files. The 
+   feedlist.opml file is the OPML export of the default source.
+   All other source have their file in ~/.cache/liferea/plugins/<id>.opml
+
+   --> FIXME: This is dangerous and can lead to data loss on clearing cache.
+       Migrate to ~/.config/node_sources/<id>.opml
+
+   A login state machine is implemented by node_source.c and dirty
+   state of feeds/items can be tracked with the Node "syncState" field.
+   Use the update monitor to watch for state changes.
+ */
 
 typedef enum {
 	NODE_SOURCE_CAPABILITY_IS_ROOT			= (1<<0),	/*<< flag only for default feed list source */
@@ -68,11 +85,12 @@ typedef enum {
 
 /* node source state model */
 typedef enum {
-	NODE_SOURCE_STATE_NONE 		= 0,	/*<< no authentication tried so far */
-	NODE_SOURCE_STATE_IN_PROGRESS	= 1,	/*<< authentication in progress */
-	NODE_SOURCE_STATE_ACTIVE	= 2,	/*<< authentication succeeded */
-	NODE_SOURCE_STATE_NO_AUTH	= 3,	/*<< authentication has failed */
-	NODE_SOURCE_STATE_MIGRATE	= 4	/*<< source will be migrated, do not do anything anymore! */
+	NODE_SOURCE_STATE_NONE 		 = 0,	/*<< no authentication tried so far */
+	NODE_SOURCE_STATE_IN_PROGRESS	 = 1,	/*<< authentication in progress */
+	NODE_SOURCE_STATE_ACTIVE	 = 2,	/*<< authentication succeeded */
+	NODE_SOURCE_STATE_AUTH_FAILED	 = 3,	/*<< authentication has failed */
+	NODE_SOURCE_STATE_AUTH_CHALLENGE = 4,   /*<< authentication challenge active */
+	NODE_SOURCE_STATE_MIGRATE	 = 5	/*<< source will be migrated, do not do anything anymore! */
 } nodeSourceState;
 
 /* node source subscription update flags */
@@ -82,10 +100,6 @@ typedef enum {
 	 * Note: Uses higher 16 bits to avoid conflict.
 	 */
 	NODE_SOURCE_UPDATE_ONLY_LIST = (1<<16),
-	/*
-	 * Only login, do not do any updates.
-	 */
-	NODE_SOURCE_UPDATE_ONLY_LOGIN = (1<<17)
 } nodeSourceUpdate;
 
 /*
@@ -98,6 +112,8 @@ typedef enum {
 typedef struct nodeSourceType {
 	const gchar	*id;		/*<< a unique feed list source type identifier */
 	const gchar	*name;		/*<< a descriptive source name (for preferences and menus) */
+	const gchar	*addInfo;       /*<< label text for creation dialog */
+	const gchar	*url;		/*<< (optional) server URL for online services */
 	gulong		capabilities;	/*<< bitmask of feed list source capabilities */
 
 	/* The subscription type for all child nodes that are subscriptions */
@@ -115,12 +131,23 @@ typedef struct nodeSourceType {
 	 * of the implemented source type. It is to be called on
 	 * startup on feed list import. This method sets node->data.
 	 */
-	void		(*source_new)(Node *node);
+	void		(*source_new)(Node *root);
+
+	/*
+	 * This OPTIONAL callback for triggering login.
+	 *
+	 * The trigger code is responsible for setting a new node
+	 * state of either ACTIVE or NONE
+	 */
+	void 		(*source_login)(Node *root, updateFlags flags);
 
 	/*
 	 * This OPTIONAL callback is used to create an instance
 	 * of the implemented source type. It is to be called by
 	 * the parent source node_request_add_*() implementation.
+	 * 
+	 * If not defined a default dialog for title, URL, user
+	 * and password field will be rendered.
 	 */
 	void 		(*source_create)(void);
 
@@ -137,20 +164,12 @@ typedef struct nodeSourceType {
 	 * create the feed list subtree attached to the source root
 	 * node.
 	 */
-	void 		(*source_import)(Node *node);
+	void 		(*source_import)(Node *root);
 
 	/*
-	 * This MANDATARY method is called to request the source to update
-	 * its subscriptions list and the child subscriptions according
-	 * the its update interval.
+	 * OPTIONAL to free up any private data
 	 */
-	void		(*source_auto_update)(Node *node);
-
-	/*
-	 * Frees all data of the given node source instance. To be called
-	 * during g_object_unref() for a source node.
-	 */
-	void		(*source_free) (Node *node);
+	void		(*source_free) (Node *root);
 
 	/*
 	 * Changes the flag state of an item.  This is to allow node source type
@@ -197,14 +216,7 @@ typedef struct nodeSourceType {
 	 * provided by the node source. OPTIONAL method that must be
 	 * implemented when NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST is set.
 	 */
-	void		(*remove_node) (Node *node, Node *child);
-
-	/*
-	 * Converts all subscriptions to default source subscriptions.
-	 *
-	 * This is an OPTIONAL method.
-	 */
-	void		(*convert_to_local) (Node *node);
+	void		(*remove_node) (Node *root, Node *child);
 
 	/*
 	 * Syncs local change of node parent with the node source.
@@ -223,26 +235,15 @@ typedef struct nodeSource {
 	GQueue			*actionQueue;	/*<< queue for async actions */
 	nodeSourceState		loginState;	/*<< The current login state */
 
-	gchar			*authToken;	/*<< The authorization token */
-	gint			authFailures;	/*<< Number of authentication failures */
+	gchar			*authToken;	/*<< The authorization token (might be a session or long term token, used only by the source type implementation) */
 	
 	googleReaderApi		api;		/*<< OPTIONAL endpoint definitions for Google Reader like JSON API, to be set during source_new() */
 } *nodeSourcePtr;
 
 /* Use this to cast the node source type from a node structure. */
-#define NODE_SOURCE_TYPE(node) ((nodeSourcePtr)(node->source))->type
+#define NODE_SOURCE_TYPE(node) node->source->type
 
 #define NODE_SOURCE_TYPE_DUMMY_ID "fl_dummy"
-
-/**
- * node_source_root_from_node: (skip)
- * @node:	any child node
- *
- * Get the root node of a feed list source for any given child node.
- *
- * Returns: node source root node
- */
-Node * node_source_root_from_node (Node *node);
 
 /**
  * node_source_setup_root: (skip)
@@ -276,13 +277,13 @@ void node_source_export_feedlist (void);
 void node_source_new (Node *node, nodeSourceTypePtr nodeSourceType, const gchar *url);
 
 /**
- * node_source_set_state: (skip)
+ * node_source_set_auth_failed: (skip)
  * @node:		the node source node
- * @newState:		the new state
+ * @challenge:		TRUE to challenge user for new credentials
  *
- * Change state of the node source by node
+ * Set node source login as failed and optionally prompt user.
  */
-void node_source_set_state (Node *node, gint newState);
+void node_source_set_auth_failed (Node *node, gboolean challenge);
 
 /**
  * node_source_set_auth_token: (skip)
@@ -306,13 +307,14 @@ void node_source_update (Node *node);
 
 /**
  * node_source_auto_update: (skip)
- * @node:			the source node
+ * @node:	the source node
+ * @flags:	update flags
  *
  * Request the source to update its subscription list and
  * the child subscriptions if necessary according to the
  * update interval of the source.
  */
-void node_source_auto_update (Node *node);
+void node_source_auto_update (Node *node, updateFlags flags);
 
 /**
  * node_source_add_subscription: (skip)

@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.c  Reedah source support
  *
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -34,14 +34,12 @@
 #include "item_state.h"
 #include "metadata.h"
 #include "node.h"
+#include "node_source.h"
 #include "subscription.h"
 #include "update.h"
 #include "xml.h"
 #include "ui/auth_dialog.h"
-#include "ui/liferea_dialog.h"
 #include "node_sources/google_reader_api_edit.h"
-#include "node_source.h"
-#include "node_sources/opml_source.h"
 #include "node_sources/reedah_source_feed_list.h"
 
 /** default Reedah subscription list update interval = once a day */
@@ -59,9 +57,12 @@
 static void
 reedah_source_new (Node *node)
 {
-	ReedahSourcePtr source = g_new0 (struct ReedahSource, 1) ;
-	source->root = node;
-	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+	g_object_set_data_full (
+		G_OBJECT (node),
+		"lastTimestampMap",
+		g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free),
+		(GDestroyNotify)g_hash_table_destroy
+	);
 
 	node->source->api.subscription_list		= g_strdup_printf ("%s/subscription/list", BASE_URL);
 	node->source->api.unread_count			= g_strdup_printf ("%s/unread-count?all=true&client=liferea", BASE_URL);
@@ -80,18 +81,17 @@ reedah_source_new (Node *node)
 
 	// FIXME: document why
 	node->subscription->updateInterval = -1;
-	node->data = (gpointer)source;
 }
 
 static gboolean
 reedah_source_login_cb (UpdateJob *job)
 {
 	UpdateResult	*result = job->result;
-	Node		*node = (Node *) job->user_data;
+	Node		*root = (Node *) job->user_data;
 	gchar		*tmp = NULL;
-	subscriptionPtr subscription = node->subscription;
+	subscriptionPtr subscription = root->subscription;
 
-	debug (DEBUG_UPDATE, "Reedah login processing... %s", result->data);
+	debug (DEBUG_UPDATE, "reedah_source: %s |%s| login processing... msg=>>>%s<<<", root->id, root->title, result->data);
 
 	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "Auth=");
@@ -101,46 +101,26 @@ reedah_source_login_cb (UpdateJob *job)
 		tmp = strchr (tmp, '\n');
 		if (tmp)
 			*tmp = '\0';
-		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
-		node_source_set_state (subscription->node, NODE_SOURCE_STATE_ACTIVE);
+		node_source_set_auth_token (root, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
 
 		/* now that we are authenticated trigger updating to start data retrieval */
-		if (!(job->flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
-			subscription_update (subscription, job->flags);
+		subscription_update (subscription, job->flags);
 
 		/* process any edits waiting in queue */
-		google_reader_api_edit_process (node->source);
-
+		google_reader_api_edit_process (root->source);
 	} else {
-		debug (DEBUG_UPDATE, "Reedah login failed! no Auth token found in result!");
-
-		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Login failed!"));
-		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
-
-		auth_dialog_new (subscription, job->flags);
+		debug (DEBUG_UPDATE, "reedah_source: %s |%s| login failed! no Auth token found in result!", root->id, root->title);
+		node_source_set_auth_failed (root, job->flags & UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
 	return TRUE;
 }
 
-/**
- * Perform a login to Reedah, if the login completes the
- * ReedahSource will have a valid Auth token and will have loginStatus to
- * NODE_SOURCE_LOGIN_ACTIVE.
- */
 void
-reedah_source_login (ReedahSourcePtr source, guint32 flags)
+reedah_source_login (Node *root, guint32 flags)
 {
-	gchar			*username, *password;
 	UpdateRequest		*request;
-	subscriptionPtr		subscription = source->root->subscription;
-
-	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
-		/* this should not happen, as of now, we assume the session
-		 * doesn't expire. */
-		debug (DEBUG_UPDATE, "Logging in while login state is %d", source->root->source->loginState);
-	}
+	subscriptionPtr		subscription = root->subscription;
 
 	request = update_request_new (
 		"POST",
@@ -150,45 +130,16 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 	);
 
 	/* escape user and password as both are passed using an URI */
-	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
-	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
+	g_autofree gchar *username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
+	g_autofree gchar *password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
 
 	request->postdata = g_strdup_printf (REEDAH_READER_LOGIN_POST, username, password);
 
-	g_free (username);
-	g_free (password);
 
-	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
-
-	update_job_new (source, request, reedah_source_login_cb, source->root, flags | UPDATE_REQUEST_NO_FEED);
+	update_job_new (root, request, reedah_source_login_cb, root, flags | UPDATE_REQUEST_NO_FEED);
 }
 
 /* node source type implementation */
-
-static void
-reedah_source_auto_update (Node *node)
-{
-	guint64	now;
-	ReedahSourcePtr source = (ReedahSourcePtr) node->data;
-
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		node_source_update (node);
-		return;
-	}
-
-	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
-		return; /* the update will start automatically anyway */
-
-	debug (DEBUG_UPDATE, "reedah_source_auto_update()");
-
-	now = g_get_real_time();
-
-	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll + NODE_SOURCE_UPDATE_INTERVAL <= now) {
-		subscription_update (node->subscription, 0);
-		source->lastQuickUpdate = g_get_real_time();
-	}
-}
 
 static void
 reedah_source_init (void)
@@ -200,7 +151,7 @@ static Node *
 reedah_source_add_subscription (Node *node, subscriptionPtr subscription)
 {
 	// FIXME: determine correct category from parent folder name
-	google_reader_api_edit_add_subscription (node->source, subscription->source, NULL);
+	google_reader_api_edit_add_subscription (node->source, subscription->origSource, NULL);
 
 	subscription_free (subscription);
 
@@ -213,97 +164,41 @@ reedah_source_get_stream_id_for_node (Node *node)
 	if (!node->subscription)
 		return NULL;
 
-	return g_strdup_printf ("feed/%s", node->subscription->source);
+	return g_strdup_printf ("feed/%s", node->subscription->origSource);
 }
 
 static void
-reedah_source_remove_node (Node *node, Node *child)
+reedah_source_remove_node (Node *root, Node *child)
 {
 	g_autofree gchar *url = NULL, *streamId = NULL;
-	ReedahSourcePtr source = node->data;
 
-	if (child == node) {
+	if (child == root) {
 		feedlist_node_removed (child);
 		return;
 	}
 
-	url = g_strdup (child->subscription->source);
+	url = g_strdup (child->subscription->origSource);
 	streamId = reedah_source_get_stream_id_for_node (child);
 
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
-	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
-		google_reader_api_edit_remove_subscription (node->source, streamId, reedah_source_get_stream_id_for_node);
-}
-
-/* GUI callbacks */
-
-static void
-on_reedah_source_selected (GtkButton *button, gpointer user_data)
-{
-	GtkWidget *dialog = GTK_WIDGET (user_data);
-
-	Node *node = node_new ("source");
-	node_source_new (node, reedah_source_get_type (), "https://www.reedah.com/reader");
-	node_set_title (node, node->source->type->name);
-	
-	subscription_set_auth_info (node->subscription,
-					liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "usernameEntry"),
-					liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "passwordEntry"));
-
-	reedah_source_new (node);
-	feedlist_node_added (node);
-	node_source_update (node);
-
-	adw_dialog_close (ADW_DIALOG (dialog));
-}
-
-static void
-ui_reedah_source_get_account_info (void)
-{
-	GtkWidget *dialog = liferea_dialog_new ("reedah_source");
-
-	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
-			  G_CALLBACK (on_reedah_source_selected), dialog);
-	g_signal_connect_swapped (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked",
-			  G_CALLBACK (adw_dialog_close), dialog);
-}
-
-static void
-reedah_source_free (Node *node)
-{
-	ReedahSourcePtr source = (ReedahSourcePtr) node->data;
-	node->data = NULL;
-
-	update_job_cancel_by_owner (source);
-	g_hash_table_unref (source->lastTimestampMap);
-	g_free (source);
+	if (!feedlist_find_node (root, NODE_BY_URL, url))
+		google_reader_api_edit_remove_subscription (root->source, streamId, reedah_source_get_stream_id_for_node);
 }
 
 static void
 reedah_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 {
-	google_reader_api_edit_mark_starred (node->source, item->sourceId, node->subscription->source, newStatus);
+	google_reader_api_edit_mark_starred (node->source, item->sourceId, node->subscription->origSource, newStatus);
 	item_flag_state_changed (item, newStatus);
 }
 
 static void
 reedah_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 {
-	google_reader_api_edit_mark_read (node->source, item->sourceId, node->subscription->source, newStatus);
+	google_reader_api_edit_mark_read (node->source, item->sourceId, node->subscription->origSource, newStatus);
 	item_read_state_changed (item, newStatus);
-}
-
-/**
- * Convert all subscriptions of a Reedah source to local feeds
- *
- * @param node The node to migrate (not the nodeSource!)
- */
-static void
-reedah_source_convert_to_local (Node *node)
-{
-	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }
 
 extern struct subscriptionType reedahSourceFeedSubscriptionType;
@@ -312,6 +207,8 @@ extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 static struct nodeSourceType nst = {
 	.id                  = "fl_reedah",
 	.name                = N_("Reedah"),
+	.addInfo             = N_("Please provide your <a href='https://reedah.com'>reedah.com</a> account credentials."),
+	.url                 = "https://www.reedah.com/reader",
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
 	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
@@ -324,16 +221,12 @@ static struct nodeSourceType nst = {
 	.source_type_init    = reedah_source_init,
 	.source_type_deinit  = NULL,
 	.source_new	     = reedah_source_new,
-	.source_create       = ui_reedah_source_get_account_info,
-	.source_delete       = opml_source_remove,
-	.source_auto_update  = reedah_source_auto_update,
-	.source_free         = reedah_source_free,
+	.source_login        = reedah_source_login,
 	.item_set_flag       = reedah_source_item_set_flag,
 	.item_mark_read      = reedah_source_item_mark_read,
 	.add_folder          = NULL,
 	.add_subscription    = reedah_source_add_subscription,
-	.remove_node         = reedah_source_remove_node,
-	.convert_to_local    = reedah_source_convert_to_local
+	.remove_node         = reedah_source_remove_node
 };
 
 nodeSourceTypePtr

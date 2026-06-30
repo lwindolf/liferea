@@ -33,13 +33,13 @@
 			{{#with node.nodeSource}}
 				{{#compare loginState "==" 4}}
 					<div id="errors">
-						<p><_span>⛔ Account login for '{{ title }}' failed ({{ authFailures }}/{{ maxFailures }} retries)!</_span></p>
+						<p><_span>⛔ Account login for '{{ title }}' failed!</_span></p>
 						<p><_span>Please check your credentials!</_span></p>
 					</div>
 				{{/compare}}
 				{{#compare loginState "==" 1}}
 					<div id="errors">
-						<_span>⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/{{ maxFailures }} retries)...</_span>
+						<_span>⚠️ Account login for '{{ title }}' is in progress...</_span>
 					</div>
 				{{/compare}}
 				{{#compare loginState "==" 0}}

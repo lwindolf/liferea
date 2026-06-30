@@ -222,8 +222,6 @@ static struct subscriptionType opmlSubscriptionType = {
 
 /* OPML source type implementation */
 
-static void ui_opml_source_get_source_url (void);
-
 gchar *
 opml_source_get_feedlist (Node *node)
 {
@@ -231,23 +229,35 @@ opml_source_get_feedlist (Node *node)
 }
 
 void
+opml_source_import_tree_from_file (Node *node)
+{
+	g_autofree gchar *filename = opml_source_get_feedlist (node);
+	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
+		import_OPML_feedlist (filename, node, FALSE, TRUE);
+	} else {
+		g_warning ("cannot open \"%s\"", filename);
+		node->available = FALSE;
+	}
+}
+
+void
+opml_export_remove (Node *node)
+{
+	g_autofree gchar *filename = opml_source_get_feedlist (node);
+	unlink (filename);
+}
+
+/* node source interface */
+
+static void
 opml_source_import (Node *node)
 {
-	gchar	*filename;
-
 	/* We only ship an icon for opml, not for other sources */
 	if (g_str_equal (NODE_SOURCE_TYPE (node)->id, "fl_opml"))
 		node->icon = icon_create_from_file ("fl_opml.png");
 
 	debug (DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
-	filename = opml_source_get_feedlist (node);
-	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
-		import_OPML_feedlist (filename, node, FALSE, TRUE);
-	} else {
-		g_print ("cannot open \"%s\"", filename);
-		node->available = FALSE;
-	}
-	g_free (filename);
+	opml_source_import_tree_from_file (node);
 
 	subscription_set_update_interval (node->subscription, OPML_SOURCE_UPDATE_INTERVAL);
 
@@ -267,8 +277,8 @@ opml_source_export (Node *node)
 	debug (DEBUG_CACHE, "exporting OPML source: title=%s file=%s", node_get_title(node), filename);
 }
 
-void
-opml_source_remove (Node *node)
+static void
+opml_source_delete (Node *node)
 {
 	g_autofree gchar *filename;
 
@@ -277,49 +287,7 @@ opml_source_remove (Node *node)
 	g_assert (!node->children);
 
 	/* step 2: delete source instance OPML cache file */
-	filename = opml_source_get_feedlist (node);
-	unlink (filename);
-}
-
-static void
-opml_source_auto_update (Node *node)
-{
-	guint64	now;
-
-	now = g_get_real_time();
-
-	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll + (guint64)OPML_SOURCE_UPDATE_INTERVAL * (guint64)G_USEC_PER_SEC <= now)
-		node_source_update (node);
-}
-
-static struct nodeSourceType nst = {
-	.id                  = "fl_opml",
-	.name                = N_("Planet, BlogRoll, OPML"),
-	.sourceSubscriptionType = &opmlSubscriptionType,
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
-	.source_type_init    = NULL,
-	.source_type_deinit  = NULL,
-	.source_new	     = NULL,
-	.source_create       = ui_opml_source_get_source_url,
-	.source_delete       = opml_source_remove,
-	.source_import       = opml_source_import,
-	.source_auto_update  = opml_source_auto_update,
-	.source_free         = NULL,
-	.item_set_flag       = NULL,
-	.item_mark_read      = NULL,
-	.add_folder          = NULL,
-	.add_subscription    = NULL,
-	.remove_node         = NULL,
-	.convert_to_local    = NULL
-};
-
-nodeSourceTypePtr
-opml_source_get_type (void)
-{
-	nst.feedSubscriptionType = feed_get_subscription_type ();
-
-	return &nst;
+	opml_export_remove (node);
 }
 
 /* GUI callbacks */
@@ -362,4 +330,22 @@ ui_opml_source_get_source_url (void)
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (dialog, "select_button")), "clicked",
 	                  G_CALLBACK (on_opml_file_choose_clicked),
 			  dialog);
+}
+
+nodeSourceTypePtr
+opml_source_get_type (void)
+{
+	static struct nodeSourceType nst = {
+		.id                  = "fl_opml",
+		.name                = N_("Planet, BlogRoll, OPML"),
+		.sourceSubscriptionType = &opmlSubscriptionType,
+		.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+		.source_create       = ui_opml_source_get_source_url,
+		.source_import       = opml_source_import,
+		.source_delete       = opml_source_delete
+	};
+
+	nst.feedSubscriptionType = feed_get_subscription_type ();
+
+	return &nst;
 }

@@ -191,17 +191,20 @@ node_update_subscription (Node *node, gpointer user_data)
 }
 
 void
-node_auto_update_subscription (Node *node)
+node_auto_update_subscription (Node *node, gpointer user_data)
 {
+	updateFlags flags = GPOINTER_TO_UINT (user_data);
+
 	if (node->source->root == node) {
-		node_source_auto_update (node);
+		/* special handling for node sources as we want to be able to handle login state */
+		node_source_auto_update (node, flags);
 		return;
 	}
 
 	if (node->subscription)
-		subscription_auto_update (node->subscription);
+		subscription_auto_update (node->subscription, flags);
 
-	node_foreach_child (node, node_auto_update_subscription);
+	node_foreach_child_data (node, node_auto_update_subscription, user_data);
 }
 
 gboolean

@@ -24,21 +24,6 @@
 #include "node_source.h"
 
 /**
- * A nodeSource specific for TheOldReader
- */
-typedef struct TheOldReaderSource {
-	Node		*root;		/**< the root node in the feed list */
-
-	/**
-	 * A map from a subscription source to a timestamp when it was last 
-	 * updated (provided by Google).
-	 */
-	GHashTable      *lastTimestampMap; 
-
-	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TheOldReader category id */
-} *TheOldReaderSourcePtr;
-
-/**
  * TheOldReader API URL's
  * In each of the following, the _URL indicates the URL to use, and _POST
  * indicates the corresponging postdata to send.
@@ -61,29 +46,11 @@ typedef struct TheOldReaderSource {
 nodeSourceTypePtr theoldreader_source_get_type (void);
 
 /**
- * Find a child node with the given feed source URL.
- *
- * @param gsource	TheOldReaderSource
- * @param source	a feed source URL to search
- *
- * @returns a node (or NULL)
- */
-Node *theoldreader_source_get_node_from_source (TheOldReaderSourcePtr gsource, const gchar* source);
-
-/**
- * Migrate a google source child-node from a Liferea 1.4 style read-only
- * google source nodes.
- *
- * @param node The node to migrate (not the nodeSource!)
- */
-void theoldreader_source_migrate_node (Node *node);
-
-/**
  * Perform login for the given Google source.
  *
- * @param gsource	a TheOldReaderSource
+ * @param root		TheOldReaderSource node
  * @param flags		network request flags
  */
-void theoldreader_source_login (TheOldReaderSourcePtr gsource, guint32 flags);
+void theoldreader_source_login (Node *root, guint32 flags);
 
 #endif

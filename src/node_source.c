@@ -35,6 +35,7 @@
 #include "node.h"
 #include "node_provider.h"
 #include "plugins/plugins_engine.h"
+#include "ui/auth_dialog.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
@@ -107,15 +108,6 @@ node_source_export_feedlist (void)
 	export_OPML_feedlist (filename, feedlist_get_root (), TRUE);
 }
 
-Node *
-node_source_root_from_node (Node *node)
-{
-	while (node->parent && node->parent->source == node->source)
-		node = node->parent;
-
-	return node;
-}
-
 static nodeSourceTypePtr
 node_source_type_find (const gchar *typeStr, guint capabilities)
 {
@@ -129,15 +121,13 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 		iter = g_slist_next (iter);
 	}
 
-	g_print ("Could not find source type \"%s\"\n!", typeStr);
+	g_warning ("Could not find source type \"%s\"\n!", typeStr);
 	return NULL;
 }
 
 gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
-	debug (DEBUG_PARSING, "Registering node source type %s", type->name);
-
 	if (type->source_type_init)
 		type->source_type_init ();
 
@@ -148,14 +138,11 @@ node_source_type_register (nodeSourceTypePtr type)
 
 Node *
 node_source_setup_root (void)
-{
-	Node	*rootNode;
-	nodeSourceTypePtr type;
-	
+{	
 	/* register a generic type for storing feed-id strings of remote services */
 	metadata_type_register ("feed-id", METADATA_TYPE_TEXT);
 
-	/* we need to register all source types once before doing anything... */
+	/* 1. we need to register all source types once before doing anything... */
 	node_source_type_register (default_source_get_type ());
 	node_source_type_register (dummy_source_get_type ());
 	node_source_type_register (opml_source_get_type ());
@@ -164,49 +151,47 @@ node_source_setup_root (void)
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
 	node_source_type_register (webdav_source_get_type ());
-	atexit(node_source_cleanup);
+	atexit (node_source_cleanup);
 
-	/* register all source types that are google like */
-	type = g_new0 (struct nodeSourceType, 1);
+	/* 2. Register all source types that are google like */
+	nodeSourceTypePtr type = g_new0 (struct nodeSourceType, 1);
 	memcpy (type, google_source_get_type (), sizeof(struct nodeSourceType));
 	type->name = N_("Miniflux");
 	type->id = "fl_miniflux";
 	node_source_type_register (type);
 
-	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
-	if (!type)
-		g_error ("No root capable node source found!");
+	/* 3. Create a root node */
+	Node *root = node_new ("root");
+	root->title = g_strdup ("root");	// not visible anywhere...
+	root->source = g_new0 (struct nodeSource, 1);
+	root->source->root = root;
+	root->source->type = default_source_get_type ();
+	node_source_import_feedlist (root);
 
-	rootNode = node_new ("root");
-	rootNode->title = g_strdup ("root");
-	rootNode->source = g_new0 (struct nodeSource, 1);
-	rootNode->source->root = rootNode;
-	rootNode->source->type = type;
-	node_source_import_feedlist (rootNode);
+	/* 4. Start updating*/
+	default_source_start_updating (root);
 
-	return rootNode;
+	/* 5. Purge old nodes from the database */
+	db_node_cleanup (root);
+
+	return root;
 }
 
 static void
-node_source_set_feed_subscription_type (Node *folder, subscriptionTypePtr type)
+node_source_set_feed_subscription_type (Node *node, gpointer type)
 {
-	GSList *iter;
+	if (IS_FEED(node) && node->subscription)
+		node->subscription->type = type;
 
-	for (iter = folder->children; iter; iter = g_slist_next(iter)) {
-		Node *node = (Node *) iter->data;
-
-		if (node->subscription)
-			node->subscription->type = type;
-
-		/* Recurse for hierarchic nodes... */
-		node_source_set_feed_subscription_type (node, type);
-	}
+	node_foreach_child_data (node, node_source_set_feed_subscription_type, type);
 }
 
 static void
 node_source_set_initial_import_flag (Node *node)
 {
 	node->syncState = NODE_SYNC_STATE_INITIAL_IMPORT;
+
+	node_foreach_child (node, node_source_set_initial_import_flag);
 }
 
 static void
@@ -216,11 +201,8 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 	xmlChar			*typeStr = NULL;
 
 	typeStr = xmlGetProp (xml, BAD_CAST"sourceType");
-	if (!typeStr)
-		typeStr = xmlGetProp (xml, BAD_CAST"pluginType"); /* for migration only */
-
 	if (typeStr) {
-		debug (DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
+		debug (DEBUG_CACHE, "node_source: %s |%s| import as type=%s", node->id, node->title, typeStr);
 
 		node->available = FALSE;
 
@@ -240,33 +222,17 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 
 		node->available = TRUE;
 		node->source = NULL;
-		node_source_new (node, type, NULL);
 		node_set_subscription (node, subscription_import (xml, trusted));
-
-		if (type) {
-			opml_source_import (node);
-
-			node->subscription->type = node->source->type->sourceSubscriptionType;
-			if (node->source->type->source_new)
-				node->source->type->source_new (node);
-
-			/* Set subscription type for all child nodes imported */
-			node_source_set_feed_subscription_type (node, type->feedSubscriptionType);
-
-			node_foreach_child (node, node_source_set_initial_import_flag);
-		}
-		
-		if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API)
-			google_reader_api_check (&(node->source->api));
+		node_source_new (node, type, NULL);
 	} else {
-		g_print ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
+		g_warning ("Feed list import: No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}
 }
 
 static void
 node_source_export (Node *node, xmlNodePtr xml, gboolean trusted)
 {
-	debug (DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE (node)->id);
+	debug (DEBUG_CACHE, "node_source: %s |%s| exporting", node->id, node->title);
 
 	/* If the node source type was loaded using the dummy node source
 	   type we need to restore the original node source type id from
@@ -282,11 +248,10 @@ node_source_export (Node *node, xmlNodePtr xml, gboolean trusted)
 	subscription_export (node->subscription, xml, trusted);
 }
 
+/* called both when importing and when creating new sources */
 void
 node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
 {
-	subscriptionPtr	subscription;
-
 	g_assert (NULL == node->source);
 
 	node->source = g_new0 (struct nodeSource, 1);
@@ -296,29 +261,44 @@ node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
 	node->source->actionQueue = g_queue_new ();
 
 	if (url) {
-		subscription = subscription_new (url, NULL, NULL);
-		node_set_subscription (node, subscription);
+		/* This is a bit complicated, when subscribing we get a URL,
+		   when importing the subscription is already assigned. */
+		g_assert (!node->subscription);
 
-		subscription->type = node->source->type->sourceSubscriptionType;
+		subscriptionPtr subscription = subscription_new (url, NULL, NULL);
+		node_set_subscription (node, subscription);
 	}
+
+	/* Ensure all imported children have proper type and state */
+	opml_source_import_tree_from_file (node);
+	node->subscription->type = type->sourceSubscriptionType;
+	node_foreach_child_data (node, node_source_set_feed_subscription_type, type->feedSubscriptionType);
+	node_foreach_child (node, node_source_set_initial_import_flag);
+
+	/* Only then setup the source */
+	if (type->source_new)
+		type->source_new (node);
+
+	/* And check if Google Reader like sources set up all the necessary API endpoints */
+	if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API)
+		google_reader_api_check (&(node->source->api));
 }
 
-void
+static void
 node_source_set_state (Node *node, gint newState)
 {
-	debug (DEBUG_UPDATE, "node source '%s' (id '%s') now in state %d (was %d)", node->title, node->id, newState, node->source->loginState);
+	debug (DEBUG_UPDATE, "node_source: %s |%s| now in state %d (was %d)", node->id, node->title, newState, node->source->loginState);
 
 	/* State transition actions below... */
 	if (newState == NODE_SOURCE_STATE_ACTIVE)
-		node->source->authFailures = 0;
+		node->available = TRUE;
 
-	if (newState == NODE_SOURCE_STATE_NONE) {
-		node->source->authFailures++;
+	if (newState == NODE_SOURCE_STATE_AUTH_FAILED)
 		node->available = FALSE;
-	}
 
-	if (node->source->authFailures >= NODE_SOURCE_MAX_AUTH_FAILURES)
-		newState = NODE_SOURCE_STATE_NO_AUTH;
+	if (newState == NODE_SOURCE_STATE_AUTH_CHALLENGE &&
+	    node->source->loginState != NODE_SOURCE_STATE_AUTH_CHALLENGE)
+		auth_dialog_new (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 
 	node->source->loginState = newState;
 
@@ -326,11 +306,20 @@ node_source_set_state (Node *node, gint newState)
 }
 
 void
+node_source_set_auth_failed (Node *root, gboolean challenge)
+{
+	if (challenge)
+		node_source_set_state (root, NODE_SOURCE_STATE_AUTH_CHALLENGE);
+	else
+		node_source_set_state (root, NODE_SOURCE_STATE_AUTH_FAILED);
+}
+
+void
 node_source_set_auth_token (Node *node, gchar *token)
 {
 	g_assert (!node->source->authToken);
 
-	debug (DEBUG_UPDATE, "node source \"%s\" Auth token found: %s", node->id, token);
+	debug (DEBUG_UPDATE, "node_source: %s |%s| Auth token found: %s", node->id, node->title, token);
 	node->source->authToken = token;
 
 	node_source_set_state (node, NODE_SOURCE_STATE_ACTIVE);
@@ -349,9 +338,36 @@ on_node_source_type_selected (GtkTreeSelection *selection, gpointer userdata)
 }
 
 static void
+on_new_node_source_create (GtkButton *button, gpointer user_data)
+{
+        GtkWidget *dialog = GTK_WIDGET (user_data);
+	struct nodeSourceType *type = g_object_get_data (G_OBJECT (dialog), "type");
+
+        const gchar *username = liferea_dialog_entryrow_get (dialog, "usernameEntry");
+        const gchar *password = liferea_dialog_entryrow_get (dialog, "passwordEntry");
+        const gchar *url = liferea_dialog_entryrow_get (dialog, "serverEntry");
+	const gchar *name = liferea_dialog_entryrow_get (dialog, "nameEntry");
+
+	g_assert (username);
+	g_assert (password);
+	g_assert (url);
+	g_assert (name);
+
+        Node *node = node_new ("source");
+        node_source_new (node, type, url);
+        node_set_title (node, name);
+        subscription_set_auth_info (node->subscription, username, password);
+
+        feedlist_node_added (node);
+        node_source_update (node);
+
+        adw_dialog_close (ADW_DIALOG (dialog));
+}
+
+static void
 on_node_source_type_response (GtkButton *btn, gpointer user_data)
 {
-	AdwDialog		*dialog = ADW_DIALOG (user_data);
+	GtkDialog		*dialog = GTK_DIALOG (user_data);
 	GtkTreeSelection	*selection;
 	GtkTreeModel		*model;
 	GtkTreeIter		iter;
@@ -361,11 +377,35 @@ on_node_source_type_response (GtkButton *btn, gpointer user_data)
 	g_assert (NULL != selection);
 	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 		gtk_tree_model_get (model, &iter, 1, &type, -1);
-		if (type)
-			type->source_create ();
+
+		if (type) {
+			/* Two cases to handle: 
+			1.) special dialogs with callback defined using an interface function
+			2.) standard generic node source creation dialog */
+
+			if (type->source_create) {
+				type->source_create ();
+			} else {
+				GtkWidget *dialog = liferea_dialog_new ("new_node_source");
+
+				g_object_set_data (G_OBJECT (dialog), "type", type);
+				liferea_dialog_entryrow_set (dialog, "nameEntry", type->name);
+				gtk_label_set_markup (GTK_LABEL (liferea_dialog_lookup (dialog, "label")), type->addInfo);
+
+				/* If the type has a hard-coded URL set it to pass it to the callback,
+				   otherwise show the URL entry for the user to enter it */
+				if (type->url)
+					liferea_dialog_entryrow_set (dialog, "serverEntry", type->url);
+				else
+					gtk_widget_set_visible (liferea_dialog_lookup (dialog, "serverEntry"), TRUE);
+
+				g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
+					G_CALLBACK (on_new_node_source_create), dialog);
+			}
+		}
 	}
 
-	adw_dialog_close (dialog);
+	adw_dialog_close (ADW_DIALOG (dialog));
 }
 
 static gboolean
@@ -438,12 +478,6 @@ void
 node_source_update (Node *node)
 {
 	if (node->subscription) {
-		/* Reset NODE_SOURCE_STATE_NO_AUTH as this is a manual
-		   user interaction and no auto-update so we can query
-		   for credentials again. */
-		if (node->source->loginState == NODE_SOURCE_STATE_NO_AUTH)
-			node_source_set_state (node, NODE_SOURCE_STATE_NONE);
-
 		subscription_update (node->subscription, 0);
 
 		/* Note that node sources are required to auto-update child
@@ -455,9 +489,24 @@ node_source_update (Node *node)
 }
 
 void
-node_source_auto_update (Node *node)
+node_source_auto_update (Node *node, updateFlags flags)
 {
-	NODE_SOURCE_TYPE (node)->source_auto_update (node);
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
+		debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| start login", node->id, node->id);
+		node_source_set_state (node, NODE_SOURCE_STATE_IN_PROGRESS);
+		g_assert (node->source->type->source_login);
+		(node->source->type->source_login) (node, flags);
+		return;
+	}
+
+	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS) {
+		debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| skipped as login in progress", node->id, node->title);
+		return;
+	}
+
+	// FIXME: does it make sense to use autoupdate for the subscription?
+	// there is no fetching besides login anyway
+	subscription_auto_update (node->subscription, 0 /* flags */);
 }
 
 static gboolean
@@ -584,6 +633,8 @@ node_source_item_set_flag (Node *node, itemPtr item, gboolean newState)
 static void
 node_source_convert_to_local_child_node (Node *node)
 {
+	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
+
 	/* Ensure to remove special subscription types and cancel updates
 	   Note: we expect that all feeds already have the subscription URL
 	   set. This might need to be done by the node type specific
@@ -613,10 +664,6 @@ node_source_convert_to_local (Node *node)
 	update_job_cancel_by_owner ((gpointer)node);
 	update_job_cancel_by_owner ((gpointer)node->subscription);
 	update_job_cancel_by_owner ((gpointer)node->source);
-
-	/* Give the node source type the chance to do things ... */
-	if (NULL != NODE_SOURCE_TYPE (node)->convert_to_local)
-		NODE_SOURCE_TYPE (node)->convert_to_local (node);
 
 	/* Perform conversion */
 
@@ -648,10 +695,6 @@ node_source_to_json (Node *node, JsonBuilder *b)
 	json_builder_add_string_value (b, node->source->root->title);
 	json_builder_set_member_name (b, "loginState");
 	json_builder_add_int_value (b, node->source->loginState);
-	json_builder_set_member_name (b, "authFailures");
-	json_builder_add_int_value (b, node->source->authFailures);
-	json_builder_set_member_name (b, "maxFailures");
-	json_builder_add_int_value (b, NODE_SOURCE_MAX_AUTH_FAILURES);
 	json_builder_set_member_name (b, "actionQueueLength");
 	json_builder_add_int_value (b, g_queue_get_length (node->source->actionQueue));
 	json_builder_end_object (b);
@@ -662,19 +705,32 @@ node_source_to_json (Node *node, JsonBuilder *b)
 static void
 node_source_remove (Node *node)
 {
-	if (!node_source_is_logged_in (node))
-		return;
-
 	g_assert (node == node->source->root);
 
-	if (NULL != NODE_SOURCE_TYPE (node)->source_delete)
+	/* Note for online accounts we never delete nodes in the account
+	   we just disconnect the account, so the user does not unintentionally
+	   loose data.
+	   
+	   Note: an exception is the OPML source, as it is not an online account
+	   and defines a "source_remove" method */
+	
+	if (NODE_SOURCE_TYPE (node)->source_delete)
 		NODE_SOURCE_TYPE (node)->source_delete (node);
+
+	// Always remove OPML file in cache dir
+	opml_export_remove (node);
 }
 
 static void
 node_source_free (Node *node)
 {
-	if (NULL != NODE_SOURCE_TYPE (node)->source_free)
+	g_assert (node == node->source->root);
+
+	update_job_cancel_by_owner (node);
+	update_job_cancel_by_owner (node->subscription);
+	update_job_cancel_by_owner (node->source);
+
+	if (NODE_SOURCE_TYPE (node)->source_free)
 		NODE_SOURCE_TYPE (node)->source_free (node);
 
 	google_reader_api_free (&(node->source->api));
