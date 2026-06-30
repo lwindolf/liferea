@@ -186,7 +186,7 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
 
         /* result processing */
         if (result && result->httpstatus == 401) {
-                node_source_set_state (flow->root, NODE_SOURCE_STATE_NO_AUTH);
+                node_source_set_auth_failed (flow->root, job->flags & UPDATE_REQUEST_PRIORITY_HIGH);
                 return TRUE;
         }
 
@@ -348,7 +348,7 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
 
         /* result processing */
         if (result && result->httpstatus == 401) {
-                node_source_set_state (flow->root, NODE_SOURCE_STATE_NO_AUTH);
+                node_source_set_auth_failed (flow->root, job->flags & UPDATE_REQUEST_PRIORITY_HIGH);
                 return TRUE;
         }
 

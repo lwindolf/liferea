@@ -56,8 +56,10 @@ theoldreader_source_check_node_for_removal (Node *node, gpointer user_data)
 		elements = iter = json_array_get_elements (array);
 		while (iter) {
 			JsonNode *json_node = (JsonNode *)iter->data;
-			if (g_str_equal (node->subscription->source, json_get_string (json_node, "url"))) {
-				debug (DEBUG_UPDATE, "node: %s", node->subscription->source);
+			// Note: we drop sponsored posts as it cannot be fetched
+			if (g_str_equal (node->subscription->origSource, json_get_string (json_node, "url")) &&
+			    !g_str_equal (node->title, "The Old Reader Sponsored Posts")) {
+				debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| check for removal -> keeping node", node->id, node->title);
 				found = TRUE;
 				break;
 			}
@@ -65,22 +67,24 @@ theoldreader_source_check_node_for_removal (Node *node, gpointer user_data)
 		}
 		g_list_free (elements);
 
-		if (!found)
+		if (!found) {
+			debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| check for removal -> dropping node", node->id, node->title);
 			feedlist_node_removed (node);
+		}
 	}
 }
 
 static void
-theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id, Node *folder)
+theoldreader_source_merge_feed (Node *root, const gchar *url, const gchar *title, const gchar *id, Node *folder)
 {
-	Node	*node = feedlist_find_node (source->root, NODE_BY_URL, url);
+	Node *node = feedlist_find_node (root, NODE_BY_URL, url);
 	if (!node) {
 		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new ("feed");
 		node_set_title (node, title);
-		node_set_parent (node, folder?folder:source->root, -1);
+		node_set_parent (node, folder?folder:root, -1);
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = source->root->source->type->feedSubscriptionType;
+		node->subscription->type = root->source->type->feedSubscriptionType;
 		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
 
 		feedlist_node_imported (node);
@@ -90,24 +94,21 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 
 	} else {
 		node_set_title (node, title);
-		node_source_update_folder (node, folder);
+		node_source_update_folder (node, folder?folder:root);
 	}
 }
 
 /* JSON subscription list processing implementation */
 
 static void
-theoldreader_subscription_cb (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
+theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
-	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
+	Node *root = subscription->node;
 
-	debug (DEBUG_UPDATE,"theoldreader_subscription_cb(): %s", result->data);
+	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| update subscription list: >>>%s<<<", root->id, root->title, result->data);
 
-	subscription->updateJob = NULL;
-
-	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {
-		JsonParser	*parser = json_parser_new ();
+		g_autoptr(JsonParser) parser = json_parser_new ();
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
@@ -139,10 +140,12 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const UpdateResult *
 						const gchar *label = json_get_string ((JsonNode *)citer->data, "label");
 						const gchar *id    = json_get_string ((JsonNode *)citer->data, "id");
 						if (label) {
-							folder = node_source_find_or_create_folder (source->root, label, label);
+							GHashTable *h = (GHashTable *)g_object_get_data (G_OBJECT (root), "folderToCategory");
+
+							folder = node_source_find_or_create_folder (root, label, label);
 
 							/* Store category id also for folder (needed when subscribing new feeds) */
-							g_hash_table_insert (source->folderToCategory, g_strdup (folder->id), g_strdup (id));
+							g_hash_table_insert (h, g_strdup (folder->id), g_strdup (id));
 
 							break;
 						}
@@ -153,7 +156,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const UpdateResult *
 
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "url")) {
-					theoldreader_source_merge_feed (source,
+					theoldreader_source_merge_feed (root,
 					                                json_get_string (node, "url"),
 					                                json_get_string (node, "title"),
 					                                json_get_string (node, "id"),
@@ -164,30 +167,25 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const UpdateResult *
 			g_list_free (elements);
 
 			/* Remove old nodes we cannot find anymore */
-			node_foreach_child_data (source->root, theoldreader_source_check_node_for_removal, array);
+			node_foreach_child_data (root, theoldreader_source_check_node_for_removal, array);
 
 			/* Save new subscription tree to OPML cache file */
-			opml_source_export (subscription->node);
+			opml_source_export (root);
 
-			subscription->node->available = TRUE;
+			root->available = TRUE;
 		} else {
-			g_print ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
+			g_free (subscription->updateError);
+			subscription->updateError = g_strdup_printf ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
+			debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| ERROR: %s!", root->id, root->title, subscription->updateError);
 		}
-
-		g_object_unref (parser);
 	} else {
-		subscription->node->available = FALSE;
-		debug (DEBUG_UPDATE, "theoldreader_subscription_cb(): ERROR: failed to get subscription list!");
+		root->available = FALSE;
+		subscription->error = FETCH_ERROR_NET;
+		debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| ERROR: failed to get subscription list (HTTP status %d)!", root->id, root->title, result->httpstatus);
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
-		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
-}
-
-static void
-theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
-{
-	theoldreader_subscription_cb (subscription, result, flags);
+		node_foreach_child_data (root, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
 static gboolean
@@ -195,13 +193,7 @@ theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr su
 {
 	Node *node = subscription->node;
 
-	g_assert(node->source);
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug (DEBUG_UPDATE, "TheOldReaderSource: login");
-		theoldreader_source_login (node->data, 0);
-		return FALSE;
-	}
-	debug (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", node->id);
+	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| updating subscription list", node->id, node->title);
 
 	update_request_set_source (request, node->source->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);

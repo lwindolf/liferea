@@ -41,8 +41,6 @@
 #include "node_providers/feed.h"
 #include "subscription.h"
 #include "update.h"
-#include "ui/auth_dialog.h"
-#include "ui/liferea_dialog.h"
 #include "node_sources/webdav_source_feed_list.h"
 #include "node_sources/webdav_source_flows.h"
 
@@ -215,20 +213,12 @@ webdav_index_url (Node *root)
 	);
 }
 
-gboolean
-webdav_source_login (Node *root, guint32 flags)
+static void
+webdav_source_login (Node *root, updateFlags flags)
 {
-	if (root->source->loginState == NODE_SOURCE_STATE_ACTIVE)
-		return TRUE;
-
-	if (root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
-		return FALSE;
-
-	node_source_set_state (root, NODE_SOURCE_STATE_IN_PROGRESS);
-
+	/* No login. Just basic auth. So we can directly start with 
+	   the subscription list update. */
 	webdav_source_feed_list_import (root);
-
-	return TRUE;
 }
 
 /*  Lazy sync flushing */
@@ -325,7 +315,7 @@ webdav_on_node_updated (FeedList *fl, const gchar *node_id, gpointer user_data)
 	Node *node = node_from_id (node_id);
 	Node *root = (Node *)user_data;
 
-	if (!node || root != node_source_root_from_node (node))
+	if (!node || root != node->source->root)
 		return;
 
 	if (IS_FOLDER (node)) {
@@ -346,7 +336,7 @@ webdav_on_node_updated (FeedList *fl, const gchar *node_id, gpointer user_data)
 static void
 webdav_source_new (Node *root)
 {
-	const gchar *base_url = subscription_get_source (root->subscription);
+	const gchar *base_url = root->subscription->origSource;
 	g_autofree gchar *escaped_collection = NULL;
 	if (!base_url || !*base_url) {
 		root->available = FALSE;
@@ -377,25 +367,6 @@ webdav_source_new (Node *root)
 	debug (DEBUG_UPDATE, "webdav_source_import: collection URL = %s", collection_url);
 
 	g_signal_connect (feedlist, "node-updated", G_CALLBACK (webdav_on_node_updated), root);
-}
-
-static void
-webdav_source_auto_update (Node *node)
-{
-	if (!webdav_source_login (node, 0))
-		return;
-
-	guint64 now = g_get_real_time ();
-
-	if (node->subscription->updateState->lastPoll +
-	    (guint64)WEBDAV_SOURCE_UPDATE_INTERVAL * G_USEC_PER_SEC > now) {
-		node_foreach_child (node, node_auto_update_subscription);
-		return;
-	}
-
-	node->subscription->updateState->lastPoll = now;
-
-	subscription_update (node->subscription, 0);
 }
 
 static void
@@ -469,60 +440,26 @@ webdav_source_remove_node (Node *node, Node *child)
 	feedlist_node_removed (child);
 }
 
-static void
-on_webdav_source_apply  (GtkButton *btn, gpointer user_data)
-{
-        GtkWidget *dialog = GTK_WIDGET (user_data);
-        const gchar *username = liferea_dialog_entryrow_get (dialog, "usernameEntry");
-        const gchar *password = liferea_dialog_entryrow_get (dialog, "passwordEntry");
-        const gchar *url = liferea_dialog_entryrow_get (dialog, "sourceEntry");
-
-        g_assert (username);
-        g_assert (password);
-        g_assert (url);
-
-        Node *node = node_new ("source");
-        node_source_new (node, webdav_source_get_type (), url);
-        node_set_title (node, node->source->type->name);
-        subscription_set_auth_info (node->subscription, username, password);
-
-        feedlist_node_added (node);
-        node_source_update (node);
-
-        adw_dialog_close (ADW_DIALOG (dialog));
-}
-
-static void
-ui_webdav_source_get_url (void)
-{
-	GtkWidget *dialog = liferea_dialog_new ("webdav_source");
-	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
-			  G_CALLBACK (on_webdav_source_apply), dialog);
-	g_signal_connect_swapped (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked",
-			  G_CALLBACK (adw_dialog_close), dialog);
-}
-
 static struct nodeSourceType nst = {
 	.id                  = "fl_webdav",
 	.name                = N_("WebDAV Sync"),
+	.addInfo             = N_("Setup a synchronization using WebDAV. Please check your WebDAV provider documentation for the exact URL."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
 	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ADD_FOLDER |
-	                       NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST,
+	                       NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST |
+			       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
 	.sourceSubscriptionType = &webdavSourceSubscriptionType,
 	.source_new	     = webdav_source_new,
-	.source_create       = ui_webdav_source_get_url,
-	.source_delete       = opml_source_remove,
-	.source_auto_update  = webdav_source_auto_update,
+	.source_login        = webdav_source_login,
 	.source_free         = webdav_source_free,
 	.item_set_flag       = webdav_source_item_flag_changed,
 	.item_mark_read      = webdav_source_item_read_changed,
 	.add_folder          = webdav_source_add_folder,
 	.add_subscription    = webdav_source_add_subscription,
-	.remove_node         = webdav_source_remove_node,
-	.convert_to_local    = NULL
+	.remove_node         = webdav_source_remove_node
 };
 
 nodeSourceTypePtr

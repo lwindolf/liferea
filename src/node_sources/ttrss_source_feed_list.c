@@ -55,8 +55,8 @@ ttrss_source_check_node_for_removal (Node *node, gpointer user_data)
 		elements = iter = json_array_get_elements (array);
 		while (iter) {
 			JsonNode *json_node = (JsonNode *)iter->data;
-			if (g_str_equal (node->subscription->source, json_get_string (json_node, "feed_url"))) {
-				debug (DEBUG_UPDATE, "node: %s", node->subscription->source);
+			if (g_str_equal (node->subscription->origSource, json_get_string (json_node, "feed_url"))) {
+				debug (DEBUG_UPDATE, "node: %s", node->subscription->origSource);
 				found = TRUE;
 				break;
 			}
@@ -70,27 +70,25 @@ ttrss_source_check_node_for_removal (Node *node, gpointer user_data)
 }
 
 static void
-ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *title, gint64 id, Node *folder)
+ttrss_source_merge_feed (Node *root, const gchar *url, const gchar *title, gint64 id, Node *folder)
 {
 	Node		*node;
-	gchar		*tmp;
 
 	/* check if node to be merged already exists */
-	node = feedlist_find_node (source->root, NODE_BY_URL, url);
+	node = feedlist_find_node (root, NODE_BY_URL, url);
 
 	if (!node) {
 		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new ("feed");
 		node_set_title (node, title);
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = source->root->source->type->feedSubscriptionType;
+		node->subscription->type = root->source->type->feedSubscriptionType;
 
 		/* Save tt-rss feed id which we need to fetch items... */
-		tmp = g_strdup_printf ("%" G_GINT64_FORMAT, id);
+		g_autofree gchar *tmp = g_strdup_printf ("%" G_GINT64_FORMAT, id);
 		metadata_list_set (&node->subscription->metadata, "ttrss-feed-id", tmp);
-		g_free (tmp);
 
-		node_set_parent (node, folder?folder:source->root, -1);
+		node_set_parent (node, folder?folder:root, -1);
 		feedlist_node_imported (node);
 
 		/**
@@ -104,7 +102,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 		/* Important: we must not loose the feed id! */
 		db_subscription_update (node->subscription);
 	} else {
-		node_source_update_folder (node, folder);
+		node_source_update_folder (node, folder?folder:root);
 	}
 }
 
@@ -113,18 +111,14 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 static gboolean
 ttrss_source_subscription_list_cb (UpdateJob *job)
 {
-	UpdateResult *result = job->result;
-	gpointer user_data = job->user_data;
-	guint32 flags = job->flags;
-	subscriptionPtr subscription = (subscriptionPtr) user_data;
-	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
+	UpdateResult	*result = job->result;
+	Node		*root = (Node *)job->user_data;
+	subscriptionPtr	subscription = root->subscription;
 
 	debug (DEBUG_UPDATE, "ttrss_subscription_cb(): %s", result->data);
 
-	subscription->updateJob = NULL;
-
 	if (result->data && result->httpstatus == 200) {
-		JsonParser	*parser = json_parser_new ();
+		g_autoptr(JsonParser) parser = json_parser_new ();
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonNode	*content = json_get_node (json_parser_get_root (parser), "content");
@@ -159,7 +153,6 @@ ttrss_source_subscription_list_cb (UpdateJob *job)
 			if (!content || (JSON_NODE_TYPE (content) != JSON_NODE_ARRAY)) {
 				debug (DEBUG_UPDATE, "ttrss_subscription_cb(): Failed to get subscription list!");
 				subscription->node->available = FALSE;
-				g_object_unref (parser);
 				return TRUE;
 			}
 
@@ -177,60 +170,61 @@ ttrss_source_subscription_list_cb (UpdateJob *job)
 
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "feed_url")) {
-					ttrss_source_merge_feed (source,
+					ttrss_source_merge_feed (root,
 					                         json_get_string (node, "feed_url"),
 					                         json_get_string (node, "title"),
 					                         json_get_int (node, "id"),
-								 node_source_find_or_create_folder (source->root, category, NULL));
+								 node_source_find_or_create_folder (root, category, NULL));
 				}
 				iter = g_list_next (iter);
 			}
 			g_list_free (elements);
 
 			/* Remove old nodes we cannot find anymore */
-			node_foreach_child_data (source->root, ttrss_source_check_node_for_removal, array);
+			node_foreach_child_data (root, ttrss_source_check_node_for_removal, array);
 
 			/* Save new subscription tree to OPML cache file */
-			opml_source_export (subscription->node);
+			opml_source_export (root);
 
-			subscription->node->available = TRUE;
+			root->available = TRUE;
 		} else {
-			g_print ("Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
+			debug (DEBUG_UPDATE, "Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
 		}
-
-		g_object_unref (parser);
 	} else {
-		subscription->node->available = FALSE;
+		root->available = FALSE;
 		debug (DEBUG_UPDATE, "ttrss_subscription_cb(): ERROR: failed to get TinyTinyRSS subscription list!");
 	}
 
-	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
-		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
+	if (!(job->flags & NODE_SOURCE_UPDATE_ONLY_LIST))
+		node_foreach_child_data (root, node_update_subscription, GUINT_TO_POINTER (0));
 
 	return TRUE;
 }
 
 static void
-ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr subscription)
+ttrss_source_update_subscription_list (Node *root)
 {
 	UpdateRequest	*request;
 
-	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, root->subscription->origSource);
 	request = update_request_new (
 		"POST",
 		source_uri,
-		subscription->updateState,
-		subscription->updateOptions
+		root->subscription->updateState,
+		root->subscription->updateOptions
 	);
 
-	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
+	g_autofree gchar *postdata = g_strdup_printf (
+		TTRSS_JSON_SUBSCRIPTION_LIST,
+		(const gchar *)g_object_get_data (G_OBJECT (root), "session_id")
+	);
 	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
-	subscription->updateJob = update_job_new (subscription, request, ttrss_source_subscription_list_cb, subscription, UPDATE_REQUEST_NO_FEED);
+	root->subscription->updateJob = update_job_new (root, request, ttrss_source_subscription_list_cb, root, UPDATE_REQUEST_NO_FEED);
 }
 
 static void
-ttrss_source_merge_categories (ttrssSourcePtr source, Node *parent, gint parentId, JsonNode *items)
+ttrss_source_merge_categories (Node *root, Node *parent, gint parentId, JsonNode *items)
 {
 	JsonArray	*array = json_node_get_array (items);
 	GList		*iter, *elements;
@@ -258,16 +252,19 @@ ttrss_source_merge_categories (ttrssSourcePtr source, Node *parent, gint parentI
 
 					/* Process child categories ... */
 					if (json_get_node (node, "items")) {
+						GHashTable *h = (GHashTable *)g_object_get_data (G_OBJECT (root), "folderToCategory");
+
 						/* Store category id also for folder (needed when subscribing new feeds) */
-						g_hash_table_insert (source->folderToCategory, g_strdup (folder->id), GINT_TO_POINTER (id));
+						g_hash_table_insert (h, g_strdup (folder->id), GINT_TO_POINTER (id));
 
 						/* Recurse... */
-						ttrss_source_merge_categories (source, folder, id, json_get_node (node, "items"));
+						ttrss_source_merge_categories (root, folder, id, json_get_node (node, "items"));
 					}
 				/* Process child feeds */
 				} else {
+					GHashTable *h = (GHashTable *)g_object_get_data (G_OBJECT (root), "categories");
 					debug (DEBUG_UPDATE, "TinyTinyRSS feed=%s folder=%d (%ld)", name, parentId, id);
-					g_hash_table_insert (source->categories, GINT_TO_POINTER (id), GINT_TO_POINTER (parentId));
+					g_hash_table_insert (h, GINT_TO_POINTER (id), GINT_TO_POINTER (parentId));
 				}
 			}
 
@@ -280,12 +277,12 @@ ttrss_source_merge_categories (ttrssSourcePtr source, Node *parent, gint parentI
 static void
 ttrss_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
-	ttrssSourcePtr		source = (ttrssSourcePtr) subscription->node->data;
+	Node *root = subscription->node;
 
 	debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result: %s", result->data);
 
 	if (result->data && result->httpstatus == 200) {
-		JsonParser	*parser = json_parser_new ();
+		g_autoptr(JsonParser) parser = json_parser_new ();
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonNode	*content = json_get_node (json_parser_get_root (parser), "content");
@@ -325,37 +322,35 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const Up
 
 			if (!content) {
 				debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get subscription list!");
-				subscription->node->available = FALSE;
+				root->available = FALSE;
 				return;
 			}
 
 			categories = json_get_node (content, "categories");
 			if (!categories) {
 				debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list: no 'categories' element found!");
-				subscription->node->available = FALSE;
+				root->available = FALSE;
 				return;
 			}
 
 			items = json_get_node (categories, "items");
 			if (!items || (JSON_NODE_TYPE (items) != JSON_NODE_ARRAY)) {
 				debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list: no 'categories' element found!");
-				subscription->node->available = FALSE;
+				root->available = FALSE;
 				return;
 			}
 
 			/* Process categories tree recursively */
-			g_hash_table_remove_all (source->categories);
-			ttrss_source_merge_categories (source, source->root, 0, items);
+			g_hash_table_remove_all ((GHashTable *)g_object_get_data (G_OBJECT (root), "categories"));
+			ttrss_source_merge_categories (root, root, 0, items);
 
 			/* And trigger the actual feed fetching */
-			ttrss_source_update_subscription_list (source, subscription);
+			ttrss_source_update_subscription_list (root);
 		} else {
 			g_print ("Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
 		}
-
-		g_object_unref (parser);
 	} else {
-		subscription->node->available = FALSE;
+		root->available = FALSE;
 		debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list!");
 	}
 }
@@ -363,27 +358,28 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const Up
 static gboolean
 ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
-	Node *node = subscription->node;
-	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
+	Node *root = subscription->node;
 
 	debug (DEBUG_UPDATE, "ttrss_subscription_prepare_update_request");
 
-	g_assert (node->source);
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
+	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
 		debug (DEBUG_UPDATE, "TinyTinyRSS login");
-		ttrss_source_login (source, 0);
+		ttrss_source_login (root, 0);
 		return FALSE;
 	}
-	debug (DEBUG_UPDATE, "TinyTinyRSS updating subscription (node id %s)", node->id);
+	debug (DEBUG_UPDATE, "TinyTinyRSS updating subscription (node id %s)", root->id);
 
 	/* Updating the TinyTinyRSS subscription means updating the list
 	   of categories and the list of feeds in 2 requests and if the
 	   installation is not self-updating to run a remote update for
 	   each feed before fetching it's items */
 
-	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, source->url);
+	g_autofree gchar *source_uri = g_strdup_printf (TTRSS_URL, subscription->origSource);
 	update_request_set_source (request, source_uri);
-	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_CATEGORIES_LIST, source->session_id);
+	g_autofree gchar *postdata = g_strdup_printf (
+		TTRSS_JSON_CATEGORIES_LIST,
+		(const gchar *)g_object_get_data (G_OBJECT (root), "session_id")
+	);
 	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
 
 	return TRUE;

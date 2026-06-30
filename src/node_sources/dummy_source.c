@@ -23,8 +23,6 @@
 #include <glib.h>
 #include "ui/icons.h"
 
-static void dummy_source_noop (Node *node) { }
-
 static void dummy_source_new (Node *node) {
 
 	// brrr... mutating the node is bad style
@@ -37,7 +35,6 @@ static struct nodeSourceType nst = {
 	.source_type_init	= NULL,
 	.source_type_deinit	= NULL,
 	.source_new		= dummy_source_new,
-	.source_auto_update	= dummy_source_noop
 };
 
 nodeSourceTypePtr dummy_source_get_type(void) { return &nst; }

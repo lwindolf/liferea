@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.h  Reedah feed list source support
  * 
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,24 +22,6 @@
 #define _REEDAH_SOURCE_H
 
 #include "node_source.h"
-
-/**
- * A nodeSource specific for Reedah
- */
-typedef struct ReedahSource {
-	Node		*root;		/**< the root node in the feed list */
-
-	/**
-	 * A map from a subscription source to a timestamp when it was last
-	 * updated according to API
-	 */
-	GHashTable      *lastTimestampMap; 
-
-	/**
-	 * A timestamp when the last Quick update took place.
-	 */
-	guint64         lastQuickUpdate;
-} *ReedahSourcePtr;
 
 /**
  * API documentation, Reedah is closely modelled after Google Reader, the
@@ -69,41 +51,11 @@ typedef struct ReedahSource {
 nodeSourceTypePtr reedah_source_get_type (void);
 
 /**
- * Find a child node with the given feed source URL.
+ * Perform login for the given Reedah source.
  *
- * @param gsource	ReedahSource
- * @param source	a feed source URL to search
- *
- * @returns a node (or NULL)
- */
-Node *reedah_source_get_node_from_source (ReedahSourcePtr gsource, const gchar* source);
-
-/**
- * Tries to update the entire source quickly, by updating only those feeds
- * which are known to be updated. Suitable for g_timeout_add. This is an 
- * internal function.
- *
- * @param data A pointer to a node id of the source. This pointer will
- *             be g_free'd if the update fails.
- *
- * @returns FALSE on update failure
- */
-gboolean reedah_source_quick_update_timeout (gpointer gsource);
-
-/**
- * Migrate a google source child-node from a Liferea 1.4 style read-only
- * google source nodes.
- *
- * @param node The node to migrate (not the nodeSource!)
- */
-void reedah_source_migrate_node (Node *node);
-
-/**
- * Perform login for the given Google source.
- *
- * @param gsource	a ReedahSource
+ * @param root		Reedah source
  * @param flags		network request flags
  */
-void reedah_source_login (ReedahSourcePtr gsource, guint32 flags);
+void reedah_source_login (Node *root, guint32 flags);
 
 #endif

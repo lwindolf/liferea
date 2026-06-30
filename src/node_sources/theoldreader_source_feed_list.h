@@ -21,10 +21,9 @@
 /**
  * Find a node by the source id.
  *
- * @param gsource	the TheOldReader source
+ * @param root		TheOldReader node
  * @param source	the feed id to find
  *
  * @returns a node (or NULL)
  */
-Node *theoldreader_source_opml_get_node_by_source(TheOldReaderSourcePtr gsource,
-					 const gchar *source);
+Node *theoldreader_source_opml_get_node_by_source (Node *root, const gchar *source);

@@ -37,27 +37,6 @@
 #include "subscription.h"
 #include "xml.h"
 
-void
-reedah_source_migrate_node (Node *node)
-{
-	/* scan the node for bad ID's, if so, brutally remove the node */
-	itemSetPtr itemset = node_get_itemset (node);
-	GList *iter = itemset->ids;
-	for (; iter; iter = g_list_next (iter)) {
-		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug (DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
-				db_item_remove(GPOINTER_TO_UINT(iter->data));
-			}
-		}
-		if (item) item_unload (item);
-	}
-
-	/* cleanup */
-	itemset_free (itemset);
-}
-
 static void
 reedah_item_callback (JsonNode *node, itemPtr item)
 {
@@ -162,17 +141,17 @@ static gboolean
 reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                  UpdateRequest *request)
 {
-	debug (DEBUG_UPDATE, "preparing Reedah feed subscription for update");
-	ReedahSourcePtr source = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data;
+	Node *root = subscription->node;
 
-	g_assert(source);
-	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
+	debug (DEBUG_UPDATE, "preparing Reedah feed subscription for update");
+
+	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
+		subscription_update (root->subscription, 0) ;
 		return FALSE;
 	}
 
 	if (!metadata_list_get (subscription->metadata, "reedah-feed-id")) {
-		g_print ("Skipping Reedah feed '%s' (%s) without id!", subscription->source, subscription->node->id);
+		g_print ("Skipping Reedah feed '%s' (%s) without id!", subscription->origSource, subscription->node->id);
 		return FALSE;
 	}
 
@@ -184,7 +163,7 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	g_free (newUrl);
 	g_free (source_escaped);
 
-	update_request_set_auth_value (request, source->root->source->authToken);
+	update_request_set_auth_value (request, root->source->authToken);
 	return TRUE;
 }
 

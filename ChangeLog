@@ -26,6 +26,13 @@ To be released
 
 	* Add python-console plugin to make plugin development easier
 	  (Lars Windolf)
+	
+	* Auth challenge dialog now uses AdwPasswordEntryRow
+	  (Lars Windolf)
+	
+	* All online account node sources now use a common dialog that also allows
+	  to specify the node title.
+	  (Lars Windolf)
 
 	* Update of Javascript library DomPurify
 	  (Lars Windolf)
@@ -37,7 +44,8 @@ To be released
 	
 	* #1518 Update counter gets stuck with command download errors
 	* many "Fatal: item to be removed not found in item id list!"
-	* AuthDialog: password is not hidden, wrong widget type
+	* ~/.cache/liferea/plugins/<id>.opml used for node source persistence
+	  instead of ~/.config/...
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>

@@ -1,7 +1,7 @@
 /**
  * @file default_source.c  default static feed list source
  * 
- * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,19 +24,55 @@
 #include <string.h>
 
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
-#include "export.h"
 #include "node_providers/feed.h"
 #include "feedlist.h"
 #include "node_providers/folder.h"
 #include "update.h"
+#include "net_monitor.h"
 #include "node_sources/default_source.h"
 #include "node_source.h"
 
+static guint autoUpdateTimer = 0;
+
+static gboolean
+default_source_auto_update (gpointer userdata)
+{
+	if (network_monitor_is_online ()) {
+		debug (DEBUG_UPDATE, "default_source: auto update\n");
+		node_foreach_child ((Node *)userdata, node_auto_update_subscription);
+	} else {
+		debug (DEBUG_UPDATE, "default_source: no update processing because we are offline!");
+	}
+
+	return TRUE;
+}
+
+void
+default_source_start_updating (Node *root)
+{
+	/* 1. Check if we want an extra initial update run */
+	gint startup_feed_action = 1;
+	conf_get_int_value (STARTUP_FEED_ACTION, &startup_feed_action);
+	if (0 == startup_feed_action) {
+		debug (DEBUG_UPDATE, "default_source: initial update: updating all feeds");
+		node_update_subscription (root, NULL /* flags*/);
+	} else {
+		debug (DEBUG_UPDATE, "default_source: initial update: disabled");
+	}
+
+	/* 2. start auto updating */
+	autoUpdateTimer = g_timeout_add_seconds (10, default_source_auto_update, root);
+}
+
 static void
-default_source_auto_update (Node *node)
-{	
-	node_foreach_child (node, node_auto_update_subscription);
+default_source_free (Node *root)
+{
+	if (autoUpdateTimer) {
+		g_source_remove (autoUpdateTimer);
+		autoUpdateTimer = 0;
+	}
 }
 
 static Node *
@@ -73,32 +109,22 @@ default_source_remove_node (Node *node, Node *child)
 	feedlist_node_removed (child);
 }
 
-static struct nodeSourceType nst = {
-	.id			= "fl_default",
-	.name			= "Static Feed List",
-	.capabilities		= NODE_SOURCE_CAPABILITY_IS_ROOT |
-				  NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST |
-	                          NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                          NODE_SOURCE_CAPABILITY_ADD_FOLDER |
-				  NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
-	.feedSubscriptionType	= NULL,
-	.sourceSubscriptionType	= NULL,
-	.source_type_init	= NULL,
-	.source_type_deinit	= NULL,
-	.source_new		= NULL,
-	.source_create		= NULL,
-	.source_delete		= NULL,
-	.source_auto_update	= default_source_auto_update,
-	.source_free 		= NULL,
-	.add_subscription	= default_source_add_subscription,
-	.add_folder		= default_source_add_folder,
-	.remove_node		= default_source_remove_node,
-	.convert_to_local	= NULL
-};
-
 nodeSourceTypePtr
 default_source_get_type (void)
 {
+	static struct nodeSourceType nst = {
+		.id			= "fl_default",
+		.name			= "Static Feed List",
+		.capabilities		= NODE_SOURCE_CAPABILITY_IS_ROOT |
+					NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST |
+					NODE_SOURCE_CAPABILITY_ADD_FEED |
+					NODE_SOURCE_CAPABILITY_ADD_FOLDER |
+					NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
+		.source_free 		= default_source_free,
+		.add_subscription	= default_source_add_subscription,
+		.add_folder		= default_source_add_folder,
+		.remove_node		= default_source_remove_node
+	};
 	nst.feedSubscriptionType = feed_get_subscription_type ();
 
 	return &nst;

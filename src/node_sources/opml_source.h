@@ -1,7 +1,7 @@
 /**
  * @file opml_source.h  OPML Planet/Blogroll feed list provider
  * 
- * Copyright (C) 2005-2009 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 #define OPML_SOURCE_DEFAULT_TITLE _("New OPML Subscription")
 
-/* General OPML source handling functions */
+/* Generic OPML handling functions */
 
 /**
  * Determine OPML cache file name.
@@ -36,28 +36,37 @@
  *
  * @returns newly allocated filename 
  */
-gchar * opml_source_get_feedlist(Node *node);
+gchar * opml_source_get_feedlist (Node *node);
 
 /**
- * Imports an OPML source.
+ * Imports an OPML source as a node tree.
+ * 
+ * Does not assign any special subscription types
+ * so it can be reused by other node source types.
  *
  * @param node		the node of the OPML source
  */
-void opml_source_import(Node *node);
+void opml_source_import_tree_from_file (Node *node);
 
 /**
  * Exports an OPML source.
+ * 
+ * Generic function that can be reused by other node
+ * soure types.
  *
  * @param node		the node of the OPML source
  */
-void opml_source_export(Node *node);
+void opml_source_export (Node *node);
 
 /**
- * Removes a OPML source.
+ * Removes a OPML export file.
+ * 
+ * Generic function that can be reused by other node
+ * soure types.
  *
- * @param node		the node of the OPML source
+ * @param node		the node source
  */
-void opml_source_remove(Node *node);
+void opml_export_remove (Node *node);
 
 /**
  * Returns OPML source type implementation info.

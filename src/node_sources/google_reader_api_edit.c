@@ -407,10 +407,7 @@ google_reader_api_edit_push (nodeSourcePtr source, GoogleReaderActionPtr action,
 	g_assert (source->actionQueue);
 	google_reader_api_edit_push_ (source, action, head);
 
-	/** @todo any flags I should specify? */
-	if (source->loginState == NODE_SOURCE_STATE_NONE)
-		subscription_update (source->root->subscription, NODE_SOURCE_UPDATE_ONLY_LOGIN);
-	else if (source->loginState == NODE_SOURCE_STATE_ACTIVE)
+	if (source->loginState == NODE_SOURCE_STATE_ACTIVE)
 		google_reader_api_edit_process (source);
 }
 

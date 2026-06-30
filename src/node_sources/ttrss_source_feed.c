@@ -159,14 +159,12 @@ static gboolean
 ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                 UpdateRequest *request)
 {
-	Node		*root = node_source_root_from_node (subscription->node);
-	ttrssSourcePtr	source = (ttrssSourcePtr) root->data;
+	Node		*root = subscription->node->source->root;
 	const gchar	*feed_id;
 	gint		fetchCount;
 
 	debug (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
 
-	g_assert(root->source);
 	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
 		subscription_update (root->subscription, 0);
 		return FALSE;
@@ -182,9 +180,14 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	/* We can always max out as TinyTinyRSS does limit results itself */
 	fetchCount = subscription_get_max_item_count (subscription);
 
-	g_autofree gchar *postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, fetchCount);
+	g_autofree gchar *postdata = g_strdup_printf (
+		TTRSS_JSON_HEADLINES,
+		g_object_get_data (G_OBJECT (root), "session_id"),
+		feed_id,
+		fetchCount
+	);
 	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
-	g_autofree gchar *source_name = g_strdup_printf (TTRSS_URL, source->url);
+	g_autofree gchar *source_name = g_strdup_printf (TTRSS_URL, root->subscription->origSource);
 	update_request_set_source (request, source_name);
 
 	return TRUE;
