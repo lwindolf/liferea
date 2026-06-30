@@ -176,17 +176,18 @@ static gboolean
 theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                        UpdateRequest *request)
 {
+	Node *root = subscription->node->source->root;
+	const gchar *remoteId = metadata_list_get (subscription->metadata, "theoldreader-feed-id");
+
 	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| update feed", subscription->node->id, subscription->node->title);
 
-	if (!metadata_list_get (subscription->metadata, "theoldreader-feed-id")) {
-		g_warning ("Skipping TheOldReader feed '%s' (%s) without id!", subscription->origSource, subscription->node->id);
+	if (!remoteId) {
+		g_warning ("Skipping TheOldReader feed '%s' (%s) without remote id!", subscription->node->title, subscription->node->id);
 		return FALSE;
 	}
 
-	gchar* url = g_strdup_printf ("%s/atom/%s", subscription->origSource, metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
+	g_autofree gchar* url = g_strdup_printf ("%s/atom/%s", root->subscription->origSource, remoteId);
 	update_request_set_source (request, url);
-	g_free (url);
-
 	update_request_set_auth_value (request, subscription->node->source->authToken);
 	return TRUE;
 }

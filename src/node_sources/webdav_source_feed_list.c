@@ -768,13 +768,6 @@ webdav_subscription_prepare_update_request (subscriptionPtr subscription, Update
 {
 	g_autofree gchar *index_url = NULL;
 
-	// FIXME: is this necessary? Isn't this handled by node_source.c
-	/* Only prepare request if login is already active; otherwise skip this round */
-	if (subscription->node->source->loginState != NODE_SOURCE_STATE_ACTIVE) {
-		debug (DEBUG_UPDATE, "webdav_subscription_prepare_update_request: login not active, skipping");
-		return FALSE;
-	}
-
 	index_url = webdav_index_url (subscription->node);
 	update_request_set_source (request, index_url);
 	debug (DEBUG_UPDATE, "webdav_subscription_prepare_update_request: queued index fetch from %s", index_url);

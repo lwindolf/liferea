@@ -121,7 +121,7 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 		iter = g_slist_next (iter);
 	}
 
-	g_print ("Could not find source type \"%s\"\n!", typeStr);
+	g_warning ("Could not find source type \"%s\"\n!", typeStr);
 	return NULL;
 }
 
@@ -271,10 +271,7 @@ node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
 
 	/* Ensure all imported children have proper type and state */
 	opml_source_import_tree_from_file (node);
-g_print("%d: subscription type 1 = %p\n", node->title, node->subscription->type);
-	/* Reusing OPML import above has overwritten the subscription type to OPML source, so we need to set it correctly */
 	node->subscription->type = type->sourceSubscriptionType;
-g_print("%d: subscription type 2 = %p\n", node->title, node->subscription->type);
 	node_foreach_child_data (node, node_source_set_feed_subscription_type, type->feedSubscriptionType);
 	node_foreach_child (node, node_source_set_initial_import_flag);
 
@@ -717,10 +714,10 @@ node_source_remove (Node *node)
 	   Note: an exception is the OPML source, as it is not an online account
 	   and defines a "source_remove" method */
 	
-	if (NODE_SOURCE_TYPE (node)->source_remove)
-		NODE_SOURCE_TYPE (node)->source_remove (node);
+	if (NODE_SOURCE_TYPE (node)->source_delete)
+		NODE_SOURCE_TYPE (node)->source_delete (node);
 
-	// Always rmove OPML file in cache dir
+	// Always remove OPML file in cache dir
 	opml_export_remove (node);
 }
 

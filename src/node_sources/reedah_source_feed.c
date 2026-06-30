@@ -141,28 +141,22 @@ static gboolean
 reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                  UpdateRequest *request)
 {
-	Node *root = subscription->node;
+	Node *root = subscription->node->source->root;
+	const gchar *remoteId = metadata_list_get (subscription->metadata, "reedah-feed-id");
 
-	debug (DEBUG_UPDATE, "preparing Reedah feed subscription for update");
+	debug (DEBUG_UPDATE, "reedah_source: %s |%s| update feed", subscription->node->id, subscription->node->title);
 
-	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		subscription_update (root->subscription, 0) ;
+	if (!remoteId) {
+		g_warning ("Dropping Reedah feed '%s' (%s) without id!", subscription->origSource, subscription->node->id);
+		feedlist_node_removed (subscription->node);
 		return FALSE;
 	}
 
-	if (!metadata_list_get (subscription->metadata, "reedah-feed-id")) {
-		g_print ("Skipping Reedah feed '%s' (%s) without id!", subscription->origSource, subscription->node->id);
-		return FALSE;
-	}
-
-	gchar* source_escaped = g_uri_escape_string(metadata_list_get (subscription->metadata, "reedah-feed-id"), NULL, TRUE);
-	// FIXME: move to .h
+	g_autofree gchar* source_escaped = g_uri_escape_string(remoteId, NULL, TRUE);
+	// FIXME: move URL format to .h
 	// FIXME: do not use hard-coded 30
-	gchar* newUrl = g_strdup_printf ("https://www.reedah.com/reader/api/0/stream/contents/%s?client=liferea&n=30", source_escaped);
+	g_autofree gchar* newUrl = g_strdup_printf ("%s/api/0/stream/contents/%s?client=liferea&n=30", root->subscription->origSource, source_escaped);
 	update_request_set_source (request, newUrl);
-	g_free (newUrl);
-	g_free (source_escaped);
-
 	update_request_set_auth_value (request, root->source->authToken);
 	return TRUE;
 }

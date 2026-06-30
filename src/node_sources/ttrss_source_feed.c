@@ -160,35 +160,26 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                 UpdateRequest *request)
 {
 	Node		*root = subscription->node->source->root;
-	const gchar	*feed_id;
-	gint		fetchCount;
+	const gchar	*remoteId = metadata_list_get (subscription->metadata, "ttrss-feed-id");
 
-	debug (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
+	debug (DEBUG_UPDATE, "ttrss_source: %s |%s| feed update", subscription->node->id, subscription->node->title);
 
-	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		subscription_update (root->subscription, 0);
-		return FALSE;
-	}
-
-	feed_id = metadata_list_get (subscription->metadata, "ttrss-feed-id");
-	if (!feed_id) {
-		g_print ("Dropping TinyTinyRSS feed without id! (%s)", subscription->node->title);
+	if (!remoteId) {
+		g_warning ("Dropping TinyTinyRSS feed without id! (%s)", subscription->node->title);
 		feedlist_node_removed (subscription->node);
 		return FALSE;
 	}
 
-	/* We can always max out as TinyTinyRSS does limit results itself */
-	fetchCount = subscription_get_max_item_count (subscription);
-
+	g_autofree gchar *url = g_strdup_printf (TTRSS_URL, root->subscription->origSource);
 	g_autofree gchar *postdata = g_strdup_printf (
 		TTRSS_JSON_HEADLINES,
-		g_object_get_data (G_OBJECT (root), "session_id"),
-		feed_id,
-		fetchCount
+		(const gchar *)g_object_get_data (G_OBJECT (root), "session_id"),
+		remoteId,
+		/* We can always max out as TinyTinyRSS does limit results itself */
+		subscription_get_max_item_count (subscription)
 	);
 	update_request_set_postdata (request, postdata, "application/json; charset=utf-8");
-	g_autofree gchar *source_name = g_strdup_printf (TTRSS_URL, root->subscription->origSource);
-	update_request_set_source (request, source_name);
+	update_request_set_source (request, url);
 
 	return TRUE;
 }

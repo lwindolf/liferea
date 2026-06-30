@@ -67,6 +67,12 @@ default_source_start_updating (Node *root)
 }
 
 static void
+default_source_login (Node *root, updateFlags flags)
+{
+	/* no login on default_source */
+}
+
+static void
 default_source_free (Node *root)
 {
 	if (autoUpdateTimer) {
@@ -120,6 +126,7 @@ default_source_get_type (void)
 					NODE_SOURCE_CAPABILITY_ADD_FEED |
 					NODE_SOURCE_CAPABILITY_ADD_FOLDER |
 					NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
+		.source_login		= default_source_login,
 		.source_free 		= default_source_free,
 		.add_subscription	= default_source_add_subscription,
 		.add_folder		= default_source_add_folder,

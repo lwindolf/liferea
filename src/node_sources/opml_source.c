@@ -213,6 +213,13 @@ opml_subscription_process_update_result (subscriptionPtr subscription, const Upd
 	node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
+/* subscription type definition */
+
+static struct subscriptionType opmlSubscriptionType = {
+	opml_subscription_prepare_update_request,
+	opml_subscription_process_update_result
+};
+
 /* OPML source type implementation */
 
 gchar *
@@ -271,7 +278,7 @@ opml_source_export (Node *node)
 }
 
 static void
-opml_source_remove (Node *node)
+opml_source_delete (Node *node)
 {
 	g_autofree gchar *filename;
 
@@ -325,13 +332,6 @@ ui_opml_source_get_source_url (void)
 			  dialog);
 }
 
-/* subscription type definition */
-
-static struct subscriptionType opmlSubscriptionType = {
-	opml_subscription_prepare_update_request,
-	opml_subscription_process_update_result
-};
-
 nodeSourceTypePtr
 opml_source_get_type (void)
 {
@@ -342,7 +342,7 @@ opml_source_get_type (void)
 		.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 		.source_create       = ui_opml_source_get_source_url,
 		.source_import       = opml_source_import,
-		.source_remove       = opml_source_remove
+		.source_delete       = opml_source_delete
 	};
 
 	nst.feedSubscriptionType = feed_get_subscription_type ();
