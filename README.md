@@ -31,7 +31,7 @@ help you asap.
 ###### _Mandatory Dependencies_
 
    libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.1-dev libjson-glib-dev libgirepository-2.0-dev
-   libpeas-dev libfribidi-dev gsettings-desktop-schemas-dev python3 python-gi-dev libtool intltool
+   libpeas-2-dev libfribidi-dev gsettings-desktop-schemas-dev python3 python-gi-dev libtool intltool
 
    
 ###### _Compiling from Tarball_
