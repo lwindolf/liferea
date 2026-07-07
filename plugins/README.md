@@ -4,20 +4,21 @@ Plugins are usually in Python3 and it is easier than ever to change
 core behaviours of Liferea using plugins!
 
 To get an idea how simple it is to modify or extend Liferea with 
-a plugin have a look at "bold-unread.py" which grabs a handle to
+a plugin have a look at [bold-unread.py](https://github.com/lwindolf/liferea/blob/liferea-1_16/plugins/bold-unread.py) which grabs a handle to
 the feed list and changes the visual rendering of feed titles.
 
 ## Plugin Tutorial
 
 To help you getting started there is a tutorial on writing plugins:
 
-- [Part 1: Introduction + Plugin Boiler Plate](https://lzone.de/liferea/blog/Writing-Liferea-Plugins-Tutorial-Part-1)
-- [Part 2: Access and modify UI elements](https://lzone.de/liferea/blog/Writing-Liferea-Plugins-Tutorial-Part-2)
-- [Part 3: Adding menu elements](https://lzone.de/liferea/blog/Writing-Liferea-Plugins-Tutorial-Part-3)
-- [Part 4: Using GTK inspector](https://lzone.de/liferea/blog/Writing-Liferea-Plugins-Tutorial-Part-4)
-- [Part 5: Enabling translations for plugins](https://lzone.de/liferea/blog/Writing-Liferea-Plugins-Tutorial-Part-5)
+- [Part 1: Introduction + Plugin Boiler Plate](https://lzone.de/liferea/blog/#2018-01-05-Writing%20Liferea%20Plugins%20Tutorial%20Part%201)
+- [Part 2: Access and modify UI elements](https://lzone.de/liferea/blog/#2018-01-06-Writing%20Liferea%20Plugins%20Tutorial%20Part%202)
+- [Part 3: Adding menu elements](https://lzone.de/liferea/blog/#2018-01-07-Writing%20Liferea%20Plugins%20Tutorial%20Part%203)
+- [Part 4: Using GTK inspector](https://lzone.de/liferea/blog/#2018-01-25-Writing%20Liferea%20Plugins%20Tutorial%20Part%204)
+- [Part 5: Enabling translations for plugins](https://lzone.de/liferea/blog/#2018-12-07-Writing%20Liferea%20Plugins%20Tutorial%20Part%205)
 
 ## Adding 3rd Party Plugins
 
 3rd party plugins can only be manually installed by placing them into
-a subdirectory in ~/.local/share/liferea/plugins
+a subdirectory in `$XDG_CONFIG_HOME` or if it is not defined in the default path
+`~/.local/share/liferea/plugins`.
