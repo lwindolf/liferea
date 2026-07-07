@@ -4,7 +4,7 @@ Plugins are usually in Python3 and it is easier than ever to change
 core behaviours of Liferea using plugins!
 
 To get an idea how simple it is to modify or extend Liferea with 
-a plugin have a look at "bold-unread.py" which grabs a handle to
+a plugin have a look at [bold-unread.py](https://github.com/lwindolf/liferea/blob/main/plugins/bold-unread.py) which grabs a handle to
 the feed list and changes the visual rendering of feed titles.
 
 ## Plugin Tutorial
@@ -20,4 +20,5 @@ To help you getting started there is a tutorial on writing plugins:
 ## Adding 3rd Party Plugins
 
 3rd party plugins can only be manually installed by placing them into
-a subdirectory in `~/.local/share/liferea/plugins`
+a subdirectory in `$XDG_CONFIG_HOME` or if it is not defined in the default path
+`~/.local/share/liferea/plugins`.
