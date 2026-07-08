@@ -26,7 +26,6 @@ src/js.c
 src/js.h
 src/dbus_wrap.c
 src/liferea
-src/liferea-add-feed
 src/Liferea-3.0.gir
 src/Liferea-3.0.typelib
 src/tests/favicon

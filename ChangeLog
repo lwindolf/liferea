@@ -30,6 +30,10 @@ To be released
 	* Update of Javascript library DomPurify
 	  (Lars Windolf)
 
+	* Dropped helper script "liferea-add-feed" as it is equivalent
+	  to "liferea --add-feed"
+	  (Lars Windolf)
+
 	* Update of Brazilian Portuguese translation
 	  (Fúlvio Alves)
 
