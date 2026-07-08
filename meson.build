@@ -19,6 +19,7 @@ subdir('po')
 prefix = get_option('prefix')
 datadir_base = join_paths(prefix, get_option('datadir'))
 datadir      = join_paths(datadir_base, meson.project_name())
+dbusservicesdir = join_paths(datadir_base, 'dbus-1', 'services')
 girdir       = join_paths(datadir_base, meson.project_name(), 'gir-1.0')
 libdir       = join_paths(prefix, get_option('libdir'), meson.project_name())
 typelibdir   = join_paths(prefix, get_option('libdir'), meson.project_name(), 'girepository-1.0')
@@ -95,6 +96,15 @@ endforeach
 install_subdir('plugins', install_dir: libdir)
 install_subdir('css', install_dir: datadir)
 install_subdir('resources/help', install_dir: datadir)
+
+dbus_service_file = configure_file(
+  input: 'data/net.sourceforge.liferea.service.in',
+  output: 'net.sourceforge.liferea.service',
+  configuration: {
+    'LIFEREA_EXEC': join_paths(prefix, get_option('bindir'), 'liferea'),
+  }
+)
+install_data(dbus_service_file, install_dir: dbusservicesdir)
 
 gir = gnome.generate_gir(liferea,
   namespace: 'Liferea',
