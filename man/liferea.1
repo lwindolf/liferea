@@ -1,4 +1,4 @@
-.TH LIFEREA "1" "Nov 24, 2021"
+.TH LIFEREA "1" "Jul 08, 2026"
 .SH NAME
 Liferea \- GTK desktop news aggregator
 
@@ -48,7 +48,7 @@ Print debugging messages of all GUI functions.
 .B \-\-debug\-html
 Enables HTML rendering debugging. Each time Liferea
 renders HTML output it will also dump the generated
-HTML into $XDG_CACHE_DIR/liferea/output.html.
+HTML into ~/.local/cache/liferea/output.html.
 .TP
 .B \-\-debug\-net
 Print debugging messages of all network activities and display the
@@ -144,18 +144,19 @@ running for \fBliferea-add-feed\fP to work.
 
 .SH FILES
 .TP
-$XDG_CONFIG_DIR/liferea/feedlist.opml
+~/.config/liferea/feedlist.opml
 Contains the current list of subscriptions.
 .TP
-$XDG_CONFIG_DIR/liferea/liferea.css
+~/.config/liferea/liferea.css
 Stylesheet that can be used to override default HTML style.
 .TP
-$XDG_DATA_DIR/liferea/liferea.db
+~/.local/share/liferea/liferea.db
 SQLite3 database with all subscriptions and headlines.
 .TP
-$XDG_DATA_DIR/liferea/plugins/
-User-installed plugins are stored here. You can either manually
-put plugins here or use the plugin installer in Liferea.
+~/.config/liferea/plugins/
+Store manually downloaded extra plugins here.
+.TP
+Note that above paths are different if XDG_CONFIG_HOME and XDG_DATA_HOME are set.
 
 .SH AUTHOR
 This manual page was written by Lars Windolf <lars.windolf@gmx.de>.
