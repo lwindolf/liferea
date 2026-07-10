@@ -46,7 +46,7 @@ do_menu_update (Node *node)
 	if (network_monitor_is_online ())
 		node_auto_update_subscription (node, GINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
 	else
-		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
+		liferea_shell_toast (_("Liferea is in offline mode. No update possible."));
 
 }
 

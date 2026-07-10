@@ -50,6 +50,12 @@
 			{{/with}}
 		{{/if}}
 
+		{{#compare node.discontinued "==" 1}}
+			<div id="errors">
+				<_span>This feed is discontinued. Liferea won't updated it anymore.</_span>
+			</div>
+		{{/compare}}
+
 		{{#if node.error}}
 	        	<div id="errors">
 				<_span>There was a problem when fetching this subscription!</_span>

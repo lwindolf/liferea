@@ -736,7 +736,8 @@ db_init (void)
 			  "default_interval,"
 			  "discontinued,"
 			  "available "
-			  "FROM subscription");
+			  "FROM subscription "
+			  "WHERE node_id = ?");
 
 	db_new_statement ("subscriptionMetadataLoadStmt",
 	                  "SELECT key,value,nr FROM subscription_metadata WHERE node_id = ? ORDER BY nr");
@@ -1586,7 +1587,25 @@ db_subscription_metadata_update (subscriptionPtr subscription)
 void
 db_subscription_load (subscriptionPtr subscription)
 {
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	stmt = db_get_statement ("subscriptionLoadStmt");
+	res = sqlite3_bind_text (stmt, 1, subscription->node->id, -1, SQLITE_TRANSIENT);
+	if (SQLITE_OK != res)
+		g_warning ("db_subscription_load: sqlite bind failed (error code %d)!", res);
+
+	res = sqlite3_step (stmt);
+	if (SQLITE_ROW == res) {
+		subscription->discontinued = sqlite3_column_int (stmt, 6);
+	} else {
+		debug (DEBUG_DB, "Could not load subscription row for %s (error code %d)!", subscription->node->id, res);
+	}
+
+	sqlite3_finalize (stmt);
+
 	db_update_state_load (subscription->node->id, subscription->updateState);
+
 	if (subscription->metadata)
 		metadata_list_free (subscription->metadata);
 	subscription->metadata = db_subscription_metadata_load (subscription->node->id);
@@ -1608,9 +1627,7 @@ db_subscription_update (subscriptionPtr subscription)
 	sqlite3_bind_int  (stmt, 5, subscription->updateInterval);
 	sqlite3_bind_int  (stmt, 6, subscription->defaultInterval);
 	sqlite3_bind_int  (stmt, 7, subscription->discontinued?1:0);
-	sqlite3_bind_int  (stmt, 8, (subscription->updateError ||
-	                             subscription->httpError ||
-				     subscription->filterError)?1:0);
+	sqlite3_bind_int  (stmt, 8, subscription->node->available?1:0);
 
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)

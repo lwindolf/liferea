@@ -106,17 +106,21 @@ subscription_new (const gchar *source,
 
 /* Checks whether updating a feed makes sense. */
 static gboolean
-subscription_can_be_updated (subscriptionPtr subscription)
+subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 {
+	const gboolean interactive = flags & UPDATE_REQUEST_PRIORITY_HIGH;
+
 	if (subscription->updateJob) {
 		debug (DEBUG_UPDATE, "subscription: |%s| is already being updated!", subscription->source);
-		liferea_shell_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
+		if (interactive)
+			liferea_shell_toast (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
 		return FALSE;
 	}
 
 	if (subscription->discontinued) {
 		debug (DEBUG_UPDATE, "subscription: |%s| is discontinued!", subscription->source);
-		liferea_shell_set_status_bar (_("The subscription \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title (subscription->node));
+		if (interactive)
+			liferea_shell_toast (_("The subscription \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title (subscription->node));
 		return FALSE;
 	}
 
@@ -132,7 +136,8 @@ subscription_can_be_updated (subscriptionPtr subscription)
 		g_autoptr(GUri) uri = g_uri_parse (subscription->source, G_URI_FLAGS_PARSE_RELAXED | G_URI_FLAGS_HAS_PASSWORD | G_URI_FLAGS_HAS_AUTH_PARAMS, NULL);
 		if (!uri) {
 			debug (DEBUG_UPDATE, "subscription: |%s| has invalid source URI!", subscription->source);
-			liferea_shell_set_status_bar (_("The subscription \"%s\" has an invalid source URI!"), node_get_title (subscription->node));
+			if (interactive)
+				liferea_shell_toast (_("The subscription \"%s\" has an invalid source URI!"), node_get_title (subscription->node));
 			return FALSE;
 		}
 	}
@@ -335,41 +340,39 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	if (!subscription)
 		return;
 
-	if (subscription->updateJob)
-		return;
+	debug (DEBUG_UPDATE, "subscription: |%s| scheduling update (flags=%u)", subscription->source, flags);
 
-	if (subscription_can_be_updated (subscription)) {
-		debug (DEBUG_UPDATE, "subscription: |%s| scheduling update (flags=%u)", subscription->source, flags);
-
-		now = g_get_real_time();
-		subscription_reset_update_counter (subscription, &now);
-
-		request = update_request_new (
-			"GET",
-			subscription_get_source (subscription),
-			subscription->updateState,
-			subscription->updateOptions
-		);
-		update_request_allow_commands (request, TRUE);
-
-		if (subscription_get_filter (subscription))
-			request->filtercmd = g_strdup (subscription_get_filter (subscription));
-
-		if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request)) {
-			debug (DEBUG_UPDATE, "subscription: |%s| source specific prepare (source=%s)", subscription->source, subscription->node?subscription->node->source->root->title:"???");
-			subscription->updateJob = update_job_new (subscription, request, subscription_process_update_result, subscription, flags);
-		} else {
-			g_object_unref (request);
-		}
-
-		update_job_queue_get_count (&count, &maxcount);
-		if (count > 1)
-			liferea_shell_set_header_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
-		else
-			liferea_shell_toast (_("Updating '%s'..."), node_get_title (subscription->node));
-	} else {
+	if (!subscription_can_be_updated (subscription, flags)) {
 		debug (DEBUG_UPDATE, "subscription: %s |%s| update cannot be scheduled", subscription->node->id, subscription->node->title);
+		return;
 	}
+
+	now = g_get_real_time();
+	subscription_reset_update_counter (subscription, &now);
+
+	request = update_request_new (
+		"GET",
+		subscription_get_source (subscription),
+		subscription->updateState,
+		subscription->updateOptions
+	);
+	update_request_allow_commands (request, TRUE);
+
+	if (subscription_get_filter (subscription))
+		request->filtercmd = g_strdup (subscription_get_filter (subscription));
+
+	if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request)) {
+		debug (DEBUG_UPDATE, "subscription: |%s| source specific prepare (source=%s)", subscription->source, subscription->node?subscription->node->source->root->title:"???");
+		subscription->updateJob = update_job_new (subscription, request, subscription_process_update_result, subscription, flags);
+	} else {
+		g_object_unref (request);
+	}
+
+	update_job_queue_get_count (&count, &maxcount);
+	if (count > 1)
+		liferea_shell_set_header_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
+	else
+		liferea_shell_toast (_("Updating '%s'..."), node_get_title (subscription->node));
 }
 
 void
@@ -385,13 +388,18 @@ subscription_auto_update (subscriptionPtr subscription, updateFlags flags)
 	if (-1 == interval)
 		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
 
-	if (-2 >= interval || 0 == interval)
-		return;		/* don't update this subscription */
+	if (-2 >= interval || 0 == interval) {
+		debug (DEBUG_UPDATE, "subscription: |%s| configured not to update", subscription->source);
+		return;
+	}
 
 	now = g_get_real_time();
 
-	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now)
+	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now) {
 		subscription_update (subscription, flags);
+	} else {
+		debug (DEBUG_UPDATE, "subscription: |%s| skipping update: was updated recently", subscription->source);
+	}
 }
 
 void

@@ -378,6 +378,8 @@ node_to_json (Node *node)
 		json_builder_set_member_name (b, "origSource");
 		json_builder_add_string_value (b, node->subscription->origSource);
 
+		json_builder_set_member_name (b, "discontinued");
+		json_builder_add_boolean_value (b, node->subscription->discontinued);
 		json_builder_set_member_name (b, "error");
 		json_builder_add_int_value (b, node->subscription->error);
 		json_builder_set_member_name (b, "updateError");
