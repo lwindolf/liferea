@@ -30,15 +30,6 @@
 /* Generic OPML handling functions */
 
 /**
- * Determine OPML cache file name.
- *
- * @param node		the node of the OPML source
- *
- * @returns newly allocated filename 
- */
-gchar * opml_source_get_feedlist (Node *node);
-
-/**
  * Imports an OPML source as a node tree.
  * 
  * Does not assign any special subscription types

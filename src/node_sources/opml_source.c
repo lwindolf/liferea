@@ -39,6 +39,13 @@
 
 /* OPML subscription list helper functions */
 
+static gchar *
+opml_source_get_feedlist (Node *node)
+{
+	g_autofree gchar *basename = g_strdup_printf ("feedlist_%s.opml", node->id);
+	return common_create_data_filename (basename);
+}
+
 typedef struct mergeCtxt {
 	Node		*rootNode;	/**< root node of the OPML feed list source */
 	Node		*parent;	/**< currently processed feed list node */
@@ -222,28 +229,33 @@ static struct subscriptionType opmlSubscriptionType = {
 
 /* OPML source type implementation */
 
-gchar *
-opml_source_get_feedlist (Node *node)
-{
-	return common_create_cache_filename ("plugins", node->id, "opml");
-}
-
 void
 opml_source_import_tree_from_file (Node *node)
 {
 	g_autofree gchar *filename = opml_source_get_feedlist (node);
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		import_OPML_feedlist (filename, node, FALSE, TRUE);
-	} else {
-		g_warning ("cannot open \"%s\"", filename);
-		node->available = FALSE;
+		return;
 	}
+
+	// Try legacy location
+	g_autofree gchar *legacyFilename = common_create_cache_filename ("plugins", node->id, "opml");
+	if (g_file_test (legacyFilename, G_FILE_TEST_EXISTS)) {
+		import_OPML_feedlist (legacyFilename, node, FALSE, TRUE);
+		unlink(legacyFilename);
+		return;
+	}
+
+	g_warning ("cannot open \"%s\"", filename);
+	node->available = FALSE;
 }
 
 void
 opml_export_remove (Node *node)
 {
-	g_autofree gchar *filename = opml_source_get_feedlist (node);
+	g_autofree gchar *filename = NULL;
+	
+	filename = opml_source_get_feedlist (node);
 	unlink (filename);
 }
 
@@ -280,7 +292,7 @@ opml_source_export (Node *node)
 static void
 opml_source_delete (Node *node)
 {
-	g_autofree gchar *filename;
+	g_autofree gchar *filename = NULL;
 
 	/* step 1: delete all child nodes */
 	node_foreach_child (node, feedlist_node_removed);

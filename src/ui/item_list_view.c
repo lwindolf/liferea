@@ -504,6 +504,7 @@ item_list_view_item_removed (GObject *obj, gulong id, gpointer user_data)
 		}
          
 		gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
+		gtk_tree_path_free (path);
 	} else {
         	debug (DEBUG_GUI, "item id %lu to be removed not found in item id list!", id);
 	}
@@ -1010,8 +1011,7 @@ item_list_view_select (GObject *obj, gint id, gpointer user_data)
 				gtk_tree_path_free (path);
 			}
 		} else {
-			g_warning ("item_list_view_select : attempt to select an item which is not present in the view.");
-			gtk_tree_selection_unselect_all (selection);
+			debug (DEBUG_GUI, "item_list_view_select: ignore missing item id %d in current view", id);
 		}
 	} else {
 		gtk_tree_selection_unselect_all (selection);
