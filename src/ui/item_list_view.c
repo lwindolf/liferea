@@ -505,9 +505,9 @@ item_list_view_item_removed (GObject *obj, gulong id, gpointer user_data)
          
 		gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
 	} else {
-         g_warning ("Fatal: item to be removed not found in item id list!");
-     }
-     ilv->item_ids = g_slist_remove (ilv->item_ids, GUINT_TO_POINTER (id));
+        	debug (DEBUG_GUI, "item id %lu to be removed not found in item id list!", id);
+	}
+	ilv->item_ids = g_slist_remove (ilv->item_ids, GUINT_TO_POINTER (id));
 }
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
