@@ -360,6 +360,8 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                                 // FIXME: provide better error for user
                                 flow->root->available = FALSE;
                                 flow->root->subscription->error = FETCH_ERROR_NET;
+                                if (flow->root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
+                                        node_source_set_auth_failed (flow->root, FALSE);
                                 return TRUE;
                         }
                         break;
@@ -370,6 +372,8 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                                 // FIXME: provide better error for user
                                 flow->root->available = FALSE;
                                 flow->root->subscription->error = FETCH_ERROR_NET;
+                                if (flow->root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
+                                        node_source_set_auth_failed (flow->root, FALSE);
                                 return TRUE;
                         }
                         break;

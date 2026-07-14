@@ -543,6 +543,9 @@ webdav_merge_op_finalize (WebDAVMergeOp *op)
 
 	op->root->available = !op->any_error;
 
+	if (!op->any_error && op->root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
+		node_source_set_active (op->root);
+
 	if (!op->any_error && !(op->flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child (op->root, node_auto_update_subscription);
 
@@ -788,6 +791,8 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 	if (!(result->data && result->httpstatus == 200)) {
 		if (result->httpstatus == 401) {
 			node_source_set_auth_failed (subscription->node, flags & UPDATE_REQUEST_PRIORITY_HIGH);
+		} else if (subscription->node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS) {
+			node_source_set_auth_failed (subscription->node, FALSE);
 		}
 		debug (DEBUG_UPDATE, "webdav_subscription_process_update_result(): failed to fetch index.json (HTTP %d)", result->httpstatus);
 		return;
@@ -797,6 +802,8 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 	if (!index) {
 		subscription->node->available = FALSE;
 		subscription->error = FETCH_ERROR_XML;
+		if (subscription->node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
+			node_source_set_auth_failed (subscription->node, FALSE);
 		debug (DEBUG_UPDATE, "webdav_subscription_process_update_result(): invalid index.json");
 		return;
 	}

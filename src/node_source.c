@@ -315,6 +315,12 @@ node_source_set_auth_failed (Node *root, gboolean challenge)
 }
 
 void
+node_source_set_active (Node *node)
+{
+	node_source_set_state (node, NODE_SOURCE_STATE_ACTIVE);
+}
+
+void
 node_source_set_auth_token (Node *node, gchar *token)
 {
 	g_assert (!node->source->authToken);

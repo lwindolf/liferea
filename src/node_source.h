@@ -286,6 +286,14 @@ void node_source_new (Node *node, nodeSourceTypePtr nodeSourceType, const gchar 
 void node_source_set_auth_failed (Node *node, gboolean challenge);
 
 /**
+ * node_source_set_active: (skip)
+ * @node:                the node source node
+ *
+ * Mark node source login as successfully completed.
+ */
+void node_source_set_active (Node *node);
+
+/**
  * node_source_set_auth_token: (skip)
  * @node:			a node
  * @token:			a string
