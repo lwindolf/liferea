@@ -1684,25 +1684,7 @@ db_node_update (Node *node)
 
 }
 
-static gboolean
-db_node_find (Node *node, gpointer id)
-{
-	GSList *iter;
-
-	if (g_str_equal (node->id, (gchar *)id))
-		return TRUE;
-
-	iter = node->children;
-	while (iter) {
-		if (db_node_find ((Node *)iter->data, id))
-			return TRUE;
-		iter = g_slist_next (iter);
-	}
-
-	return FALSE;
-}
-
-static void
+void
 db_node_remove (const gchar *id)
 {
 	sqlite3_stmt	*stmt;
@@ -1718,19 +1700,39 @@ db_node_remove (const gchar *id)
 	sqlite3_finalize (stmt);
 }
 
+static gboolean
+db_node_source_find (Node *node, gpointer id)
+{
+	GSList *iter;
+
+	if (g_str_equal (node->id, (gchar *)id))
+		return TRUE;
+
+	iter = node->children;
+	while (iter) {
+		Node *child = (Node *)iter->data;
+		/* only traverse on nodes of the same node source */
+		if (node->source == child->source && db_node_source_find (child, id))
+			return TRUE;
+		iter = g_slist_next (iter);
+	}
+
+	return FALSE;
+}
+
 void
-db_node_cleanup (Node *root)
+db_node_source_cleanup (Node *root)
 {
 	sqlite3_stmt	*stmt;
 
-	debug (DEBUG_DB, "Cleaning node ids...");
+	debug (DEBUG_DB, "Cleaning stale node for node source %s...", root->id);
 
 	/* Fetch all node ids */
 	stmt = db_get_statement ("nodeIdListStmt");
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		/* Drop node ids not in feed list anymore */
 		const gchar *id = (const gchar *) sqlite3_column_text (stmt, 0);
-		if (id && !db_node_find (root, (gpointer)id)) {
+		if (id && !db_node_source_find (root, (gpointer)id)) {
 			db_subscription_remove (id);	/* in case it is a subscription */
 			db_node_remove (id);		/* in case it is a folder */
 		}

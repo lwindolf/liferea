@@ -1,7 +1,7 @@
 /**
  * @file db.h sqlite backend
  *
- * Copyright (C) 2007-2020  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -217,11 +217,19 @@ void db_subscription_remove (const gchar *id);
 void db_node_update (Node *node);
 
 /**
- * Clean old nodes from the DB by comparing all DB nodes
- * against the OPML feed list.
+ * Removes the given nodes from the DB.
  *
- * @param root		the root node
+ * @param id		the node id
  */
-void db_node_cleanup (Node *root);
+void db_node_remove (const gchar *id);
+
+/**
+ * Clean old nodes from the DB by comparing all DB nodes of
+ * a node source against the in-memory feed list of this source.
+ * Must only be called after the node source was imported.
+ *
+ * @param root		the source root node
+ */
+void db_node_source_cleanup (Node *root);
 
 #endif

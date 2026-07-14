@@ -172,7 +172,7 @@ node_source_setup_root (void)
 	default_source_start_updating (root);
 
 	/* 5. Purge old nodes from the database */
-	db_node_cleanup (root);
+	db_node_source_cleanup (root);
 
 	return root;
 }
@@ -287,19 +287,26 @@ node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
 static void
 node_source_set_state (Node *node, gint newState)
 {
+	if (newState == node->source->loginState)
+		return;
+
 	debug (DEBUG_UPDATE, "node_source: %s |%s| now in state %d (was %d)", node->id, node->title, newState, node->source->loginState);
 
-	/* State transition actions below... */
-	if (newState == NODE_SOURCE_STATE_ACTIVE)
+	/* State transition actions */
+	if (newState == NODE_SOURCE_STATE_ACTIVE) {
 		node->available = TRUE;
+
+		/* Initial OPML import is long finished we can cleanup the DB */
+		db_node_source_cleanup (node);
+	}
 
 	if (newState == NODE_SOURCE_STATE_AUTH_FAILED)
 		node->available = FALSE;
 
-	if (newState == NODE_SOURCE_STATE_AUTH_CHALLENGE &&
-	    node->source->loginState != NODE_SOURCE_STATE_AUTH_CHALLENGE)
+	if (newState == NODE_SOURCE_STATE_AUTH_CHALLENGE)
 		auth_dialog_new (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 
+	/* State change */
 	node->source->loginState = newState;
 
 	feedlist_node_was_updated (node);
@@ -709,6 +716,18 @@ node_source_to_json (Node *node, JsonBuilder *b)
 /* implementation of the node type interface */
 
 static void
+node_source_remove_from_db (Node *node, gpointer userdata)
+{
+	Node *root = (Node *)userdata;
+
+	if (node->source->root != root)
+		return;
+
+	node_foreach_child_data (node, node_source_remove_from_db, root);
+	db_node_remove (node->id);
+}
+
+static void
 node_source_remove (Node *node)
 {
 	g_assert (node == node->source->root);
@@ -725,6 +744,10 @@ node_source_remove (Node *node)
 
 	// Always remove OPML file in cache dir
 	opml_export_remove (node);
+
+	// FIXME: remove all nodes from DB, do not use node_source_remove_node()
+	// as we do not want to trigger any remote removal
+	node_source_remove_from_db (node, node);
 }
 
 static void
