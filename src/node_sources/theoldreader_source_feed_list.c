@@ -93,6 +93,7 @@ theoldreader_source_merge_feed (Node *root, const gchar *url, const gchar *title
 		subscription_icon_update (node->subscription);
 
 	} else {
+		node->syncState &= ~NODE_SYNC_STATE_INITIAL_IMPORT;
 		node_set_title (node, title);
 		node_source_update_folder (node, folder?folder:root);
 	}

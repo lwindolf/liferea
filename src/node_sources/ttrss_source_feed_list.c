@@ -102,6 +102,7 @@ ttrss_source_merge_feed (Node *root, const gchar *url, const gchar *title, gint6
 		/* Important: we must not loose the feed id! */
 		db_subscription_update (node->subscription);
 	} else {
+		node->syncState &= ~NODE_SYNC_STATE_INITIAL_IMPORT;
 		node_source_update_folder (node, folder?folder:root);
 	}
 }
