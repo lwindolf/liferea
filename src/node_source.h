@@ -160,13 +160,6 @@ typedef struct nodeSourceType {
 	void 		(*source_delete)(Node *node);
 
 	/*
-	 * This MANDATORY method is called when the source is to
-	 * create the feed list subtree attached to the source root
-	 * node.
-	 */
-	void 		(*source_import)(Node *root);
-
-	/*
 	 * OPTIONAL to free up any private data
 	 */
 	void		(*source_free) (Node *root);

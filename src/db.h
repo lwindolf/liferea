@@ -225,10 +225,10 @@ void db_node_remove (const gchar *id);
 
 /**
  * Clean old nodes from the DB by comparing all DB nodes of
- * a node source against the in-memory feed list of this source.
- * Must only be called after the node source was imported.
+ * a default source against the in-memory feed list of this source.
+ * Must only be called after all the node sources were imported.
  *
- * @param root		the source root node
+ * @param root		the default source root node
  */
 void db_node_source_cleanup (Node *root);
 

@@ -171,7 +171,12 @@ node_source_setup_root (void)
 	/* 4. Start updating*/
 	default_source_start_updating (root);
 
-	/* 5. Purge old nodes from the database */
+	/* 5. Purge old nodes from the database 
+
+	   This relies on node_source_import_feedlist (root) above to be
+	   synchronous about loading the previous state of all node sources 
+	   from OPML cache files.
+	 */
 	db_node_source_cleanup (root);
 
 	return root;
@@ -206,9 +211,7 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 
 		node->available = FALSE;
 
-		/* scan for matching node source and create new instance */
 		type = node_source_type_find ((const gchar *)typeStr, 0);
-
 		if (!type) {
 			/* Source type is not available for some reason, but
 			   we need a representation to keep the node source
@@ -293,12 +296,8 @@ node_source_set_state (Node *node, gint newState)
 	debug (DEBUG_UPDATE, "node_source: %s |%s| now in state %d (was %d)", node->id, node->title, newState, node->source->loginState);
 
 	/* State transition actions */
-	if (newState == NODE_SOURCE_STATE_ACTIVE) {
+	if (newState == NODE_SOURCE_STATE_ACTIVE)
 		node->available = TRUE;
-
-		/* Initial OPML import is long finished we can cleanup the DB */
-		db_node_source_cleanup (node);
-	}
 
 	if (newState == NODE_SOURCE_STATE_AUTH_FAILED)
 		node->available = FALSE;

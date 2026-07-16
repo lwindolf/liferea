@@ -1725,7 +1725,10 @@ db_node_source_cleanup (Node *root)
 {
 	sqlite3_stmt	*stmt;
 
-	debug (DEBUG_DB, "Cleaning stale node for node source %s...", root->id);
+	/* Must only be called for root node */
+	g_assert (root->parent == NULL);
+
+	debug (DEBUG_DB, "Cleaning stale nodes...");
 
 	/* Fetch all node ids */
 	stmt = db_get_statement ("nodeIdListStmt");
@@ -1733,6 +1736,7 @@ db_node_source_cleanup (Node *root)
 		/* Drop node ids not in feed list anymore */
 		const gchar *id = (const gchar *) sqlite3_column_text (stmt, 0);
 		if (id && !db_node_source_find (root, (gpointer)id)) {
+			debug (DEBUG_DB, "Dropping stale node %s...", id);
 			db_subscription_remove (id);	/* in case it is a subscription */
 			db_node_remove (id);		/* in case it is a folder */
 		}

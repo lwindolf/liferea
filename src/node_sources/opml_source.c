@@ -262,14 +262,11 @@ opml_export_remove (Node *node)
 /* node source interface */
 
 static void
-opml_source_import (Node *node)
+opml_source_new (Node *node)
 {
 	/* We only ship an icon for opml, not for other sources */
 	if (g_str_equal (NODE_SOURCE_TYPE (node)->id, "fl_opml"))
 		node->icon = icon_create_from_file ("fl_opml.png");
-
-	debug (DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
-	opml_source_import_tree_from_file (node);
 
 	subscription_set_update_interval (node->subscription, OPML_SOURCE_UPDATE_INTERVAL);
 
@@ -352,8 +349,8 @@ opml_source_get_type (void)
 		.name                = N_("Planet, BlogRoll, OPML"),
 		.sourceSubscriptionType = &opmlSubscriptionType,
 		.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+		.source_new	     = opml_source_new,
 		.source_create       = ui_opml_source_get_source_url,
-		.source_import       = opml_source_import,
 		.source_delete       = opml_source_delete
 	};
 

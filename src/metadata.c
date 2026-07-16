@@ -122,6 +122,9 @@ metadata_init (void)
 	metadata_type_register ("blogroll",		METADATA_TYPE_URL);
 	metadata_type_register ("blogrollData",		METADATA_TYPE_TEXT);
 
+	/* for id mapping of items fetched from online accounts */
+	metadata_type_register ("remote-feed-id", METADATA_TYPE_TEXT);
+
 	return;
 }
 
