@@ -124,11 +124,25 @@ item_list_title_alignment (gchar *title)
 		return 1.;
 }
 
+static gchar *
+item_list_truncate_utf8 (const gchar *text, guint max_chars)
+{
+	if (!text)
+		return g_strdup ("");
+
+	gsize len = g_utf8_strlen (text, -1);
+	if (len <= max_chars)
+		return g_strdup (text);
+
+	const gchar *end = g_utf8_offset_to_pointer (text, max_chars);
+	return g_strndup (text, end - text);
+}
+
 static void
 item_list_view_apply_row_visibility (ItemListView *ilv, ItemListRow *row)
 {
 	gtk_widget_set_visible (row->favicon_image, ilv->favicon_enabled);
-	gtk_widget_set_visible (row->date_label, TRUE);
+	gtk_widget_set_visible (row->date_label, !ilv->wideView);
 	gtk_widget_set_visible (row->preview_label, ilv->wideView);
 	gtk_widget_set_visible (row->state_image, !ilv->wideView || !ilv->favicon_enabled);
 }
@@ -139,9 +153,10 @@ item_list_view_apply_row_layout (ItemListView *ilv, ItemListRow *row)
 	if (ilv->wideView) {
 		gtk_image_set_icon_size (GTK_IMAGE (row->favicon_image), GTK_ICON_SIZE_LARGE);
 		gtk_widget_set_margin_start (row->favicon_image, 6);
-		gtk_label_set_wrap (GTK_LABEL (row->headline_label), FALSE);
-		gtk_label_set_wrap_mode (GTK_LABEL (row->headline_label), PANGO_WRAP_NONE);
-		gtk_label_set_ellipsize (GTK_LABEL (row->headline_label), PANGO_ELLIPSIZE_END);
+		gtk_widget_set_margin_end (row->favicon_image, 6);
+		gtk_label_set_wrap (GTK_LABEL (row->headline_label), TRUE);
+		gtk_label_set_wrap_mode (GTK_LABEL (row->headline_label), PANGO_WRAP_WORD_CHAR);
+		gtk_label_set_ellipsize (GTK_LABEL (row->headline_label), PANGO_ELLIPSIZE_NONE);
 
 		gtk_label_set_wrap (GTK_LABEL (row->preview_label), TRUE);
 		gtk_label_set_wrap_mode (GTK_LABEL (row->preview_label), PANGO_WRAP_WORD_CHAR);
@@ -149,6 +164,7 @@ item_list_view_apply_row_layout (ItemListView *ilv, ItemListRow *row)
 	} else {
 		gtk_image_set_icon_size (GTK_IMAGE (row->favicon_image), GTK_ICON_SIZE_NORMAL);
 		gtk_widget_set_margin_start (row->favicon_image, 0);
+		gtk_widget_set_margin_end (row->favicon_image, 0);
 		gtk_label_set_wrap (GTK_LABEL (row->headline_label), FALSE);
 		gtk_label_set_wrap_mode (GTK_LABEL (row->headline_label), PANGO_WRAP_NONE);
 		gtk_label_set_ellipsize (GTK_LABEL (row->headline_label), PANGO_ELLIPSIZE_END);
@@ -442,7 +458,10 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 	gchar *escaped_title;
 	gchar *preview_markup;
 	gchar *time_str;
+	gchar *time_str_escaped;
 	gchar *headline_markup;
+	gchar *title_limited;
+	gchar *title_limited_escaped;
 	gchar *tmp = NULL;
 	const GIcon *state_icon;
 	gint state = 0;
@@ -454,15 +473,21 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 		state += 1;
 
 	time_str = (0 != item->time) ? date_format ((time_t)item->time, NULL) : g_strdup ("");
+	time_str_escaped = g_markup_escape_text (time_str, -1);
 
 	if (item->title && strlen (item->title)) {
 		escaped_title = g_markup_escape_text (item->title, -1);
 		g_strstrip (escaped_title);
 		plain_title = g_strdup (escaped_title);
+		title_limited = item_list_truncate_utf8 (item->title, 100);
+		title_limited_escaped = g_markup_escape_text (title_limited, -1);
+		g_strstrip (title_limited_escaped);
 	} else {
 		tmp = item_get_teaser (item);
 		plain_title = g_strdup_printf ("%s...", tmp ? tmp : "");
 		escaped_title = g_markup_escape_text (plain_title, -1);
+		title_limited = item_list_truncate_utf8 (plain_title, 100);
+		title_limited_escaped = g_markup_escape_text (title_limited, -1);
 		g_free (tmp);
 		no_title = TRUE;
 	}
@@ -481,14 +506,15 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 		headline_markup = g_strdup_printf (
 			"<span weight='%s' size='larger'>%s</span>",
 			item->readStatus ? "normal" : "bold",
-			escaped_title);
+			title_limited_escaped);
 
 		preview_markup = g_strdup_printf (
-			"%s<span weight='%s'>%s%s</span>",
+			"%s<span weight='%s'>%s%s</span><span size='smaller' weight='ultralight'> — %s</span>",
 			important_prefix,
 			item->readStatus ? "ultralight" : "light",
 			teaser_markup ? teaser_markup : "",
-			teaser_markup ? "..." : "");
+			teaser_markup ? "..." : "",
+			time_str_escaped);
 		g_free (teaser_markup);
 		g_free (teaser);
 	} else {
@@ -531,6 +557,9 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 
 	g_free (headline_markup);
 	g_free (preview_markup);
+	g_free (title_limited_escaped);
+	g_free (title_limited);
+	g_free (time_str_escaped);
 	g_free (escaped_title);
 	g_free (plain_title);
 	g_free (time_str);
@@ -861,8 +890,8 @@ item_list_view_create_row (ItemListView *ilv, itemPtr item, Node *node)
 
 	gtk_widget_set_margin_start (box, 6);
 	gtk_widget_set_margin_end (box, 6);
-	gtk_widget_set_margin_top (box, 3);
-	gtk_widget_set_margin_bottom (box, 3);
+	gtk_widget_set_margin_top (row->row, 3);
+	gtk_widget_set_margin_bottom (row->row, 3);
 
 	gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row->row), box);
 	g_object_set_data (G_OBJECT (row->row), "item-list-row", row);
