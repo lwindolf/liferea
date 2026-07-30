@@ -46,7 +46,7 @@
 #define WEBDAV_SOURCE_UPDATE_INTERVAL  (60 * 15)   /* 15 minutes */
 
 /** Metadata key that stores the stable remote feed id for WebDAV sync. */
-#define WEBDAV_REMOTE_FEED_ID_METADATA "remote-feed-id"
+#define WEBDAV_REMOTE_FEED_ID_METADATA "feed-id"
 
 const gchar *webdav_feed_remote_id (Node *node);
 void webdav_feed_set_remote_id (Node *node, const gchar *remote_id);
