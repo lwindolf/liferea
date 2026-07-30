@@ -54,6 +54,7 @@ typedef struct {
 	GtkWidget	*state_image;
 	GtkWidget	*favicon_image;
 	GtkWidget	*headline_label;
+	GtkWidget	*preview_label;
 	GtkWidget	*date_label;
 	Node		*source;
 } ItemListRow;
@@ -127,7 +128,8 @@ static void
 item_list_view_apply_row_visibility (ItemListView *ilv, ItemListRow *row)
 {
 	gtk_widget_set_visible (row->favicon_image, ilv->favicon_enabled);
-	gtk_widget_set_visible (row->date_label, !ilv->wideView);
+	gtk_widget_set_visible (row->date_label, TRUE);
+	gtk_widget_set_visible (row->preview_label, ilv->wideView);
 	gtk_widget_set_visible (row->state_image, !ilv->wideView || !ilv->favicon_enabled);
 }
 
@@ -137,15 +139,23 @@ item_list_view_apply_row_layout (ItemListView *ilv, ItemListRow *row)
 	if (ilv->wideView) {
 		gtk_image_set_icon_size (GTK_IMAGE (row->favicon_image), GTK_ICON_SIZE_LARGE);
 		gtk_widget_set_margin_start (row->favicon_image, 6);
-		gtk_label_set_wrap (GTK_LABEL (row->headline_label), TRUE);
-		gtk_label_set_wrap_mode (GTK_LABEL (row->headline_label), PANGO_WRAP_WORD);
-		gtk_label_set_max_width_chars (GTK_LABEL (row->headline_label), -1);
+		gtk_label_set_wrap (GTK_LABEL (row->headline_label), FALSE);
+		gtk_label_set_wrap_mode (GTK_LABEL (row->headline_label), PANGO_WRAP_NONE);
+		gtk_label_set_ellipsize (GTK_LABEL (row->headline_label), PANGO_ELLIPSIZE_END);
+
+		gtk_label_set_wrap (GTK_LABEL (row->preview_label), TRUE);
+		gtk_label_set_wrap_mode (GTK_LABEL (row->preview_label), PANGO_WRAP_WORD_CHAR);
+		gtk_label_set_ellipsize (GTK_LABEL (row->preview_label), PANGO_ELLIPSIZE_NONE);
 	} else {
 		gtk_image_set_icon_size (GTK_IMAGE (row->favicon_image), GTK_ICON_SIZE_NORMAL);
 		gtk_widget_set_margin_start (row->favicon_image, 0);
 		gtk_label_set_wrap (GTK_LABEL (row->headline_label), FALSE);
 		gtk_label_set_wrap_mode (GTK_LABEL (row->headline_label), PANGO_WRAP_NONE);
 		gtk_label_set_ellipsize (GTK_LABEL (row->headline_label), PANGO_ELLIPSIZE_END);
+
+		gtk_label_set_wrap (GTK_LABEL (row->preview_label), FALSE);
+		gtk_label_set_wrap_mode (GTK_LABEL (row->preview_label), PANGO_WRAP_NONE);
+		gtk_label_set_ellipsize (GTK_LABEL (row->preview_label), PANGO_ELLIPSIZE_NONE);
 	}
 
 	item_list_view_apply_row_visibility (ilv, row);
@@ -430,8 +440,9 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 {
 	gchar *plain_title;
 	gchar *escaped_title;
+	gchar *preview_markup;
 	gchar *time_str;
-	gchar *title_markup;
+	gchar *headline_markup;
 	gchar *tmp = NULL;
 	const GIcon *state_icon;
 	gint state = 0;
@@ -458,6 +469,7 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 
 	if (ilv->wideView) {
 		const gchar *important = _(" <span background='red' color='white'> important </span> ");
+		const gchar *important_prefix = item->flagStatus ? important : "";
 		gchar *teaser = NULL;
 		gchar *teaser_markup = NULL;
 
@@ -466,22 +478,24 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 		if (teaser)
 			teaser_markup = g_markup_escape_text (teaser, -1);
 
-		title_markup = g_strdup_printf (
-			"<span weight='%s' size='larger'>%s</span>%s\n"
-			"<span weight='%s'>%s%s</span><span size='smaller' weight='ultralight'> - %s</span>",
+		headline_markup = g_strdup_printf (
+			"<span weight='%s' size='larger'>%s</span>",
 			item->readStatus ? "normal" : "bold",
-			escaped_title,
-			item->flagStatus ? important : "",
+			escaped_title);
+
+		preview_markup = g_strdup_printf (
+			"%s<span weight='%s'>%s%s</span>",
+			important_prefix,
 			item->readStatus ? "ultralight" : "light",
 			teaser_markup ? teaser_markup : "",
-			teaser_markup ? "..." : "",
-			time_str);
+			teaser_markup ? "..." : "");
 		g_free (teaser_markup);
 		g_free (teaser);
 	} else {
-		title_markup = g_strdup_printf ("<span weight='%s'>%s</span>",
+		headline_markup = g_strdup_printf ("<span weight='%s'>%s</span>",
 		                               item->readStatus ? "normal" : "bold",
 		                               escaped_title);
+		preview_markup = g_strdup ("");
 	}
 
 	state_icon = item->flagStatus ? icon_get (ICON_FLAG) :
@@ -495,8 +509,10 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 	g_free (row->sort_label);
 	row->sort_label = g_utf8_casefold (plain_title, -1);
 
-	gtk_label_set_markup (GTK_LABEL (row->headline_label), title_markup);
+	gtk_label_set_markup (GTK_LABEL (row->headline_label), headline_markup);
+	gtk_label_set_markup (GTK_LABEL (row->preview_label), preview_markup);
 	gtk_label_set_xalign (GTK_LABEL (row->headline_label), item_list_title_alignment (plain_title));
+	gtk_label_set_xalign (GTK_LABEL (row->preview_label), item_list_title_alignment (plain_title));
 	gtk_label_set_text (GTK_LABEL (row->date_label), time_str);
 
 	if (state_icon)
@@ -513,7 +529,8 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 
 	gtk_widget_set_tooltip_text (row->headline_label, plain_title);
 
-	g_free (title_markup);
+	g_free (headline_markup);
+	g_free (preview_markup);
 	g_free (escaped_title);
 	g_free (plain_title);
 	g_free (time_str);
@@ -808,12 +825,20 @@ item_list_view_create_row (ItemListView *ilv, itemPtr item, Node *node)
 	row->state_image = gtk_image_new ();
 	row->favicon_image = gtk_image_new ();
 	row->headline_label = gtk_label_new (NULL);
+	row->preview_label = gtk_label_new (NULL);
 	row->date_label = gtk_label_new (NULL);
 
 	gtk_label_set_use_markup (GTK_LABEL (row->headline_label), TRUE);
 	gtk_label_set_xalign (GTK_LABEL (row->headline_label), 0.0);
 	gtk_label_set_wrap (GTK_LABEL (row->headline_label), FALSE);
 	gtk_label_set_ellipsize (GTK_LABEL (row->headline_label), PANGO_ELLIPSIZE_END);
+
+	gtk_label_set_use_markup (GTK_LABEL (row->preview_label), TRUE);
+	gtk_label_set_xalign (GTK_LABEL (row->preview_label), 0.0);
+	gtk_label_set_wrap (GTK_LABEL (row->preview_label), TRUE);
+	gtk_label_set_wrap_mode (GTK_LABEL (row->preview_label), PANGO_WRAP_WORD_CHAR);
+	gtk_label_set_ellipsize (GTK_LABEL (row->preview_label), PANGO_ELLIPSIZE_NONE);
+	gtk_widget_add_css_class (row->preview_label, "dim-label");
 
 	gtk_label_set_xalign (GTK_LABEL (row->date_label), 1.0);
 	gtk_widget_set_halign (row->date_label, GTK_ALIGN_END);
@@ -823,10 +848,12 @@ item_list_view_create_row (ItemListView *ilv, itemPtr item, Node *node)
 	gtk_widget_set_halign (row->state_image, GTK_ALIGN_START);
 	gtk_widget_set_halign (row->favicon_image, GTK_ALIGN_START);
 	gtk_widget_set_hexpand (row->headline_label, TRUE);
+	gtk_widget_set_hexpand (row->preview_label, TRUE);
 
 	gtk_box_append (GTK_BOX (header_box), row->headline_label);
 	gtk_box_append (GTK_BOX (header_box), row->date_label);
 	gtk_box_append (GTK_BOX (text_box), header_box);
+	gtk_box_append (GTK_BOX (text_box), row->preview_label);
 
 	gtk_box_append (GTK_BOX (box), row->state_image);
 	gtk_box_append (GTK_BOX (box), row->favicon_image);
