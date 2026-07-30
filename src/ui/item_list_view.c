@@ -723,6 +723,20 @@ item_list_view_popup_menu (ItemListView *ilv, itemPtr item)
 	g_menu_append_section (menu, NULL, G_MENU_MODEL (section));
 	g_object_unref (section);
 
+	section = g_menu_new ();
+
+	GMenu *sort_submenu = g_menu_new ();
+	g_menu_append (sort_submenu, _("By _Date"), "app.sort-items-by-time");
+	g_menu_append (sort_submenu, _("By _Title"), "app.sort-items-by-title");
+	g_menu_append (sort_submenu, _("By _Source"), "app.sort-items-by-source");
+	g_menu_append (sort_submenu, _("By _Status"), "app.sort-items-by-state");
+	g_menu_append (sort_submenu, _("_Reverse Order"), "app.sort-items-reverse");
+	g_menu_append_submenu (section, _("_Sort"), G_MENU_MODEL (sort_submenu));
+	g_object_unref (sort_submenu);
+
+	g_menu_append_section (menu, NULL, G_MENU_MODEL (section));
+	g_object_unref (section);
+
 	g_object_unref (menu_item);
 	g_free (item_link);
 

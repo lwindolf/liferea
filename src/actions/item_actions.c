@@ -187,6 +187,59 @@ on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpoin
 	itemlist_select_next_unread ();	
 }
 
+static void
+item_actions_apply_sort (nodeViewSortType sort_column, gboolean sort_reversed)
+{
+	Node *node = feedlist_get_selected ();
+
+	if (!node)
+		return;
+
+	if (!node_set_sort_column (node, sort_column, sort_reversed))
+		return;
+
+	feedlist_schedule_save ();
+
+	/* Rebuild visible item list to apply changed ordering immediately. */
+	itemlist_unload ();
+	itemlist_load (node);
+}
+
+static void
+on_sort_items_by_time (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	item_actions_apply_sort (NODE_VIEW_SORT_BY_TIME, TRUE);
+}
+
+static void
+on_sort_items_by_title (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	item_actions_apply_sort (NODE_VIEW_SORT_BY_TITLE, FALSE);
+}
+
+static void
+on_sort_items_by_source (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	item_actions_apply_sort (NODE_VIEW_SORT_BY_PARENT, FALSE);
+}
+
+static void
+on_sort_items_by_state (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	item_actions_apply_sort (NODE_VIEW_SORT_BY_STATE, FALSE);
+}
+
+static void
+on_sort_items_reverse (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	Node *node = feedlist_get_selected ();
+
+	if (!node)
+		return;
+
+	item_actions_apply_sort (node->sortColumn, !node->sortReversed);
+}
+
 static const GActionEntry gaction_entries[] = {
 	// menu actions
 	{"toggle-selected-item-read-status", on_toggle_unread_status, NULL, NULL, NULL},
@@ -205,7 +258,14 @@ static const GActionEntry gaction_entries[] = {
 	{"open-item-in-tab", on_launch_item_in_tab, "t", NULL, NULL},
 	{"open-item-in-browser", on_launch_item_in_browser, "t", NULL, NULL},
 	{"open-item-in-external-browser", on_launch_item_in_external_browser, "t", NULL, NULL},
-	{"email-the-author", email_the_author, "t", NULL, NULL}
+	{"email-the-author", email_the_author, "t", NULL, NULL},
+
+	/* item list sorting popup actions */
+	{"sort-items-by-time", on_sort_items_by_time, NULL, NULL, NULL},
+	{"sort-items-by-title", on_sort_items_by_title, NULL, NULL, NULL},
+	{"sort-items-by-source", on_sort_items_by_source, NULL, NULL, NULL},
+	{"sort-items-by-state", on_sort_items_by_state, NULL, NULL, NULL},
+	{"sort-items-reverse", on_sort_items_reverse, NULL, NULL, NULL}
 };
 
 static void
