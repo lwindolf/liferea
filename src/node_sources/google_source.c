@@ -40,7 +40,6 @@
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
 #include "node_source.h"
-#include "node_sources/opml_source.h"
 #include "node_sources/google_reader_api_edit.h"
 #include "node_sources/google_source_feed_list.h"
 
@@ -152,7 +151,7 @@ google_source_login_cb (UpdateJob *job)
 	gchar		*tmp = NULL;
 	subscriptionPtr subscription = node->subscription;
 		
-	debug (DEBUG_UPDATE, "google login processing... %s", result->data);
+	debug (DEBUG_UPDATE, "google_source: login processing... %s", result->data);
 	
 	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "Auth=");
@@ -172,14 +171,8 @@ google_source_login_cb (UpdateJob *job)
 		google_reader_api_edit_process (node->source);
 
 	} else {
-		debug (DEBUG_UPDATE, "google reader login failed! no Auth token found in result!");
-		subscription->node->available = FALSE;
-
-		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Login failed!"));
-		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
-		
-		auth_dialog_new (subscription, job->flags);
+		debug (DEBUG_UPDATE, "google_source: reader login failed! no Auth token found in result!");
+		node_source_set_auth_failed (node, job->flags & UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
 	return TRUE;
@@ -191,8 +184,6 @@ google_source_login (Node *root, guint32 flags)
 	UpdateRequest		*request;
 	subscriptionPtr		subscription = root->subscription;
 	
-	g_assert (root->source->loginState == NODE_SOURCE_STATE_NONE);
-
 	request = update_request_new (
 		"POST",
 		root->source->api.login,
@@ -200,33 +191,17 @@ google_source_login (Node *root, guint32 flags)
 		NULL	// auth is done via postdata below!
 	);
 
+	// FIXME: uri encode
 	request->postdata = g_strdup_printf (
 		root->source->api.login_post,
 		subscription->updateOptions->username,
 		subscription->updateOptions->password
 	);
 
-	node_source_set_state (root, NODE_SOURCE_STATE_IN_PROGRESS);
-
 	update_job_new (root, request, google_source_login_cb, root, flags | UPDATE_REQUEST_NO_FEED);
 }
 
 /* node source type implementation */
-
-static void
-google_source_auto_update (Node *node)
-{
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		node_source_update (node);
-		return;
-	}
-
-	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
-		return; /* the update will start automatically anyway */
-
-	debug (DEBUG_UPDATE, "google_source_auto_update()");
-	subscription_auto_update (node->subscription);
-}
 
 static Node *
 google_source_add_subscription (Node *node, subscriptionPtr subscription) 
@@ -268,40 +243,6 @@ google_source_remove_node (Node *root, Node *child)
 		google_reader_api_edit_remove_subscription (root->source, streamId, google_source_get_stream_id_for_node);
 }
 
-/* GUI callbacks */
-
-static void
-on_google_source_selected (GtkWidget *dialog,
-                           gpointer user_data) 
-{
-	Node	*node = node_new ("source");
-
-	node_source_new (node, google_source_get_type (), liferea_dialog_entryrow_get (dialog, "serverEntry"));
-	node_set_title (node, liferea_dialog_entryrow_get (dialog, "nameEntry"));
-	
-	subscription_set_auth_info (
-		node->subscription,
-		liferea_dialog_entryrow_get (dialog, "usernameEntry"),
-		liferea_dialog_entryrow_get (dialog, "passwordEntry")
-	);
-
-	google_source_new (node);
-	feedlist_node_added (node);
-	node_source_update (node);
-}
-
-static void
-ui_google_source_get_account_info (void)
-{
-	liferea_dialog_run ("google_source", on_google_source_selected, NULL, NULL);
-}
-
-static void
-google_source_free (Node *node)
-{
-	update_job_cancel_by_owner (node);
-}
-
 static void 
 google_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 {
@@ -316,20 +257,10 @@ google_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 	item_read_state_changed (item, newStatus);
 }
 
-/**
- * Convert all subscriptions of a google source to local feeds
- *
- * @param node The node to migrate (not the nodeSource!)
- */
-static void
-google_source_convert_to_local (Node *node)
-{
-	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
-}
-
 static struct nodeSourceType nst = {
 	.id                  = "fl_google_reader",
 	.name                = N_("Google Reader API"),
+	.addInfo             = N_("Please enter the details of the new Google Reader API compatible subscription."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
@@ -340,16 +271,12 @@ static struct nodeSourceType nst = {
 	.source_type_init    = NULL,
 	.source_type_deinit  = NULL,
 	.source_new          = google_source_new,	
-	.source_create       = ui_google_source_get_account_info,
-	.source_delete       = opml_source_remove,
-	.source_auto_update  = google_source_auto_update,
-	.source_free         = google_source_free,
+	.source_login        = google_source_login,
 	.item_set_flag       = google_source_item_set_flag,
 	.item_mark_read      = google_source_item_mark_read,
 	.add_folder          = NULL, 
 	.add_subscription    = google_source_add_subscription,
-	.remove_node         = google_source_remove_node,
-	.convert_to_local    = google_source_convert_to_local
+	.remove_node         = google_source_remove_node
 };
 
 nodeSourceTypePtr

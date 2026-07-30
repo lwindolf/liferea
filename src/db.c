@@ -736,7 +736,8 @@ db_init (void)
 			  "default_interval,"
 			  "discontinued,"
 			  "available "
-			  "FROM subscription");
+			  "FROM subscription "
+			  "WHERE node_id = ?");
 
 	db_new_statement ("subscriptionMetadataLoadStmt",
 	                  "SELECT key,value,nr FROM subscription_metadata WHERE node_id = ? ORDER BY nr");
@@ -1586,7 +1587,25 @@ db_subscription_metadata_update (subscriptionPtr subscription)
 void
 db_subscription_load (subscriptionPtr subscription)
 {
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	stmt = db_get_statement ("subscriptionLoadStmt");
+	res = sqlite3_bind_text (stmt, 1, subscription->node->id, -1, SQLITE_TRANSIENT);
+	if (SQLITE_OK != res)
+		g_warning ("db_subscription_load: sqlite bind failed (error code %d)!", res);
+
+	res = sqlite3_step (stmt);
+	if (SQLITE_ROW == res) {
+		subscription->discontinued = sqlite3_column_int (stmt, 6);
+	} else {
+		debug (DEBUG_DB, "Could not load subscription row for %s (error code %d)!", subscription->node->id, res);
+	}
+
+	sqlite3_finalize (stmt);
+
 	db_update_state_load (subscription->node->id, subscription->updateState);
+
 	if (subscription->metadata)
 		metadata_list_free (subscription->metadata);
 	subscription->metadata = db_subscription_metadata_load (subscription->node->id);
@@ -1608,9 +1627,7 @@ db_subscription_update (subscriptionPtr subscription)
 	sqlite3_bind_int  (stmt, 5, subscription->updateInterval);
 	sqlite3_bind_int  (stmt, 6, subscription->defaultInterval);
 	sqlite3_bind_int  (stmt, 7, subscription->discontinued?1:0);
-	sqlite3_bind_int  (stmt, 8, (subscription->updateError ||
-	                             subscription->httpError ||
-				     subscription->filterError)?1:0);
+	sqlite3_bind_int  (stmt, 8, subscription->node->available?1:0);
 
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
@@ -1667,25 +1684,7 @@ db_node_update (Node *node)
 
 }
 
-static gboolean
-db_node_find (Node *node, gpointer id)
-{
-	GSList *iter;
-
-	if (g_str_equal (node->id, (gchar *)id))
-		return TRUE;
-
-	iter = node->children;
-	while (iter) {
-		if (db_node_find ((Node *)iter->data, id))
-			return TRUE;
-		iter = g_slist_next (iter);
-	}
-
-	return FALSE;
-}
-
-static void
+void
 db_node_remove (const gchar *id)
 {
 	sqlite3_stmt	*stmt;
@@ -1701,19 +1700,43 @@ db_node_remove (const gchar *id)
 	sqlite3_finalize (stmt);
 }
 
+static gboolean
+db_node_source_find (Node *node, gpointer id)
+{
+	GSList *iter;
+
+	if (g_str_equal (node->id, (gchar *)id))
+		return TRUE;
+
+	iter = node->children;
+	while (iter) {
+		Node *child = (Node *)iter->data;
+		/* only traverse on nodes of the same node source */
+		if (node->source == child->source && db_node_source_find (child, id))
+			return TRUE;
+		iter = g_slist_next (iter);
+	}
+
+	return FALSE;
+}
+
 void
-db_node_cleanup (Node *root)
+db_node_source_cleanup (Node *root)
 {
 	sqlite3_stmt	*stmt;
 
-	debug (DEBUG_DB, "Cleaning node ids...");
+	/* Must only be called for root node */
+	g_assert (root->parent == NULL);
+
+	debug (DEBUG_DB, "Cleaning stale nodes...");
 
 	/* Fetch all node ids */
 	stmt = db_get_statement ("nodeIdListStmt");
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		/* Drop node ids not in feed list anymore */
 		const gchar *id = (const gchar *) sqlite3_column_text (stmt, 0);
-		if (id && !db_node_find (root, (gpointer)id)) {
+		if (id && !db_node_source_find (root, (gpointer)id)) {
+			debug (DEBUG_DB, "Dropping stale node %s...", id);
 			db_subscription_remove (id);	/* in case it is a subscription */
 			db_node_remove (id);		/* in case it is a folder */
 		}

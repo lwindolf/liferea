@@ -167,7 +167,7 @@ static void
 google_source_feed_subscription_process_ids_result (subscriptionPtr subscription, const UpdateResult* const result, updateFlags flags)
 {
 	JsonParser	*parser;
-	Node		*root = node_source_root_from_node (subscription->node);
+	Node		*root = subscription->node->source->root;
 	
 	if (!(result->data && result->httpstatus == 200)) {
 		subscription->node->available = FALSE;
@@ -223,7 +223,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 			g_autofree gchar 	*url = NULL;
 			UpdateRequest		*request;
 
-			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents", root->subscription->source);
+			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents", root->subscription->origSource);
 		
 			request = update_request_new (
 				"POST",
@@ -255,8 +255,9 @@ static gboolean
 google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscription, 
                                                      UpdateRequest *request)
 {
+	Node *root = subscription->node->source->root;
+
 	debug (DEBUG_UPDATE, "preparing google reader feed subscription for update");
-	Node *root = node_source_root_from_node (subscription->node);
 
 	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
 		subscription_update (root->subscription, 0);
@@ -264,7 +265,7 @@ google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscriptio
 	}
 	
 	if (!metadata_list_get (subscription->metadata, "feed-id")) {
-		debug (DEBUG_UPDATE, "Skipping Google Reader API feed '%s' (%s) without id!", subscription->source, subscription->node->id);
+		debug (DEBUG_UPDATE, "Skipping Google Reader API feed '%s' (%s) without id!", subscription->origSource, subscription->node->id);
 		return FALSE;
 	}
 
@@ -282,7 +283,7 @@ google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscriptio
 		// FIXME: do not use hard-coded 50
 		// FIXME: consider passing nt=<epoch> (latest fetch timestamp)
 		url = g_strdup_printf ("%s/reader/api/0/stream/items/ids?s=%s&client=liferea&n=50&output=json&merge=true",
-		                       root->subscription->source,
+		                       root->subscription->origSource,
 		                       sourceEscaped);                       
 
 		update_request_set_source (request, url);

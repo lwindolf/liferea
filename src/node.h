@@ -176,7 +176,7 @@ void node_set_subscription (Node *node, struct subscription *subscription);
  * @node:		the node
  * @user_data:  	update flags
  *
- * Helper function to be used with node_foreach_child()
+ * Helper function to be used with node_foreach_child_data()
  * to mass-update subscriptions.
  */
 void node_update_subscription (Node *node, gpointer user_data);
@@ -184,11 +184,12 @@ void node_update_subscription (Node *node, gpointer user_data);
 /**
  * node_auto_update_subscription:
  * @node:		the node
+ * @user_data:  	update flags
  *
- * Helper function to be used with node_foreach_child()
+ * Helper function to be used with node_foreach_child_data()
  * to mass-auto-update subscriptions.
  */
-void node_auto_update_subscription (Node *node);
+void node_auto_update_subscription (Node *node, gpointer user_data);
 
 /**
  * node_is_ancestor:

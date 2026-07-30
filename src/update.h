@@ -41,7 +41,7 @@
 
 typedef enum {
 	UPDATE_REQUEST_RESET_TITLE   = (1<<0),	/*<< Feed's title should be reset to default upon update */
-	UPDATE_REQUEST_PRIORITY_HIGH = (1<<1),	/*<< set to signal that this is an important user triggered request */
+	UPDATE_REQUEST_PRIORITY_HIGH = (1<<1),	/*<< set to signal that this is an important interactive user triggered request */
 	UPDATE_REQUEST_NO_FEED       = (1<<2)	/*<< Requesting something not a feed (just for statistics) */
 } updateFlags;
 

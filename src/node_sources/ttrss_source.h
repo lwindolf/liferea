@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.h  Tiny Tiny RSS feed list source support
  * 
- * Copyright (C) 2010-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,18 +24,6 @@
 #include <glib.h>
 
 #include "node_source.h"
-
-/**
- * A nodeSource specific for tt-rss
- */
-typedef struct ttrssSource {
-	Node		*root;			/**< the root node in the feed list */
-	gchar		*session_id;		/**< the current session id */
-	const gchar	*url;			/**< the API base URL */
-	gint		apiLevel;		/**< The API level reported by the instance (or 0) */
-	GHashTable	*categories;		/**< Lookup hash for TTRSS feed id to TTRSS category id */
-	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TTRSS category id */
-} *ttrssSourcePtr;
 
 /**
  * TinyTinyRSS JSON API is documented here:
@@ -124,6 +112,6 @@ typedef struct ttrssSource {
  */
 nodeSourceTypePtr ttrss_source_get_type (void);
 
-void ttrss_source_login (ttrssSourcePtr source, guint32 flags);
+void ttrss_source_login (Node *root, updateFlags flags);
 
 #endif

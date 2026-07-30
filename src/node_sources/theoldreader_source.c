@@ -36,9 +36,7 @@
 #include "subscription.h"
 #include "update.h"
 #include "ui/auth_dialog.h"
-#include "ui/liferea_dialog.h"
 #include "node_source.h"
-#include "node_sources/opml_source.h"
 #include "node_sources/google_reader_api_edit.h"
 #include "node_sources/theoldreader_source_feed_list.h"
 
@@ -47,14 +45,21 @@
 
 #define BASE_URL "https://theoldreader.com/reader/api/0/"
 
-/** create a source with given node as root */
 static void
 theoldreader_source_new (Node *node)
 {
-	TheOldReaderSourcePtr source = g_new0 (struct TheOldReaderSource, 1) ;
-	source->root = node;
-	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
-	source->folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+	g_object_set_data_full (
+		G_OBJECT (node),
+		"lastTimestampMap",
+		g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free),
+		(GDestroyNotify)g_hash_table_destroy
+	);
+	g_object_set_data_full (
+		G_OBJECT (node),
+		"folderToCategory",
+		g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free),
+		(GDestroyNotify)g_hash_table_destroy
+	);	
 
 	node->source->api.json				= TRUE,
 	node->source->api.subscription_list		= g_strdup_printf ("%s/subscription/list?output=json", BASE_URL);
@@ -74,7 +79,6 @@ theoldreader_source_new (Node *node)
 
 	// FIXME: document why
 	node->subscription->updateInterval = -1;
-	node->data = (gpointer)source;
 }
 
 static gboolean
@@ -85,7 +89,7 @@ theoldreader_source_login_cb  (UpdateJob *job)
 	gchar			*tmp = NULL;
 	subscriptionPtr 	subscription = node->subscription;
 
-	debug (DEBUG_UPDATE, "TheOldReader login processing... %s", result->data);
+	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| login processing... >>>%s<<<", node->id, node->title, result->data);
 
 	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "Auth=");
@@ -96,84 +100,42 @@ theoldreader_source_login_cb  (UpdateJob *job)
 		if (tmp)
 			*tmp = '\0';
 		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
-		node_source_set_state (subscription->node, NODE_SOURCE_STATE_ACTIVE);
 
 		/* now that we are authenticated trigger updating to start data retrieval */
-		if (!(job->flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
-			subscription_update (subscription, job->flags);
+		subscription_update (subscription, job->flags);
 
 		/* process any edits waiting in queue */
 		google_reader_api_edit_process (node->source);
 
 	} else {
-		debug (DEBUG_UPDATE, "TheOldReader login failed! no Auth token found in result!");
-		subscription->node->available = FALSE;
-
-		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Login failed!"));
-		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
-
-		auth_dialog_new (subscription, job->flags);
+		debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| login failed! no Auth token found in result!", node->id, node->title);
+		node_source_set_auth_failed (node, job->flags & UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
 	return TRUE;
 }
 
-/**
- * Perform a login to TheOldReader, if the login completes the
- * TheOldReaderSource will have a valid Auth token and will have loginStatus to
- * NODE_SOURCE_LOGIN_ACTIVE.
- */
 void
-theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
+theoldreader_source_login (Node *root, guint32 flags)
 {
-	gchar			*username, *password;
 	UpdateRequest		*request;
-	subscriptionPtr		subscription = source->root->subscription;
-
-	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
-		/* this should not happen, as of now, we assume the session
-		 * doesn't expire. */
-		debug (DEBUG_UPDATE, "Logging in while login state is %d", source->root->source->loginState);
-	}
 
 	request = update_request_new (
 		"POST",
 		THEOLDREADER_READER_LOGIN_URL,
 		NULL,
-		subscription->updateOptions
+		root->subscription->updateOptions
 	);
 
-	/* escape user and password as both are passed using an URI */
-	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
-	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
+	g_autofree gchar *username = g_uri_escape_string (root->subscription->updateOptions->username, NULL, TRUE);
+	g_autofree gchar *password = g_uri_escape_string (root->subscription->updateOptions->password, NULL, TRUE);
 
 	request->postdata = g_strdup_printf (THEOLDREADER_READER_LOGIN_POST, username, password);
 
-	g_free (username);
-	g_free (password);
-
-	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
-
-	update_job_new (source, request, theoldreader_source_login_cb, source->root, flags | UPDATE_REQUEST_NO_FEED);
+	update_job_new (root, request, theoldreader_source_login_cb, root, flags | UPDATE_REQUEST_NO_FEED);
 }
 
 /* node source type implementation */
-
-static void
-theoldreader_source_auto_update (Node *node)
-{
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		node_source_update (node);
-		return;
-	}
-
-	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
-		return; /* the update will start automatically anyway */
-
-	debug (DEBUG_UPDATE, "theoldreader_source_auto_update()");
-	subscription_auto_update (node->subscription);
-}
 
 static
 void theoldreader_source_init (void)
@@ -184,20 +146,19 @@ void theoldreader_source_init (void)
 static Node *
 theoldreader_source_add_subscription (Node *root, subscriptionPtr subscription)
 {
-	Node			*parent;
-	gchar			*categoryId = NULL;
-	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr)root->data;
+	Node		*parent;
+	gchar		*categoryId = NULL;
+	GHashTable	*h = g_object_get_data (G_OBJECT (root), "folderToCategory");	
 
 	/* Determine correct category from selected folder name */
 	parent = feedlist_get_selected ();
 	if (parent) {
 		if (parent->subscription)
 			parent = parent->parent;
-		categoryId = g_hash_table_lookup (source->folderToCategory, parent->id);
+		categoryId = g_hash_table_lookup (h, parent->id);
 	}
 
-	google_reader_api_edit_add_subscription (root->source, subscription->source, categoryId);
-	// FIXME: leaking subscription?
+	google_reader_api_edit_add_subscription (root->source, subscription->origSource, categoryId);
 
 	// FIXME: somehow the async subscribing doesn't cause the feed list to update
 
@@ -228,7 +189,7 @@ theoldreader_source_remove_node (Node *node, Node *child)
 
 	id = theoldreader_source_get_stream_id_for_node (child);
 	if (!id) {
-		g_print ("Cannot remove node on remote side as theoldreader-feed-id is unknown!\n");
+		g_warning ("Cannot remove node on remote side as theoldreader-feed-id is unknown!\n");
 		return;
 	}
 
@@ -237,100 +198,43 @@ theoldreader_source_remove_node (Node *node, Node *child)
 	google_reader_api_edit_remove_subscription (node->source, id, theoldreader_source_get_stream_id_for_node);
 }
 
-/* GUI callbacks */
-
-static void
-on_theoldreader_source_selected (GtkDialog *dialog,
-                           gint response_id,
-                           gpointer user_data)
-{
-	if (response_id == GTK_RESPONSE_OK) {
-		Node *node = node_new ("source");
-		node_source_new (node, theoldreader_source_get_type (), "https://theoldreader.com/reader");
-		node_set_title (node, node->source->type->name);
-
-		subscription_set_auth_info (node->subscription,
-		                            liferea_dialog_entry_get (GTK_WIDGET(dialog), "userEntry"),
-		                            liferea_dialog_entry_get (GTK_WIDGET(dialog), "passwordEntry"));
-
-		theoldreader_source_new (node);
-		feedlist_node_added (node);
-		node_source_update (node);
-	}
-}
-
-static void
-ui_theoldreader_source_get_account_info (void)
-{
-	GtkWidget	*dialog;
-
-	dialog = liferea_dialog_new ("theoldreader_source");
-
-	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_theoldreader_source_selected),
-			  NULL);
-}
-
-static void
-theoldreader_source_free (Node *node)
-{
-	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node->data;
-	node->data = NULL;
-
-	update_job_cancel_by_owner (source);
-
-	g_hash_table_unref (source->lastTimestampMap);
-	g_hash_table_destroy (source->folderToCategory);
-	g_free (source);
-}
-
 static void
 theoldreader_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 {
-	google_reader_api_edit_mark_starred (node->source, item->sourceId, node->subscription->source, newStatus);
+	google_reader_api_edit_mark_starred (node->source, item->sourceId, node->subscription->origSource, newStatus);
 	item_flag_state_changed (item, newStatus);
 }
 
 static void
 theoldreader_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 {
-	google_reader_api_edit_mark_read (node->source, item->sourceId, node->subscription->source, newStatus);
+	google_reader_api_edit_mark_read (node->source, item->sourceId, node->subscription->origSource, newStatus);
 	item_read_state_changed (item, newStatus);
 }
 
-/**
- * Convert all subscriptions of a google source to local feeds
- *
- * @param node The node to migrate (not the nodeSource!)
- */
 static void
-theoldreader_source_convert_to_local (Node *node)
-{
-	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
-}
-
-static void
-theoldreader_source_reparent_node (Node *node, Node *oldParent, Node *newParent)
+theoldreader_source_reparent_node (Node *root, Node *oldParent, Node *newParent)
 {
 	gchar			*categoryId = NULL;
 	g_autofree gchar	*id = NULL;
-	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) node->source->root->data;
+	GHashTable		*h = g_object_get_data (G_OBJECT (root), "folderToCategory");
 
 	if (oldParent == newParent)
 		return;
 
-	id = theoldreader_source_get_stream_id_for_node (node);
+	id = theoldreader_source_get_stream_id_for_node (root);
 	if (!id) {
-		g_print ("Cannot sync parent on remote side as theoldreader-feed-id is unknown!\n");
+		g_warning ("Cannot sync parent on remote side as theoldreader-feed-id is unknown!\n");
 		return;
 	}
 
-	if (newParent == node->source->root) {
-		categoryId = g_hash_table_lookup (source->folderToCategory, oldParent->id);
-		google_reader_api_edit_remove_label (node->source, id, categoryId);
+	// Note: this will only work without nested folders
+	if (newParent == root) {
+		categoryId = g_hash_table_lookup (h, oldParent->id);
+		google_reader_api_edit_remove_label (root->source, id, categoryId);
 	} else {
-		categoryId = g_hash_table_lookup (source->folderToCategory, newParent->id);
-		google_reader_api_edit_add_label (node->source, id, categoryId);
+		categoryId = g_hash_table_lookup (h, newParent->id);
+		google_reader_api_edit_add_label (root->source, id, categoryId);
 	}
 }
 
@@ -340,6 +244,8 @@ extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
 static struct nodeSourceType nst = {
 	.id                  = "fl_theoldreader",
 	.name                = N_("TheOldReader"),
+	.addInfo             = N_("Please provide your <a href='https://theoldreader.com'>TheOldReader</a> account credentials."),
+	.url                 = "https://theoldreader.com/reader",
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
 	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
@@ -353,16 +259,12 @@ static struct nodeSourceType nst = {
 	.source_type_init    = theoldreader_source_init,
 	.source_type_deinit  = NULL,
 	.source_new	     = theoldreader_source_new,
-	.source_create       = ui_theoldreader_source_get_account_info,
-	.source_delete       = opml_source_remove,
-	.source_auto_update  = theoldreader_source_auto_update,
-	.source_free         = theoldreader_source_free,
+	.source_login        = theoldreader_source_login,
 	.item_set_flag       = theoldreader_source_item_set_flag,
 	.item_mark_read      = theoldreader_source_item_mark_read,
 	.add_folder          = NULL,
 	.add_subscription    = theoldreader_source_add_subscription,
 	.remove_node         = theoldreader_source_remove_node,
-	.convert_to_local    = theoldreader_source_convert_to_local,
 	.reparent_node       = theoldreader_source_reparent_node
 };
 

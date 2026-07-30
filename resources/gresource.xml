@@ -18,24 +18,20 @@
     <file compressed="true">ui/gtk-liferea.css</file>
     <file compressed="true">ui/about.ui</file>
     <file compressed="true">ui/auth.ui</file>
-    <file compressed="true">ui/google_source.ui</file>
     <file compressed="true">ui/mainwindow.ui</file>
     <file compressed="true">ui/mark_read_dialog.ui</file>
     <file compressed="true">ui/new_folder.ui</file>
     <file compressed="true">ui/new_newsbin.ui</file>
+    <file compressed="true">ui/new_node_source.ui</file>
     <file compressed="true">ui/node_source.ui</file>
     <file compressed="true">ui/opml_source.ui</file>
     <file compressed="true">ui/prefs.ui</file>
     <file compressed="true">ui/properties.ui</file>
-    <file compressed="true">ui/reedah_source.ui</file>
     <file compressed="true">ui/rename_node.ui</file>
     <file compressed="true">ui/search_folder.ui</file>
     <file compressed="true">ui/search.ui</file>
     <file compressed="true">ui/shortcuts.ui</file>
     <file compressed="true">ui/simple_subscription.ui</file>
-    <file compressed="true">ui/theoldreader_source.ui</file>
-    <file compressed="true">ui/ttrss_source.ui</file>
-    <file compressed="true">ui/webdav_source.ui</file>
 
     <file compressed="true">help/about_en.html</file>
     <file compressed="true">help/concepts_en.html</file>

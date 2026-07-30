@@ -57,8 +57,8 @@ reedah_source_check_node_for_removal (Node *node, gpointer user_data)
 		while (iter) {
 			JsonNode *json_node = (JsonNode *)iter->data;
 			// FIXME: Compare with unescaped string
-			if (g_str_equal (node->subscription->source, json_get_string (json_node, "id") + 5)) {
-				debug (DEBUG_UPDATE, "node: %s", node->subscription->source);
+			if (g_str_equal (node->subscription->origSource, json_get_string (json_node, "id") + 5)) {
+				debug (DEBUG_UPDATE, "node: %s", node->subscription->origSource);
 				found = TRUE;
 				break;
 			}
@@ -74,21 +74,21 @@ reedah_source_check_node_for_removal (Node *node, gpointer user_data)
 /* subscription list merging functions */
 
 static void
-reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar *title, const gchar *id, Node *folder)
+reedah_source_merge_feed (Node *root, const gchar *url, const gchar *title, const gchar *id, Node *folder)
 {
-	Node	*node = feedlist_find_node (source->root, NODE_BY_URL, url);
+	Node	*node = feedlist_find_node (root, NODE_BY_URL, url);
 	if (!node) {
-		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
+		debug (DEBUG_UPDATE, "reedah_source: %s |%s| adding %s (%s)", root->id, root->title, title, url);
 		node = node_new ("feed");
 		node_set_title (node, title);
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = source->root->source->type->feedSubscriptionType;
+		node->subscription->type = root->source->type->feedSubscriptionType;
 
 		/* Save Reedah feed id which we need to fetch items... */
 		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "reedah-feed-id", id);
 		db_subscription_update (node->subscription);
 
-		node_set_parent (node, source->root, -1);
+		node_set_parent (node, root, -1);
 		feedlist_node_imported (node);
 
 		/**
@@ -107,13 +107,12 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 /* OPML subscription type implementation */
 
 static void
-reedah_subscription_opml_cb (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
+reedah_source_opml_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
-	ReedahSourcePtr	source = (ReedahSourcePtr) subscription->node->data;
+	Node *root = subscription->node;
 
 	subscription->updateJob = NULL;
 
-	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
 
@@ -146,7 +145,7 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const UpdateResult * 
 					while (citer) {
 						const gchar *label = json_get_string ((JsonNode *)citer->data, "label");
 						if (label) {
-							folder = node_source_find_or_create_folder (source->root, label, label);
+							folder = node_source_find_or_create_folder (root, label, label);
 							break;
 						}
 						citer = g_list_next (citer);
@@ -156,7 +155,7 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const UpdateResult * 
 
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "id")) {
-					reedah_source_merge_feed (source,
+					reedah_source_merge_feed (root,
 					                          json_get_string (node, "id") + 5,	// FIXME: Unescape string!
 					                          json_get_string (node, "title"),
 					                          json_get_string (node, "id"),
@@ -167,47 +166,34 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const UpdateResult * 
 			g_list_free (elements);
 
 			/* Remove old nodes we cannot find anymore */
-			node_foreach_child_data (source->root, reedah_source_check_node_for_removal, array);
+			node_foreach_child_data (root, reedah_source_check_node_for_removal, array);
 
 			/* Save new subscription tree to OPML cache file */
-			opml_source_export (subscription->node);
-			subscription->node->available = TRUE;
+			opml_source_export (root);
+			root->available = TRUE;
 		} else {
 			g_print ("Invalid JSON returned on Reedah feed list request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
 	} else {
-		subscription->node->available = FALSE;
-		debug (DEBUG_UPDATE, "reedah_subscription_cb(): ERROR: failed to get subscription list!");
+		root->available = FALSE;
+		debug (DEBUG_UPDATE, "reedah_source: %s |%s| ERROR: failed to get subscription list!", root->id, root->title);
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
-		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
-}
-
-static void
-reedah_source_opml_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
-{
-	reedah_subscription_opml_cb (subscription, result, flags);
+		node_foreach_child_data (root, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
 static gboolean
 reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
-	Node *node = subscription->node;
-	ReedahSourcePtr	source = (ReedahSourcePtr)node->data;
+	Node *root = subscription->node;
 
-	g_assert(node->source);
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug (DEBUG_UPDATE, "ReedahSource: login");
-		reedah_source_login (source, 0);
-		return FALSE;
-	}
-	debug (DEBUG_UPDATE, "updating Reedah subscription (node id %s)", node->id);
+	debug (DEBUG_UPDATE, "reedah_source: %s |%s| updating subscription list", root->id, root->title);
 
-	update_request_set_source (request, node->source->api.subscription_list);
-	update_request_set_auth_value (request, node->source->authToken);
+	update_request_set_source (request, root->source->api.subscription_list);
+	update_request_set_auth_value (request, root->source->authToken);
 
 	return TRUE;
 }

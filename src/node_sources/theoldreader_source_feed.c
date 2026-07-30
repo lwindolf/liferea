@@ -37,28 +37,6 @@
 #include "db.h"
 #include "item_state.h"
 
-void
-theoldreader_source_migrate_node (Node *node)
-{
-	/* scan the node for bad ID's, if so, brutally remove the node */
-	itemSetPtr itemset = node_get_itemset (node);
-	GList *iter = itemset->ids;
-	for (; iter; iter = g_list_next (iter)) {
-		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			// FIXME: does this work?
-			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug (DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
-				db_item_remove(GPOINTER_TO_UINT(iter->data));
-			}
-		}
-		if (item) item_unload (item);
-	}
-
-	/* cleanup */
-	itemset_free (itemset);
-}
-
 static itemPtr
 theoldreader_source_load_item_from_sourceid (Node *node, gchar *sourceId, GHashTable *cache)
 {
@@ -91,7 +69,7 @@ theoldreader_source_load_item_from_sourceid (Node *node, gchar *sourceId, GHashT
 		}
 	}
 
-	g_print ("Could not find item for %s!", sourceId);
+	g_warning ("TheOldReader: Could not find item for %s!", sourceId);
 	itemset_free (itemset);
 	return NULL;
 }
@@ -100,7 +78,7 @@ static void
 theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
 {
 	xmlNodePtr      xml;
-	Node *        node = subscription->node;
+	Node		*node = subscription->node;
 	xmlChar         *id = NULL;
 	gboolean        read = FALSE;
 
@@ -129,14 +107,13 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 	}
 
 	if (!id) {
-		g_print ("Skipping item without id in theoldreader_source_item_retrieve_status()!");
+		g_warning ("TheOldReader: Skipping item without id in theoldreader_source_item_retrieve_status()!");
 		return;
 	}
 
 	itemPtr item = theoldreader_source_load_item_from_sourceid (node, (gchar *)id, cache);
 	if (item && item->sourceId) {
 		if (g_str_equal (item->sourceId, id) && !google_reader_api_edit_is_in_queue(node->source, (gchar *)id)) {
-
 			if (item->readStatus != read)
 				item_read_state_changed (item, read);
 		}
@@ -149,8 +126,9 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 static void
 theoldreader_feed_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult* const result, updateFlags flags)
 {
-	gchar 	*id;
+	g_autofree gchar *id;
 
+	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| process feed update result", subscription->node->id, subscription->node->title);
 
 	/* Save old subscription metadata which contains "theoldreader-feed-id"
 	   which is mission critical and the feed parser currently drops all
@@ -162,16 +140,18 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 
 	/* Set remote id again */
 	metadata_list_set (&subscription->metadata, "theoldreader-feed-id", id);
-	g_free (id);
 
-	if (!result->data)
+	if (!result->data || result->httpstatus != 200) {
+		debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| ERROR: feed update failed (HTTP status %d)", subscription->node->id, subscription->node->title, result->httpstatus);
+		subscription->error = FETCH_ERROR_NET;
 		return;
+	}
 
 	xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
 	if (doc) {
 		xmlNodePtr root = xmlDocGetRootElement (doc);
 		xmlNodePtr entry = root->children ;
-		GHashTable *cache = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+		g_autoptr(GHashTable) cache = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 		while (entry) {
 			if (!g_str_equal (entry->name, "entry")) {
@@ -183,11 +163,11 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 			entry = entry->next;
 		}
 
-		g_hash_table_unref (cache);
 		xmlFreeDoc (doc);
 	} else {
-		debug (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| ERROR: Couldn't parse XML!", subscription->node->id, subscription->node->title);
 		subscription->node->available = FALSE;
+		subscription->error = FETCH_ERROR_XML;
 	}
 
 }
@@ -196,24 +176,18 @@ static gboolean
 theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                        UpdateRequest *request)
 {
-	debug (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
-	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data;
+	Node *root = subscription->node->source->root;
+	const gchar *remoteId = metadata_list_get (subscription->metadata, "theoldreader-feed-id");
 
-	g_assert (source);
-	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
+	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| update feed", subscription->node->id, subscription->node->title);
+
+	if (!remoteId) {
+		g_warning ("Skipping TheOldReader feed '%s' (%s) without remote id!", subscription->node->title, subscription->node->id);
 		return FALSE;
 	}
 
-	if (!metadata_list_get (subscription->metadata, "theoldreader-feed-id")) {
-		g_print ("Skipping TheOldReader feed '%s' (%s) without id!", subscription->source, subscription->node->id);
-		return FALSE;
-	}
-
-	gchar* url = g_strdup_printf ("https://theoldreader.com/reader/atom/%s", metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
+	g_autofree gchar* url = g_strdup_printf ("%s/atom/%s", root->subscription->origSource, remoteId);
 	update_request_set_source (request, url);
-	g_free (url);
-
 	update_request_set_auth_value (request, subscription->node->source->authToken);
 	return TRUE;
 }

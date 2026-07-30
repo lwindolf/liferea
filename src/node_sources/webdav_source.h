@@ -48,7 +48,6 @@
 /** Metadata key that stores the stable remote feed id for WebDAV sync. */
 #define WEBDAV_REMOTE_FEED_ID_METADATA "remote-feed-id"
 
-gboolean webdav_source_login (Node *root, guint32 flags);
 const gchar *webdav_feed_remote_id (Node *node);
 void webdav_feed_set_remote_id (Node *node, const gchar *remote_id);
 gchar * webdav_feed_json_url (Node *root, const gchar *node_id);

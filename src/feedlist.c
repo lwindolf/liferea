@@ -29,7 +29,6 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "json.h"
-#include "net_monitor.h"
 #include "node.h"
 #include "node_providers/feed.h"
 #include "node_providers/folder.h"
@@ -52,7 +51,6 @@ struct _FeedList {
 				                     display enabled) */
 
 	guint		saveTimer;		/*<< timer id for delayed feed list saving */
-	guint		autoUpdateTimer; 	/*<< timer id for auto update */
 
 	gboolean	loading;		/*<< prevents the feed list being saved before it is completely loaded */
 };
@@ -89,11 +87,6 @@ feedlist_free_node (Node *node)
 static void
 feedlist_finalize (GObject *object)
 {
-	/* Stop all timer based activity */
-	if (feedlist->autoUpdateTimer) {
-		g_source_remove (feedlist->autoUpdateTimer);
-		feedlist->autoUpdateTimer = 0;
-	}
 	if (feedlist->saveTimer) {
 		g_source_remove (feedlist->saveTimer);
 		feedlist->saveTimer = 0;
@@ -195,26 +188,6 @@ feedlist_class_init (FeedListClass *klass)
 		G_TYPE_STRING);
 }
 
-static gboolean
-feedlist_auto_update (void *data)
-{
-
-	if (network_monitor_is_online ())
-		node_auto_update_subscription (ROOTNODE);
-	else
-		debug (DEBUG_UPDATE, "no update processing because we are offline!");
-
-
-	return TRUE;
-}
-
-static void
-on_network_status_changed (gpointer instance, gboolean online, gpointer data)
-{
-	if (online)
-		feedlist_auto_update (NULL);
-}
-
 /* This method is used to initialize the node states in the feed list */
 static void
 feedlist_init_node (Node *node)
@@ -231,8 +204,6 @@ feedlist_init_node (Node *node)
 static void
 feedlist_init (FeedList *fl)
 {
-	gint	startup_feed_action;
-
 	/* 1. Prepare globally accessible singleton */
 	g_assert (NULL == feedlist);
 	feedlist = fl;
@@ -246,29 +217,7 @@ feedlist_init (FeedList *fl)
 	debug (DEBUG_CACHE, "Initializing node state");
 	feedlist_foreach (feedlist_init_node);
 
-	/* 4. Check if feeds do need updating. */
-	debug (DEBUG_UPDATE, "Performing initial feed update");
-	conf_get_int_value (STARTUP_FEED_ACTION, &startup_feed_action);
-	if (0 == startup_feed_action) {
-		/* Update all feeds */
-		if (network_monitor_is_online ()) {
-			debug (DEBUG_UPDATE, "initial update: updating all feeds");
-			node_auto_update_subscription (feedlist_get_root ());
-		} else {
-			debug (DEBUG_UPDATE, "initial update: prevented because we are offline");
-		}
-	} else {
-		debug (DEBUG_UPDATE, "initial update: disabled");
-	}
-
-	/* 5. Purge old nodes from the database */
-	db_node_cleanup (feedlist_get_root ());
-
-	/* 6. Start automatic updating */
-	feedlist->autoUpdateTimer = g_timeout_add_seconds (10, feedlist_auto_update, NULL);
-	g_signal_connect (network_monitor_get (), "online-status-changed", G_CALLBACK (on_network_status_changed), NULL);
-
-	/* 7. Finally save the new feed list state */
+	/* 4. Finally save the new feed list state */
 	feedlist->loading = FALSE;
 	feedlist_schedule_save ();
 

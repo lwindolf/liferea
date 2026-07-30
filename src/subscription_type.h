@@ -1,7 +1,7 @@
 /*
  * @file subscription_type.h  subscription type interface
  *
- * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,10 @@
 
 /*
  * Liferea supports different types of subscriptions that differ
- * in their updating behaviour and update state.
+ * in their updating behaviour and update state. Each must implement 
+ * this interface. Only node sources can register own subscription types.
+ * 
+ * A "feed" is the default subscription type implemented in node_providers/feed.c.
  */
 
 /* subscription type interface */

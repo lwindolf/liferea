@@ -4,13 +4,16 @@
   <!-- interface-name google_source.ui -->
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.6"/>
-  <object class="AdwDialog" id="google_source">
-    <property name="title">New Google Reader API Source</property>
+  <object class="AdwDialog" id="new_node_source">
+    <property name="focus-widget">usernameEntry</property>
+    <property name="title">New Account</property>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
-          <object class="AdwHeaderBar"/>
+          <object class="AdwHeaderBar">
+            <property name="width-request">400</property>
+          </object>
         </child>
         <child>
           <object class="GtkBox">
@@ -21,9 +24,12 @@
             <property name="orientation">vertical</property>
             <property name="spacing">12</property>
             <child>
-              <object class="GtkLabel">
-                <property name="label">Please enter the details of the new Google Reader API compatible subscription.</property>
+              <object class="GtkLabel" id="label">
+                <property name="halign">start</property>
+                <property name="hexpand">True</property>
+                <property name="label">LABEL REPLACEME</property>
                 <property name="use-markup">True</property>
+                <property name="wrap">True</property>
               </object>
             </child>
             <child>
@@ -46,6 +52,7 @@
                 <property name="input-purpose">url</property>
                 <property name="text">https://</property>
                 <property name="title">Server</property>
+                <property name="visible">False</property>
               </object>
             </child>
             <child>

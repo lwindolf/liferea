@@ -478,28 +478,36 @@ item_list_view_item_removed (GObject *obj, gulong id, gpointer user_data)
 {
 	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
 	GtkTreeIter	iter;
-
+ 
 	if (item_list_view_id_to_iter (ilv, id, &iter)) {
-		/* Using the GtkTreeIter check if it is currently selected. If yes,
-		   scroll down by one in the sorted GtkTreeView to ensure something
-		   is selected after removing the GtkTreeIter */
-		GtkTreePath	*path = gtk_tree_model_get_path (gtk_tree_view_get_model (ilv->treeview), &iter);
+		GtkTreeModel *model = gtk_tree_view_get_model (ilv->treeview);
+		GtkTreePath *path = gtk_tree_model_get_path (model, &iter);
 		GtkTreeSelection *select = gtk_tree_view_get_selection (ilv->treeview);
-		GtkTreePath	*next = gtk_tree_path_copy (path);
-		GtkTreeIter	nextIter;
-		
+		GtkTreeIter selected;
+		gboolean removed_was_selected = gtk_tree_selection_get_selected (select, NULL, &selected)
+		                                && gtk_tree_store_iter_is_valid (GTK_TREE_STORE (model), &selected)
+		                                && gtk_tree_store_iter_is_valid (GTK_TREE_STORE (model), &iter)
+		                                && (item_list_view_iter_to_id (ilv, &selected) == id);
+         
 		g_assert (select);
 		g_assert (path);
-		g_assert (next);
-		gtk_tree_path_next (next);
-		gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &nextIter, next);
-		gtk_tree_selection_select_iter (select, &nextIter);
-		
-		gtk_tree_store_remove (GTK_TREE_STORE (gtk_tree_view_get_model (ilv->treeview)), &iter);
+		if (removed_was_selected) {
+			GtkTreePath *next = gtk_tree_path_copy (path);
+			GtkTreeIter nextIter;
+			g_assert (next);
+			gtk_tree_path_next (next);
+			if (gtk_tree_model_get_iter (model, &nextIter, next))
+				gtk_tree_selection_select_iter (select, &nextIter);
+			else
+				gtk_tree_selection_unselect_all (select);
+			gtk_tree_path_free (next);
+		}
+         
+		gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
+		gtk_tree_path_free (path);
 	} else {
-		g_warning ("Fatal: item to be removed not found in item id list!");
+        	debug (DEBUG_GUI, "item id %lu to be removed not found in item id list!", id);
 	}
-
 	ilv->item_ids = g_slist_remove (ilv->item_ids, GUINT_TO_POINTER (id));
 }
 
@@ -1003,8 +1011,7 @@ item_list_view_select (GObject *obj, gint id, gpointer user_data)
 				gtk_tree_path_free (path);
 			}
 		} else {
-			g_warning ("item_list_view_select : attempt to select an item which is not present in the view.");
-			gtk_tree_selection_unselect_all (selection);
+			debug (DEBUG_GUI, "item_list_view_select: ignore missing item id %d in current view", id);
 		}
 	} else {
 		gtk_tree_selection_unselect_all (selection);

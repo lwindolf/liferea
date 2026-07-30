@@ -39,7 +39,7 @@ typedef enum fetchError {
 	FETCH_ERROR_AUTH     = 1 << 0,
 	FETCH_ERROR_NET      = 1 << 1,
 	FETCH_ERROR_DISCOVER = 1 << 2,
-	FETCH_ERROR_XML      = 1 << 3
+	FETCH_ERROR_XML      = 1 << 3	/*<< historically named "XML", but should be used for all parsing issues */
 	/* when adding stuff here, extend xstl/feed.xml.in also! */
 } fetchError;
 
@@ -139,8 +139,9 @@ void subscription_update (subscriptionPtr subscription, guint flags);
  * if necessary calls subscription_update().
  *
  * @param subscription	the subscription
+ * @param flags		update flags
  */
-void subscription_auto_update (subscriptionPtr subscription);
+void subscription_auto_update (subscriptionPtr subscription, updateFlags flags);
 
 /**
  * Cancels a currently running subscription update. This is to
@@ -219,7 +220,7 @@ void subscription_set_discontinued (subscriptionPtr subscription, gboolean newSt
  *
  * @returns the source URL
  */
-const gchar * subscription_get_source(subscriptionPtr subscription);
+const gchar * subscription_get_source (subscriptionPtr subscription);
 
 /**
  * Set a new source URL for the given subscription
@@ -227,7 +228,7 @@ const gchar * subscription_get_source(subscriptionPtr subscription);
  * @param subscription	the subscription
  * @param source	the new source URL
  */
-void subscription_set_source(subscriptionPtr subscription, const gchar *source);
+void subscription_set_source (subscriptionPtr subscription, const gchar *source);
 
 /**
  * Returns the homepage URL of the given subscription.
@@ -236,7 +237,7 @@ void subscription_set_source(subscriptionPtr subscription, const gchar *source);
  *
  * @returns the homepage URL or NULL
  */
-const gchar * subscription_get_homepage(subscriptionPtr subscription);
+const gchar * subscription_get_homepage (subscriptionPtr subscription);
 
 /**
  * Set the homepage URL of the given subscription. If the passed
@@ -246,7 +247,7 @@ const gchar * subscription_get_homepage(subscriptionPtr subscription);
  * @param subscription	the subscription
  * @param url		the new HTML URL
  */
-void subscription_set_homepage(subscriptionPtr subscription, const gchar *url);
+void subscription_set_homepage (subscriptionPtr subscription, const gchar *url);
 
 /**
  * Get the configured filter command for a given subscription
@@ -255,7 +256,7 @@ void subscription_set_homepage(subscriptionPtr subscription, const gchar *url);
  *
  * @returns the filter command
  */
-const gchar * subscription_get_filter(subscriptionPtr subscription);
+const gchar * subscription_get_filter (subscriptionPtr subscription);
 
 /**
  * Set a new filter command for a given subscription
@@ -263,7 +264,7 @@ const gchar * subscription_get_filter(subscriptionPtr subscription);
  * @param subscription	the subscription
  * @param filter	the new filter command
  */
-void subscription_set_filter(subscriptionPtr subscription, const gchar * filter);
+void subscription_set_filter (subscriptionPtr subscription, const gchar * filter);
 
 /**
  * Set authentication information for a given subscription
@@ -298,6 +299,6 @@ void subscription_enrich_item (subscriptionPtr subscription, itemPtr item);
  *
  * @param subscription	the subscription
  */
-void subscription_free(subscriptionPtr subscription);
+void subscription_free (subscriptionPtr subscription);
 
 #endif
