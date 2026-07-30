@@ -135,7 +135,10 @@ item_list_truncate_utf8 (const gchar *text, guint max_chars)
 		return g_strdup (text);
 
 	const gchar *end = g_utf8_offset_to_pointer (text, max_chars);
-	return g_strndup (text, end - text);
+	gchar *truncated = g_strndup (text, end - text);
+	gchar *result = g_strconcat (truncated, "...", NULL);
+	g_free (truncated);
+	return result;
 }
 
 static void
@@ -150,10 +153,14 @@ item_list_view_apply_row_visibility (ItemListView *ilv, ItemListRow *row)
 static void
 item_list_view_apply_row_layout (ItemListView *ilv, ItemListRow *row)
 {
+	GtkWidget *box = gtk_list_box_row_get_child (GTK_LIST_BOX_ROW (row->row));
+
 	if (ilv->wideView) {
 		gtk_image_set_icon_size (GTK_IMAGE (row->favicon_image), GTK_ICON_SIZE_LARGE);
 		gtk_widget_set_margin_start (row->favicon_image, 6);
 		gtk_widget_set_margin_end (row->favicon_image, 6);
+		gtk_widget_set_margin_top (box, 6);
+		gtk_widget_set_margin_bottom (box, 6);
 		gtk_label_set_wrap (GTK_LABEL (row->headline_label), TRUE);
 		gtk_label_set_wrap_mode (GTK_LABEL (row->headline_label), PANGO_WRAP_WORD_CHAR);
 		gtk_label_set_ellipsize (GTK_LABEL (row->headline_label), PANGO_ELLIPSIZE_NONE);
@@ -165,6 +172,8 @@ item_list_view_apply_row_layout (ItemListView *ilv, ItemListRow *row)
 		gtk_image_set_icon_size (GTK_IMAGE (row->favicon_image), GTK_ICON_SIZE_NORMAL);
 		gtk_widget_set_margin_start (row->favicon_image, 0);
 		gtk_widget_set_margin_end (row->favicon_image, 0);
+		gtk_widget_set_margin_top (box, 2);
+		gtk_widget_set_margin_bottom (box, 2);
 		gtk_label_set_wrap (GTK_LABEL (row->headline_label), FALSE);
 		gtk_label_set_wrap_mode (GTK_LABEL (row->headline_label), PANGO_WRAP_NONE);
 		gtk_label_set_ellipsize (GTK_LABEL (row->headline_label), PANGO_ELLIPSIZE_END);
@@ -493,8 +502,7 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 	}
 
 	if (ilv->wideView) {
-		const gchar *important = _(" <span background='red' color='white'> important </span> ");
-		const gchar *important_prefix = item->flagStatus ? important : "";
+		const gchar *important = item->flagStatus ? _(" <span background='red' color='white'> important </span> ") : "";
 		gchar *teaser = NULL;
 		gchar *teaser_markup = NULL;
 
@@ -509,11 +517,11 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 			title_limited_escaped);
 
 		preview_markup = g_strdup_printf (
-			"%s<span weight='%s'>%s%s</span><span size='smaller' weight='ultralight'> — %s</span>",
-			important_prefix,
+			"<span weight='%s'>%s%s</span>%s<span size='smaller' weight='ultralight'> — %s</span>",
 			item->readStatus ? "ultralight" : "light",
 			teaser_markup ? teaser_markup : "",
 			teaser_markup ? "..." : "",
+			important,
 			time_str_escaped);
 		g_free (teaser_markup);
 		g_free (teaser);
@@ -542,7 +550,7 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, ItemListRo
 	gtk_label_set_text (GTK_LABEL (row->date_label), time_str);
 
 	if (state_icon)
-		gtk_image_set_from_gicon (GTK_IMAGE (row->state_image), state_icon);
+		gtk_image_set_from_gicon (GTK_IMAGE (row->state_image), (GIcon *)state_icon);
 	else
 		gtk_image_clear (GTK_IMAGE (row->state_image));
 
@@ -732,25 +740,24 @@ item_list_view_widget_is_descendant (GtkWidget *widget, GtkWidget *ancestor)
 	return FALSE;
 }
 
-static gboolean
+static void
 on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdouble x, gdouble y, gpointer user_data)
 {
 	ItemListView *ilv = ITEM_LIST_VIEW (user_data);
 	GtkListBoxRow *row = gtk_list_box_get_row_at_y (ilv->listbox, (int)y);
 	ItemListRow *item_row;
 	itemPtr item;
-	gboolean result = FALSE;
 
 	if (!row)
-		return FALSE;
+		return;
 
 	item_row = g_object_get_data (G_OBJECT (row), "item-list-row");
 	if (!item_row)
-		return FALSE;
+		return;
 
 	item = item_load (item_row->id);
 	if (!item)
-		return FALSE;
+		return;
 
 	if (n_press == 1) {
 		switch (gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture))) {
@@ -759,15 +766,14 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 				if (picked &&
 				    (item_list_view_widget_is_descendant (picked, item_row->favicon_image) ||
 				     item_list_view_widget_is_descendant (picked, item_row->state_image))) {
+                                        gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 					itemlist_toggle_flag (item);
-					result = TRUE;
 				}
 				break;
 			}
 			case GDK_BUTTON_MIDDLE:
 				gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 				itemlist_toggle_read_status (item);
-				result = TRUE;
 				break;
 			case GDK_BUTTON_SECONDARY: {
 				GMenu *menu = item_list_view_popup_menu (ilv, item);
@@ -782,14 +788,12 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 				gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
 				gtk_popover_popup (GTK_POPOVER (popover));
 				g_object_unref (menu);
-				result = TRUE;
 				break;
 			}
 		}
 	}
 
 	item_unload (item);
-	return result;
 }
 
 static void
@@ -890,8 +894,6 @@ item_list_view_create_row (ItemListView *ilv, itemPtr item, Node *node)
 
 	gtk_widget_set_margin_start (box, 6);
 	gtk_widget_set_margin_end (box, 6);
-	gtk_widget_set_margin_top (row->row, 3);
-	gtk_widget_set_margin_bottom (row->row, 3);
 
 	gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row->row), box);
 	g_object_set_data (G_OBJECT (row->row), "item-list-row", row);
@@ -979,7 +981,6 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 	ilv->ilscrolledwindow = gtk_scrolled_window_new ();
 	gtk_widget_set_vexpand (ilv->ilscrolledwindow, TRUE);
 	g_object_ref_sink (ilv->ilscrolledwindow);
-	gtk_widget_show (ilv->ilscrolledwindow);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
@@ -989,7 +990,6 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 	gtk_list_box_set_sort_func (ilv->listbox, item_list_view_sort_func, ilv, NULL);
 	gtk_list_box_set_show_separators (ilv->listbox, FALSE);
 	gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_WIDGET (ilv->listbox));
-	gtk_widget_show (GTK_WIDGET (ilv->listbox));
 	gtk_widget_set_name (GTK_WIDGET (ilv->listbox), "itemlist");
 
 	g_signal_connect (G_OBJECT (ilv->listbox), "selected-rows-changed", G_CALLBACK (on_itemlist_selection_changed), ilv);
