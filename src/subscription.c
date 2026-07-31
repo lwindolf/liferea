@@ -381,7 +381,7 @@ subscription_auto_update (subscriptionPtr subscription, updateFlags flags)
 	gint	interval;
 	guint64	now;
 
-	if (!subscription)
+	if (!subscription || !subscription->type)
 		return;
 
 	interval = subscription_get_update_interval (subscription);
