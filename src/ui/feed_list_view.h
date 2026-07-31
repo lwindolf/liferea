@@ -1,5 +1,5 @@
 /**
- * @file feed_list_view.h  the feed list in a GtkTreeView
+ * @file feed_list_view.h  the feed list in a GtkListBox
  *
  * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -32,27 +32,22 @@
 #define FEED_LIST_VIEW_TYPE (feed_list_view_get_type ())
 G_DECLARE_FINAL_TYPE (FeedListView, feed_list_view, FEED_LIST, VIEW, GObject)
 
-/* constants for attributes in feedstore */
-enum {
-	FS_LABEL,	/**< Displayed name */
-	FS_ICON,	/**< Icon to use */
-	FS_PTR,		/**< pointer to the folder or feed */
-	FS_UNREAD,	/**< Number of unread items */
-	FS_COUNT,	/**< Number of unread items as string */
-	FS_LEN
-};
-
 /**
  * feed_list_view_create: (skip)
  *
  * Initializes the feed list. To be called only once.
  *
- * @treeview:	A treeview widget to use
+ * @listbox:	A listbox widget to use
  * @feedlist:	The feed list to display
  *
  * Returns: new FeedListView
  */
-FeedListView * feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist);
+FeedListView * feed_list_view_create (GtkListBox *listbox, FeedList *feedlist);
+
+/**
+ * Move feed list selection by one row.
+ */
+void feed_list_view_move_cursor (FeedListView *flv, gint step);
 
 /**
  * feed_list_view_sort_folder:
@@ -62,21 +57,6 @@ FeedListView * feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
  * @folder:	the folder
  */
 void feed_list_view_sort_folder (Node *folder);
-
-/**
- * Determines the tree iter of a given node.
- *
- * @param nodeId	the node id
- */
-GtkTreeIter * feed_list_view_to_iter (const gchar *nodeId);
-
-/**
- * Updates the tree iter of a given node.
- *
- * @param nodeId	the node
- * @param iter		the new iter
- */
-void feed_list_view_update_iter (const gchar *nodeId, GtkTreeIter *iter);
 
 /**
  * Determines the expansion state of a feed list tree node.
@@ -128,8 +108,5 @@ void feed_list_view_set_reduce_mode (gboolean newReduceMode);
  * Reparent the given node in the feed list view.
  */
 void feed_list_view_reparent (Node *node);
-
-void feed_list_view_remove_empty_node (GtkTreeIter *parent);
-void feed_list_view_add_empty_node (GtkTreeIter *parent);
 
 #endif

@@ -18,18 +18,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string.h>		/* For strcmp */
-#include "common.h"
-#include "db.h"
-#include "node_providers/feed.h"
-#include "feedlist.h"
-#include "node_providers/folder.h"
-#include "debug.h"
-#include "ui/item_list_view.h"
-#include "ui/feed_list_view.h"
-#include "ui/liferea_shell.h"
 #include "ui/ui_dnd.h"
+
+#include <string.h>
+
+#include "db.h"
+#include "debug.h"
+#include "feedlist.h"
+#include "node_providers/feed.h"
 #include "node_source.h"
+#include "node_providers/folder.h"
+#include "subscription.h"
 
 /*
     Why does Liferea need such a complex DnD handling (for the feed list)?
@@ -46,232 +45,348 @@
     (FIXME: implement the last part)
  */
 
-static gboolean (*old_feed_drop_possible)(GtkTreeDragDest   *drag_dest,
-                                          GtkTreePath       *dest_path,
-                                          const GValue      *value);
+static GtkWidget *feedlist_widget;
+static GtkWidget *feedlist_drop_feedback_row;
+static const gchar *feedlist_dragged_node_id;
 
-static gboolean (*old_feed_drag_data_received)(GtkTreeDragDest *drag_dest,
-                                               GtkTreePath *dest,
-                                               const GValue *value);
-
-/** decides whether a feed cannot be dragged or not */
-static gboolean
-ui_dnd_feed_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path)
+static void
+ui_dnd_clear_row_feedback_classes (GtkWidget *row)
 {
-	GtkTreeIter	iter;
-	Node		*node;
+	if (!row)
+		return;
 
-	debug (DEBUG_GUI, "DnD check if feed dragging is possible (%d)", path);
-
-	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_source), &iter, path)) {
-		gtk_tree_model_get (GTK_TREE_MODEL (drag_source), &iter, FS_PTR, &node, -1);
-
-		/* never drag "empty" entries or nodes of read-only subscription lists*/
-		if (!node || !(NODE_SOURCE_TYPE (node->parent)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
-			return FALSE;
-
-		return TRUE;
-	} else {
-		g_warning ("fatal error! could not resolve tree path!");
-		return FALSE;
-	}
+	gtk_widget_remove_css_class (row, "dnd-drop-before");
+	gtk_widget_remove_css_class (row, "dnd-drop-into");
+	gtk_widget_remove_css_class (row, "dnd-drop-after");
+	gtk_widget_remove_css_class (row, "dnd-drop-invalid");
 }
-static gboolean
-ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, const GValue *value)
+
+static void
+ui_dnd_set_row_feedback_class (GtkWidget *row, const gchar *css_class)
 {
-	GtkTreeModel	*model = NULL;
-	GtkTreePath	*src_path = NULL;
-	GtkTreeIter	iter;
-	Node		*sourceNode, *targetNode;
+	if (!row)
+		return;
 
-	debug (DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
+	if (feedlist_drop_feedback_row && feedlist_drop_feedback_row != row)
+		ui_dnd_clear_row_feedback_classes (feedlist_drop_feedback_row);
 
-	if (!(old_feed_drop_possible) (drag_dest, dest_path, value))
-		return FALSE;
+	ui_dnd_clear_row_feedback_classes (row);
+	if (css_class)
+		gtk_widget_add_css_class (row, css_class);
 
-	if (!gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_dest), &iter, dest_path))
-		return FALSE;
+	feedlist_drop_feedback_row = css_class ? row : NULL;
+}
 
-	/* Try to get an iterator, if we get none it means either feed list
-	   root or an "Empty" node. Both cases are fine */
-	gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &targetNode, -1);
-	if (!targetNode)
-		return TRUE;
+static void
+ui_dnd_clear_drop_feedback (void)
+{
+	if (!feedlist_drop_feedback_row)
+		return;
 
-	/* If we got an iterator it's either a possible dropping
-	   candidate (a folder or source node to drop into, or a
-	   iterator to insert after). In any case we have to check
-	   if it is a writeable node source. */
+	ui_dnd_clear_row_feedback_classes (feedlist_drop_feedback_row);
+	feedlist_drop_feedback_row = NULL;
+}
 
-	/* Never drop into read-only subscription node sources */
-	if (!(NODE_SOURCE_TYPE (targetNode)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
-		return FALSE;
+static gboolean
+ui_dnd_node_is_descendant (Node *candidate, Node *ancestor)
+{
+	Node *iter = candidate;
 
-	/* never drag folders into non-hierarchic node sources */
-	if (!gtk_tree_get_row_drag_data (value, &model, &src_path))
-		return TRUE;
-
-	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, src_path)) {
-		gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, FS_PTR, &sourceNode, -1);
-
-		g_assert (sourceNode);
-
-		/* Never drop into another node source as this arises to many problems
-		   (e.g. remote sync, different subscription type, e.g. SF #2855990) */
-		if (NODE_SOURCE_TYPE (targetNode) != NODE_SOURCE_TYPE (sourceNode))
-			return FALSE;
-
-		if (IS_FOLDER(sourceNode) && !(NODE_SOURCE_TYPE (targetNode)->capabilities & NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST))
-			return FALSE;
+	while (iter) {
+		if (iter == ancestor)
+			return TRUE;
+		iter = iter->parent;
 	}
 
-	gtk_tree_path_free (src_path);
+	return FALSE;
+}
+
+static gboolean
+ui_dnd_feed_draggable (Node *node)
+{
+	if (!node || !node->parent)
+		return FALSE;
+
+	return (NODE_SOURCE_TYPE (node->parent)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST) != 0;
+}
+
+static gboolean
+ui_dnd_feed_drop_possible (Node *sourceNode, Node *newParent)
+{
+	if (!sourceNode || !newParent)
+		return FALSE;
+
+	if (sourceNode == newParent)
+		return FALSE;
+
+	/* Never drop into our own subtree. */
+	if (ui_dnd_node_is_descendant (newParent, sourceNode))
+		return FALSE;
+
+	/* Never drop into read-only node sources. */
+	if (!(NODE_SOURCE_TYPE (newParent)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
+		return FALSE;
+
+        /* Never drop into another node source as this arises to many problems
+                (e.g. remote sync, different subscription type, e.g. SF #2855990) */
+        if (NODE_SOURCE_TYPE (newParent) != NODE_SOURCE_TYPE (sourceNode))
+		return FALSE;
+
+	/* Never drop folders into flat feedlists. */
+	if (IS_FOLDER (sourceNode) && !(NODE_SOURCE_TYPE (newParent)->capabilities & NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST))
+		return FALSE;
 
 	return TRUE;
 }
 
-static gboolean
-ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, const GValue *value)
+static const gchar *
+ui_dnd_feed_drop_feedback_class (Node *sourceNode, Node *targetNode, gdouble y, GtkWidget *rowWidget)
 {
-	GtkTreeIter	iter, iter2, parentIter;
-	Node		*node, *oldParent, *newParent;
-	gboolean	result, valid, added;
-	gint		oldPos, pos;
+	Node *newParent;
+	gboolean dropInto = FALSE;
+	gdouble h;
 
-	result = old_feed_drag_data_received (drag_dest, dest, value);
-	if (result) {
-		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_dest), &iter, dest)) {
-			gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &node, -1);
+	if (!sourceNode)
+		return "dnd-drop-into";
 
-			/* If we don't do anything, then because DnD is implemented by removal and
-			   re-insertion, and the removed node is selected, the treeview selects
-			   the next row after the removal, which is supremely irritating.
-			   But setting a selection at this point is pointless, because the treeview
-			   will reset it as soon as the DnD callback returns. Instead, we set
-			   the cursor, which controls where treeview resets the selection later.
-			 */
-			gtk_tree_view_set_cursor(GTK_TREE_VIEW (liferea_shell_lookup ("feedlist")),
-			    dest, NULL, FALSE);
+	if (!ui_dnd_feed_draggable (sourceNode))
+		return "dnd-drop-invalid";
 
-			/* remove from old parents child list */
-			oldParent = node->parent;
-			g_assert (oldParent);
-			oldPos = g_slist_index (oldParent->children, node);
-			oldParent->children = g_slist_remove (oldParent->children, node);
+	if (!targetNode)
+		return ui_dnd_feed_drop_possible (sourceNode, feedlist_get_root ()) ? "dnd-drop-after" : "dnd-drop-invalid";
 
-			if (0 == g_slist_length (oldParent->children))
-				feed_list_view_add_empty_node (feed_list_view_to_iter (oldParent->id));
-
-			/* and rebuild new parents child list */
-			if (gtk_tree_model_iter_parent (GTK_TREE_MODEL (drag_dest), &parentIter, &iter)) {
-				gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &parentIter, FS_PTR, &newParent, -1);
-			} else {
-				gtk_tree_model_get_iter_first (GTK_TREE_MODEL (drag_dest), &parentIter);
-				newParent = feedlist_get_root ();
-			}
-
-			/* drop old list... */
-			debug (DEBUG_GUI, "old parent is %s (%d, position=%d)", oldParent->title, g_slist_length (oldParent->children), oldPos);
-			debug (DEBUG_GUI, "new parent is %s (%d)", newParent->title, g_slist_length (newParent->children));
-			g_slist_free (newParent->children);
-			newParent->children = NULL;
-			node->parent = newParent;
-
-			debug (DEBUG_GUI, "new parent child list:");
-
-			/* and rebuild it from the tree model */
-			if (feedlist_get_root() != newParent)
-				valid = gtk_tree_model_iter_children (GTK_TREE_MODEL (drag_dest), &iter2, &parentIter);
-			else
-				valid = gtk_tree_model_iter_children (GTK_TREE_MODEL (drag_dest), &iter2, NULL);
-
-			pos = 0;
-			added = FALSE;
-			while (valid) {
-				Node	*child;
-				gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter2, FS_PTR, &child, -1);
-				if (child) {
-					/* Well this is a bit complicated... If we move a feed inside a folder
-					   we need to skip the old insertion point (oldPos). This is easy if the
-					   feed is added behind this position. If it is dropped before the flag
-					   added is set once the new copy is encountered. The remaining copy
-					   is skipped automatically when the flag is set.
-					 */
-
-					/* check if this is a copy of the dragged node or the original itself */
-					if ((newParent == oldParent) && !strcmp(node->id, child->id)) {
-						if ((pos == oldPos) || added) {
-							/* it is the original */
-							debug (DEBUG_GUI, "   -> %d: skipping old insertion point %s", pos, child->title);
-						} else {
-							/* it is a copy inserted before the original */
-							added = TRUE;
-							debug (DEBUG_GUI, "   -> %d: new insertion point of %s", pos, child->title);
-							newParent->children = g_slist_append (newParent->children, child);
-						}
-					} else {
-						/* all other nodes */
-						debug (DEBUG_GUI, "   -> %d: adding %s", pos, child->title);
-						newParent->children = g_slist_append (newParent->children, child);
-					}
-					valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (drag_dest), &iter2);
-					pos++;
-				} else {
-					debug (DEBUG_GUI, "   -> removing empty node");
-					/* remove possible existing "(empty)" node from newParent */
-					feed_list_view_remove_empty_node (&parentIter);
-					valid = FALSE;
-				}
-			}
-
-			db_node_update (node);
-
-			if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_REPARENT_NODE)
-				NODE_SOURCE_TYPE (node)->reparent_node(node, oldParent, newParent);
-
-			/* It is important to emit all three so remote node sources can track 
-			   feed migrations. */
-			feedlist_node_was_updated (node);
-			feedlist_node_was_updated (oldParent);
-			feedlist_node_was_updated (newParent);
-		}
+	h = gtk_widget_get_height (rowWidget);
+	if (IS_FEED (sourceNode) && IS_FOLDER (targetNode)) {
+		newParent = targetNode;
+		dropInto = TRUE;
+	} else if ((IS_FOLDER (targetNode) || IS_NODE_SOURCE (targetNode)) && (h > 0.0) && (y > h * 0.25) && (y < h * 0.75)) {
+		newParent = targetNode;
+		dropInto = TRUE;
+	} else {
+		newParent = targetNode->parent ? targetNode->parent : feedlist_get_root ();
 	}
 
+	if (!ui_dnd_feed_drop_possible (sourceNode, newParent))
+		return "dnd-drop-invalid";
+
+	if (dropInto)
+		return "dnd-drop-into";
+
+	return (y > h / 2.0) ? "dnd-drop-after" : "dnd-drop-before";
+}
+
+static void
+ui_dnd_move_feed_node (Node *node, Node *newParent, gint insertPos)
+{
+	Node *oldParent;
+	gint oldPos;
+
+	if (!node || !newParent)
+		return;
+
+	oldParent = node->parent;
+	if (!oldParent)
+		return;
+
+	oldPos = g_slist_index (oldParent->children, node);
+	oldParent->children = g_slist_remove (oldParent->children, node);
+
+	if ((oldParent == newParent) && insertPos > oldPos)
+		insertPos--;
+
+	newParent->children = g_slist_insert (newParent->children, node, insertPos);
+	node->parent = newParent;
+
+	db_node_update (node);
+
+	if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_REPARENT_NODE)
+		NODE_SOURCE_TYPE (node)->reparent_node (node, oldParent, newParent);
+
+	/* Emit all so remote sources can track feed migrations. */
+	feedlist_node_was_updated (node);
+	feedlist_node_was_updated (oldParent);
+	if (newParent != oldParent)
+		feedlist_node_was_updated (newParent);
+}
+
+static gboolean
+ui_dnd_feed_drop_common (const gchar *text, Node *targetNode, gdouble y, GtkWidget *rowWidget)
+{
+	Node *sourceNode;
+	Node *newParent;
+	gint insertPos = -1;
+	gboolean dropInto = FALSE;
+
+	if (!text)
+		return FALSE;
+
+	sourceNode = node_from_id (text);
+
+	/* URL drops are still handled as feed subscription additions. */
+	if (!sourceNode) {
+		feedlist_add_subscription_check_duplicate (subscription_new (text, NULL, NULL));
+		return TRUE;
+	}
+
+	if (!ui_dnd_feed_draggable (sourceNode))
+		return FALSE;
+
+	if (!targetNode) {
+		newParent = feedlist_get_root ();
+		if (!ui_dnd_feed_drop_possible (sourceNode, newParent))
+			return FALSE;
+		ui_dnd_move_feed_node (sourceNode, newParent, -1);
+		return TRUE;
+	}
+
+	if (IS_FEED (sourceNode) && IS_FOLDER (targetNode)) {
+		dropInto = TRUE;
+	} else if (IS_FOLDER (targetNode) || IS_NODE_SOURCE (targetNode)) {
+		gint h = gtk_widget_get_height (rowWidget);
+		dropInto = (h > 0) && (y > h * 0.25) && (y < h * 0.75);
+	}
+
+	if (dropInto) {
+		newParent = targetNode;
+		insertPos = -1;
+	} else {
+		newParent = targetNode->parent ? targetNode->parent : feedlist_get_root ();
+		insertPos = g_slist_index (newParent->children, targetNode);
+		if (insertPos < 0)
+			insertPos = -1;
+		else if (y > gtk_widget_get_height (rowWidget) / 2.0)
+			insertPos++;
+	}
+
+	if (!ui_dnd_feed_drop_possible (sourceNode, newParent))
+		return FALSE;
+
+	ui_dnd_move_feed_node (sourceNode, newParent, insertPos);
+	return TRUE;
+}
+
+static GdkContentProvider *
+on_feed_drag_prepare (GtkDragSource *source, double x, double y, gpointer user_data)
+{
+	GtkWidget *row = GTK_WIDGET (user_data);
+	Node *node = g_object_get_data (G_OBJECT (row), "node");
+
+	if (!ui_dnd_feed_draggable (node))
+		return NULL;
+
+	feedlist_dragged_node_id = node->id;
+
+	return gdk_content_provider_new_typed (G_TYPE_STRING, node->id);
+}
+
+static void
+on_feed_drag_end (GtkDragSource *source, GdkDrag *drag, gboolean delete_data, gpointer user_data)
+{
+	feedlist_dragged_node_id = NULL;
+	ui_dnd_clear_drop_feedback ();
+}
+
+static void
+on_feed_drop_motion (GtkDropControllerMotion *motion, gdouble x, gdouble y, gpointer data)
+{
+	GtkWidget *row = GTK_WIDGET (data);
+	Node *targetNode = g_object_get_data (G_OBJECT (row), "node");
+	Node *sourceNode = feedlist_dragged_node_id ? node_from_id (feedlist_dragged_node_id) : NULL;
+	const gchar *css_class = ui_dnd_feed_drop_feedback_class (sourceNode, targetNode, y, row);
+
+	ui_dnd_set_row_feedback_class (row, css_class);
+}
+
+static void
+on_feed_drop_leave (GtkDropControllerMotion *motion, gpointer data)
+{
+	GtkWidget *row = GTK_WIDGET (data);
+
+	if (feedlist_drop_feedback_row == row)
+		ui_dnd_clear_drop_feedback ();
+}
+
+static gboolean
+on_feed_drop_on_row (GtkDropTarget *target,
+	             const GValue *value,
+	             double x,
+	             double y,
+	             gpointer data)
+{
+	GtkWidget *row = GTK_WIDGET (data);
+	Node *targetNode = g_object_get_data (G_OBJECT (row), "node");
+	const gchar *text = g_value_get_string (value);
+	Node *sourceNode = node_from_id (text);
+	const gchar *css_class = ui_dnd_feed_drop_feedback_class (sourceNode, targetNode, y, row);
+	gboolean result;
+
+	ui_dnd_set_row_feedback_class (row, css_class);
+	result = ui_dnd_feed_drop_common (text, targetNode, y, row);
+	ui_dnd_clear_drop_feedback ();
 	return result;
 }
 
 static gboolean
-on_url_drop (GtkDropTarget *target,
-         const GValue *value,
-         double x,
-         double y,
-         gpointer data)
+on_feed_drop_on_listbox (GtkDropTarget *target,
+	             const GValue *value,
+	             double x,
+	             double y,
+	             gpointer data)
 {
-	feedlist_add_subscription_check_duplicate (subscription_new (g_value_get_string (value), NULL, NULL));
-	return TRUE;
+	GtkWidget *listbox = GTK_WIDGET (data);
+	GtkListBoxRow *row = gtk_list_box_get_row_at_y (GTK_LIST_BOX (listbox), (gint)y);
+	Node *targetNode = row ? g_object_get_data (G_OBJECT (row), "node") : NULL;
+	const gchar *text = g_value_get_string (value);
+
+	if (row) {
+		double row_y = 0.0;
+		gtk_widget_translate_coordinates (GTK_WIDGET (listbox), GTK_WIDGET (row), 0, (gint)y, NULL, &row_y);
+		gboolean result = ui_dnd_feed_drop_common (text, targetNode, row_y, GTK_WIDGET (row));
+		ui_dnd_clear_drop_feedback ();
+		return result;
+	}
+
+	gboolean result = ui_dnd_feed_drop_common (text, NULL, y, listbox);
+	ui_dnd_clear_drop_feedback ();
+	return result;
 }
 
 void
-ui_dnd_setup_feedlist (GtkTreeStore *feedstore)
+ui_dnd_setup_feedlist (GtkWidget *feedlist)
 {
-	GtkDropTarget *target = gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY);
-	GtkTreeDragSourceIface	*drag_source_iface;
-	GtkTreeDragDestIface	*drag_dest_iface;
+	GtkDropTarget *target;
 
-	// Set up tree view DnD
+	feedlist_widget = feedlist;
 
-	drag_source_iface = GTK_TREE_DRAG_SOURCE_GET_IFACE (GTK_TREE_MODEL (feedstore));
-	drag_source_iface->row_draggable = ui_dnd_feed_draggable;
-
-	drag_dest_iface = GTK_TREE_DRAG_DEST_GET_IFACE (GTK_TREE_MODEL (feedstore));
-	old_feed_drop_possible = drag_dest_iface->row_drop_possible;
-	old_feed_drag_data_received = drag_dest_iface->drag_data_received;
-	drag_dest_iface->row_drop_possible = ui_dnd_feed_drop_possible;
-	drag_dest_iface->drag_data_received = ui_dnd_feed_drag_data_received;
-
-	// Set up URL string drops
-
+	target = gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY | GDK_ACTION_MOVE);
 	gtk_drop_target_set_gtypes (target, (GType[1]) { G_TYPE_STRING }, 1);
-	g_signal_connect (target, "drop", G_CALLBACK (on_url_drop), NULL);
-	gtk_widget_add_controller (GTK_WIDGET (liferea_shell_lookup ("feedlist")), GTK_EVENT_CONTROLLER (target));
+	g_signal_connect (target, "drop", G_CALLBACK (on_feed_drop_on_listbox), feedlist);
+	gtk_widget_add_controller (feedlist, GTK_EVENT_CONTROLLER (target));
+}
+
+void
+ui_dnd_setup_feedlist_row (GtkWidget *row)
+{
+	GtkDragSource *drag;
+	GtkDropTarget *drop;
+	GtkEventController *motion;
+
+	if (!feedlist_widget)
+		return;
+
+	drag = gtk_drag_source_new ();
+	gtk_drag_source_set_actions (drag, GDK_ACTION_MOVE);
+	g_signal_connect (drag, "prepare", G_CALLBACK (on_feed_drag_prepare), row);
+	g_signal_connect (drag, "drag-end", G_CALLBACK (on_feed_drag_end), row);
+	gtk_widget_add_controller (row, GTK_EVENT_CONTROLLER (drag));
+
+	drop = gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY | GDK_ACTION_MOVE);
+	gtk_drop_target_set_gtypes (drop, (GType[1]) { G_TYPE_STRING }, 1);
+	g_signal_connect (drop, "drop", G_CALLBACK (on_feed_drop_on_row), row);
+	gtk_widget_add_controller (row, GTK_EVENT_CONTROLLER (drop));
+
+	motion = gtk_drop_controller_motion_new ();
+	g_signal_connect (motion, "motion", G_CALLBACK (on_feed_drop_motion), row);
+	g_signal_connect (motion, "leave", G_CALLBACK (on_feed_drop_leave), row);
+	gtk_widget_add_controller (row, motion);
 }
