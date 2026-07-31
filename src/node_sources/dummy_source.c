@@ -27,6 +27,10 @@ static void dummy_source_new (Node *node) {
 
 	// brrr... mutating the node is bad style
 	node->icon = (gpointer)icon_get (ICON_UNAVAILABLE);
+	node->source->loginState = NODE_SOURCE_STATE_AUTH_FAILED;
+
+	// special rendering to inform the user about the problem of the dummy source
+	// happens in resources/node.xml.in
 }
 
 static struct nodeSourceType nst = {
@@ -34,7 +38,7 @@ static struct nodeSourceType nst = {
 	.name			= "Dummy Feed List Source",
 	.source_type_init	= NULL,
 	.source_type_deinit	= NULL,
-	.source_new		= dummy_source_new,
+	.source_new		= dummy_source_new
 };
 
 nodeSourceTypePtr dummy_source_get_type(void) { return &nst; }
