@@ -1,7 +1,7 @@
 /*
  * @file node.c  hierarchic feed list node handling
  *
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -376,6 +376,8 @@ node_to_json (Node *node)
 		json_builder_set_member_name (b, "origSource");
 		json_builder_add_string_value (b, node->subscription->origSource);
 
+		json_builder_set_member_name (b, "discontinued");
+		json_builder_add_boolean_value (b, node->subscription->discontinued);
 		json_builder_set_member_name (b, "error");
 		json_builder_add_int_value (b, node->subscription->error);
 		json_builder_set_member_name (b, "updateError");
@@ -390,7 +392,8 @@ node_to_json (Node *node)
 		metadata_list_to_json (node->subscription->metadata, b);
 	}
 
-	node_source_to_json (node, b);
+	if (node->source)
+		node_source_to_json (node, b);
 
 	if(node->subscription && node->subscription->parseErrors && (strlen(node->subscription->parseErrors->str) > 0)) {
 		json_builder_set_member_name (b, "parseError");

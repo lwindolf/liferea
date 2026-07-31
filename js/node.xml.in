@@ -30,6 +30,11 @@
 		</header>
 
 		{{#if node.nodeSource}}
+			{{#compare node.nodeSource.type "==" "fl_dummy"}}
+				<div id="errors">
+					<p><_span>⛔ Unknown account type '{{node.nodeSource.type}}'! This can happen if you downgrade Liferea and this version does not support this account type yet or when support for this account type was dropped. You can 'Convert To Local Subscriptions' from the feed list context menu!</_span></p>
+				</div>
+			{{/compare}}
 			{{#with node.nodeSource}}
 				{{#compare loginState "==" 4}}
 					<div id="errors">

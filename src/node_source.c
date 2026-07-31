@@ -144,12 +144,12 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 
 	if (typeStr) {
 		debug (DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
+		node->source = NULL;
 
 		/* scan for matching node source and create new instance */
 		type = node_source_type_find ((const gchar *)typeStr, 0);
 		if (type) {
 			node->available = TRUE;
-			node->source = NULL;
 			node_source_new (node, (const gchar *)typeStr, NULL);
 		} else { 
 			node->available = FALSE;
@@ -187,7 +187,6 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 static void
 node_source_export (Node *node, xmlNodePtr xml, gboolean trusted)
 {
-
 	debug (DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE (node)->id);
 
 	/* If the node source type was loaded using the dummy node source
@@ -551,19 +550,22 @@ node_source_convert_to_local (Node *node)
 void
 node_source_to_json (Node *node, JsonBuilder *b)
 {
-	if (!(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN))
-		return;
-
 	json_builder_set_member_name (b, "nodeSource");
 	json_builder_begin_object (b);
 	json_builder_set_member_name (b, "title");
 	json_builder_add_string_value (b, node->source->root->title);
-	json_builder_set_member_name (b, "loginState");
-	json_builder_add_int_value (b, node->source->loginState);
-	json_builder_set_member_name (b, "authFailures");
-	json_builder_add_int_value (b, node->source->authFailures);
-	json_builder_set_member_name (b, "maxFailures");
-	json_builder_add_int_value (b, NODE_SOURCE_MAX_AUTH_FAILURES);
+	json_builder_set_member_name (b, "type");
+	json_builder_add_string_value (b, node->source->type->id);
+
+	if (!(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN)) {
+		json_builder_set_member_name (b, "loginState");
+		json_builder_add_int_value (b, node->source->loginState);
+		json_builder_set_member_name (b, "authFailures");
+		json_builder_add_int_value (b, node->source->authFailures);
+		json_builder_set_member_name (b, "maxFailures");
+		json_builder_add_int_value (b, NODE_SOURCE_MAX_AUTH_FAILURES);
+	}
+
 	json_builder_set_member_name (b, "actionQueueLength");
 	json_builder_add_int_value (b, g_queue_get_length (node->source->actionQueue));
 	json_builder_end_object (b);

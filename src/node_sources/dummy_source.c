@@ -32,7 +32,7 @@ static void dummy_source_noop (Node *node) { }
 static void dummy_source_import (Node *node) {
 
 	node->icon = (gpointer)icon_get (ICON_UNAVAILABLE);
-	node_set_title (node, g_strdup_printf ("Unknown source type '%s'", node->source->type->id));
+	node->source->loginState = NODE_SOURCE_STATE_NO_AUTH;
 }
 
 /* node source provider definition */
