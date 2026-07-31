@@ -74,7 +74,6 @@ struct _ItemListView {
 
 	gboolean	batch_mode;
 	gboolean	wideView;
-	gboolean	favicon_enabled;
 
 	nodeViewSortType	sort_type;
 	gboolean	sort_reversed;
@@ -144,10 +143,12 @@ item_list_truncate_utf8 (const gchar *text, guint max_chars)
 static void
 item_list_view_apply_row_visibility (ItemListView *ilv, ItemListRow *row)
 {
-	gtk_widget_set_visible (row->favicon_image, ilv->favicon_enabled);
+	Node *selected = feedlist_get_selected ();
+
+	gtk_widget_set_visible (row->favicon_image, !(selected && !selected->children));
 	gtk_widget_set_visible (row->date_label, !ilv->wideView);
 	gtk_widget_set_visible (row->preview_label, ilv->wideView);
-	gtk_widget_set_visible (row->state_image, !ilv->wideView || !ilv->favicon_enabled);
+	gtk_widget_set_visible (row->state_image, !ilv->wideView);
 }
 
 static void
@@ -170,8 +171,8 @@ item_list_view_apply_row_layout (ItemListView *ilv, ItemListRow *row)
 		gtk_label_set_ellipsize (GTK_LABEL (row->preview_label), PANGO_ELLIPSIZE_NONE);
 	} else {
 		gtk_image_set_icon_size (GTK_IMAGE (row->favicon_image), GTK_ICON_SIZE_NORMAL);
-		gtk_widget_set_margin_start (row->favicon_image, 0);
-		gtk_widget_set_margin_end (row->favicon_image, 0);
+		gtk_widget_set_margin_start (row->favicon_image, 6);
+		gtk_widget_set_margin_end (row->favicon_image, 6);
 		gtk_widget_set_margin_top (box, 2);
 		gtk_widget_set_margin_bottom (box, 2);
 		gtk_label_set_wrap (GTK_LABEL (row->headline_label), FALSE);
@@ -728,7 +729,7 @@ item_list_view_popup_menu (ItemListView *ilv, itemPtr item)
 	GMenu *sort_submenu = g_menu_new ();
 	g_menu_append (sort_submenu, _("By _Date"), "app.sort-items-by-time");
 	g_menu_append (sort_submenu, _("By _Title"), "app.sort-items-by-title");
-	g_menu_append (sort_submenu, _("By _Source"), "app.sort-items-by-source");
+	g_menu_append (sort_submenu, _("By _Feed"), "app.sort-items-by-source");
 	g_menu_append (sort_submenu, _("By _Status"), "app.sort-items-by-state");
 	g_menu_append (sort_submenu, _("_Reverse Order"), "app.sort-items-reverse");
 	g_menu_append_submenu (section, _("_Sort"), G_MENU_MODEL (sort_submenu));
@@ -981,7 +982,6 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
 	ilv->wideView = FALSE;
-	ilv->favicon_enabled = TRUE;
 	ilv->sort_type = NODE_VIEW_SORT_BY_TIME;
 	ilv->sort_reversed = FALSE;
 
@@ -1034,13 +1034,6 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist)
 	g_signal_connect (ilv, "selection-changed", G_CALLBACK (itemlist_selection_changed), itemlist);
 
 	return ilv;
-}
-
-void
-item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
-{
-	ilv->favicon_enabled = enabled;
-	item_list_view_for_each_row (ilv, item_list_view_update_wide_mode_cb, ilv);
 }
 
 gboolean

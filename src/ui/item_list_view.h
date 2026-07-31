@@ -109,15 +109,6 @@ void item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortTyp
 void item_list_view_remove_item (ItemListView *ilv, itemPtr item);
 
 /**
- * item_list_view_enable_favicon:
- * @ilv:		the ItemListView
- * @enabled:    	TRUE if column is to be visible
- *
- * Enable the favicon column of the currently displayed itemlist.
- */
-void item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled);
-
-/**
  * item_list_view_update_item: (skip)
  * @ilv:	the ItemListView
  * @item:	the item
