@@ -339,8 +339,12 @@ on_feed_drop_on_listbox (GtkDropTarget *target,
 	const gchar *text = g_value_get_string (value);
 
 	if (row) {
-		double row_y = 0.0;
-		gtk_widget_translate_coordinates (GTK_WIDGET (listbox), GTK_WIDGET (row), 0, (gint)y, NULL, &row_y);
+		double row_y = y;
+		graphene_point_t src = GRAPHENE_POINT_INIT (0.0f, (float)y);
+		graphene_point_t dst;
+
+		if (gtk_widget_compute_point (GTK_WIDGET (listbox), GTK_WIDGET (row), &src, &dst))
+			row_y = dst.y;
 		gboolean result = ui_dnd_feed_drop_common (text, targetNode, row_y, GTK_WIDGET (row));
 		ui_dnd_clear_drop_feedback ();
 		return result;
