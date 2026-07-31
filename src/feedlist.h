@@ -50,6 +50,15 @@ FeedList * feedlist_create (void);
 void feedlist_set_selected (Node *node);
 
 /**
+ * feedlist_mark_node_recount:
+ * @node: the node whose counters need to be refreshed
+ *
+ * Marks @node and its parents dirty so unread/item counters are
+ * recomputed lazily in a coalesced flush.
+ */
+void feedlist_mark_node_recount (Node *node);
+
+/**
  * feedlist_get_selected:
  *
  * Get currently selected feed list node

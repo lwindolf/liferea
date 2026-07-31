@@ -222,33 +222,12 @@ node_is_ancestor (Node *node1, Node *node2)
 }
 
 static void
-node_calc_counters (Node *node)
-{
-	/* Order is important! First update all children
-	   so that hierarchical nodes (folders and feed
-	   list sources) can determine their own unread
-	   count as the sum of all childs afterwards */
-	node_foreach_child (node, node_calc_counters);
-
-	NODE_PROVIDER (node)->update_counters (node);
-}
-
-static void
 node_update_parent_counters (Node *node)
 {
-	guint old;
-
 	if (!node)
 		return;
 
-	old = node->unreadCount;
-
-	NODE_PROVIDER (node)->update_counters (node);
-
-	if (old != node->unreadCount) {
-		feedlist_new_items (0);	/* add 0 new items, as 'new-items' signal updates unread items also */
-		feedlist_node_was_updated (node);
-	}
+	feedlist_mark_node_recount (node);
 
 	if (node->parent)
 		node_update_parent_counters (node->parent);
@@ -257,15 +236,7 @@ node_update_parent_counters (Node *node)
 void
 node_update_counters (Node *node)
 {
-	guint oldUnreadCount = node->unreadCount;
-	guint oldItemCount = node->itemCount;
-
-	/* Update the node itself and its children */
-	node_calc_counters (node);
-
-	if ((oldUnreadCount != node->unreadCount) ||
-	    (oldItemCount != node->itemCount))
-		feedlist_node_was_updated (node);
+	feedlist_mark_node_recount (node);
 
 	/* Update the unread count of the parent nodes,
 	   usually they just add all child unread counters */

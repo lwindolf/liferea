@@ -67,6 +67,9 @@ G_DEFINE_TYPE (FeedListView, feed_list_view, G_TYPE_OBJECT);
 static void feed_list_view_reload_feedlist (void);
 static void feed_list_view_select (Node *node);
 static gboolean feed_list_view_filter_visible_function (Node *node);
+static void feed_list_view_confirm_remove_node_cb (gpointer user_data);
+static void feed_list_view_confirm_add_subscription_cb (gpointer user_data);
+static void feed_list_view_confirm_free_subscription_cb (gpointer user_data);
 
 static void
 feed_list_view_class_init (FeedListViewClass *klass)
@@ -758,10 +761,28 @@ feed_list_view_remove (Node *node)
 		_("Deletion Confirmation"),
 		text,
 		_("_Delete"),
-		(ConfirmCallback)feedlist_remove_node,
+		feed_list_view_confirm_remove_node_cb,
 		NULL,
 		node
 	);
+}
+
+static void
+feed_list_view_confirm_remove_node_cb (gpointer user_data)
+{
+	feedlist_remove_node ((Node *)user_data);
+}
+
+static void
+feed_list_view_confirm_add_subscription_cb (gpointer user_data)
+{
+	feedlist_add_subscription ((subscriptionPtr)user_data);
+}
+
+static void
+feed_list_view_confirm_free_subscription_cb (gpointer user_data)
+{
+	subscription_free ((subscriptionPtr)user_data);
 }
 
 void
@@ -777,8 +798,8 @@ feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription,
 		_("Duplicate Subscription"),
 		text,
 		_("_Add"),
-		(ConfirmCallback)feedlist_add_subscription,
-		(ConfirmCallback)subscription_free,
+		feed_list_view_confirm_add_subscription_cb,
+		feed_list_view_confirm_free_subscription_cb,
 		tempSubscription
 	);
 }
