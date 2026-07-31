@@ -692,7 +692,7 @@ node_source_to_json (Node *node, JsonBuilder *b)
 	json_builder_set_member_name (b, "type");
 	json_builder_add_string_value (b, node->source->type->id);
 
-	if (!(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN)) {
+	if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) {
 		json_builder_set_member_name (b, "loginState");
 		json_builder_add_int_value (b, node->source->loginState);
 	}
