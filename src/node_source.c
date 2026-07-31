@@ -290,7 +290,7 @@ node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
 static void
 node_source_set_state (Node *node, gint newState)
 {
-	if (newState == node->source->loginState)
+	if ((nodeSourceState)newState == node->source->loginState)
 		return;
 
 	debug (DEBUG_UPDATE, "node_source: %s |%s| now in state %d (was %d)", node->id, node->title, newState, node->source->loginState);
@@ -340,13 +340,11 @@ node_source_set_auth_token (Node *node, gchar *token)
 /* source instance creation dialog */
 
 static void
-on_node_source_type_selected (GtkTreeSelection *selection, gpointer userdata)
+on_node_source_type_selected (GtkListBox *list, GtkListBoxRow *row, gpointer userdata)
 {
-	GtkTreeIter	iter;
-	GtkTreeModel	*model;
 	GtkWidget	*button = liferea_dialog_lookup (GTK_WIDGET (userdata), "applyBtn");
 
-	gtk_widget_set_sensitive (button, gtk_tree_selection_get_selected (selection, &model, &iter));
+	gtk_widget_set_sensitive (button, NULL != row);
 }
 
 static void
@@ -380,40 +378,35 @@ static void
 on_node_source_type_response (GtkButton *btn, gpointer user_data)
 {
 	GtkDialog		*dialog = GTK_DIALOG (user_data);
-	GtkTreeSelection	*selection;
-	GtkTreeModel		*model;
-	GtkTreeIter		iter;
+	GtkListBoxRow		*row;
 	nodeSourceTypePtr	type;
 
-	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (GTK_WIDGET (dialog), "type_list")));
-	g_assert (NULL != selection);
-	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-		gtk_tree_model_get (model, &iter, 1, &type, -1);
+	row = gtk_list_box_get_selected_row (GTK_LIST_BOX (liferea_dialog_lookup (GTK_WIDGET (dialog), "type_list")));
+	type = row ? g_object_get_data (G_OBJECT (row), "type") : NULL;
 
-		if (type) {
-			/* Two cases to handle: 
-			1.) special dialogs with callback defined using an interface function
-			2.) standard generic node source creation dialog */
+	if (type) {
+		/* Two cases to handle:
+		1.) special dialogs with callback defined using an interface function
+		2.) standard generic node source creation dialog */
 
-			if (type->source_create) {
-				type->source_create ();
-			} else {
-				GtkWidget *dialog = liferea_dialog_new ("new_node_source");
+		if (type->source_create) {
+			type->source_create ();
+		} else {
+			GtkWidget *dialog = liferea_dialog_new ("new_node_source");
 
-				g_object_set_data (G_OBJECT (dialog), "type", type);
-				liferea_dialog_entryrow_set (dialog, "nameEntry", type->name);
-				gtk_label_set_markup (GTK_LABEL (liferea_dialog_lookup (dialog, "label")), type->addInfo);
+			g_object_set_data (G_OBJECT (dialog), "type", type);
+			liferea_dialog_entryrow_set (dialog, "nameEntry", type->name);
+			gtk_label_set_markup (GTK_LABEL (liferea_dialog_lookup (dialog, "label")), type->addInfo);
 
-				/* If the type has a hard-coded URL set it to pass it to the callback,
-				   otherwise show the URL entry for the user to enter it */
-				if (type->url)
-					liferea_dialog_entryrow_set (dialog, "serverEntry", type->url);
-				else
-					gtk_widget_set_visible (liferea_dialog_lookup (dialog, "serverEntry"), TRUE);
+			/* If the type has a hard-coded URL set it to pass it to the callback,
+			   otherwise show the URL entry for the user to enter it */
+			if (type->url)
+				liferea_dialog_entryrow_set (dialog, "serverEntry", type->url);
+			else
+				gtk_widget_set_visible (liferea_dialog_lookup (dialog, "serverEntry"), TRUE);
 
-				g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
-					G_CALLBACK (on_new_node_source_create), dialog);
-			}
+			g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
+				G_CALLBACK (on_new_node_source_create), dialog);
 		}
 	}
 
@@ -424,45 +417,39 @@ static gboolean
 feed_list_node_source_type_dialog_idle (gpointer unused)
 {
 	GSList 			*iter = nodeSourceTypes;
-	GtkWidget 		*dialog, *treeview;
-	GtkTreeStore		*treestore;
-	GtkCellRenderer		*renderer;
-	GtkTreeIter		treeiter;
+	GtkWidget 		*dialog;
+	GtkListBox		*listbox;
 	nodeSourceTypePtr	type;
 
 	g_assert (nodeSourceTypes);
 
 	/* set up the dialog */
 	dialog = liferea_dialog_new ("node_source");
+	listbox = GTK_LIST_BOX (liferea_dialog_lookup (dialog, "type_list"));
+	g_assert (NULL != listbox);
 
-	treestore = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
-
-	/* add available feed list source to treestore */
+	/* add available feed list source rows */
 	while (iter) {
 		type = (nodeSourceTypePtr) iter->data;
 		if (type->capabilities & NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION) {
+			GtkWidget *row = gtk_list_box_row_new ();
+			GtkWidget *label = gtk_label_new (NULL);
 
-			gtk_tree_store_append (treestore, &treeiter, NULL);
-			gtk_tree_store_set (treestore, &treeiter,
-			                               0, type->name,
-			                               1, type,
-						       -1);
+			gtk_label_set_markup (GTK_LABEL (label), type->name);
+			gtk_label_set_wrap (GTK_LABEL (label), TRUE);
+			gtk_label_set_wrap_mode (GTK_LABEL (label), PANGO_WRAP_WORD);
+			gtk_label_set_xalign (GTK_LABEL (label), 0.0);
+			gtk_widget_set_margin_top (label, 6);
+			gtk_widget_set_margin_bottom (label, 6);
+			gtk_widget_set_margin_start (label, 12);
+			gtk_widget_set_margin_end (label, 12);
+
+			gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), label);
+			g_object_set_data (G_OBJECT (row), "type", type);
+			gtk_list_box_append (listbox, row);
 		}
 		iter = g_slist_next (iter);
 	}
-
-	treeview = liferea_dialog_lookup (dialog, "type_list");
-	g_assert (NULL != treeview);
-
-	renderer = gtk_cell_renderer_text_new ();
-	g_object_set (renderer, "wrap-width", 400, NULL);
-	g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
-	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview), -1, _("Source Type"), renderer, "markup", 0, NULL);
-	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (treestore));
-	g_object_unref (treestore);
-
-	gtk_tree_selection_set_mode (gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview)),
-	                             GTK_SELECTION_SINGLE);
 
 	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
 			  G_CALLBACK (on_node_source_type_response),
@@ -470,7 +457,7 @@ feed_list_node_source_type_dialog_idle (gpointer unused)
 	g_signal_connect_swapped (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked",
 			  G_CALLBACK (adw_dialog_close),
 			  dialog);
-	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview))), "changed",
+	g_signal_connect (G_OBJECT (listbox), "row-selected",
 	                  G_CALLBACK (on_node_source_type_selected),
 	                  dialog);
 
