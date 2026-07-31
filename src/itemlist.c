@@ -555,7 +555,8 @@ itemlist_remove_all_items (Node *node)
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node);
 
-	g_signal_emit_by_name (itemlist, "all-items-removed");
+	if (node == itemlist->priv->currentNode)
+		g_signal_emit_by_name (itemlist, "all-items-removed");
 }
 
 void
