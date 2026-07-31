@@ -657,8 +657,17 @@ feed_list_view_select (Node *node)
 
 		row = g_hash_table_lookup (flv->rows_by_id, node->id);
 		if (row) {
+			GtkRoot *root = gtk_widget_get_root (GTK_WIDGET (flv->listbox));
+			GtkWidget *focus = root ? gtk_root_get_focus (root) : NULL;
+			gboolean keep_feedlist_focus = focus &&
+			    gtk_widget_is_ancestor (focus, GTK_WIDGET (flv->listbox));
+
 			gtk_list_box_select_row (flv->listbox, row);
-			gtk_widget_grab_focus (GTK_WIDGET (row));
+
+			/* Preserve feed list focus for feed-list navigation, but avoid stealing
+			   focus from the item list during background node-updated refreshes. */
+			if (keep_feedlist_focus)
+				gtk_widget_grab_focus (GTK_WIDGET (row));
 		}
 	} else {
 		gtk_list_box_unselect_all (flv->listbox);
