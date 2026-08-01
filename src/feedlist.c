@@ -95,6 +95,7 @@ enum {
 	NODE_SELECTED,		/*<< the selected node has changed */
 	NODE_ADDED,		/*<< a new node was added */
 	NODE_REMOVED,		/*<< a node was removed */
+	NODE_MOVED,		/*<< a node was moved (e.g. DnD or by remote account update)*/
 	LAST_SIGNAL
 };
 
@@ -215,6 +216,18 @@ feedlist_class_init (FeedListClass *klass)
 
 	feedlist_signals[NODE_REMOVED] =
 		g_signal_new ("node-removed",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
+
+	feedlist_signals[NODE_MOVED] =
+		g_signal_new ("node-moved",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
 		0,
@@ -712,6 +725,47 @@ feedlist_node_was_updated (Node *node)
 	feedlist_schedule_save ();
 
 	g_signal_emit_by_name (feedlist, "node-updated", node->id);
+}
+
+void
+feedlist_node_was_moved (Node *node, Node *newParent, gint insertPos, gboolean interactive)
+{
+	if (!node || !newParent)
+		return;
+
+	Node *oldParent = node->parent;
+	if (!oldParent)
+		return;
+
+	debug (DEBUG_GUI, "Reparenting node '%s' to new parent '%s' (pos %d, interactive: %d)", node_get_title(node), node_get_title(newParent), insertPos, interactive);
+
+	gint oldPos = g_slist_index (oldParent->children, node);
+	oldParent->children = g_slist_remove (oldParent->children, node);
+
+	if ((oldParent == newParent) && insertPos > oldPos)
+		insertPos--;
+
+	newParent->children = g_slist_insert (newParent->children, node, insertPos);
+	node->parent = newParent;
+
+	db_node_update (node);
+
+	/* Only forward to node source type implementation (that would sync it to remote) 
+	   if it does not come from there */
+	if (interactive)
+		if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_REPARENT_NODE)
+			NODE_SOURCE_TYPE (node)->reparent_node (node, oldParent, newParent);
+
+	/* Emit signal on the change to allow the FeedListView to update its GtkTreeListModel */
+	g_signal_emit_by_name (feedlist, "node-moved", node->id);
+
+	/* Emit all 'node-updated' so remote sources can track feed migrations.
+	   and parent unread counters are up-to-date */
+	feedlist_node_was_updated (node);
+	feedlist_node_was_updated (oldParent);
+	if (newParent != oldParent)
+		feedlist_node_was_updated (newParent);
+
 }
 
 /* This method is only to be used when exiting the program! */

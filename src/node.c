@@ -296,26 +296,6 @@ node_set_parent (Node *node, Node *parent, gint position)
 }
 
 void
-node_reparent (Node *node, Node *new_parent)
-{
-	Node *old_parent;
-
-	g_assert (NULL != new_parent);
-	g_assert (NULL != node);
-
-	debug (DEBUG_GUI, "Reparenting node '%s' to a parent '%s'", node_get_title(node), node_get_title(new_parent));
-
-	old_parent = node->parent;
-	if (NULL != old_parent)
-		old_parent->children = g_slist_remove (old_parent->children, node);
-
-	new_parent->children = g_slist_insert (new_parent->children, node, -1);
-	node->parent = new_parent;
-
-	feed_list_view_reparent (node);
-}
-
-void
 node_remove (Node *node)
 {
 	/* using itemlist_remove_all_items() ensures correct unread

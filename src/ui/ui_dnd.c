@@ -29,6 +29,7 @@
 #include "node_source.h"
 #include "node_providers/folder.h"
 #include "subscription.h"
+#include "ui/feed_list_view.h"
 
 /*
     Why does Liferea need such a complex DnD handling (for the feed list)?
@@ -102,15 +103,6 @@ ui_dnd_node_is_descendant (Node *candidate, Node *ancestor)
 }
 
 static gboolean
-ui_dnd_feed_draggable (Node *node)
-{
-	if (!node || !node->parent)
-		return FALSE;
-
-	return (NODE_SOURCE_TYPE (node->parent)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST) != 0;
-}
-
-static gboolean
 ui_dnd_feed_drop_possible (Node *sourceNode, Node *newParent)
 {
 	if (!sourceNode || !newParent)
@@ -128,7 +120,9 @@ ui_dnd_feed_drop_possible (Node *sourceNode, Node *newParent)
 		return FALSE;
 
         /* Never drop into another node source as this arises to many problems
-                (e.g. remote sync, different subscription type, e.g. SF #2855990) */
+           (e.g. remote sync, different subscription type, e.g. SF #2855990) */
+	// FIXME: this should be made possible for migration paths out of Liferea
+	// into a future web app (using e.g. the WebDAV backend)
         if (NODE_SOURCE_TYPE (newParent) != NODE_SOURCE_TYPE (sourceNode))
 		return FALSE;
 
@@ -140,129 +134,17 @@ ui_dnd_feed_drop_possible (Node *sourceNode, Node *newParent)
 }
 
 static const gchar *
-ui_dnd_feed_drop_feedback_class (Node *sourceNode, Node *targetNode, gdouble y, GtkWidget *rowWidget)
+ui_dnd_feed_drop_feedback_class (Node *targetNode, gdouble y, GtkWidget *row)
 {
-	Node *newParent;
-	gboolean dropInto = FALSE;
-	gdouble h;
-
-	if (!sourceNode)
-		return "dnd-drop-into";
-
-	if (!ui_dnd_feed_draggable (sourceNode))
-		return "dnd-drop-invalid";
+	gdouble	h = gtk_widget_get_height (row);
 
 	if (!targetNode)
-		return ui_dnd_feed_drop_possible (sourceNode, feedlist_get_root ()) ? "dnd-drop-after" : "dnd-drop-invalid";
-
-	h = gtk_widget_get_height (rowWidget);
-	if (IS_FEED (sourceNode) && IS_FOLDER (targetNode)) {
-		newParent = targetNode;
-		dropInto = TRUE;
-	} else if ((IS_FOLDER (targetNode) || IS_NODE_SOURCE (targetNode)) && (h > 0.0) && (y > h * 0.25) && (y < h * 0.75)) {
-		newParent = targetNode;
-		dropInto = TRUE;
-	} else {
-		newParent = targetNode->parent ? targetNode->parent : feedlist_get_root ();
-	}
-
-	if (!ui_dnd_feed_drop_possible (sourceNode, newParent))
-		return "dnd-drop-invalid";
-
-	if (dropInto)
+		return "dnd-drop-after";	// drop into feed list root always works
+		
+	if ((IS_FOLDER (targetNode) || IS_NODE_SOURCE (targetNode)) && (h > 0.0) && (y > h * 0.25) && (y < h * 0.75))
 		return "dnd-drop-into";
 
 	return (y > h / 2.0) ? "dnd-drop-after" : "dnd-drop-before";
-}
-
-static void
-ui_dnd_move_feed_node (Node *node, Node *newParent, gint insertPos)
-{
-	Node *oldParent;
-	gint oldPos;
-
-	if (!node || !newParent)
-		return;
-
-	oldParent = node->parent;
-	if (!oldParent)
-		return;
-
-	oldPos = g_slist_index (oldParent->children, node);
-	oldParent->children = g_slist_remove (oldParent->children, node);
-
-	if ((oldParent == newParent) && insertPos > oldPos)
-		insertPos--;
-
-	newParent->children = g_slist_insert (newParent->children, node, insertPos);
-	node->parent = newParent;
-
-	db_node_update (node);
-
-	if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_REPARENT_NODE)
-		NODE_SOURCE_TYPE (node)->reparent_node (node, oldParent, newParent);
-
-	/* Emit all so remote sources can track feed migrations. */
-	feedlist_node_was_updated (node);
-	feedlist_node_was_updated (oldParent);
-	if (newParent != oldParent)
-		feedlist_node_was_updated (newParent);
-}
-
-static gboolean
-ui_dnd_feed_drop_common (const gchar *text, Node *targetNode, gdouble y, GtkWidget *rowWidget)
-{
-	Node *sourceNode;
-	Node *newParent;
-	gint insertPos = -1;
-	gboolean dropInto = FALSE;
-
-	if (!text)
-		return FALSE;
-
-	sourceNode = node_from_id (text);
-
-	/* URL drops are still handled as feed subscription additions. */
-	if (!sourceNode) {
-		feedlist_add_subscription_check_duplicate (subscription_new (text, NULL, NULL));
-		return TRUE;
-	}
-
-	if (!ui_dnd_feed_draggable (sourceNode))
-		return FALSE;
-
-	if (!targetNode) {
-		newParent = feedlist_get_root ();
-		if (!ui_dnd_feed_drop_possible (sourceNode, newParent))
-			return FALSE;
-		ui_dnd_move_feed_node (sourceNode, newParent, -1);
-		return TRUE;
-	}
-
-	if (IS_FEED (sourceNode) && IS_FOLDER (targetNode)) {
-		dropInto = TRUE;
-	} else if (IS_FOLDER (targetNode) || IS_NODE_SOURCE (targetNode)) {
-		gint h = gtk_widget_get_height (rowWidget);
-		dropInto = (h > 0) && (y > h * 0.25) && (y < h * 0.75);
-	}
-
-	if (dropInto) {
-		newParent = targetNode;
-		insertPos = -1;
-	} else {
-		newParent = targetNode->parent ? targetNode->parent : feedlist_get_root ();
-		insertPos = g_slist_index (newParent->children, targetNode);
-		if (insertPos < 0)
-			insertPos = -1;
-		else if (y > gtk_widget_get_height (rowWidget) / 2.0)
-			insertPos++;
-	}
-
-	if (!ui_dnd_feed_drop_possible (sourceNode, newParent))
-		return FALSE;
-
-	ui_dnd_move_feed_node (sourceNode, newParent, insertPos);
-	return TRUE;
 }
 
 static GdkContentProvider *
@@ -271,7 +153,7 @@ on_feed_drag_prepare (GtkDragSource *source, double x, double y, gpointer user_d
 	GtkWidget *row = GTK_WIDGET (user_data);
 	Node *node = g_object_get_data (G_OBJECT (row), "node");
 
-	if (!ui_dnd_feed_draggable (node))
+	if ((NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST) == 0)
 		return NULL;
 
 	feedlist_dragged_node_id = node->id;
@@ -291,8 +173,7 @@ on_feed_drop_motion (GtkDropControllerMotion *motion, gdouble x, gdouble y, gpoi
 {
 	GtkWidget *row = GTK_WIDGET (data);
 	Node *targetNode = g_object_get_data (G_OBJECT (row), "node");
-	Node *sourceNode = feedlist_dragged_node_id ? node_from_id (feedlist_dragged_node_id) : NULL;
-	const gchar *css_class = ui_dnd_feed_drop_feedback_class (sourceNode, targetNode, y, row);
+	const gchar *css_class = ui_dnd_feed_drop_feedback_class (targetNode, y, row);
 
 	ui_dnd_set_row_feedback_class (row, css_class);
 }
@@ -313,53 +194,36 @@ on_feed_drop_on_row (GtkDropTarget *target,
 	             double y,
 	             gpointer data)
 {
-	GtkWidget *row = GTK_WIDGET (data);
-	Node *targetNode = g_object_get_data (G_OBJECT (row), "node");
-	const gchar *text = g_value_get_string (value);
-	Node *sourceNode = node_from_id (text);
-	const gchar *css_class = ui_dnd_feed_drop_feedback_class (sourceNode, targetNode, y, row);
-	gboolean result;
+	GtkWidget	*row = GTK_WIDGET (data);
+	Node		*targetNode = g_object_get_data (G_OBJECT (row), "node");
+	Node		*node, *newParent;
+	gint		insertPos = -1;
 
-	ui_dnd_set_row_feedback_class (row, css_class);
-	result = ui_dnd_feed_drop_common (text, targetNode, y, row);
-	ui_dnd_clear_drop_feedback ();
-	return result;
-}
-
-static gboolean
-on_feed_drop_on_listbox (GtkDropTarget *target,
-	             const GValue *value,
-	             double x,
-	             double y,
-	             gpointer data)
-{
-	GtkWidget *listview = GTK_WIDGET (data);
-	GtkWidget *row = gtk_widget_pick (listview, x, y, GTK_PICK_DEFAULT);
-	Node *targetNode = NULL;
-	const gchar *text = g_value_get_string (value);
-
-	while (row) {
-		targetNode = g_object_get_data (G_OBJECT (row), "node");
-		if (targetNode)
-			break;
-		row = gtk_widget_get_parent (row);
+	if (IS_FOLDER (targetNode) || IS_NODE_SOURCE (targetNode)) {
+		newParent = targetNode;
+		insertPos = -1;
+	} else {
+		newParent = targetNode->parent;
+		insertPos = g_slist_index (newParent->children, targetNode);
+		if (insertPos < 0)
+			insertPos = -1;
 	}
 
-	if (row) {
-		double row_y = y;
-		graphene_point_t src = GRAPHENE_POINT_INIT (0.0f, (float)y);
-		graphene_point_t dst;
-
-		if (gtk_widget_compute_point (listview, GTK_WIDGET (row), &src, &dst))
-			row_y = dst.y;
-		gboolean result = ui_dnd_feed_drop_common (text, targetNode, row_y, GTK_WIDGET (row));
+	node = node_from_id (g_value_get_string (value));
+	if (!ui_dnd_feed_drop_possible (node, newParent)) {
 		ui_dnd_clear_drop_feedback ();
-		return result;
+		return FALSE;
 	}
 
-	gboolean result = ui_dnd_feed_drop_common (text, NULL, y, listview);
-	ui_dnd_clear_drop_feedback ();
-	return result;
+	/* URL drops are still handled as feed subscription additions. */
+	if (!node) {
+		feedlist_add_subscription_check_duplicate (subscription_new (g_value_get_string (value), NULL, NULL));
+		ui_dnd_clear_drop_feedback ();
+		return TRUE;
+	}
+
+	feedlist_node_was_moved (node, newParent, insertPos, TRUE);
+	return TRUE;
 }
 
 void
@@ -371,7 +235,8 @@ ui_dnd_setup_feedlist (GtkWidget *feedlist)
 
 	target = gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY | GDK_ACTION_MOVE);
 	gtk_drop_target_set_gtypes (target, (GType[1]) { G_TYPE_STRING }, 1);
-	g_signal_connect (target, "drop", G_CALLBACK (on_feed_drop_on_listbox), feedlist);
+	// FIXME
+	//g_signal_connect (target, "drop", G_CALLBACK (on_feed_drop), feedlist);
 	gtk_widget_add_controller (feedlist, GTK_EVENT_CONTROLLER (target));
 }
 
@@ -388,7 +253,7 @@ ui_dnd_setup_feedlist_row (GtkWidget *row)
 	drag = gtk_drag_source_new ();
 	gtk_drag_source_set_actions (drag, GDK_ACTION_MOVE);
 	g_signal_connect (drag, "prepare", G_CALLBACK (on_feed_drag_prepare), row);
-	g_signal_connect (drag, "drag-end", G_CALLBACK (on_feed_drag_end), row);
+	//g_signal_connect (drag, "drag-end", G_CALLBACK (on_feed_drag_end), row);
 	gtk_widget_add_controller (row, GTK_EVENT_CONTROLLER (drag));
 
 	drop = gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY | GDK_ACTION_MOVE);

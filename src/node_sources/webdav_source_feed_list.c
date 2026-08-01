@@ -278,7 +278,7 @@ webdav_node_from_feed_json (const gchar *json_str, Node *parent, const gchar *re
 		subscription_update (node->subscription,
 		                     UPDATE_REQUEST_RESET_TITLE | UPDATE_REQUEST_PRIORITY_HIGH);
 	} else if (node->parent != parent) {
-		node_reparent (node, parent);
+		feedlist_node_was_moved (node, parent, -1, FALSE);
 	}
 
 	webdav_feed_set_remote_id (node, remote_id ? remote_id : node_id);
@@ -407,7 +407,7 @@ webdav_resolve_folder_node (FolderResolveCtx *ctx, const gchar *folder_id)
 		if (entry->title && *entry->title && g_strcmp0 (entry->title, node_get_title (folder)))
 			node_set_title (folder, entry->title);
 		if (folder->parent != parent)
-			node_reparent (folder, parent);
+			feedlist_node_was_moved (folder, parent, -1, FALSE);
 	}
 
 	g_hash_table_insert (ctx->ensured_folders, (gpointer)entry->node_id, folder);

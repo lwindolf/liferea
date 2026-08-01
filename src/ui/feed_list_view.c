@@ -106,13 +106,6 @@ feed_list_view_is_expandable (Node *node)
 	return IS_FOLDER (node) || IS_NODE_SOURCE (node);
 }
 
-static gboolean
-feed_list_view_filter_visible_function (Node *node)
-{
-	(void) node;
-	return TRUE;
-}
-
 static GListModel *
 feed_list_view_create_child_model_cb (gpointer item, gpointer user_data)
 {
@@ -132,9 +125,6 @@ feed_list_view_create_child_model_cb (gpointer item, gpointer user_data)
 	store = g_list_store_new (feed_list_node_item_get_type ());
 	for (GSList *iter = node->children; iter; iter = g_slist_next (iter)) {
 		Node *child = (Node *)iter->data;
-
-		if (!feed_list_view_filter_visible_function (child))
-			continue;
 
 		g_list_store_append (store, feed_list_node_item_new (child));
 	}
@@ -158,10 +148,6 @@ feed_list_view_rebuild_tree_model_cache (void)
 	if (root) {
 		for (GSList *iter = root->children; iter; iter = g_slist_next (iter)) {
 			Node *node = (Node *)iter->data;
-
-			if (!feed_list_view_filter_visible_function (node))
-				continue;
-
 			g_list_store_append (flv->tree_root_model, feed_list_node_item_new (node));
 		}
 	}
@@ -214,7 +200,6 @@ feed_list_view_sort_folder_compare (gconstpointer a, gconstpointer b)
 
 	g_free (s1);
 	g_free (s2);
-
 	return result;
 }
 
@@ -369,28 +354,9 @@ feed_list_view_find_index_in_model (GListModel *model, Node *node)
 	return GTK_INVALID_LIST_POSITION;
 }
 
-static guint
-feed_list_view_visible_sibling_index (Node *node)
-{
-	Node *parent;
-	guint index = 0;
-
-	if (!node || !node->parent)
-		return GTK_INVALID_LIST_POSITION;
-
-	parent = node->parent;
-	for (GSList *iter = parent->children; iter; iter = g_slist_next (iter)) {
-		Node *candidate = (Node *)iter->data;
-
-		if (candidate == node)
-			return index;
-		if (feed_list_view_filter_visible_function (candidate))
-			index++;
-	}
-
-	return GTK_INVALID_LIST_POSITION;
-}
-
+// helper to find the actual GListStore to use when inserting nodes
+// needed because we use GtkTreeListModel which abstracts many stores
+// without allowing to easily find them
 static GListStore *
 feed_list_view_parent_store_for_node (Node *node)
 {
@@ -426,21 +392,18 @@ static gboolean
 feed_list_view_insert_node_item (Node *node)
 {
 	GListStore *store;
-	guint index;
+	gint index;
 
 	if (!node || !flv || !flv->tree_model)
 		return FALSE;
-
-	if (!feed_list_view_filter_visible_function (node))
-		return TRUE;
 
 	store = feed_list_view_parent_store_for_node (node);
 	if (!store)
 		return TRUE;
 
-	index = feed_list_view_visible_sibling_index (node);
-	if (index == GTK_INVALID_LIST_POSITION)
-		index = g_list_model_get_n_items (G_LIST_MODEL (store));
+	index = g_slist_index (node->parent->children, node);
+	if(0 > index)
+		index = g_slist_length (node->parent->children);
 
 	g_list_store_insert (store, index, feed_list_node_item_new (node));
 	return TRUE;
@@ -523,20 +486,24 @@ feed_list_view_remove_node_item (const gchar *nodeId)
 	node = feed_list_view_tree_row_get_node (row);
 	parent_row = gtk_tree_list_row_get_parent (row);
 	model = parent_row ? gtk_tree_list_row_get_children (parent_row) : G_LIST_MODEL (flv->tree_root_model);
-	if (!model || !node) {
-		g_object_unref (row);
+
+	/* Drop our row references *before* mutating the store below. GtkTreeListModel
+	   can synchronously dispose row wrappers (and trigger GtkListView item unbind)
+	   as a side effect of the store mutation; holding on to "row"/"parent_row"
+	   across that call risks a double g_object_unref / use-after-free once the
+	   dropped item's row is torn down from under us. */
+	g_object_unref (row);
+	g_clear_object (&parent_row);
+
+	if (!model || !node)
 		return FALSE;
-	}
 
 	store = G_LIST_STORE (model);
 	index = feed_list_view_find_index_in_model (model, node);
-	if (index == GTK_INVALID_LIST_POSITION) {
-		g_object_unref (row);
+	if (index == GTK_INVALID_LIST_POSITION)
 		return FALSE;
-	}
 
 	g_list_store_remove (store, index);
-	g_object_unref (row);
 	return TRUE;
 }
 
@@ -675,13 +642,16 @@ feed_list_view_factory_unbind_cb (GtkListItemFactory *factory, GtkListItem *list
 
 	if (expanded_row && expanded_handler)
 		g_signal_handler_disconnect (expanded_row, expanded_handler);
+
+	/* Clear the expander's row while the row object is still guaranteed alive. */
+	gtk_tree_expander_set_list_row (GTK_TREE_EXPANDER (expander), NULL);
+
 	if (expanded_row)
 		g_object_unref (expanded_row);
 
 	g_object_set_data (G_OBJECT (expander), "expanded-row", NULL);
 	g_object_set_data (G_OBJECT (expander), "expanded-handler", NULL);
 	g_object_set_data (G_OBJECT (expander), "node", NULL);
-	gtk_tree_expander_set_list_row (GTK_TREE_EXPANDER (expander), NULL);
 }
 
 static void
@@ -940,6 +910,10 @@ feed_list_view_key_pressed_cb (GtkEventControllerKey *controller, guint keyval, 
 
 	return FALSE;
 }
+
+static void
+feed_list_view_select (Node *node);
+
 static void
 feed_list_view_node_changed (GObject *obj, gchar *nodeId, gpointer user_data)
 {
@@ -956,29 +930,32 @@ feed_list_view_node_changed (GObject *obj, gchar *nodeId, gpointer user_data)
 static void
 feed_list_view_node_removed (GObject *obj, gchar *nodeId, gpointer user_data)
 {
-	(void) obj;
-	(void) user_data;
-
 	feed_list_view_remove_node_item (nodeId);
+}
+
+static void
+feed_list_view_node_moved (GObject *obj, gchar *nodeId, const gchar *newParentId, gint insertPos, gpointer user_data)
+{
+	Node *node = node_from_id (nodeId);
+	if (!node)
+		return;
+
+	/* Remove old row state (if currently visible) and reinsert at new parent. */
+	feed_list_view_remove_node_item (nodeId);
+	feed_list_view_insert_node_item (node);
+
+	if (feed_list_view_is_expandable (node) && node->expanded)
+		feed_list_view_refresh_node_item (node);
+
+	if (feedlist_get_selected () == node)
+		feed_list_view_select (node);
 }
 
 static void
 feed_list_view_node_updated (GObject *obj, const gchar *nodeId, gpointer user_data)
 {
-	Node *node;
-
-	(void) obj;
-	(void) user_data;
-
-	node = node_from_id (nodeId);
-	if (!node)
-		return;
-
-	feed_list_view_refresh_node_item (node);
+	feed_list_view_refresh_node_item (node_from_id (nodeId));
 }
-
-static void
-feed_list_view_select (Node *node);
 
 static void
 feed_list_view_node_selected (GObject *obj, gchar *nodeId, gpointer user_data)
@@ -1056,6 +1033,7 @@ feed_list_view_create (GtkListView *listview, FeedList *feedlist)
 
 	g_signal_connect (feedlist, "node-added", G_CALLBACK (feed_list_view_node_changed), flv);
 	g_signal_connect (feedlist, "node-removed", G_CALLBACK (feed_list_view_node_removed), flv);
+	g_signal_connect (feedlist, "node-moved", G_CALLBACK (feed_list_view_node_moved), flv);
 	g_signal_connect (feedlist, "node-updated", G_CALLBACK (feed_list_view_node_updated), flv);
 	g_signal_connect (feedlist, "node-selected", G_CALLBACK (feed_list_view_node_selected), flv);
 
@@ -1242,17 +1220,4 @@ feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription,
 		feed_list_view_confirm_free_subscription_cb,
 		tempSubscription
 	);
-}
-
-void
-feed_list_view_reparent (Node *node)
-{
-	Node *selected = feedlist_get_selected ();
-
-	if (!node)
-		return;
-
-	g_signal_emit_by_name (flv->feedlist, "node-removed", node->id);
-	g_signal_emit_by_name (flv->feedlist, "node-added", node->id);
-	feed_list_view_select (selected);
 }

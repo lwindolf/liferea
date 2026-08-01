@@ -121,7 +121,7 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 		iter = g_slist_next (iter);
 	}
 
-	g_warning ("Could not find source type \"%s\"\n!", typeStr);
+	g_print ("Could not find source type \"%s\"\n!", typeStr);
 	return NULL;
 }
 
@@ -559,7 +559,7 @@ node_source_update_folder (Node *node, Node *folder)
 
 	if (node->parent != folder) {
 		debug (DEBUG_UPDATE, "Moving node \"%s\" to folder \"%s\"", node->title, folder->title);
-		node_reparent (node, folder);
+		feedlist_node_was_moved (node, folder, -1, FALSE);
 	}
 }
 
@@ -697,8 +697,10 @@ node_source_to_json (Node *node, JsonBuilder *b)
 		json_builder_add_int_value (b, node->source->loginState);
 	}
 
-	json_builder_set_member_name (b, "actionQueueLength");
-	json_builder_add_int_value (b, g_queue_get_length (node->source->actionQueue));
+	if (node->source->actionQueue) {
+		json_builder_set_member_name (b, "actionQueueLength");
+		json_builder_add_int_value (b, g_queue_get_length (node->source->actionQueue));
+	}
 	json_builder_end_object (b);
 }
 

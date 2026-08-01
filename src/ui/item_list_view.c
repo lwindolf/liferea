@@ -437,10 +437,11 @@ static void
 item_list_view_item_batch_started (GObject *obj, gpointer user_data)
 {
 	ItemListView *ilv = ITEM_LIST_VIEW (user_data);
-	GtkAdjustment *adj;
+	//GtkAdjustment *adj;
 
-	adj = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (ilv->ilscrolledwindow));
-	gtk_adjustment_set_value (adj, 0.0);
+	// FIXME: still needed with GtkListView?
+	//adj = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (ilv->ilscrolledwindow));
+	//gtk_adjustment_set_value (adj, 0.0);
 
 	item_list_view_clear_rows (ilv);
 	g_slist_free (ilv->item_ids);
