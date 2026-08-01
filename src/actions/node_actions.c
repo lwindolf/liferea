@@ -270,36 +270,27 @@ static const GActionEntry gaction_entries[] = {
 };
 
 static void
-node_actions_item_updated (gpointer obj, gint itemId, gpointer user_data)
+node_actions_refresh (GActionGroup *ag)
 {
-	// FIXME
-}
-
-static void
-node_actions_node_selected (gpointer obj, gchar *nodeId, gpointer user_data)
-{
-        GActionGroup *ag = G_ACTION_GROUP (user_data);
-
-	/* We need to use the selected node here, as for search folders
-	   if we'd rely on the parent node of the changed item we would
-	   enable the wrong menu options */
-	Node *node = node_from_id (nodeId);
+	/* Always derive node-local actions from current selection,
+	   regardless of which node triggered the update signal. */
+	Node *node = feedlist_get_selected ();
 
 	if (!node) {
 		ui_common_action_group_enable (ag, FALSE);
 
-                // Allow adding stuff, as it would get added to root node, which is always allowed
-	        liferea_shell_action_enable ("new-subscription", TRUE);
-                liferea_shell_action_enable ("new-folder", TRUE);
-                liferea_shell_action_enable ("new-vfolder", TRUE);
-                liferea_shell_action_enable ("new-source", TRUE);
-                liferea_shell_action_enable ("new-newsbin", TRUE);
+		/* Allow adding stuff, as it would get added to root node, which is always allowed */
+		liferea_shell_action_enable ("new-subscription", TRUE);
+		liferea_shell_action_enable ("new-folder", TRUE);
+		liferea_shell_action_enable ("new-vfolder", TRUE);
+		liferea_shell_action_enable ("new-source", TRUE);
+		liferea_shell_action_enable ("new-newsbin", TRUE);
 	} else {
 		liferea_shell_action_enable ("remove-selected-feed-items", TRUE);
 
 		gboolean allowModify = 0 < (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
 		gboolean allowUpdate = 0 < ((NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
-				            (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
+		                            (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
 
 		liferea_shell_action_enable ("update-selected", allowUpdate);
 		liferea_shell_action_enable ("node-mark-all-read", node->unreadCount > 0);
@@ -321,6 +312,33 @@ node_actions_node_selected (gpointer obj, gchar *nodeId, gpointer user_data)
 	liferea_shell_action_enable ("mark-feed-as-read", TRUE); // always true because selection-less
 }
 
+static void
+node_actions_item_updated (gpointer obj, gint itemId, gpointer user_data)
+{
+	(void) obj;
+	(void) itemId;
+
+	node_actions_refresh (G_ACTION_GROUP (user_data));
+}
+
+static void
+node_actions_node_selected (gpointer obj, gchar *nodeId, gpointer user_data)
+{
+	(void) obj;
+	(void) nodeId;
+
+	node_actions_refresh (G_ACTION_GROUP (user_data));
+}
+
+static void
+node_actions_new_items (gpointer obj, guint newCount, gpointer user_data)
+{
+	(void) obj;
+	(void) newCount;
+
+	node_actions_refresh (G_ACTION_GROUP (user_data));
+}
+
 GActionGroup *
 node_actions_create (LifereaShell *shell)
 {
@@ -333,6 +351,8 @@ node_actions_create (LifereaShell *shell)
 
 	g_signal_connect (itemlist, "item-updated", G_CALLBACK (node_actions_item_updated), ag);
 	g_signal_connect (feedlist, "items-updated", G_CALLBACK (node_actions_node_selected), ag);
+	g_signal_connect (feedlist, "node-updated", G_CALLBACK (node_actions_node_selected), ag);
+	g_signal_connect (feedlist, "new-items", G_CALLBACK (node_actions_new_items), ag);
 	g_signal_connect (feedlist, "node-selected", G_CALLBACK (node_actions_node_selected), ag);
 
 	node_actions_item_updated (NULL, 0, ag);
