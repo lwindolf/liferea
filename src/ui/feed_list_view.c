@@ -1,5 +1,5 @@
 /**
- * @file feed_list_view.c  the feed list in a GtkListBox
+ * @file feed_list_view.c  the feed list in a GtkListView
  *
  * Copyright (C) 2004-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -47,10 +47,13 @@
 struct _FeedListView {
 	GObject			parentInstance;
 
-	GtkListBox		*listbox;
-	GHashTable		*rows_by_id; /* node id -> GtkListBoxRow* */
+	GtkListView		*listview;
+	FeedList		*feedlist;
+	GListStore		*tree_root_model;
+	GtkTreeListModel	*tree_model;
+	GtkSingleSelection	*selection_model;
+	GtkListItemFactory	*factory;
 
-	gboolean		feedlist_reduced_unread;
 	gboolean		suppress_selection;
 };
 
@@ -64,12 +67,112 @@ static guint feed_list_view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (FeedListView, feed_list_view, G_TYPE_OBJECT);
 
-static void feed_list_view_reload_feedlist (void);
-static void feed_list_view_select (Node *node);
-static gboolean feed_list_view_filter_visible_function (Node *node);
-static void feed_list_view_confirm_remove_node_cb (gpointer user_data);
-static void feed_list_view_confirm_add_subscription_cb (gpointer user_data);
-static void feed_list_view_confirm_free_subscription_cb (gpointer user_data);
+typedef struct _FeedListNodeItem {
+	GObject			parent_instance;
+	Node			*node;
+} FeedListNodeItem;
+
+typedef struct _FeedListNodeItemClass {
+	GObjectClass		parent_class;
+} FeedListNodeItemClass;
+
+G_DEFINE_TYPE (FeedListNodeItem, feed_list_node_item, G_TYPE_OBJECT);
+
+static void
+feed_list_node_item_class_init (FeedListNodeItemClass *klass)
+{
+	(void) klass;
+}
+
+static void
+feed_list_node_item_init (FeedListNodeItem *self)
+{
+	self->node = NULL;
+}
+
+static FeedListNodeItem *
+feed_list_node_item_new (Node *node)
+{
+	FeedListNodeItem *item;
+
+	item = g_object_new (feed_list_node_item_get_type (), NULL);
+	item->node = node;
+	return item;
+}
+
+static gboolean
+feed_list_view_is_expandable (Node *node)
+{
+	return IS_FOLDER (node) || IS_NODE_SOURCE (node);
+}
+
+static gboolean
+feed_list_view_filter_visible_function (Node *node)
+{
+	(void) node;
+	return TRUE;
+}
+
+static GListModel *
+feed_list_view_create_child_model_cb (gpointer item, gpointer user_data)
+{
+	FeedListNodeItem *node_item = (FeedListNodeItem *)item;
+	Node *node;
+	GListStore *store;
+
+	(void) user_data;
+
+	if (!node_item)
+		return NULL;
+
+	node = node_item->node;
+	if (!node || !feed_list_view_is_expandable (node))
+		return NULL;
+
+	store = g_list_store_new (feed_list_node_item_get_type ());
+	for (GSList *iter = node->children; iter; iter = g_slist_next (iter)) {
+		Node *child = (Node *)iter->data;
+
+		if (!feed_list_view_filter_visible_function (child))
+			continue;
+
+		g_list_store_append (store, feed_list_node_item_new (child));
+	}
+
+	return G_LIST_MODEL (store);
+}
+
+static void
+feed_list_view_rebuild_tree_model_cache (void)
+{
+	Node *root;
+
+	if (!flv)
+		return;
+
+	g_clear_object (&flv->tree_model);
+	g_clear_object (&flv->tree_root_model);
+
+	flv->tree_root_model = g_list_store_new (feed_list_node_item_get_type ());
+	root = feedlist_get_root ();
+	if (root) {
+		for (GSList *iter = root->children; iter; iter = g_slist_next (iter)) {
+			Node *node = (Node *)iter->data;
+
+			if (!feed_list_view_filter_visible_function (node))
+				continue;
+
+			g_list_store_append (flv->tree_root_model, feed_list_node_item_new (node));
+		}
+	}
+
+	flv->tree_model = gtk_tree_list_model_new (G_LIST_MODEL (flv->tree_root_model),
+	                                            FALSE,
+	                                            FALSE,
+	                                            feed_list_view_create_child_model_cb,
+	                                            NULL,
+	                                            NULL);
+}
 
 static void
 feed_list_view_class_init (FeedListViewClass *klass)
@@ -92,7 +195,12 @@ feed_list_view_class_init (FeedListViewClass *klass)
 static void
 feed_list_view_init (FeedListView *f)
 {
-	f->rows_by_id = g_hash_table_new (g_str_hash, g_str_equal);
+	f->listview = NULL;
+	f->feedlist = NULL;
+	f->tree_root_model = NULL;
+	f->tree_model = NULL;
+	f->selection_model = NULL;
+	f->factory = NULL;
 }
 
 static gint
@@ -108,12 +216,6 @@ feed_list_view_sort_folder_compare (gconstpointer a, gconstpointer b)
 	g_free (s2);
 
 	return result;
-}
-
-static gboolean
-feed_list_view_is_expandable (Node *node)
-{
-	return IS_FOLDER (node) || IS_NODE_SOURCE (node);
 }
 
 static gchar *
@@ -164,166 +266,477 @@ feed_list_view_node_label_markup (Node *node)
 	return label;
 }
 
-static GtkWidget *
-feed_list_view_create_row (Node *node, guint depth)
+static Node *
+feed_list_view_tree_row_get_node (GtkTreeListRow *row)
 {
-	GtkWidget *row = gtk_list_box_row_new ();
-	GtkWidget *box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-	GtkWidget *arrow = gtk_image_new ();
-	GtkWidget *icon = gtk_image_new ();;
-	GtkWidget *label = gtk_label_new (NULL);
-	GtkWidget *count = gtk_label_new (NULL);
+	FeedListNodeItem *node_item;
+
+	if (!row)
+		return NULL;
+
+	node_item = (FeedListNodeItem *)gtk_tree_list_row_get_item (row);
+	if (!node_item)
+		return NULL;
+
+	return node_item->node;
+}
+
+static Node *
+feed_list_view_get_current_view_selection (void)
+{
+	GtkTreeListRow *tree_row;
+	Node *node;
+
+	if (!flv || !flv->selection_model)
+		return NULL;
+
+	tree_row = GTK_TREE_LIST_ROW (gtk_single_selection_get_selected_item (flv->selection_model));
+	if (!tree_row)
+		return NULL;
+
+	node = feed_list_view_tree_row_get_node (tree_row);
+	g_object_unref (tree_row);
+	return node;
+}
+
+static guint
+feed_list_view_find_position_for_node (Node *node)
+{
+	guint n_items;
+
+	if (!flv || !flv->tree_model || !node)
+		return GTK_INVALID_LIST_POSITION;
+
+	n_items = g_list_model_get_n_items (G_LIST_MODEL (flv->tree_model));
+	for (guint i = 0; i < n_items; i++) {
+		GtkTreeListRow *tree_row;
+		Node *candidate;
+
+		tree_row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), i));
+		candidate = feed_list_view_tree_row_get_node (tree_row);
+		g_object_unref (tree_row);
+
+		if (candidate == node)
+			return i;
+	}
+
+	return GTK_INVALID_LIST_POSITION;
+}
+
+static guint
+feed_list_view_find_position_for_node_id (const gchar *nodeId)
+{
+	guint n_items;
+
+	if (!flv || !flv->tree_model || !nodeId)
+		return GTK_INVALID_LIST_POSITION;
+
+	n_items = g_list_model_get_n_items (G_LIST_MODEL (flv->tree_model));
+	for (guint i = 0; i < n_items; i++) {
+		GtkTreeListRow *tree_row;
+		Node *candidate;
+
+		tree_row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), i));
+		candidate = feed_list_view_tree_row_get_node (tree_row);
+		g_object_unref (tree_row);
+
+		if (candidate && candidate->id && g_str_equal (candidate->id, nodeId))
+			return i;
+	}
+
+	return GTK_INVALID_LIST_POSITION;
+}
+
+static guint
+feed_list_view_find_index_in_model (GListModel *model, Node *node)
+{
+	guint n_items;
+
+	if (!model || !node)
+		return GTK_INVALID_LIST_POSITION;
+
+	n_items = g_list_model_get_n_items (model);
+	for (guint i = 0; i < n_items; i++) {
+		FeedListNodeItem *item = (FeedListNodeItem *)g_list_model_get_item (model, i);
+		gboolean match = item && item->node == node;
+
+		if (item)
+			g_object_unref (item);
+		if (match)
+			return i;
+	}
+
+	return GTK_INVALID_LIST_POSITION;
+}
+
+static guint
+feed_list_view_visible_sibling_index (Node *node)
+{
+	Node *parent;
+	guint index = 0;
+
+	if (!node || !node->parent)
+		return GTK_INVALID_LIST_POSITION;
+
+	parent = node->parent;
+	for (GSList *iter = parent->children; iter; iter = g_slist_next (iter)) {
+		Node *candidate = (Node *)iter->data;
+
+		if (candidate == node)
+			return index;
+		if (feed_list_view_filter_visible_function (candidate))
+			index++;
+	}
+
+	return GTK_INVALID_LIST_POSITION;
+}
+
+static GListStore *
+feed_list_view_parent_store_for_node (Node *node)
+{
+	GtkTreeListRow *parent_row;
+	GListModel *children;
+	guint parent_position;
+
+	if (!node || !node->parent)
+		return NULL;
+
+	if (node->parent == feedlist_get_root ())
+		return flv->tree_root_model;
+
+	parent_position = feed_list_view_find_position_for_node (node->parent);
+	if (parent_position == GTK_INVALID_LIST_POSITION)
+		return NULL;
+
+	parent_row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), parent_position));
+	if (!parent_row)
+		return NULL;
+
+	children = gtk_tree_list_row_get_children (parent_row);
+	if (!children) {
+		g_object_unref (parent_row);
+		return NULL;
+	}
+
+	g_object_unref (parent_row);
+	return G_LIST_STORE (children);
+}
+
+static gboolean
+feed_list_view_insert_node_item (Node *node)
+{
+	GListStore *store;
+	guint index;
+
+	if (!node || !flv || !flv->tree_model)
+		return FALSE;
+
+	if (!feed_list_view_filter_visible_function (node))
+		return TRUE;
+
+	store = feed_list_view_parent_store_for_node (node);
+	if (!store)
+		return TRUE;
+
+	index = feed_list_view_visible_sibling_index (node);
+	if (index == GTK_INVALID_LIST_POSITION)
+		index = g_list_model_get_n_items (G_LIST_MODEL (store));
+
+	g_list_store_insert (store, index, feed_list_node_item_new (node));
+	return TRUE;
+}
+
+static gboolean
+feed_list_view_refresh_bound_row_widget (GtkWidget *widget, Node *node)
+{
+	for (GtkWidget *child = gtk_widget_get_first_child (widget); child; child = gtk_widget_get_next_sibling (child)) {
+		if (feed_list_view_refresh_bound_row_widget (child, node))
+			return TRUE;
+	}
+
+	if (g_object_get_data (G_OBJECT (widget), "node") != node)
+		return FALSE;
+
+	GtkWidget *icon = g_object_get_data (G_OBJECT (widget), "icon");
+	GtkWidget *label = g_object_get_data (G_OBJECT (widget), "label");
+	GtkWidget *count = g_object_get_data (G_OBJECT (widget), "count");
 	gchar *label_markup = feed_list_view_node_label_markup (node);
 	gchar *count_markup = feed_list_view_node_count_markup (node);
 
-	gtk_widget_set_margin_start (box, 6 + (gint)depth * 16);
+	if (icon)
+		gtk_image_set_from_gicon (GTK_IMAGE (icon), (GIcon *)(node->available ? node_get_icon (node) : icon_get (ICON_UNAVAILABLE)));
+	if (label)
+		gtk_label_set_markup (GTK_LABEL (label), label_markup);
+	if (count)
+		gtk_label_set_markup (GTK_LABEL (count), count_markup ? count_markup : "");
+
+	g_free (label_markup);
+	g_free (count_markup);
+	return TRUE;
+}
+
+static gboolean
+feed_list_view_refresh_node_item (Node *node)
+{
+	guint position;
+
+	if (!node || !flv || !flv->tree_model)
+		return FALSE;
+
+	position = feed_list_view_find_position_for_node (node);
+	if (position == GTK_INVALID_LIST_POSITION)
+		return feed_list_view_insert_node_item (node);
+
+	feed_list_view_refresh_bound_row_widget (GTK_WIDGET (flv->listview), node);
+	if (feed_list_view_is_expandable (node) && node->expanded) {
+		GtkTreeListRow *row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), position));
+		if (row) {
+			gtk_tree_list_row_set_expanded (row, TRUE);
+			g_object_unref (row);
+		}
+	}
+
+	return TRUE;
+}
+static gboolean
+feed_list_view_remove_node_item (const gchar *nodeId)
+{
+	GtkTreeListRow *row;
+	GtkTreeListRow *parent_row;
+	Node *node;
+	GListModel *model;
+	GListStore *store;
+	guint position;
+	guint index;
+
+	if (!nodeId || !flv || !flv->tree_model)
+		return FALSE;
+
+	position = feed_list_view_find_position_for_node_id (nodeId);
+	if (position == GTK_INVALID_LIST_POSITION)
+		return TRUE;
+
+	row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), position));
+	if (!row)
+		return FALSE;
+
+	node = feed_list_view_tree_row_get_node (row);
+	parent_row = gtk_tree_list_row_get_parent (row);
+	model = parent_row ? gtk_tree_list_row_get_children (parent_row) : G_LIST_MODEL (flv->tree_root_model);
+	if (!model || !node) {
+		g_object_unref (row);
+		return FALSE;
+	}
+
+	store = G_LIST_STORE (model);
+	index = feed_list_view_find_index_in_model (model, node);
+	if (index == GTK_INVALID_LIST_POSITION) {
+		g_object_unref (row);
+		return FALSE;
+	}
+
+	g_list_store_remove (store, index);
+	g_object_unref (row);
+	return TRUE;
+}
+
+static Node *
+feed_list_view_find_node_at_coords (gdouble x, gdouble y)
+{
+	GtkWidget *picked;
+
+	picked = gtk_widget_pick (GTK_WIDGET (flv->listview), x, y, GTK_PICK_DEFAULT);
+	while (picked) {
+		Node *node = g_object_get_data (G_OBJECT (picked), "node");
+
+		if (node)
+			return node;
+
+		picked = gtk_widget_get_parent (picked);
+	}
+
+	return NULL;
+}
+
+static void
+feed_list_view_tree_row_expanded_cb (GtkTreeListRow *tree_row, GParamSpec *pspec, gpointer user_data)
+{
+	Node *node = (Node *)user_data;
+
+	(void) pspec;
+
+	if (!node)
+		return;
+
+	node->expanded = gtk_tree_list_row_get_expanded (tree_row);
+}
+
+static void
+feed_list_view_factory_setup_cb (GtkListItemFactory *factory, GtkListItem *list_item, gpointer user_data)
+{
+	GtkWidget *expander;
+	GtkWidget *box;
+	GtkWidget *icon;
+	GtkWidget *label;
+	GtkWidget *count;
+
+	(void) factory;
+	(void) user_data;
+
+	expander = gtk_tree_expander_new ();
+	box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+	icon = gtk_image_new ();
+	label = gtk_label_new (NULL);
+	count = gtk_label_new (NULL);
+
+	gtk_widget_set_margin_start (box, 6);
 	gtk_widget_set_margin_end (box, 6);
 	gtk_widget_set_margin_top (box, 0);
 	gtk_widget_set_margin_bottom (box, 0);
 
-	if (feed_list_view_is_expandable (node) && !flv->feedlist_reduced_unread) {
-		gtk_image_set_from_icon_name (GTK_IMAGE (arrow), node->expanded ? "pan-down-symbolic" : "pan-end-symbolic");
-	} else {
-		gtk_image_set_from_icon_name (GTK_IMAGE (arrow), "pan-end-symbolic");
-		gtk_widget_set_opacity (arrow, 0.0);
-	}
-
-	gtk_image_set_from_gicon (GTK_IMAGE (icon), (GIcon *)(node->available ? node_get_icon (node) : icon_get (ICON_UNAVAILABLE)));
-	gtk_label_set_markup (GTK_LABEL (label), label_markup);
 	gtk_label_set_xalign (GTK_LABEL (label), 0.0f);
 	gtk_label_set_ellipsize (GTK_LABEL (label), PANGO_ELLIPSIZE_END);
 	gtk_widget_set_hexpand (label, TRUE);
-
-	if (count_markup)
-		gtk_label_set_markup (GTK_LABEL (count), count_markup);
 	gtk_label_set_xalign (GTK_LABEL (count), 1.0f);
 
-	gtk_box_append (GTK_BOX (box), arrow);
 	gtk_box_append (GTK_BOX (box), icon);
 	gtk_box_append (GTK_BOX (box), label);
 	gtk_box_append (GTK_BOX (box), count);
-	gtk_list_box_row_set_child (GTK_LIST_BOX_ROW (row), box);
-	g_object_set_data (G_OBJECT (row), "node", node);
-	g_object_set_data (G_OBJECT (row), "expander", arrow);
-	ui_dnd_setup_feedlist_row (row);
+	gtk_tree_expander_set_child (GTK_TREE_EXPANDER (expander), box);
+	gtk_list_item_set_child (list_item, expander);
 
-	g_hash_table_insert (flv->rows_by_id, (gpointer)node->id, row);
+	g_object_set_data (G_OBJECT (expander), "icon", icon);
+	g_object_set_data (G_OBJECT (expander), "label", label);
+	g_object_set_data (G_OBJECT (expander), "count", count);
+
+	ui_dnd_setup_feedlist_row (expander);
+}
+
+static void
+feed_list_view_factory_bind_cb (GtkListItemFactory *factory, GtkListItem *list_item, gpointer user_data)
+{
+	GtkWidget *expander;
+	GtkTreeListRow *tree_row;
+	GtkWidget *icon;
+	GtkWidget *label;
+	GtkWidget *count;
+	Node *node;
+	gchar *label_markup;
+	gchar *count_markup;
+	gulong expanded_handler;
+
+	(void) factory;
+	(void) user_data;
+
+	expander = gtk_list_item_get_child (list_item);
+	tree_row = GTK_TREE_LIST_ROW (gtk_list_item_get_item (list_item));
+	icon = g_object_get_data (G_OBJECT (expander), "icon");
+	label = g_object_get_data (G_OBJECT (expander), "label");
+	count = g_object_get_data (G_OBJECT (expander), "count");
+	node = feed_list_view_tree_row_get_node (tree_row);
+
+	if (!node)
+		return;
+
+	gtk_tree_expander_set_list_row (GTK_TREE_EXPANDER (expander), tree_row);
+
+	label_markup = feed_list_view_node_label_markup (node);
+	count_markup = feed_list_view_node_count_markup (node);
+
+	gtk_image_set_from_gicon (GTK_IMAGE (icon), (GIcon *)(node->available ? node_get_icon (node) : icon_get (ICON_UNAVAILABLE)));
+	gtk_label_set_markup (GTK_LABEL (label), label_markup);
+	gtk_label_set_markup (GTK_LABEL (count), count_markup ? count_markup : "");
+
+	g_object_set_data (G_OBJECT (expander), "node", node);
+	expanded_handler = g_signal_connect (tree_row,
+	                                    "notify::expanded",
+	                                    G_CALLBACK (feed_list_view_tree_row_expanded_cb),
+	                                    node);
+	g_object_set_data (G_OBJECT (expander), "expanded-row", g_object_ref (tree_row));
+	g_object_set_data (G_OBJECT (expander), "expanded-handler", GSIZE_TO_POINTER ((gsize)expanded_handler));
 
 	g_free (label_markup);
 	g_free (count_markup);
-	return row;
-}
-
-static gboolean
-feed_list_view_widget_is_descendant (GtkWidget *widget, GtkWidget *ancestor)
-{
-	while (widget) {
-		if (widget == ancestor)
-			return TRUE;
-		widget = gtk_widget_get_parent (widget);
-	}
-
-	return FALSE;
 }
 
 static void
-feed_list_view_append_children (Node *parent, guint depth)
+feed_list_view_factory_unbind_cb (GtkListItemFactory *factory, GtkListItem *list_item, gpointer user_data)
 {
-	for (GSList *iter = parent->children; iter; iter = g_slist_next (iter)) {
-		Node *node = (Node *)iter->data;
-		gboolean visible = feed_list_view_filter_visible_function (node);
+	GtkWidget *expander;
+	GtkTreeListRow *expanded_row;
+	gulong expanded_handler;
 
-		if (visible) {
-			GtkWidget *row = feed_list_view_create_row (node, flv->feedlist_reduced_unread ? 0 : depth);
-			gtk_list_box_append (flv->listbox, row);
-		}
+	(void) factory;
+	(void) user_data;
 
-		if (flv->feedlist_reduced_unread) {
-			if (feed_list_view_is_expandable (node))
-				feed_list_view_append_children (node, 0);
-		} else if (feed_list_view_is_expandable (node) && node->expanded) {
-			feed_list_view_append_children (node, depth + 1);
-		}
-	}
+	expander = gtk_list_item_get_child (list_item);
+	expanded_row = g_object_get_data (G_OBJECT (expander), "expanded-row");
+	expanded_handler = (gulong)GPOINTER_TO_SIZE (g_object_get_data (G_OBJECT (expander), "expanded-handler"));
+
+	if (expanded_row && expanded_handler)
+		g_signal_handler_disconnect (expanded_row, expanded_handler);
+	if (expanded_row)
+		g_object_unref (expanded_row);
+
+	g_object_set_data (G_OBJECT (expander), "expanded-row", NULL);
+	g_object_set_data (G_OBJECT (expander), "expanded-handler", NULL);
+	g_object_set_data (G_OBJECT (expander), "node", NULL);
+	gtk_tree_expander_set_list_row (GTK_TREE_EXPANDER (expander), NULL);
 }
 
 static void
-feed_list_view_clear_feedlist (void)
+feed_list_view_expand_path (Node *node)
 {
-	flv->suppress_selection = TRUE;
-	for (GtkWidget *child = gtk_widget_get_first_child (GTK_WIDGET (flv->listbox)); child;) {
-		GtkWidget *next = gtk_widget_get_next_sibling (child);
-		gtk_list_box_remove (flv->listbox, child);
-		child = next;
-	}
-	g_hash_table_remove_all (flv->rows_by_id);
-	flv->suppress_selection = FALSE;
-}
-
-static void
-feed_list_view_load_feedlist (Node *node)
-{
-	feed_list_view_append_children (node, 0);
-}
-
-static void
-feed_list_view_reload_feedlist (void)
-{
-	Node *selected = feedlist_get_selected ();
-	feed_list_view_clear_feedlist ();
-	feed_list_view_load_feedlist (feedlist_get_root ());
-	feed_list_view_select (selected);
-}
-
-static gboolean
-feed_list_view_expand (Node *node)
-{
-	gboolean changed = FALSE;
+	GPtrArray *path;
 
 	if (!node)
-		return FALSE;
+		return;
 
-	if (node->parent)
-		changed = feed_list_view_expand (node->parent);
+	path = g_ptr_array_new ();
+	for (Node *iter = node; iter && iter->parent; iter = iter->parent)
+		g_ptr_array_add (path, iter);
 
-	if (feed_list_view_is_expandable (node) && !node->expanded) {
-		node->expanded = TRUE;
-		changed = TRUE;
+	for (gint i = (gint)path->len - 1; i >= 0; i--) {
+		Node *path_node = g_ptr_array_index (path, i);
+		guint position;
+		GtkTreeListRow *row;
+
+		if (!feed_list_view_is_expandable (path_node))
+			continue;
+
+		path_node->expanded = TRUE;
+		position = feed_list_view_find_position_for_node (path_node);
+		if (position == GTK_INVALID_LIST_POSITION)
+			continue;
+
+		row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), position));
+		if (!row)
+			continue;
+
+		gtk_tree_list_row_set_expanded (row, TRUE);
+		g_object_unref (row);
 	}
 
-	return changed;
+	g_ptr_array_free (path, TRUE);
 }
 
 static void
-feed_list_view_set_expansion (Node *folder, gboolean expanded)
+feed_list_view_selection_changed_cb (GtkSingleSelection *selection_model, GParamSpec *pspec, gpointer data)
 {
-	if (flv->feedlist_reduced_unread)
-		return;
-
-	if (!feed_list_view_is_expandable (folder))
-		return;
-
-	if (folder->expanded == expanded)
-		return;
-
-	folder->expanded = expanded;
-	feed_list_view_reload_feedlist ();
-}
-
-static void
-feed_list_view_selection_changed_cb (GtkListBox *listbox, gpointer data)
-{
-	GtkListBoxRow *row;
+	GtkTreeListRow *tree_row;
 	Node *node;
+
+	(void) pspec;
+	(void) data;
 
 	if (flv->suppress_selection)
 		return;
 
-	row = gtk_list_box_get_selected_row (listbox);
-	if (!row)
+	tree_row = GTK_TREE_LIST_ROW (gtk_single_selection_get_selected_item (selection_model));
+	if (!tree_row)
 		return;
 
-	node = g_object_get_data (G_OBJECT (row), "node");
+	node = feed_list_view_tree_row_get_node (tree_row);
 	if (!node)
 		return;
 
@@ -331,19 +744,31 @@ feed_list_view_selection_changed_cb (GtkListBox *listbox, gpointer data)
 
 	feedlist_set_selected (node);
 	browser_tabs_show_headlines ();
-
-	/* Re-apply reduced mode filtering after selection changes. */
-	if (flv->feedlist_reduced_unread)
-		feed_list_view_reload_feedlist ();
 }
 
 static void
-feed_list_view_row_activated_cb (GtkListBox *listbox, GtkListBoxRow *row, gpointer data)
+feed_list_view_row_activated_cb (GtkListView *listview, guint position, gpointer data)
 {
-	Node *node = g_object_get_data (G_OBJECT (row), "node");
+	GtkTreeListRow *row;
+	Node *node;
 
-	if (node && feed_list_view_is_expandable (node))
-		feed_list_view_set_expansion (node, !node->expanded);
+	(void) listview;
+	(void) data;
+
+	row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), position));
+	if (!row)
+		return;
+
+	node = feed_list_view_tree_row_get_node (row);
+
+	if (node && feed_list_view_is_expandable (node)) {
+		gboolean expanded = !gtk_tree_list_row_get_expanded (row);
+
+		node->expanded = expanded;
+		gtk_tree_list_row_set_expanded (row, expanded);
+	}
+
+	g_object_unref (row);
 }
 
 static GMenu *
@@ -439,49 +864,33 @@ feed_list_view_popup_menu (Node *node)
 static gboolean
 feed_list_view_pressed_cb (GtkGestureClick *gesture, gint n_press, gdouble x, gdouble y, gpointer data)
 {
-	GtkListBoxRow *row;
-	Node *node = NULL;
+	Node *node;
 
+	(void) data;
 	if (n_press != 1)
 		return FALSE;
 
-	row = gtk_list_box_get_row_at_y (flv->listbox, (gint)y);
-	if (row)
-		node = g_object_get_data (G_OBJECT (row), "node");
+	node = feed_list_view_find_node_at_coords (x, y);
 
 	switch (gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture))) {
 		case GDK_BUTTON_PRIMARY:
-			if (row && node && feed_list_view_is_expandable (node)) {
-				GtkWidget *row_widget = GTK_WIDGET (row);
-				GtkWidget *expander = g_object_get_data (G_OBJECT (row), "expander");
-				graphene_point_t src = GRAPHENE_POINT_INIT ((float)x, (float)y);
-				graphene_point_t dst;
-
-				if (expander && gtk_widget_compute_point (GTK_WIDGET (flv->listbox), row_widget, &src, &dst)) {
-					GtkWidget *picked = gtk_widget_pick (row_widget, dst.x, dst.y, GTK_PICK_DEFAULT);
-					if (picked && feed_list_view_widget_is_descendant (picked, expander)) {
-						feed_list_view_set_expansion (node, !node->expanded);
-						gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
-						return TRUE;
-					}
-				}
-			}
+			/* GtkTreeExpander handles primary-button expansion itself. */
 			break;
 		case GDK_BUTTON_SECONDARY: {
 			GMenu *menu = feed_list_view_popup_menu (node);
 			GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL (menu));
-			GtkWidget *anchor = gtk_widget_get_parent (GTK_WIDGET (flv->listbox));
+			GtkWidget *anchor = gtk_widget_get_parent (GTK_WIDGET (flv->listview));
 			GdkRectangle rect;
 			graphene_point_t src = GRAPHENE_POINT_INIT ((float)x, (float)y);
 			graphene_point_t dst;
 
 			if (!anchor)
-				anchor = GTK_WIDGET (flv->listbox);
+				anchor = GTK_WIDGET (flv->listview);
 
 			gtk_widget_set_parent (popover, anchor);
 
-			if ((anchor != GTK_WIDGET (flv->listbox)) &&
-			    gtk_widget_compute_point (GTK_WIDGET (flv->listbox), anchor, &src, &dst)) {
+			if ((anchor != GTK_WIDGET (flv->listview)) &&
+			    gtk_widget_compute_point (GTK_WIDGET (flv->listview), anchor, &src, &dst)) {
 				rect.x = (gint)dst.x;
 				rect.y = (gint)dst.y;
 			} else {
@@ -531,83 +940,95 @@ feed_list_view_key_pressed_cb (GtkEventControllerKey *controller, guint keyval, 
 
 	return FALSE;
 }
-static gboolean
-feed_list_view_filter_visible_function (Node *node)
-{
-	if (!flv->feedlist_reduced_unread)
-		return TRUE;
-
-	if (node->subscription && node->subscription->alwaysShowInReduced)
-		return TRUE;
-
-	if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
-		return FALSE;
-
-	if (IS_VFOLDER (node))
-		return TRUE;
-
-	/* Do not hide in any case if the node is selected, otherwise
-	   the last unread item of a feed causes the feed to vanish
-	   when clicking it */
-	if (feedlist_get_selected () == node)
-		return TRUE;
-
-	return node->unreadCount > 0;
-}
-
 static void
 feed_list_view_node_changed (GObject *obj, gchar *nodeId, gpointer user_data)
 {
-	feed_list_view_reload_feedlist ();
+	Node *node;
+
+	(void) obj;
+	(void) user_data;
+
+	node = node_from_id (nodeId);
+	if (node)
+		feed_list_view_insert_node_item (node);
 }
 
 static void
 feed_list_view_node_removed (GObject *obj, gchar *nodeId, gpointer user_data)
 {
-	GtkListBoxRow *row;
+	(void) obj;
+	(void) user_data;
 
-	row = g_hash_table_lookup (flv->rows_by_id, nodeId);
-	if (!row)
-		return;
-
-	gtk_list_box_remove (flv->listbox, GTK_WIDGET (row));
-	g_hash_table_remove (flv->rows_by_id, nodeId);
+	feed_list_view_remove_node_item (nodeId);
 }
 
 static void
 feed_list_view_node_updated (GObject *obj, const gchar *nodeId, gpointer user_data)
 {
-	feed_list_view_reload_feedlist ();
+	Node *node;
+
+	(void) obj;
+	(void) user_data;
+
+	node = node_from_id (nodeId);
+	if (!node)
+		return;
+
+	feed_list_view_refresh_node_item (node);
 }
+
+static void
+feed_list_view_select (Node *node);
 
 static void
 feed_list_view_node_selected (GObject *obj, gchar *nodeId, gpointer user_data)
 {
-	feed_list_view_select (node_from_id (nodeId));
+	Node *target;
+
+	(void) obj;
+	(void) user_data;
+
+	if (!flv || flv->suppress_selection)
+		return;
+
+	target = node_from_id (nodeId);
+	if (target == feed_list_view_get_current_view_selection ())
+		return;
+
+	feed_list_view_select (target);
 }
 
 FeedListView *
-feed_list_view_create (GtkListBox *listbox, FeedList *feedlist)
+feed_list_view_create (GtkListView *listview, FeedList *feedlist)
 {
 	GtkEventController *controller;
 	GtkGesture *primary_gesture;
 	GtkGesture *popup_gesture;
 	GtkGesture *middle_gesture;
+	Node *selected;
 
 	g_assert (NULL == flv);
 	flv = FEED_LIST_VIEW (g_object_new (FEED_LIST_VIEW_TYPE, NULL));
-	flv->listbox = listbox;
+	flv->listview = listview;
+	flv->feedlist = feedlist;
+	flv->selection_model = gtk_single_selection_new (NULL);
+	flv->factory = gtk_signal_list_item_factory_new ();
 
-	gtk_list_box_set_selection_mode (flv->listbox, GTK_SELECTION_SINGLE);
-	gtk_list_box_set_activate_on_single_click (flv->listbox, FALSE);
+	g_signal_connect (flv->factory, "setup", G_CALLBACK (feed_list_view_factory_setup_cb), flv);
+	g_signal_connect (flv->factory, "bind", G_CALLBACK (feed_list_view_factory_bind_cb), flv);
+	g_signal_connect (flv->factory, "unbind", G_CALLBACK (feed_list_view_factory_unbind_cb), flv);
+
+	gtk_list_view_set_model (flv->listview, GTK_SELECTION_MODEL (flv->selection_model));
+	gtk_list_view_set_factory (flv->listview, GTK_LIST_ITEM_FACTORY (flv->factory));
+	gtk_list_view_set_single_click_activate (flv->listview, FALSE);
 
 	controller = gtk_event_controller_key_new ();
 	primary_gesture = gtk_gesture_click_new ();
 	popup_gesture = gtk_gesture_click_new ();
 	middle_gesture = gtk_gesture_click_new ();
 
-	g_signal_connect (G_OBJECT (flv->listbox), "row-activated", G_CALLBACK (feed_list_view_row_activated_cb), flv);
-	g_signal_connect (G_OBJECT (flv->listbox), "selected-rows-changed", G_CALLBACK (feed_list_view_selection_changed_cb), flv);
+	g_signal_connect (G_OBJECT (flv->listview), "activate", G_CALLBACK (feed_list_view_row_activated_cb), flv);
+	g_signal_connect (flv->selection_model, "notify::selected-item", G_CALLBACK (feed_list_view_selection_changed_cb), flv);
 	g_signal_connect (controller, "key-pressed", G_CALLBACK (feed_list_view_key_pressed_cb), flv);
 
 	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (primary_gesture), GDK_BUTTON_PRIMARY);
@@ -621,56 +1042,61 @@ feed_list_view_create (GtkListBox *listbox, FeedList *feedlist)
 	gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (popup_gesture), GDK_BUTTON_SECONDARY);
 	g_signal_connect (popup_gesture, "pressed", G_CALLBACK (feed_list_view_pressed_cb), flv);
 
-	gtk_widget_add_controller (GTK_WIDGET (flv->listbox), controller);
-	gtk_widget_add_controller (GTK_WIDGET (flv->listbox), GTK_EVENT_CONTROLLER (primary_gesture));
-	gtk_widget_add_controller (GTK_WIDGET (flv->listbox), GTK_EVENT_CONTROLLER (middle_gesture));
-	gtk_widget_add_controller (GTK_WIDGET (flv->listbox), GTK_EVENT_CONTROLLER (popup_gesture));
+	gtk_widget_add_controller (GTK_WIDGET (flv->listview), controller);
+	gtk_widget_add_controller (GTK_WIDGET (flv->listview), GTK_EVENT_CONTROLLER (primary_gesture));
+	gtk_widget_add_controller (GTK_WIDGET (flv->listview), GTK_EVENT_CONTROLLER (middle_gesture));
+	gtk_widget_add_controller (GTK_WIDGET (flv->listview), GTK_EVENT_CONTROLLER (popup_gesture));
 
 	/* Keep URL drops enabled; row reordering DnD is no longer tree-model based. */
-	ui_dnd_setup_feedlist (GTK_WIDGET (flv->listbox));
+	ui_dnd_setup_feedlist (GTK_WIDGET (flv->listview));
 
 	/* For performance prevent selection signals when filling the feed list
 	   will be enabled when LifereaShell setup is finished */
-	gtk_widget_set_sensitive (GTK_WIDGET (flv->listbox), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (flv->listview), FALSE);
 
 	g_signal_connect (feedlist, "node-added", G_CALLBACK (feed_list_view_node_changed), flv);
 	g_signal_connect (feedlist, "node-removed", G_CALLBACK (feed_list_view_node_removed), flv);
 	g_signal_connect (feedlist, "node-updated", G_CALLBACK (feed_list_view_node_updated), flv);
 	g_signal_connect (feedlist, "node-selected", G_CALLBACK (feed_list_view_node_selected), flv);
 
-	feed_list_view_reload_feedlist ();
+	selected = feedlist_get_selected ();
+	flv->suppress_selection = TRUE;
+	feed_list_view_rebuild_tree_model_cache ();
+	if (flv->selection_model)
+		gtk_single_selection_set_model (flv->selection_model, G_LIST_MODEL (flv->tree_model));
+	flv->suppress_selection = FALSE;
+	feed_list_view_select (selected);
+
 	return flv;
 }
 
 static void
 feed_list_view_select (Node *node)
 {
-	GtkListBoxRow *row;
+	guint position;
 
 	flv->suppress_selection = TRUE;
 
 	if (node && node != feedlist_get_root ()) {
-		if (!flv->feedlist_reduced_unread && node->parent) {
-			if (feed_list_view_expand (LIFEREA_NODE (node->parent)))
-				feed_list_view_reload_feedlist ();
-		}
+		if (node->parent)
+			feed_list_view_expand_path (LIFEREA_NODE (node->parent));
 
-		row = g_hash_table_lookup (flv->rows_by_id, node->id);
-		if (row) {
-			GtkRoot *root = gtk_widget_get_root (GTK_WIDGET (flv->listbox));
+		position = feed_list_view_find_position_for_node (node);
+		if (position != GTK_INVALID_LIST_POSITION) {
+			GtkRoot *root = gtk_widget_get_root (GTK_WIDGET (flv->listview));
 			GtkWidget *focus = root ? gtk_root_get_focus (root) : NULL;
 			gboolean keep_feedlist_focus = focus &&
-			    gtk_widget_is_ancestor (focus, GTK_WIDGET (flv->listbox));
+			    gtk_widget_is_ancestor (focus, GTK_WIDGET (flv->listview));
 
-			gtk_list_box_select_row (flv->listbox, row);
+			gtk_single_selection_set_selected (flv->selection_model, position);
 
 			/* Preserve feed list focus for feed-list navigation, but avoid stealing
 			   focus from the item list during background node-updated refreshes. */
 			if (keep_feedlist_focus)
-				gtk_widget_grab_focus (GTK_WIDGET (row));
+				gtk_widget_grab_focus (GTK_WIDGET (flv->listview));
 		}
 	} else {
-		gtk_list_box_unselect_all (flv->listbox);
+		gtk_single_selection_set_selected (flv->selection_model, GTK_INVALID_LIST_POSITION);
 	}
 
 	flv->suppress_selection = FALSE;
@@ -679,25 +1105,28 @@ feed_list_view_select (Node *node)
 void
 feed_list_view_move_cursor (FeedListView *view, gint step)
 {
-	GtkListBoxRow *selected;
-	gint index;
+	guint selected;
+	guint n_items;
+	gint new_index;
 
 	if (!view)
 		return;
 
-	selected = gtk_list_box_get_selected_row (view->listbox);
-	if (!selected) {
-		selected = gtk_list_box_get_row_at_index (view->listbox, 0);
-		if (!selected)
-			return;
-		gtk_list_box_select_row (view->listbox, selected);
+	n_items = g_list_model_get_n_items (G_LIST_MODEL (view->tree_model));
+	if (n_items == 0)
+		return;
+
+	selected = gtk_single_selection_get_selected (view->selection_model);
+	if (selected == GTK_INVALID_LIST_POSITION) {
+		gtk_single_selection_set_selected (view->selection_model, 0);
 		return;
 	}
 
-	index = gtk_list_box_row_get_index (selected);
-	selected = gtk_list_box_get_row_at_index (view->listbox, index + step);
-	if (selected)
-		gtk_list_box_select_row (view->listbox, selected);
+	new_index = (gint)selected + step;
+	if (new_index < 0 || (guint)new_index >= n_items)
+		return;
+
+	gtk_single_selection_set_selected (view->selection_model, (guint)new_index);
 }
 
 /* Expansion & Collapsing */
@@ -707,9 +1136,6 @@ feed_list_view_is_expanded (const gchar *nodeId)
 {
 	Node *node;
 
-	if (flv->feedlist_reduced_unread)
-		return FALSE;
-
 	node = node_from_id (nodeId);
 	return node ? node->expanded : FALSE;
 }
@@ -717,16 +1143,22 @@ feed_list_view_is_expanded (const gchar *nodeId)
 void
 feed_list_view_sort_folder (Node *folder)
 {
-	folder->children = g_slist_sort (folder->children, feed_list_view_sort_folder_compare);
-	feed_list_view_reload_feedlist ();
-	feedlist_schedule_save ();
-}
+	Node *selected;
 
-void
-feed_list_view_set_reduce_mode (gboolean newReduceMode)
-{
-	flv->feedlist_reduced_unread = newReduceMode;
-	feed_list_view_reload_feedlist ();
+	if (!folder)
+		return;
+
+	folder->children = g_slist_sort (folder->children, feed_list_view_sort_folder_compare);
+	selected = feedlist_get_selected ();
+	for (GSList *iter = folder->children; iter; iter = g_slist_next (iter)) {
+		Node *child = (Node *)iter->data;
+
+		g_signal_emit_by_name (flv->feedlist, "node-removed", child->id);
+		g_signal_emit_by_name (flv->feedlist, "node-added", child->id);
+	}
+	feed_list_view_select (selected);
+
+	feedlist_schedule_save ();
 }
 
 static void
@@ -737,7 +1169,7 @@ on_nodenamedialog_response (GtkButton *button, gpointer user_data)
 
 	if (node) {
 		node_set_title (node, liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "nameEntry"));
-		feed_list_view_reload_feedlist ();
+		feed_list_view_refresh_node_item (node);
 		feedlist_schedule_save ();
 	}
 
@@ -757,6 +1189,12 @@ feed_list_view_rename_node (Node *node)
 
 /* node deletion dialog */
 
+static void
+feed_list_view_confirm_remove_node_cb (gpointer user_data)
+{
+	feedlist_remove_node ((Node *)user_data);
+}
+
 void
 feed_list_view_remove (Node *node)
 {
@@ -775,13 +1213,6 @@ feed_list_view_remove (Node *node)
 		node
 	);
 }
-
-static void
-feed_list_view_confirm_remove_node_cb (gpointer user_data)
-{
-	feedlist_remove_node ((Node *)user_data);
-}
-
 static void
 feed_list_view_confirm_add_subscription_cb (gpointer user_data)
 {
@@ -816,5 +1247,12 @@ feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription,
 void
 feed_list_view_reparent (Node *node)
 {
-	feed_list_view_reload_feedlist ();
+	Node *selected = feedlist_get_selected ();
+
+	if (!node)
+		return;
+
+	g_signal_emit_by_name (flv->feedlist, "node-removed", node->id);
+	g_signal_emit_by_name (flv->feedlist, "node-added", node->id);
+	feed_list_view_select (selected);
 }

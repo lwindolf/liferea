@@ -242,9 +242,8 @@
                 <property name="start-child">
                   <object class="GtkScrolledWindow" id="feedlistScrolledwindow">
                     <property name="child">
-                      <object class="GtkListBox" id="feedlist">
+                      <object class="GtkListView" id="feedlist">
                         <property name="focusable">1</property>
-                        <property name="selection-mode">single</property>
                       </object>
                     </property>
                     <property name="focusable">1</property>
@@ -326,35 +325,7 @@
         </item>
       </section>
     </submenu>
-    <submenu id="view_menu">
-      <attribute name="label" translatable="yes">_View</attribute>
-      <section>
-        <item>
-          <attribute name="action">app.fullscreen</attribute>
-          <attribute name="label" translatable="yes">_Fullscreen</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="action">app.zoom-in</attribute>
-          <attribute name="label" translatable="yes">Zoom _In</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.zoom-out</attribute>
-          <attribute name="label" translatable="yes">Zoom _Out</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.zoom-reset</attribute>
-          <attribute name="label" translatable="yes">_Normal size</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
-          <attribute name="action">app.reduced-feedlist</attribute>
-          <attribute name="label" translatable="yes">_Reduced Feed List</attribute>
-        </item>
-      </section>
-    </submenu>
+
     <submenu id="tools_menu">
       <attribute name="label" translatable="yes">_Tools</attribute>
       <section>

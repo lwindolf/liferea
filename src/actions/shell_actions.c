@@ -67,13 +67,6 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 }
 
 static void
-on_feedlist_reduced_activate (GAction *action, GParamSpec *pspec, gpointer user_data)
-{
-	GVariant *state = g_action_get_state (G_ACTION (action));
-	feed_list_view_set_reduce_mode (g_variant_get_boolean (state));
-}
-
-static void
 on_prefbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	(void) g_object_new (PREFERENCES_DIALOG_TYPE, NULL);
@@ -271,13 +264,6 @@ shell_actions_create (LifereaShell *shell)
 	g_signal_connect (G_OBJECT (item_history_get_instance ()), "changed", G_CALLBACK (shell_actions_update_history), NULL);
 
 	shell_actions_update_history (NULL, NULL);
-
-	/* Prepare some toggle button states */
-	GtkApplication *app = gtk_window_get_application (GTK_WINDOW (liferea_shell_get_window ()));
-	GAction *action = g_settings_create_action (conf_get_settings (), "reduced-feedlist");
-	g_action_map_add_action (G_ACTION_MAP (app), action);
-	g_signal_connect (action, "notify::state", G_CALLBACK (on_feedlist_reduced_activate), action);
-	on_feedlist_reduced_activate (G_ACTION (action), NULL, NULL);
 
 	return ag;
 }

@@ -1,7 +1,7 @@
 /**
- * @file feed_list_view.h  the feed list in a GtkListBox
+ * @file feed_list_view.h  the feed list in a GtkListView
  *
- * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
@@ -37,12 +37,12 @@ G_DECLARE_FINAL_TYPE (FeedListView, feed_list_view, FEED_LIST, VIEW, GObject)
  *
  * Initializes the feed list. To be called only once.
  *
- * @listbox:	A listbox widget to use
+ * @listview:	A list view widget to use
  * @feedlist:	The feed list to display
  *
  * Returns: new FeedListView
  */
-FeedListView * feed_list_view_create (GtkListBox *listbox, FeedList *feedlist);
+FeedListView * feed_list_view_create (GtkListView *listview, FeedList *feedlist);
 
 /**
  * Move feed list selection by one row.
@@ -92,14 +92,6 @@ void feed_list_view_remove (Node *node);
  * @param exNode			the existing node
  */
 void feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription, Node *exNode);
-
-/**
- * feed_list_view_clear_feedlist:
- * @newReduceMode: TRUE to reduce the feed list view
- * 
- * Change reduced mode mode of the feed list view
- */
-void feed_list_view_set_reduce_mode (gboolean newReduceMode);
 
 /**
  * feed_list_view_reparent:

@@ -866,7 +866,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 4.) setup feed and item list widgets */
 	debug (DEBUG_GUI, "Setting up feed list");
-	shell->feedListView = feed_list_view_create (GTK_LIST_BOX (liferea_shell_lookup ("feedlist")), shell->feedlist);
+	shell->feedListView = feed_list_view_create (GTK_LIST_VIEW (liferea_shell_lookup ("feedlist")), shell->feedlist);
 
 	// 5.) Restore selection (FIXME: Move to feed list code?)
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {

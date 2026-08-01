@@ -333,24 +333,31 @@ on_feed_drop_on_listbox (GtkDropTarget *target,
 	             double y,
 	             gpointer data)
 {
-	GtkWidget *listbox = GTK_WIDGET (data);
-	GtkListBoxRow *row = gtk_list_box_get_row_at_y (GTK_LIST_BOX (listbox), (gint)y);
-	Node *targetNode = row ? g_object_get_data (G_OBJECT (row), "node") : NULL;
+	GtkWidget *listview = GTK_WIDGET (data);
+	GtkWidget *row = gtk_widget_pick (listview, x, y, GTK_PICK_DEFAULT);
+	Node *targetNode = NULL;
 	const gchar *text = g_value_get_string (value);
+
+	while (row) {
+		targetNode = g_object_get_data (G_OBJECT (row), "node");
+		if (targetNode)
+			break;
+		row = gtk_widget_get_parent (row);
+	}
 
 	if (row) {
 		double row_y = y;
 		graphene_point_t src = GRAPHENE_POINT_INIT (0.0f, (float)y);
 		graphene_point_t dst;
 
-		if (gtk_widget_compute_point (GTK_WIDGET (listbox), GTK_WIDGET (row), &src, &dst))
+		if (gtk_widget_compute_point (listview, GTK_WIDGET (row), &src, &dst))
 			row_y = dst.y;
 		gboolean result = ui_dnd_feed_drop_common (text, targetNode, row_y, GTK_WIDGET (row));
 		ui_dnd_clear_drop_feedback ();
 		return result;
 	}
 
-	gboolean result = ui_dnd_feed_drop_common (text, NULL, y, listbox);
+	gboolean result = ui_dnd_feed_drop_common (text, NULL, y, listview);
 	ui_dnd_clear_drop_feedback ();
 	return result;
 }
