@@ -30,6 +30,7 @@
 #include <libxml/parser.h>
 #include <libxml/entities.h>
 #include <libxml/HTMLparser.h>
+#include <libxml/HTMLtree.h>
 #include <libxml/xpath.h>
 
 #include "common.h"
@@ -168,7 +169,7 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 		return NULL;
 
 	buf = xmlBufferCreate ();
-	xmlNodeDump (buf, newDoc, xmlDocGetRootElement (newDoc), 0, 0 );
+	htmlNodeDump (buf, newDoc, xmlDocGetRootElement (newDoc) );
 
 	if (xmlBufferLength(buf) > 0)
 		result = (gchar *)xmlCharStrdup ((gchar *)xmlBufferContent (buf));
