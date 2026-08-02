@@ -32,7 +32,7 @@
 static void
 item_state_set_recount_flag (Node *node)
 {
-	node->needsRecount = TRUE;
+	feedlist_mark_node_recount (node);
 }
 
 void

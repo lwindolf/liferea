@@ -131,19 +131,11 @@ Node * node_from_id (const gchar *id);
  * parent node of the currently selected feed or the 
  * selected folder will be used.
  *
- * To be used before calling feedlist_node_added()
+ * To be used before calling feedlist_node_added().
+ * 
+ * Do not use to move nodes, only for new nodes!
  */
 void node_set_parent (Node *node, Node *parent, gint position);
-
-/**
- * node_reparent:
- * @node:		the node
- * @new_parent: 	nodes new parent
- *
- * Set a node's new parent and update UI. If a node already has a parent, 
- * it will be removed from its parent children list. 
- */ 
-void node_reparent (Node *node, Node *new_parent);
 
 /**
  * node_remove:

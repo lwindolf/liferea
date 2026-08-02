@@ -40,6 +40,38 @@
 
 static void feedlist_save	(void);
 
+static gboolean feedlist_flush_pending_node_recounts_cb (gpointer user_data);
+static void feedlist_flush_pending_node_recounts (void);
+static void feedlist_update_node_counters_now (Node *node);
+static void feedlist_collect_dirty_nodes (Node *node, gpointer user_data);
+
+static guint
+feedlist_node_depth (Node *node)
+{
+	guint depth = 0;
+
+	while (node && node->parent) {
+		depth++;
+		node = node->parent;
+	}
+
+	return depth;
+}
+
+static gint
+feedlist_dirty_node_compare (gconstpointer a, gconstpointer b)
+{
+	Node *node_a = *(Node * const *)a;
+	Node *node_b = *(Node * const *)b;
+	guint depth_a = feedlist_node_depth (node_a);
+	guint depth_b = feedlist_node_depth (node_b);
+
+	if (depth_a == depth_b)
+		return 0;
+
+	return (depth_a > depth_b) ? -1 : 1;
+}
+
 struct _FeedList {
 	GObject		parentInstance;
 
@@ -51,6 +83,7 @@ struct _FeedList {
 				                     display enabled) */
 
 	guint		saveTimer;		/*<< timer id for delayed feed list saving */
+	guint		recountTimer;		/*<< timer id for delayed counter recomputation */
 
 	gboolean	loading;		/*<< prevents the feed list being saved before it is completely loaded */
 };
@@ -62,6 +95,7 @@ enum {
 	NODE_SELECTED,		/*<< the selected node has changed */
 	NODE_ADDED,		/*<< a new node was added */
 	NODE_REMOVED,		/*<< a node was removed */
+	NODE_MOVED,		/*<< a node was moved (e.g. DnD or by remote account update)*/
 	LAST_SIGNAL
 };
 
@@ -90,6 +124,11 @@ feedlist_finalize (GObject *object)
 	if (feedlist->saveTimer) {
 		g_source_remove (feedlist->saveTimer);
 		feedlist->saveTimer = 0;
+	}
+
+	if (feedlist->recountTimer) {
+		g_source_remove (feedlist->recountTimer);
+		feedlist->recountTimer = 0;
 	}
 
 	/* Enforce synchronous save upon exit */
@@ -186,6 +225,18 @@ feedlist_class_init (FeedListClass *klass)
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
+
+	feedlist_signals[NODE_MOVED] =
+		g_signal_new ("node-moved",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
 }
 
 /* This method is used to initialize the node states in the feed list */
@@ -195,10 +246,8 @@ feedlist_init_node (Node *node)
 	if (node->subscription)
 		db_subscription_load (node->subscription);
 
-	node_update_counters (node);
-	g_signal_emit_by_name (feedlist, "node-updated", node->id); /* Necessary to initially set folder unread counters */
-
 	node_foreach_child (node, feedlist_init_node);
+	feedlist_update_node_counters_now (node);
 }
 
 static void
@@ -216,6 +265,7 @@ feedlist_init (FeedList *fl)
 	/* 3. Ensure folder expansion and unread count*/
 	debug (DEBUG_CACHE, "Initializing node state");
 	feedlist_foreach (feedlist_init_node);
+	feedlist_flush_pending_node_recounts ();
 
 	/* 4. Finally save the new feed list state */
 	feedlist->loading = FALSE;
@@ -340,14 +390,83 @@ feedlist_is_writable (void)
 }
 
 static void
-feedlist_update_node_counters (Node *node)
+feedlist_update_node_counters_now (Node *node)
 {
-	node_update_counters (node);	/* update with parent propagation */
+	guint oldUnreadCount = node->unreadCount;
+	guint oldItemCount = node->itemCount;
 
-	if (node->needsUpdate)
+	NODE_PROVIDER (node)->update_counters (node);
+	node->needsRecount = FALSE;
+
+	if ((oldUnreadCount != node->unreadCount) ||
+	    (oldItemCount != node->itemCount))
 		g_signal_emit_by_name (feedlist, "node-updated", node->id);
+}
+
+void
+feedlist_mark_node_recount (Node *node)
+{
+	if (!feedlist || !node)
+		return;
+
+	for (Node *iter = node; iter; iter = iter->parent) {
+		iter->needsRecount = TRUE;
+	}
+
+	if (!feedlist->loading && !feedlist->recountTimer)
+		feedlist->recountTimer = g_timeout_add (500, feedlist_flush_pending_node_recounts_cb, NULL);
+}
+
+static gboolean
+feedlist_flush_pending_node_recounts_cb (gpointer user_data)
+{
+	(void) user_data;
+	feedlist->recountTimer = 0;
+	feedlist_flush_pending_node_recounts ();
+	return G_SOURCE_REMOVE;
+}
+
+static void
+feedlist_flush_pending_node_recounts (void)
+{
+	GPtrArray *nodes;
+
+	if (!feedlist || !ROOTNODE)
+		return;
+
+	if (feedlist->recountTimer) {
+		g_source_remove (feedlist->recountTimer);
+		feedlist->recountTimer = 0;
+	}
+
+	nodes = g_ptr_array_new ();
+	feedlist_collect_dirty_nodes (ROOTNODE, nodes);
+
+	if (nodes->len == 0) {
+		g_ptr_array_free (nodes, TRUE);
+		return;
+	}
+
+	g_ptr_array_sort (nodes, feedlist_dirty_node_compare);
+	for (guint i = 0; i < nodes->len; i++) {
+		Node *node = g_ptr_array_index (nodes, i);
+
+		if (node && node->needsRecount)
+			feedlist_update_node_counters_now (node);
+	}
+	g_ptr_array_free (nodes, TRUE);
+}
+
+static void
+feedlist_collect_dirty_nodes (Node *node, gpointer user_data)
+{
+	GPtrArray *nodes = user_data;
+
+	if (node->needsRecount)
+		g_ptr_array_add (nodes, node);
+
 	if (node->children)
-		node_foreach_child (node, feedlist_update_node_counters);
+		node_foreach_child_data (node, feedlist_collect_dirty_nodes, user_data);
 }
 
 void
@@ -362,8 +481,6 @@ feedlist_mark_all_read (Node *node)
 		node_mark_all_read (node);
 	else
 		node_foreach_child (ROOTNODE, node_mark_all_read);
-
-	feedlist_foreach (feedlist_update_node_counters);
 
 	g_signal_emit_by_name (feedlist, "items-updated", node->id);
 }
@@ -605,10 +722,50 @@ feedlist_new_items (guint newCount)
 void
 feedlist_node_was_updated (Node *node)
 {
-	node_update_counters (node);
 	feedlist_schedule_save ();
 
 	g_signal_emit_by_name (feedlist, "node-updated", node->id);
+}
+
+void
+feedlist_node_was_moved (Node *node, Node *newParent, gint insertPos, gboolean interactive)
+{
+	if (!node || !newParent)
+		return;
+
+	Node *oldParent = node->parent;
+	if (!oldParent)
+		return;
+
+	debug (DEBUG_GUI, "Reparenting node '%s' to new parent '%s' (pos %d, interactive: %d)", node_get_title(node), node_get_title(newParent), insertPos, interactive);
+
+	gint oldPos = g_slist_index (oldParent->children, node);
+	oldParent->children = g_slist_remove (oldParent->children, node);
+
+	if ((oldParent == newParent) && insertPos > oldPos)
+		insertPos--;
+
+	newParent->children = g_slist_insert (newParent->children, node, insertPos);
+	node->parent = newParent;
+
+	db_node_update (node);
+
+	/* Only forward to node source type implementation (that would sync it to remote) 
+	   if it does not come from there */
+	if (interactive)
+		if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_REPARENT_NODE)
+			NODE_SOURCE_TYPE (node)->reparent_node (node, oldParent, newParent);
+
+	/* Emit signal on the change to allow the FeedListView to update its GtkTreeListModel */
+	g_signal_emit_by_name (feedlist, "node-moved", node->id);
+
+	/* Emit all 'node-updated' so remote sources can track feed migrations.
+	   and parent unread counters are up-to-date */
+	feedlist_node_was_updated (node);
+	feedlist_node_was_updated (oldParent);
+	if (newParent != oldParent)
+		feedlist_node_was_updated (newParent);
+
 }
 
 /* This method is only to be used when exiting the program! */

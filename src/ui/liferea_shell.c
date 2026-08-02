@@ -582,12 +582,12 @@ on_shell_key_pressed_event (GtkEventControllerKey *controller, guint keyval, gui
 				return TRUE;
 				break;
 			case GDK_KEY_u:
-				ui_common_treeview_move_cursor (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist")), -1);
+				feed_list_view_move_cursor (shell->feedListView, -1);
 				item_list_view_move_cursor_to_first (shell->itemListView);
 				return TRUE;
 				break;
 			case GDK_KEY_d:
-				ui_common_treeview_move_cursor (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist")), 1);
+				feed_list_view_move_cursor (shell->feedListView, 1);
 				item_list_view_move_cursor_to_first (shell->itemListView);
 				return TRUE;
 				break;
@@ -866,7 +866,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 4.) setup feed and item list widgets */
 	debug (DEBUG_GUI, "Setting up feed list");
-	shell->feedListView = feed_list_view_create (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist")), shell->feedlist);
+	shell->feedListView = feed_list_view_create (GTK_LIST_VIEW (liferea_shell_lookup ("feedlist")), shell->feedlist);
 
 	// 5.) Restore selection (FIXME: Move to feed list code?)
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {

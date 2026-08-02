@@ -23,7 +23,10 @@
 
 #include <gtk/gtk.h>
 
-/** sets up DnD for the feedlist model */
-void ui_dnd_setup_feedlist(GtkTreeStore *feedstore);
+/** sets up DnD for the feedlist widget */
+void ui_dnd_setup_feedlist (GtkWidget *feedlist);
+
+/** sets up DnD for a feedlist row widget */
+void ui_dnd_setup_feedlist_row (GtkWidget *row);
 
 #endif

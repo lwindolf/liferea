@@ -50,6 +50,15 @@ FeedList * feedlist_create (void);
 void feedlist_set_selected (Node *node);
 
 /**
+ * feedlist_mark_node_recount:
+ * @node: the node whose counters need to be refreshed
+ *
+ * Marks @node and its parents dirty so unread/item counters are
+ * recomputed lazily in a coalesced flush.
+ */
+void feedlist_mark_node_recount (Node *node);
+
+/**
  * feedlist_get_selected:
  *
  * Get currently selected feed list node
@@ -95,9 +104,21 @@ void feedlist_reset_new_item_count (void);
  * To be called when a feed is updated and has
  * new or dropped items forcing a node unread count
  * update for all affected nodes in the feed list.
- *
  */
 void feedlist_node_was_updated (Node *node);
+
+/**
+ * feedlist_node_was_moved:
+ * @node:		the moved node
+ * @newParent:		the new parent node
+ * @insertPos:		insert position in new parent children list
+ * @interactive:	TRUE if move was caused by user in UI
+ *
+ * To be called when a feed is moved in the feed list. Will trigger
+ * relocation of the node in the feedlist. If "interactive" is TRUE
+ * will also sync to remote if needed.
+ */
+void feedlist_node_was_moved (Node *node, Node *newParent, gint insertPos, gboolean interactive);
 
 /**
  * feedlist_get_root:

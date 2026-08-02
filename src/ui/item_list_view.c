@@ -437,10 +437,11 @@ static void
 item_list_view_item_batch_started (GObject *obj, gpointer user_data)
 {
 	ItemListView *ilv = ITEM_LIST_VIEW (user_data);
-	GtkAdjustment *adj;
+	//GtkAdjustment *adj;
 
-	adj = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (ilv->ilscrolledwindow));
-	gtk_adjustment_set_value (adj, 0.0);
+	// FIXME: still needed with GtkListView?
+	//adj = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (ilv->ilscrolledwindow));
+	//gtk_adjustment_set_value (adj, 0.0);
 
 	item_list_view_clear_rows (ilv);
 	g_slist_free (ilv->item_ids);
@@ -793,11 +794,24 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 			case GDK_BUTTON_SECONDARY: {
 				GMenu *menu = item_list_view_popup_menu (ilv, item);
 				GtkWidget *popover = gtk_popover_menu_new_from_model (G_MENU_MODEL (menu));
+				GtkWidget *anchor = gtk_widget_get_parent (GTK_WIDGET (ilv->listbox));
 				GdkRectangle rect;
+				graphene_point_t src = GRAPHENE_POINT_INIT ((float)x, (float)y);
+				graphene_point_t dst;
 
-				gtk_widget_set_parent (popover, ilv->ilscrolledwindow);
-				rect.x = (int)x;
-				rect.y = (int)y;
+				if (!anchor)
+					anchor = GTK_WIDGET (ilv->listbox);
+
+				gtk_widget_set_parent (popover, anchor);
+
+				if (anchor != GTK_WIDGET (ilv->listbox) &&
+				    gtk_widget_compute_point (GTK_WIDGET (ilv->listbox), anchor, &src, &dst)) {
+					rect.x = (int)dst.x;
+					rect.y = (int)dst.y;
+				} else {
+					rect.x = (int)x;
+					rect.y = (int)y;
+				}
 				rect.width = 1;
 				rect.height = 1;
 				gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
