@@ -1,7 +1,7 @@
 /**
  * @file item_state.c   item state controller
  * 
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,9 @@ item_set_flag_state (itemPtr item, gboolean newState)
 		return;
 
 	node_source_item_set_flag (node_from_id (item->nodeId), item, newState);
+
+	/* no duplicate state propagation to avoid copies 
+	   in the "Important" search folder */
 }
 
 void
@@ -58,9 +61,6 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 
 	/* 4. update item list GUI state */
 	itemlist_update_item (item);
-
-	/* no duplicate state propagation to avoid copies 
-	   in the "Important" search folder */
 }
 
 void
@@ -99,8 +99,8 @@ item_read_state_changed (itemPtr item, gboolean newState)
 	node = node_from_id (item->nodeId);
 	node_update_counters (node);
 
-	/* 6. duplicate state propagation */
-	if (item->validGuid) {
+	/* 6. duplicate state propagation (only for transition to read!) */
+	if (item->validGuid && newState == TRUE) {
 		GSList *duplicates, *iter;
 
 		duplicates = iter = db_item_get_duplicates (item->sourceId);
@@ -115,7 +115,8 @@ item_read_state_changed (itemPtr item, gboolean newState)
 			if (duplicate && duplicate->id != item->id && node_from_id (duplicate->nodeId)) {
 				item_set_read_state (duplicate, newState);
 			}
-			if (duplicate) item_unload (duplicate);
+			if (duplicate)
+				item_unload (duplicate);
 			iter = g_slist_next (iter);
 		}
 		g_slist_free (duplicates);
@@ -148,20 +149,6 @@ itemset_mark_read (Node *node)
 					item_state_set_recount_flag (node);
 					node_source_item_mark_read (node, item, TRUE);
 				}
-
-
-				GSList *duplicates = db_item_get_duplicate_nodes (item->sourceId);
-				GSList *duplicate = duplicates;
-				while (duplicate) {
-					gchar *nodeId = (gchar *)duplicate->data;
-					Node *affectedNode = node_from_id (nodeId);
-					if (affectedNode)
-						item_state_set_recount_flag (affectedNode);
-					g_free (nodeId);
-					duplicate = g_slist_next (duplicate);
-				}
-				g_slist_free(duplicates);
-
 			}
 			item_unload (item);
 		}

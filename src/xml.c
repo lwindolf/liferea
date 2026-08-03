@@ -30,6 +30,7 @@
 #include <libxml/parser.h>
 #include <libxml/entities.h>
 #include <libxml/HTMLparser.h>
+#include <libxml/HTMLtree.h>
 #include <libxml/xpath.h>
 
 #include "common.h"
@@ -170,7 +171,7 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 		return NULL;
 
 	buf = xmlBufferCreate ();
-	xmlNodeDump (buf, newDoc, xmlDocGetRootElement (newDoc), 0, 0 );
+	htmlNodeDump (buf, newDoc, xmlDocGetRootElement (newDoc) );
 
 	if (xmlBufferLength(buf) > 0)
 		result = (gchar *)xmlCharStrdup ((gchar *)xmlBufferContent (buf));
@@ -491,7 +492,6 @@ xpath_find (xmlNodePtr node, const gchar *expr)
 gboolean
 xpath_foreach_match (xmlNodePtr node, const gchar *expr, xpathMatchFunc func, gpointer user_data)
 {
-
 	if (node && node->doc) {
 		xmlXPathContextPtr xpathCtxt = NULL;
 		xmlXPathObjectPtr xpathObj = NULL;

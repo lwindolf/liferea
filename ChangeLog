@@ -1,6 +1,12 @@
-To be released
+2026-08-04  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.13
+
+	* Fixes #1575 Serialize feed item document as HTML not XML
+	  (Peter Simonyi)
+
+	* Removes some unnecessary duplicate processing when marking all items read
+	  (Lars Windolf)
 
 	* Fixes Reedah login (invalid auth token)
 	  (Lars Windolf)
