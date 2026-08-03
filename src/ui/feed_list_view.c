@@ -133,12 +133,14 @@ feed_list_view_create_child_model_cb (gpointer item, gpointer user_data)
 }
 
 static void
-feed_list_view_rebuild_tree_model_cache (void)
+feed_list_view_rebuild (void)
 {
 	Node *root;
 
 	if (!flv)
 		return;
+
+	gtk_widget_set_sensitive (GTK_WIDGET (flv->listview), FALSE);
 
 	g_clear_object (&flv->tree_model);
 	g_clear_object (&flv->tree_root_model);
@@ -158,6 +160,10 @@ feed_list_view_rebuild_tree_model_cache (void)
 	                                            feed_list_view_create_child_model_cb,
 	                                            NULL,
 	                                            NULL);
+
+	gtk_single_selection_set_model (flv->selection_model, G_LIST_MODEL (flv->tree_model));
+
+	gtk_widget_set_sensitive (GTK_WIDGET (flv->listview), TRUE);
 }
 
 static void
@@ -285,31 +291,7 @@ feed_list_view_get_current_view_selection (void)
 }
 
 static guint
-feed_list_view_find_position_for_node (Node *node)
-{
-	guint n_items;
-
-	if (!flv || !flv->tree_model || !node)
-		return GTK_INVALID_LIST_POSITION;
-
-	n_items = g_list_model_get_n_items (G_LIST_MODEL (flv->tree_model));
-	for (guint i = 0; i < n_items; i++) {
-		GtkTreeListRow *tree_row;
-		Node *candidate;
-
-		tree_row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), i));
-		candidate = feed_list_view_tree_row_get_node (tree_row);
-		g_object_unref (tree_row);
-
-		if (candidate == node)
-			return i;
-	}
-
-	return GTK_INVALID_LIST_POSITION;
-}
-
-static guint
-feed_list_view_find_position_for_node_id (const gchar *nodeId)
+feed_list_view_find_position (const gchar *nodeId)
 {
 	guint n_items;
 
@@ -318,12 +300,8 @@ feed_list_view_find_position_for_node_id (const gchar *nodeId)
 
 	n_items = g_list_model_get_n_items (G_LIST_MODEL (flv->tree_model));
 	for (guint i = 0; i < n_items; i++) {
-		GtkTreeListRow *tree_row;
-		Node *candidate;
-
-		tree_row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), i));
-		candidate = feed_list_view_tree_row_get_node (tree_row);
-		g_object_unref (tree_row);
+		g_autoptr(GtkTreeListRow)tree_row = GTK_TREE_LIST_ROW (g_list_model_get_item (G_LIST_MODEL (flv->tree_model), i));
+		Node *candidate = feed_list_view_tree_row_get_node (tree_row);
 
 		if (candidate && candidate->id && g_str_equal (candidate->id, nodeId))
 			return i;
@@ -360,7 +338,7 @@ feed_list_view_find_index_in_model (GListModel *model, Node *node)
 static GListStore *
 feed_list_view_parent_store_for_node (Node *node)
 {
-	GtkTreeListRow *parent_row;
+	g_autoptr(GtkTreeListRow)parent_row = NULL;
 	GListModel *children;
 	guint parent_position;
 
@@ -370,7 +348,7 @@ feed_list_view_parent_store_for_node (Node *node)
 	if (node->parent == feedlist_get_root ())
 		return flv->tree_root_model;
 
-	parent_position = feed_list_view_find_position_for_node (node->parent);
+	parent_position = feed_list_view_find_position (node->parent->id);
 	if (parent_position == GTK_INVALID_LIST_POSITION)
 		return NULL;
 
@@ -379,12 +357,9 @@ feed_list_view_parent_store_for_node (Node *node)
 		return NULL;
 
 	children = gtk_tree_list_row_get_children (parent_row);
-	if (!children) {
-		g_object_unref (parent_row);
+	if (!children)
 		return NULL;
-	}
 
-	g_object_unref (parent_row);
 	return G_LIST_STORE (children);
 }
 
@@ -446,7 +421,7 @@ feed_list_view_refresh_node_item (Node *node)
 	if (!node || !flv || !flv->tree_model)
 		return FALSE;
 
-	position = feed_list_view_find_position_for_node (node);
+	position = feed_list_view_find_position (node->id);
 	if (position == GTK_INVALID_LIST_POSITION)
 		return feed_list_view_insert_node_item (node);
 
@@ -461,11 +436,12 @@ feed_list_view_refresh_node_item (Node *node)
 
 	return TRUE;
 }
+
 static gboolean
 feed_list_view_remove_node_item (const gchar *nodeId)
 {
-	GtkTreeListRow *row;
-	GtkTreeListRow *parent_row;
+	g_autoptr(GtkTreeListRow) row = NULL;
+	g_autoptr(GtkTreeListRow) parent_row = NULL;
 	Node *node;
 	GListModel *model;
 	GListStore *store;
@@ -475,7 +451,7 @@ feed_list_view_remove_node_item (const gchar *nodeId)
 	if (!nodeId || !flv || !flv->tree_model)
 		return FALSE;
 
-	position = feed_list_view_find_position_for_node_id (nodeId);
+	position = feed_list_view_find_position (nodeId);
 	if (position == GTK_INVALID_LIST_POSITION)
 		return TRUE;
 
@@ -486,14 +462,6 @@ feed_list_view_remove_node_item (const gchar *nodeId)
 	node = feed_list_view_tree_row_get_node (row);
 	parent_row = gtk_tree_list_row_get_parent (row);
 	model = parent_row ? gtk_tree_list_row_get_children (parent_row) : G_LIST_MODEL (flv->tree_root_model);
-
-	/* Drop our row references *before* mutating the store below. GtkTreeListModel
-	   can synchronously dispose row wrappers (and trigger GtkListView item unbind)
-	   as a side effect of the store mutation; holding on to "row"/"parent_row"
-	   across that call risks a double g_object_unref / use-after-free once the
-	   dropped item's row is torn down from under us. */
-	g_object_unref (row);
-	g_clear_object (&parent_row);
 
 	if (!model || !node)
 		return FALSE;
@@ -547,9 +515,6 @@ feed_list_view_factory_setup_cb (GtkListItemFactory *factory, GtkListItem *list_
 	GtkWidget *label;
 	GtkWidget *count;
 
-	(void) factory;
-	(void) user_data;
-
 	expander = gtk_tree_expander_new ();
 	box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 	icon = gtk_image_new ();
@@ -592,11 +557,10 @@ feed_list_view_factory_bind_cb (GtkListItemFactory *factory, GtkListItem *list_i
 	gchar *count_markup;
 	gulong expanded_handler;
 
-	(void) factory;
-	(void) user_data;
-
 	expander = gtk_list_item_get_child (list_item);
 	tree_row = GTK_TREE_LIST_ROW (gtk_list_item_get_item (list_item));
+	gtk_tree_expander_set_list_row (GTK_TREE_EXPANDER (expander), tree_row);
+	
 	icon = g_object_get_data (G_OBJECT (expander), "icon");
 	label = g_object_get_data (G_OBJECT (expander), "label");
 	count = g_object_get_data (G_OBJECT (expander), "count");
@@ -604,8 +568,6 @@ feed_list_view_factory_bind_cb (GtkListItemFactory *factory, GtkListItem *list_i
 
 	if (!node)
 		return;
-
-	gtk_tree_expander_set_list_row (GTK_TREE_EXPANDER (expander), tree_row);
 
 	label_markup = feed_list_view_node_label_markup (node);
 	count_markup = feed_list_view_node_count_markup (node);
@@ -633,8 +595,7 @@ feed_list_view_factory_unbind_cb (GtkListItemFactory *factory, GtkListItem *list
 	GtkTreeListRow *expanded_row;
 	gulong expanded_handler;
 
-	(void) factory;
-	(void) user_data;
+	gtk_widget_set_sensitive (gtk_list_item_get_child (list_item), FALSE);
 
 	expander = gtk_list_item_get_child (list_item);
 	expanded_row = g_object_get_data (G_OBJECT (expander), "expanded-row");
@@ -645,7 +606,6 @@ feed_list_view_factory_unbind_cb (GtkListItemFactory *factory, GtkListItem *list
 
 	/* Clear the expander's row while the row object is still guaranteed alive. */
 	gtk_tree_expander_set_list_row (GTK_TREE_EXPANDER (expander), NULL);
-
 	if (expanded_row)
 		g_object_unref (expanded_row);
 
@@ -675,7 +635,7 @@ feed_list_view_expand_path (Node *node)
 			continue;
 
 		path_node->expanded = TRUE;
-		position = feed_list_view_find_position_for_node (path_node);
+		position = feed_list_view_find_position (path_node->id);
 		if (position == GTK_INVALID_LIST_POSITION)
 			continue;
 
@@ -934,7 +894,7 @@ feed_list_view_node_removed (GObject *obj, gchar *nodeId, gpointer user_data)
 }
 
 static void
-feed_list_view_node_moved (GObject *obj, gchar *nodeId, const gchar *newParentId, gint insertPos, gpointer user_data)
+feed_list_view_node_moved (GObject *obj, gchar *nodeId, gpointer user_data)
 {
 	Node *node = node_from_id (nodeId);
 	if (!node)
@@ -1024,13 +984,6 @@ feed_list_view_create (GtkListView *listview, FeedList *feedlist)
 	gtk_widget_add_controller (GTK_WIDGET (flv->listview), GTK_EVENT_CONTROLLER (middle_gesture));
 	gtk_widget_add_controller (GTK_WIDGET (flv->listview), GTK_EVENT_CONTROLLER (popup_gesture));
 
-	/* Keep URL drops enabled; row reordering DnD is no longer tree-model based. */
-	ui_dnd_setup_feedlist (GTK_WIDGET (flv->listview));
-
-	/* For performance prevent selection signals when filling the feed list
-	   will be enabled when LifereaShell setup is finished */
-	gtk_widget_set_sensitive (GTK_WIDGET (flv->listview), FALSE);
-
 	g_signal_connect (feedlist, "node-added", G_CALLBACK (feed_list_view_node_changed), flv);
 	g_signal_connect (feedlist, "node-removed", G_CALLBACK (feed_list_view_node_removed), flv);
 	g_signal_connect (feedlist, "node-moved", G_CALLBACK (feed_list_view_node_moved), flv);
@@ -1038,11 +991,7 @@ feed_list_view_create (GtkListView *listview, FeedList *feedlist)
 	g_signal_connect (feedlist, "node-selected", G_CALLBACK (feed_list_view_node_selected), flv);
 
 	selected = feedlist_get_selected ();
-	flv->suppress_selection = TRUE;
-	feed_list_view_rebuild_tree_model_cache ();
-	if (flv->selection_model)
-		gtk_single_selection_set_model (flv->selection_model, G_LIST_MODEL (flv->tree_model));
-	flv->suppress_selection = FALSE;
+	feed_list_view_rebuild ();
 	feed_list_view_select (selected);
 
 	return flv;
@@ -1059,7 +1008,7 @@ feed_list_view_select (Node *node)
 		if (node->parent)
 			feed_list_view_expand_path (LIFEREA_NODE (node->parent));
 
-		position = feed_list_view_find_position_for_node (node);
+		position = feed_list_view_find_position (node->id);
 		if (position != GTK_INVALID_LIST_POSITION) {
 			GtkRoot *root = gtk_widget_get_root (GTK_WIDGET (flv->listview));
 			GtkWidget *focus = root ? gtk_root_get_focus (root) : NULL;

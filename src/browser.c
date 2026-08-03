@@ -25,7 +25,7 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "item_state.h"
+#include "itemlist.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
 #include "ui/liferea_shell.h"
@@ -165,7 +165,8 @@ browser_launch_item (itemPtr item, open_link_target_type open_link_target)
 					break;
 			}
 
-			item_set_read_state (item, TRUE);
+			if (!item->readStatus)
+				itemlist_toggle_read_status (item);
 			g_free (link);
 		} else
 			liferea_shell_set_important_status_bar (_("This item has no link specified!"));

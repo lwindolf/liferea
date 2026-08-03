@@ -71,7 +71,6 @@ liferea_item_class_init (LifereaItemClass *klass)
 static void
 liferea_item_init (LifereaItem *item)
 {
-	item->popupStatus = TRUE;
 }
 
 LifereaItem *
@@ -96,9 +95,7 @@ item_copy (LifereaItem *item)
 	item_set_description (copy, item->description);
 	item_set_id (copy, item->sourceId);
 
-	copy->updateStatus = item->updateStatus;
 	copy->readStatus = item->readStatus;
-	copy->popupStatus = FALSE;
 	copy->flagStatus = item->flagStatus;
 	copy->time = item->time;
 	copy->validTime = item->validTime;
@@ -282,9 +279,6 @@ item_to_json (LifereaItem *item)
 
 	json_builder_set_member_name (b, "readStatus");
 	json_builder_add_boolean_value (b, item->readStatus);
-
-	json_builder_set_member_name (b, "updateStatus");
-	json_builder_add_boolean_value (b, item->updateStatus);
 
 	json_builder_set_member_name (b, "flagStatus");
 	json_builder_add_boolean_value (b, item->flagStatus);

@@ -57,7 +57,7 @@ struct tcAtomFeed tc_atom_feed[] = {
                 "true",
                 "1",
                 "{\"type\":\"feed\",\"id\":\"dummy\",\"title\":null,\"unreadCount\":0,\"children\":0,\"source\":null,\"origSource\":null,\"discontinued\":false,\"error\":0,\"updateError\":null,\"httpError\":null,\"httpErrorCode\":0,\"filterError\":null,\"metadata\":[{\"homepage\":\"http://localhost\"}]}",
-                "{\"id\":0,\"title\":\"i1\",\"description\":\"D\",\"source\":\"http://localhost/item1.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[]}"
+                "{\"id\":0,\"title\":\"i1\",\"description\":\"D\",\"source\":\"http://localhost/item1.html\",\"readStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[]}"
         },
         // Test case with rel="alternate" and rel="self" links (alternate must win)
         {
@@ -66,7 +66,7 @@ struct tcAtomFeed tc_atom_feed[] = {
                 "true",
                 "1",
                 "{\"type\":\"feed\",\"id\":\"dummy\",\"title\":null,\"unreadCount\":0,\"children\":0,\"source\":null,\"origSource\":null,\"discontinued\":false,\"error\":0,\"updateError\":null,\"httpError\":null,\"httpErrorCode\":0,\"filterError\":null,\"metadata\":[{\"homepage\":\"https://bits.debian.org/\"},{\"contentUpdateDate\":\"2025-09-21T13:05:00+02:00\"}]}",
-                "{\"id\":0,\"title\":\"Bits From Argentina - August 2025\",\"description\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xml:base=\\\"https://bits.debian.org/\\\"/>\",\"source\":\"https://bits.debian.org/2025/09/bits-from-argentina-august-2025.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":true,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":\"tag:bits.debian.org,2025-09-21:/2025/09/bits-from-argentina-august-2025.html\",\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[{\"pubDate\":\"2025-09-21T13:05:00+02:00\"},{\"contentUpdateDate\":\"2025-09-21T13:05:00+02:00\"},{\"author\":\"Emmanuel Arias\"},{\"category\":\"events\"},{\"category\":\"debconf26\"},{\"category\":\"Argentina\"}]}"
+                "{\"id\":0,\"title\":\"Bits From Argentina - August 2025\",\"description\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xml:base=\\\"https://bits.debian.org/\\\"/>\",\"source\":\"https://bits.debian.org/2025/09/bits-from-argentina-august-2025.html\",\"readStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":true,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":\"tag:bits.debian.org,2025-09-21:/2025/09/bits-from-argentina-august-2025.html\",\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[{\"pubDate\":\"2025-09-21T13:05:00+02:00\"},{\"contentUpdateDate\":\"2025-09-21T13:05:00+02:00\"},{\"author\":\"Emmanuel Arias\"},{\"category\":\"events\"},{\"category\":\"debconf26\"},{\"category\":\"Argentina\"}]}"
         },
         // Test case with only rel="self" link
         {

@@ -18,6 +18,12 @@ To be released
 	  values but as lists.
 	  (Lars Windolf)
 
+	* Refactored feed list and item list to not use GtkTreeView anymore
+	  (Lars Windolf)
+
+	* Refactored unread counting for better performance
+	  (Lars Windolf)
+
 	* Reimplemented trayicon plugin using Status-Notifier-Item and libstray
 	  (Lars Windolf)
 
@@ -44,9 +50,14 @@ To be released
 	* Update of Brazilian Portuguese translation
 	  (Fúlvio Alves)
 
+	Dropped features
+
+	* Reduced feed list mode is not supported anymore.
+
 	Known problems
 	
 	* #1518 Update counter gets stuck with command download errors
+	* DnD of feeds causes random crashes
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>

@@ -57,14 +57,6 @@ itemSetPtr	db_itemset_load (const gchar *id);
 void	db_itemset_remove_all (const gchar *id);
 
 /**
- * Mass items state changing methods. Mark all items of
- * a given item set as old/popup.
- *
- * @param id	the node id
- */
-void	db_itemset_mark_all_popup (const gchar *id);
-
-/**
  * Returns the number of unread items for the given item set.
  *
  * @param id	the node id

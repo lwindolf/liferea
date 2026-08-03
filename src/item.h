@@ -50,8 +50,6 @@ struct _LifereaItem {
 
 	/* those fields should not be accessed directly. Accessors are provided. */
 	gboolean 	readStatus;		/*<< TRUE if the item has been read */
-	gboolean	popupStatus;		/*<< TRUE if the item was downloaded and is yet to be displayed by the popup notification feature */
-	gboolean	updateStatus;		/*<< TRUE if the item content was updated */
 	gboolean 	flagStatus;		/*<< TRUE if the item has been flagged */
 	gboolean	hasEnclosure;		/*<< TRUE if this item has at least one enclosure */
         gboolean        isHidden;               /*<< TRUE if this item has been 'hidden' in search folder */

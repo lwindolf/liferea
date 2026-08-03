@@ -145,7 +145,7 @@ item_list_view_apply_row_visibility (ItemListView *ilv, ItemListRow *row)
 {
 	Node *selected = feedlist_get_selected ();
 
-	gtk_widget_set_visible (row->favicon_image, !(selected && !selected->children));
+	gtk_widget_set_visible (row->favicon_image, !(selected && !selected->children && !IS_VFOLDER(selected)));
 	gtk_widget_set_visible (row->date_label, !ilv->wideView);
 	gtk_widget_set_visible (row->preview_label, ilv->wideView);
 	gtk_widget_set_visible (row->state_image, !ilv->wideView);
@@ -236,9 +236,9 @@ item_list_view_cmp_rows (ItemListView *ilv, ItemListRow *a, ItemListRow *b)
 		case NODE_VIEW_SORT_BY_TIME:
 		default:
 			if (a->time > b->time)
-				cmp = -1;
-			else if (a->time < b->time)
 				cmp = 1;
+			else if (a->time < b->time)
+				cmp = -1;
 			else
 				cmp = 0;
 			break;
@@ -246,11 +246,11 @@ item_list_view_cmp_rows (ItemListView *ilv, ItemListRow *a, ItemListRow *b)
 
 	if (cmp == 0) {
 		if (a->time > b->time)
-			cmp = -1;
-		else if (a->time < b->time)
 			cmp = 1;
+		else if (a->time < b->time)
+			cmp = -1;
 		else
-			cmp = (a->id < b->id) ? -1 : (a->id > b->id ? 1 : 0);
+			cmp = (a->id < b->id) ? 1 : (a->id > b->id ? -1 : 0);
 	}
 
 	if (ilv->sort_reversed)

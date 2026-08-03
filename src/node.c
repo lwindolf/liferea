@@ -269,11 +269,8 @@ node_mark_all_read (Node *node)
 	if (!node)
 		return;
 
-	if ((node->unreadCount > 0) || (IS_VFOLDER (node))) {
+	if ((node->unreadCount > 0) || (IS_VFOLDER (node)))
 		itemset_mark_read (node);
-		node->unreadCount = 0;
-		node->needsUpdate = TRUE;
-	}
 
 	if (node->children)
 		node_foreach_child (node, node_mark_all_read);

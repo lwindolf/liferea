@@ -648,9 +648,6 @@ db_init (void)
 	db_new_statement ("itemsetRemoveAllStmt",
 	                  "DELETE FROM items WHERE node_id = ? OR (comment = 1 AND parent_node_id = ?)");
 
-	db_new_statement ("itemsetMarkAllPopupStmt",
-	                  "UPDATE items SET popup = 0 WHERE node_id = ?");
-
 	db_new_statement ("itemLoadStmt",
 	                  "SELECT "
 	                  "title,"
@@ -887,8 +884,6 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	itemPtr item = item_new ();
 
 	item->readStatus	= sqlite3_column_int (stmt, 1)?TRUE:FALSE;
-	item->updateStatus	= sqlite3_column_int (stmt, 2)?TRUE:FALSE;
-	item->popupStatus	= sqlite3_column_int (stmt, 3)?TRUE:FALSE;
 	item->flagStatus	= sqlite3_column_int (stmt, 4)?TRUE:FALSE;
 	item->validGuid		= sqlite3_column_int (stmt, 7)?TRUE:FALSE;
 	item->time		= sqlite3_column_int64 (stmt, 9);
@@ -1035,8 +1030,8 @@ db_item_update (itemPtr item)
 	stmt = db_get_statement ("itemUpdateStmt");
 	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 2,  item->readStatus?1:0);
-	sqlite3_bind_int  (stmt, 3,  item->updateStatus?1:0);
-	sqlite3_bind_int  (stmt, 4,  item->popupStatus?1:0);
+	sqlite3_bind_int  (stmt, 3,  0);  // updateStatus not used anymore
+	sqlite3_bind_int  (stmt, 4,  0);  // popupStatus not used anymore
 	sqlite3_bind_int  (stmt, 5,  item->flagStatus?1:0);
 	sqlite3_bind_text (stmt, 6,  item->source, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 7,  item->sourceId, -1, SQLITE_TRANSIENT);
@@ -1087,7 +1082,7 @@ db_item_state_update (itemPtr item)
 	stmt = db_get_statement ("itemStateUpdateStmt");
 	sqlite3_bind_int (stmt, 1, item->readStatus?1:0);
 	sqlite3_bind_int (stmt, 2, item->flagStatus?1:0);
-	sqlite3_bind_int (stmt, 3, item->updateStatus?1:0);
+	sqlite3_bind_int (stmt, 3, 0);  // updateStatus not used anymore
 	sqlite3_bind_int (stmt, 4, item->id);
 
 	if (sqlite3_step (stmt) != SQLITE_DONE)
@@ -1182,25 +1177,6 @@ db_itemset_remove_all (const gchar *id)
 
 	if (SQLITE_DONE != res)
 		g_warning ("removing all items failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-
-	sqlite3_finalize (stmt);
-
-}
-
-void
-db_itemset_mark_all_popup (const gchar *id)
-{
-	sqlite3_stmt	*stmt;
-	gint		res;
-
-	debug (DEBUG_DB, "marking all items popup for item set with %s", id);
-
-	stmt = db_get_statement ("itemsetMarkAllPopupStmt");
-	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
-	res = sqlite3_step (stmt);
-
-	if (SQLITE_DONE != res)
-		g_warning ("marking all items popup failed (error code=%d, %s)", res, sqlite3_errmsg(db));
 
 	sqlite3_finalize (stmt);
 

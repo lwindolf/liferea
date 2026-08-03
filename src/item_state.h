@@ -1,7 +1,7 @@
 /**
  * @file item_state.c   item state controller interface
  * 
- * Copyright (C) 2007-2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,8 @@ void item_flag_state_changed (itemPtr item, gboolean newState);
 /**
  * Request to change the read state of the given item.
  *
+ * Only to be called by item list!
+ * 
  * @param item		the item
  * @param newState	new read state
  */
@@ -64,12 +66,5 @@ void item_read_state_changed (itemPtr item, gboolean newState);
  * @param nodeId	the node whose item list is to be modified
  */
 void itemset_mark_read (Node *node);
-
-/**
- * Resets the popup flag for all items of the given item set.
- *
- * @param nodeId	the node whose item list is to be modified
- */
-void item_state_set_all_popup (const gchar *nodeId);
 
 #endif

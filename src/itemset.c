@@ -171,7 +171,6 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 				if (newItem->validTime)
 					oldItem->time = newItem->time;
 
-				oldItem->updateStatus = TRUE;
 				// FIXME: this does not remove metadata from DB
 				metadata_list_free (oldItem->metadata);
 				oldItem->metadata = newItem->metadata;
@@ -241,25 +240,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 
 		debug (DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title (item), item->id, itemSet);
 
-		/* step 4: duplicate detection, mark read if it is a duplicate */
-		if (item->validGuid) {
-			GSList	*iter, *duplicates;
-
-			duplicates = iter = db_item_get_duplicates (item->sourceId);
-			while (iter) {
-				debug (DEBUG_UPDATE, "-> duplicate guid exists: #%lu", GPOINTER_TO_UINT (iter->data));
-				iter = g_slist_next (iter);
-			}
-
-			if (g_slist_length (duplicates) > 1) {
-				item->readStatus = TRUE;	/* no unread counting... */
-				item->popupStatus = FALSE;	/* no notification... */
-			}
-
-			g_slist_free (duplicates);
-		}
-
-		/* step 5: Check item for new enclosures to download */
+		/* step 4: Check item for new enclosures to download */
 		if (node &&
 		    node->subscription &&
 		    node->subscription->encAutoDownload) {
