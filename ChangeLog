@@ -2,6 +2,9 @@ To be released
 
 	Version 2.0-RC5
 
+	* Fixes #1575 Serialize feed item document as HTML not XML
+	  (Peter Simonyi)
+
 	* Fixes #1551 full screen mode for videos broken
 	  (Lars Windolf)
 
@@ -58,6 +61,7 @@ To be released
 	
 	* #1518 Update counter gets stuck with command download errors
 	* DnD of feeds causes random crashes
+	* Crash on feed removal
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>
