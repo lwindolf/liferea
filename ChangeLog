@@ -21,6 +21,24 @@
 	  on startup" preference is disabled
 	  (Lars Windolf)
 	
+	* Fixes a dummy source handling regression
+	  (Lars Windolf)
+	
+	* Feed view now renders a HTTP 410 discontinued warning
+	  (Lars Windolf)
+	
+	* Improve liferea-add-feed helper script to work without already running instance
+	  (Lars Windolf)
+	
+	* Fixed outdated section in documentation about subscriptions, removed dead FAQ link 
+	  (Lars Windolf)
+	
+	* Improve documentation CSS with auto margin and max-width
+	  (Lars Windolf)
+	
+	* Updated manpage
+	  (Lars Windolf)
+	
 
 2026-06-16  Lars Windolf <lars.windolf@gmx.de>
 
