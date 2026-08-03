@@ -50,7 +50,7 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 	/* 2. save state to DB */
 	db_item_state_update (item);
 
-	/* 3. node and vfolder counters update */
+	/* 3. update vfolder counters */
 	vfolder_foreach (node_update_counters);
 
 	/* 4. update item list GUI state */
@@ -63,11 +63,7 @@ item_set_read_state (itemPtr item, gboolean newState)
 	if (newState == item->readStatus)
 		return;
 	
-	Node *node = node_from_id (item->nodeId);
-	if (!node)
-		return;
-
-	node_source_item_mark_read (node, item, newState);
+	node_source_item_mark_read (node_from_id (item->nodeId), item, newState);
 }
 
 void
