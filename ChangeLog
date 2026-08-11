@@ -1,3 +1,11 @@
+2026-08-11  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16.14
+
+	* Fixes #1577 Strange message "Account login for 'root' has not yet started" on all feeds
+	  (Lars Windolf)
+
+
 2026-08-04  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.13

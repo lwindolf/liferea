@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  *
- * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -557,7 +557,7 @@ node_source_to_json (Node *node, JsonBuilder *b)
 	json_builder_set_member_name (b, "type");
 	json_builder_add_string_value (b, node->source->type->id);
 
-	if (!(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN)) {
+	if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) {
 		json_builder_set_member_name (b, "loginState");
 		json_builder_add_int_value (b, node->source->loginState);
 		json_builder_set_member_name (b, "authFailures");
@@ -566,8 +566,10 @@ node_source_to_json (Node *node, JsonBuilder *b)
 		json_builder_add_int_value (b, NODE_SOURCE_MAX_AUTH_FAILURES);
 	}
 
-	json_builder_set_member_name (b, "actionQueueLength");
-	json_builder_add_int_value (b, g_queue_get_length (node->source->actionQueue));
+	if (node->source->actionQueue) {
+		json_builder_set_member_name (b, "actionQueueLength");
+		json_builder_add_int_value (b, g_queue_get_length (node->source->actionQueue));
+	}
 	json_builder_end_object (b);
 }
 
