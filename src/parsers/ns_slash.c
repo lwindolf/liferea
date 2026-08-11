@@ -23,7 +23,7 @@
 
 #include "metadata.h"
 
-/* a tag list from http://f3.grp.yahoofs.com/v1/YP40P2oiXvP5CAx4TM6aQw8mDrCtNDwF9_BkMwcvulZHdlhYmCk5cS66_06t9OaIVsubWpwtMUTxYNG7/Modules/Proposed/mod_slash.html
+/* a tag list from https://web.resource.org/rss/1.0/modules/slash/
 
    hmm... maybe you can find a somewhat shorter URL!
 
