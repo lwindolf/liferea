@@ -62,6 +62,7 @@ To be released
 	* #1518 Update counter gets stuck with command download errors
 	* DnD of feeds causes random crashes
 	* Crash on feed removal
+	* Add subscription when feed (and not a folder) selected does not work
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>
