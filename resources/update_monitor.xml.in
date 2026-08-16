@@ -164,6 +164,27 @@
                                         {{/each}}
                                 </tbody>
                         </table>
+
+                        <h2>Fetching</h2>
+
+                        <table id="update_monitor_jobs">
+                                <thead>
+                                        <tr>
+                                                <th>URL</th>
+                                                <th>State</th>
+                                                <th>Flags</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        {{#each feedlist.jobs}}
+                                        <tr>
+                                                <td>{{source}}</td>
+                                                <td>{{state}}</td>
+                                                <td>{{flags}}</td>
+                                        </tr>
+                                        {{/each}}
+                                </tbody>
+                        </table>
                 </div>
         </script>
 </head>

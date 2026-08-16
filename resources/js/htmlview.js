@@ -357,6 +357,9 @@ async function load_update_monitor(data) {
 		render("body", templateFix (document.getElementById('template').innerHTML), {
 			feedlist
 		});
+
+		if(window.debugflags > 0)
+			document.body.innerHTML += '<pre>' + escapeHTML(JSON.stringify(feedlist.jobs, null, 2)) + '</pre>';
 	} catch (e) {
 		document.body.innerHTML = `<div id="errors">Error: Failed to load update monitor! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
 		console.error(e.stack);

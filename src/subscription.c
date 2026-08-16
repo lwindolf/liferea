@@ -365,6 +365,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		debug (DEBUG_UPDATE, "subscription: |%s| source specific prepare (source=%s)", subscription->source, subscription->node?subscription->node->source->root->title:"???");
 		subscription->updateJob = update_job_new (subscription, request, subscription_process_update_result, subscription, flags);
 	} else {
+		debug (DEBUG_UPDATE, "subscription: |%s| source specific prepare failed (source=%s)\n", subscription->source, subscription->node?subscription->node->source->root->title:"???");
 		g_object_unref (request);
 	}
 

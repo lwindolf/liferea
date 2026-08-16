@@ -541,14 +541,13 @@ update_job_new_flow (gpointer owner,
 	job->cmd.fd = -1;
 	job->cmd.pid = 0;
 
-	/* For a flow we have no request yet, we directly trigger the callback
+	/* For a flow we initially have no request yet, so we directly trigger the callback
 	   so it prepares the first request and then we can schedule the job */
 	gboolean result = (job->callback) (job);
 	g_assert (result == FALSE);
 	g_assert (job->request);
 
         update_job_queue_add ((gpointer)job, flags);
-
 	return job;
 }
 

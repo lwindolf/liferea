@@ -52,23 +52,32 @@ reedah_source_check_node_for_removal (Node *node, gpointer user_data)
 			feedlist_node_removed (node);
 
 		node_foreach_child_data (node, reedah_source_check_node_for_removal, user_data);
-	} else {
-		elements = iter = json_array_get_elements (array);
-		while (iter) {
-			JsonNode *json_node = (JsonNode *)iter->data;
-			// FIXME: Compare with unescaped string
-			if (g_str_equal (node->subscription->origSource, json_get_string (json_node, "id") + 5)) {
-				debug (DEBUG_UPDATE, "node: %s", node->subscription->origSource);
-				found = TRUE;
-				break;
-			}
-			iter = g_list_next (iter);
-		}
-		g_list_free (elements);
-
-		if (!found)
-			feedlist_node_removed (node);
+		return;
 	}
+
+	/* is a feed */
+	const gchar *remoteId = metadata_list_get (node->subscription->metadata, "reedah-feed-id");
+	if (!remoteId) {
+		g_warning ("Dropping Reedah feed '%s' (%s) without id!", node->subscription->origSource, node->id);
+		feedlist_node_removed (node);
+		return;
+	}
+
+	elements = iter = json_array_get_elements (array);
+	while (iter) {
+		JsonNode *json_node = (JsonNode *)iter->data;
+		// FIXME: Compare with unescaped string
+		if (g_str_equal (node->subscription->origSource, json_get_string (json_node, "id") + 5)) {
+			debug (DEBUG_UPDATE, "node: %s", node->subscription->origSource);
+			found = TRUE;
+			break;
+		}
+		iter = g_list_next (iter);
+	}
+	g_list_free (elements);
+
+	if (!found)
+		feedlist_node_removed (node);
 }
 
 /* subscription list merging functions */

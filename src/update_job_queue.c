@@ -41,7 +41,8 @@ update_job_queue_add (gpointer data, updateFlags flags)
 {
 	UpdateJob *job = (UpdateJob *)data;
 
-	jobs = g_slist_append (jobs, job);
+	if (NULL == g_slist_find (jobs, job))
+		jobs = g_slist_append (jobs, job);
 
 	g_assert (job->state == JOB_STATE_PENDING);
 
@@ -80,9 +81,10 @@ update_job_cancel_by_owner (gpointer owner)
 void
 update_job_queue_remove (gpointer job)
 {
-	if (!g_slist_find (jobs, job))
+	if (!g_slist_find (jobs, job)) {
+		debug (DEBUG_UPDATE, "update_job_queue_remove: BAD job %p not found in queue", job);
 		return;
-
+	}
 	jobs = g_slist_remove (jobs, job);
 
 	// Count all subscription jobs (but ignore HTML5, favicon and other download requests)
@@ -93,17 +95,27 @@ update_job_queue_remove (gpointer job)
 void
 update_job_queue_get_count (guint *count, guint *max)
 {
+	guint normal, prio, result;
+
+	normal = g_thread_pool_unprocessed (normalPool);
+	prio = g_thread_pool_unprocessed (priorityPool);
+	result = g_thread_pool_unprocessed (resultPool);
+
 	debug (DEBUG_UPDATE, "update job queue thread pools unprocessed: normal=%d / prio=%d / result=%d , running: normal=%d / prio=%d / result=%d",
-	       g_thread_pool_unprocessed (normalPool),
-	       g_thread_pool_unprocessed (priorityPool),
-	       g_thread_pool_unprocessed (resultPool),
+	       normal, prio, result,
 	       g_thread_pool_get_num_threads (normalPool),
 	       g_thread_pool_get_num_threads (priorityPool),
-	       g_thread_pool_get_num_threads (resultPool));	
+	       g_thread_pool_get_num_threads (resultPool));
 
 	*count = currentJobCount;
 	if (*count > maxcount)
 		maxcount = *count;
+
+	if (normal + prio + result == 0) // correct miscounting
+		*count = 0;
+
+	if(*count == 0 && g_slist_length(jobs) > 0)
+		debug (DEBUG_UPDATE, "update job queue: count=0 but jobs list has %d entries", g_slist_length(jobs));
 
         if (*count == 0)
 	    maxcount = 0; // reset max when no jobs are running
@@ -151,8 +163,26 @@ update_job_queue_to_json (gpointer builder)
 	json_builder_set_member_name (b, "max");
 	json_builder_add_int_value (b, g_thread_pool_get_max_threads (resultPool));
 	json_builder_end_object (b);
-
 	json_builder_end_array (b);
+
+	json_builder_set_member_name (b, "jobs");
+	json_builder_begin_array (b);
+	GSList *iter = jobs;
+	while (iter) {
+		UpdateJob *job = (UpdateJob *)iter->data;
+		g_print("to_json: job %p (%s) state=%d flags=%d\n", job, job->request->source, job->state, job->flags);
+		json_builder_begin_object (b);
+		json_builder_set_member_name (b, "source");
+		json_builder_add_string_value (b, job->request->source);
+		json_builder_set_member_name (b, "state");
+		json_builder_add_int_value (b, (gint64)job->state);
+		json_builder_set_member_name (b, "flags");
+		json_builder_add_int_value (b, (gint64)job->flags);
+		json_builder_end_object (b);
+		iter = g_slist_next (iter);	
+	}
+	json_builder_end_array (b);
+
 }
 
 typedef void (*UpdateJobFunc)(gpointer job);
