@@ -36,7 +36,6 @@
 #include "subscription_icon.h"
 #include "xml.h"
 #include "ui/auth_dialog.h"
-#include "ui/feed_list_view.h"
 #include "ui/liferea_shell.h"
 
 /* The allowed feed protocol prefixes (see http://25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html) */
@@ -249,7 +248,6 @@ subscription_process_update_result (UpdateJob *job)
 	subscriptionPtr subscription = (subscriptionPtr)job->user_data;
 	Node		*node = subscription->node;
 	gboolean	processing = FALSE;
-	guint		count, maxcount;
 
 	debug (DEBUG_UPDATE, "subscription: |%s| process update result (HTTP status %d)", subscription->source, result->httpstatus);
 
@@ -288,13 +286,6 @@ subscription_process_update_result (UpdateJob *job)
 	} else {
 		processing = TRUE;
 	}
-
-	/* Clear status bar if we are last update in progress */
-	update_job_queue_get_count (&count, &maxcount);
-	if (count > 1)
-		liferea_shell_set_header_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
-	else
-		liferea_shell_set_header_bar (NULL);
 
 	subscription_update_error_status (subscription, result->httpstatus, result->updateError, result->filterErrors);
 
@@ -335,7 +326,6 @@ subscription_update (subscriptionPtr subscription, guint flags)
 {
 	UpdateRequest	*request;
 	guint64		now;
-	guint		count, maxcount;
 
 	if (!subscription)
 		return;
@@ -368,12 +358,6 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		debug (DEBUG_UPDATE, "subscription: |%s| source specific prepare failed (source=%s)\n", subscription->source, subscription->node?subscription->node->source->root->title:"???");
 		g_object_unref (request);
 	}
-
-	update_job_queue_get_count (&count, &maxcount);
-	if (count > 1)
-		liferea_shell_set_header_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
-	else
-		liferea_shell_toast (_("Updating '%s'..."), node_get_title (subscription->node));
 }
 
 void

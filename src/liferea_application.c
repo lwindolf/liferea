@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea startup
  *
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Some code like the command line handling was inspired by
@@ -55,6 +55,8 @@ struct _LifereaApplication {
 	LifereaDBus	*dbus;
 	LifereaShell	*shell;
 	LifereaPluginsEngine *plugins;
+
+	UpdateJobQueue	*updateQueue;
 
 	gulong		debug_flags;
 };
@@ -143,7 +145,7 @@ on_app_startup (GApplication *gapp, gpointer user_data)
 	conf_init ();
 
 	/* Setup update queue handling */
-	update_init ();
+	app->updateQueue = update_job_queue_get_instance ();
 
 	/* order is important! */
 	db_init ();
@@ -161,7 +163,7 @@ on_app_shutdown (GApplication *gapp, gpointer user_data)
 	LifereaApplication *app = LIFEREA_APPLICATION (gapp);
 
 	/* order is important ! */
-	update_deinit ();
+	g_clear_object (&app->updateQueue);
 
 	/* unregister plugins to drop all shell references */
 	liferea_plugins_engine_unregister_all ();

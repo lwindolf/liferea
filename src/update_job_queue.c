@@ -26,34 +26,105 @@
 #include "node_providers/feed.h"
 #include "update.h"
 
-/* global update job list, used for lookups when cancelling */
-static GSList	*jobs = NULL;
+enum {
+	UPDATE_RUNNING,
+	LAST_SIGNAL
+};
 
-static guint	currentJobCount = 0;	// actual number of pending / processing jobs
-static guint	maxcount = 0;		// previous max number of jobs (gets reset when currentJobCount = 0)
+static guint update_job_queue_signals[LAST_SIGNAL] = { 0 };
 
-static GThreadPool *normalPool = NULL;		// thread pool for normal priority request processing
-static GThreadPool *priorityPool = NULL;	// thread pool for high priority request processing
-static GThreadPool *resultPool = NULL;		// thread pool for result post-processing (needed as we support blocking filter scripts)
+G_DEFINE_TYPE (UpdateJobQueue, update_job_queue, G_TYPE_OBJECT)
+
+static UpdateJobQueue *queue = NULL;
+
+typedef void (*UpdateJobFunc)(gpointer job);
+
+static void
+update_job_queue_run (gpointer data, gpointer userdata)
+{
+	((UpdateJobFunc)userdata)(data);
+}
+
+static void
+update_job_queue_finalize (GObject *object)
+{
+	G_OBJECT_CLASS(update_job_queue_parent_class)->finalize(object);
+
+	/* Cancel all pending jobs, to avoid async callbacks accessing the GUI */
+	GSList *iter = queue->jobs;
+	while (iter) {
+		UpdateJob *job = (UpdateJob *)iter->data;
+		job->callback = NULL;
+		iter = g_slist_next (iter);
+	}
+
+	g_thread_pool_free (queue->normalPool, TRUE, TRUE);
+	g_thread_pool_free (queue->priorityPool, TRUE, TRUE);
+	g_thread_pool_free (queue->resultPool, TRUE, TRUE);
+	queue->normalPool = NULL;
+	queue->priorityPool = NULL;
+	queue->resultPool = NULL;
+
+	g_slist_free (queue->jobs);
+	queue->jobs = NULL;
+	queue = NULL;
+}
+
+static void
+update_job_queue_class_init (UpdateJobQueueClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	object_class->finalize = update_job_queue_finalize;
+
+	update_job_queue_signals[UPDATE_RUNNING] =
+		g_signal_new ("update-running",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE,
+		0);
+}
+
+static void
+update_job_queue_init (UpdateJobQueue *self)
+{
+	gint max_jobs;
+	conf_get_int_value (MAX_UPDATE_THREADS, &max_jobs);
+	queue = self;
+	queue->normalPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_execute,        max_jobs, FALSE, NULL);
+	queue->priorityPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_execute,        max_jobs, FALSE, NULL);
+	queue->resultPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_process_result, max_jobs, FALSE, NULL);
+}
 
 void
 update_job_queue_add (gpointer data, updateFlags flags)
 {
 	UpdateJob *job = (UpdateJob *)data;
 
-	if (NULL == g_slist_find (jobs, job))
-		jobs = g_slist_append (jobs, job);
+	if (!queue)
+		return;
+
+	// flow jobs are re-added to the queue for each job, let's count them once only
+	if (NULL == g_slist_find (queue->jobs, job)) {
+		queue->jobs = g_slist_append (queue->jobs, job);
+		
+		// Count all subscription jobs (but ignore HTML5, favicon and other download requests)
+		if (!(job->flags & UPDATE_REQUEST_NO_FEED)) {
+			queue->currentJobCount++;
+			queue->maxCount++;
+			g_signal_emit_by_name (queue, "update-running");
+		}
+	}
 
 	g_assert (job->state == JOB_STATE_PENDING);
 
-	// Count all subscription jobs (but ignore HTML5, favicon and other download requests)
-	if (!(job->flags & UPDATE_REQUEST_NO_FEED))
-		currentJobCount++;
-
 	if (flags & UPDATE_REQUEST_PRIORITY_HIGH)
-		g_thread_pool_push (priorityPool, data, NULL);
+		g_thread_pool_push (queue->priorityPool, data, NULL);
 	else
-		g_thread_pool_push (normalPool, data, NULL);
+		g_thread_pool_push (queue->normalPool, data, NULL);
 }
 
 void
@@ -61,15 +132,20 @@ update_job_queue_finish (gpointer data)
 {
 	UpdateJob *job = (UpdateJob *)data;
 
+	if (!queue)
+		return;
+
 	g_assert (job->state == JOB_STATE_FINISHED || job->state == JOB_STATE_FAILED);
-	g_thread_pool_push (resultPool, (gpointer)job, NULL);
+	g_thread_pool_push (queue->resultPool, (gpointer)job, NULL);
 }
 
 void
 update_job_cancel_by_owner (gpointer owner)
 {
-	GSList	*iter = jobs;
+	if (!queue)
+		return;
 
+	GSList	*iter = queue->jobs;
 	while (iter) {
 		UpdateJob *job = (UpdateJob *)iter->data;
 		if (job->owner == owner)
@@ -81,52 +157,66 @@ update_job_cancel_by_owner (gpointer owner)
 void
 update_job_queue_remove (gpointer job)
 {
-	if (!g_slist_find (jobs, job)) {
+	if (!queue)
+		return;
+
+	if (!g_slist_find (queue->jobs, job)) {
 		debug (DEBUG_UPDATE, "update_job_queue_remove: BAD job %p not found in queue", job);
 		return;
 	}
-	jobs = g_slist_remove (jobs, job);
+	queue->jobs = g_slist_remove (queue->jobs, job);
 
 	// Count all subscription jobs (but ignore HTML5, favicon and other download requests)
-	if (!(((UpdateJob *)job)->flags & UPDATE_REQUEST_NO_FEED))
-		currentJobCount--;
+	if (!(((UpdateJob *)job)->flags & UPDATE_REQUEST_NO_FEED)) {
+		if (queue->currentJobCount > 0)
+			queue->currentJobCount--;
+		g_signal_emit_by_name (queue, "update-running");
+	}
 }
 
 void
 update_job_queue_get_count (guint *count, guint *max)
 {
 	guint normal, prio, result;
+	guint normalRunning, prioRunning, resultRunning;
 
-	normal = g_thread_pool_unprocessed (normalPool);
-	prio = g_thread_pool_unprocessed (priorityPool);
-	result = g_thread_pool_unprocessed (resultPool);
+	if (!queue) {
+		*count = 0;
+		*max = 0;
+		return;
+	}
+
+	normal = g_thread_pool_unprocessed (queue->normalPool);
+	prio = g_thread_pool_unprocessed (queue->priorityPool);
+	result = g_thread_pool_unprocessed (queue->resultPool);
+	normalRunning = g_thread_pool_get_num_threads (queue->normalPool);
+	prioRunning = g_thread_pool_get_num_threads (queue->priorityPool);
+	resultRunning = g_thread_pool_get_num_threads (queue->resultPool);
 
 	debug (DEBUG_UPDATE, "update job queue thread pools unprocessed: normal=%d / prio=%d / result=%d , running: normal=%d / prio=%d / result=%d",
 	       normal, prio, result,
-	       g_thread_pool_get_num_threads (normalPool),
-	       g_thread_pool_get_num_threads (priorityPool),
-	       g_thread_pool_get_num_threads (resultPool));
+	       normalRunning, prioRunning, resultRunning);
 
-	*count = currentJobCount;
-	if (*count > maxcount)
-		maxcount = *count;
+	if (g_slist_length(queue->jobs) == 0) // correct miscounting
+		queue->currentJobCount = 0;
 
-	if (normal + prio + result == 0) // correct miscounting
-		*count = 0;
+	*count = queue->currentJobCount;
 
-	if(*count == 0 && g_slist_length(jobs) > 0)
-		debug (DEBUG_UPDATE, "update job queue: count=0 but jobs list has %d entries", g_slist_length(jobs));
+	if (*count > queue->maxCount)
+		queue->maxCount = *count;
+	else if (*count == 0)
+		queue->maxCount = 0; // reset max when no jobs are running
 
-        if (*count == 0)
-	    maxcount = 0; // reset max when no jobs are running
-
-	*max = maxcount;
+	*max = queue->maxCount;
 }
 
 void
 update_job_queue_to_json (gpointer builder)
 {
 	JsonBuilder *b = JSON_BUILDER (builder);
+
+	if (!queue)
+		return;
 
 	json_builder_set_member_name (b, "queues");
 	json_builder_begin_array (b);
@@ -135,42 +225,41 @@ update_job_queue_to_json (gpointer builder)
 	json_builder_set_member_name (b, "name");
 	json_builder_add_string_value (b, "high priority requests");
 	json_builder_set_member_name (b, "pending");
-	json_builder_add_int_value (b, g_thread_pool_unprocessed (priorityPool));
+	json_builder_add_int_value (b, g_thread_pool_unprocessed (queue->priorityPool));
 	json_builder_set_member_name (b, "running");
-	json_builder_add_int_value (b, g_thread_pool_get_num_threads (priorityPool));
+	json_builder_add_int_value (b, g_thread_pool_get_num_threads (queue->priorityPool));
 	json_builder_set_member_name (b, "max");
-	json_builder_add_int_value (b, g_thread_pool_get_max_threads (priorityPool));
+	json_builder_add_int_value (b, g_thread_pool_get_max_threads (queue->priorityPool));
 	json_builder_end_object (b);
 
 	json_builder_begin_object (b);
 	json_builder_set_member_name (b, "name");
 	json_builder_add_string_value (b, "normal requests");
 	json_builder_set_member_name (b, "pending");
-	json_builder_add_int_value (b, g_thread_pool_unprocessed (normalPool));
+	json_builder_add_int_value (b, g_thread_pool_unprocessed (queue->normalPool));
 	json_builder_set_member_name (b, "running");
-	json_builder_add_int_value (b, g_thread_pool_get_num_threads (normalPool));
+	json_builder_add_int_value (b, g_thread_pool_get_num_threads (queue->normalPool));
 	json_builder_set_member_name (b, "max");
-	json_builder_add_int_value (b, g_thread_pool_get_max_threads (normalPool));
+	json_builder_add_int_value (b, g_thread_pool_get_max_threads (queue->normalPool));
 	json_builder_end_object (b);
 	
 	json_builder_begin_object (b);
 	json_builder_set_member_name (b, "name");
 	json_builder_add_string_value (b, "result processing");
 	json_builder_set_member_name (b, "pending");
-	json_builder_add_int_value (b, g_thread_pool_unprocessed (resultPool));
+	json_builder_add_int_value (b, g_thread_pool_unprocessed (queue->resultPool));
 	json_builder_set_member_name (b, "running");
-	json_builder_add_int_value (b, g_thread_pool_get_num_threads (resultPool));
+	json_builder_add_int_value (b, g_thread_pool_get_num_threads (queue->resultPool));
 	json_builder_set_member_name (b, "max");
-	json_builder_add_int_value (b, g_thread_pool_get_max_threads (resultPool));
+	json_builder_add_int_value (b, g_thread_pool_get_max_threads (queue->resultPool));
 	json_builder_end_object (b);
 	json_builder_end_array (b);
 
 	json_builder_set_member_name (b, "jobs");
 	json_builder_begin_array (b);
-	GSList *iter = jobs;
+	GSList *iter = queue->jobs;
 	while (iter) {
 		UpdateJob *job = (UpdateJob *)iter->data;
-		g_print("to_json: job %p (%s) state=%d flags=%d\n", job, job->request->source, job->state, job->flags);
 		json_builder_begin_object (b);
 		json_builder_set_member_name (b, "source");
 		json_builder_add_string_value (b, job->request->source);
@@ -182,46 +271,11 @@ update_job_queue_to_json (gpointer builder)
 		iter = g_slist_next (iter);	
 	}
 	json_builder_end_array (b);
-
 }
 
-typedef void (*UpdateJobFunc)(gpointer job);
-
-static void
-update_job_queue_run (gpointer data, gpointer userdata)
+UpdateJobQueue *update_job_queue_get_instance (void)
 {
-	((UpdateJobFunc)userdata)(data);
-}
-
-void
-update_init (void)
-{
-	gint max_jobs;
-	conf_get_int_value (MAX_UPDATE_THREADS, &max_jobs);
-	normalPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_execute,        max_jobs, FALSE, NULL);
-	priorityPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_execute,        max_jobs, FALSE, NULL);
-	resultPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_process_result, max_jobs, FALSE, NULL);
-}
-
-void
-update_deinit (void)
-{
-	GSList	*iter = jobs;
-
-	/* Cancel all pending jobs, to avoid async callbacks accessing the GUI */
-	while (iter) {
-		UpdateJob *job = (UpdateJob *)iter->data;
-		job->callback = NULL;
-		iter = g_slist_next (iter);
-	}
-
-	g_thread_pool_free (normalPool, TRUE, TRUE);
-	g_thread_pool_free (priorityPool, TRUE, TRUE);
-	g_thread_pool_free (resultPool, TRUE, TRUE);
-	normalPool = NULL;
-	priorityPool = NULL;
-	resultPool = NULL;
-
-	g_slist_free (jobs);
-	jobs = NULL;
+	if (!queue)
+		queue = g_object_new (UPDATE_JOB_QUEUE_TYPE, NULL);
+	return queue;
 }

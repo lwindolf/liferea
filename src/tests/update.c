@@ -169,13 +169,15 @@ start_updates (gpointer user_data)
 int
 test_update (int argc, char *argv[])
 {
+        UpdateJobQueue *updateQueue;
+
 	g_test_init (&argc, &argv, NULL);
 
         if (g_strv_contains ((const gchar **)argv, "--debug"))
 		debug_set_flags (DEBUG_UPDATE | DEBUG_NET | DEBUG_CONF);
 
         conf_init ();
-	update_init ();
+        updateQueue = update_job_queue_get_instance ();
         network_init ();
 
         g_timeout_add_seconds (1, start_updates, NULL);
@@ -183,8 +185,8 @@ test_update (int argc, char *argv[])
         loop = g_main_loop_new (NULL, FALSE);
         g_main_loop_run (loop);
 
-        // network_deinit ();      // causes invalid point on cancellable free :-(
-        update_deinit ();
+        // network_deinit ();      // causes invalid pointer on cancellable free :-(
+        g_clear_object (&updateQueue);
         conf_deinit ();
 
 	return result;

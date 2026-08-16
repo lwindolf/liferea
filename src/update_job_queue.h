@@ -24,6 +24,22 @@
 
 #include "update_job.h"
 
+#define UPDATE_JOB_QUEUE_TYPE (update_job_queue_get_type ())
+G_DECLARE_FINAL_TYPE (UpdateJobQueue, update_job_queue, UPDATE, JOB_QUEUE, GObject)
+
+struct _UpdateJobQueue {
+	GObject parent_instance;
+
+	GSList	*jobs;
+
+	guint	currentJobCount;	// actual number of pending / processing jobs
+	guint	maxCount;		// previous max number of jobs (gets reset when currentJobCount = 0)
+
+	GThreadPool *normalPool;	// thread pool for normal priority request processing
+	GThreadPool *priorityPool;	// thread pool for high priority request processing
+	GThreadPool *resultPool;	// thread pool for result post-processing (needed as we support blocking filter scripts)
+};
+
 /**
  * update_job_queue_add:
  * @job:	the job to queue
@@ -67,21 +83,14 @@ void update_job_queue_remove (gpointer job);
 void update_job_queue_get_count (guint *count, guint *maxcount);
 
 /**
- * update_init: (skip)
+ * update_job_queue_get_instance: (skip)
  * 
- * Initialises the download subsystem.
- *
+ * Gets the singleton instance of the update job queue.
+
  * Must be called before gtk_init() and after thread initialization
  * as threads are used and for proper network-manager initialization.
  */
-void update_init (void);
-
-/**
- * update_deinit: (skip)
- * 
- * Stops all update processing and frees all used memory.
- */
-void update_deinit (void);
+UpdateJobQueue *update_job_queue_get_instance (void);
 
 /**
  * update_job_queue_to_json:
