@@ -70,15 +70,21 @@ ns_itunes_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 static void
 ns_itunes_parse_channel_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
-	gchar *tmp;
-	const gchar *old;
-
 	if (!xmlStrcmp (cur->name, BAD_CAST"summary") || !xmlStrcmp (cur->name, BAD_CAST"subtitle")) {
-		tmp = xhtml_extract (cur, 0, NULL);
-		old = metadata_list_get (ctxt->subscription->metadata, "description");
+		g_autofree gchar *tmp = xhtml_extract (cur, 0, NULL);
+		const gchar *old = metadata_list_get (ctxt->subscription->metadata, "description");
 		if (!old || strlen (old) < strlen (tmp))
 			metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
-		g_free (tmp);
+	}
+	else if(!xmlStrcmp (cur->name, BAD_CAST"category")) {
+		g_autofree gchar *tmp = xml_get_attribute (cur, "text");
+		if (tmp)
+			ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "category", tmp);
+	}
+	else if (!xmlStrcmp (cur->name, BAD_CAST"image")) {
+		g_autofree gchar *tmp = xml_get_attribute (cur, "href");
+		if (tmp)
+			metadata_list_set (&(ctxt->subscription->metadata), "imageUrl", tmp);
 	}
 }
 

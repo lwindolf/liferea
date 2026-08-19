@@ -12,6 +12,7 @@ To be released
 	* DnD of feeds causes random crashes
 	* Crashes when removing items
 	* Missing top margin when Readability.js does not convert text
+	* Folder expansion is delayed on startup
 
 
 2025-08-19  Lars Windolf <lars.windolf@gmx.de>

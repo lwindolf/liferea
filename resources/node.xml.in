@@ -27,6 +27,14 @@
                         {{#if copyright}}
 			        <div><_span>Copyright</_span>: {{{copyright}}}</div>
                         {{/if}}
+			{{#if categories}}
+				<span class='meta categories'>
+					<_span>Topics:</_span>
+					{{#each categories}}
+						<span class="category">{{.}}</span>
+					{{/each}}
+				</span>
+			{{/if}}
 		</header>
 
 		{{#if node.nodeSource}}
@@ -158,6 +166,10 @@
 
 
 		<div id="content" class="content">
+			{{#if imageUrl}}
+				<img src="{{imageUrl}}" alt="Feed logo"></img>
+			{{/if}}
+
                         {{#if description}}
 			        <div id="description">{{{description}}}</div>
                         {{/if}}

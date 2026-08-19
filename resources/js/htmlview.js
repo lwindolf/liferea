@@ -138,6 +138,8 @@ async function load_node(data, baseURL, direction) {
 			copyright		: metadata_get(node, "copyright"),
 			description		: metadata_get(node, "description"),
 			homepage		: metadata_get(node, "homepage"),
+			imageUrl		: metadata_get(node, "imageUrl"),
+			categories		: node?.metadata.filter((m) => m.category).map((m) => m.category),
 			blogroll		: metadata_get(node, "blogroll"),
 			blogrollData		: blogrollParsed
 		});
