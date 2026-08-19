@@ -227,6 +227,10 @@ async function load_item(data, baseURL, direction) {
 			via			: metadata_get(item, "via"),
 			slashSection		: metadata_get(item, "slashSection"),
 			slashDepartment		: metadata_get(item, "slashDepartment"),
+			slashComments		: metadata_get(item, "slashComments"),
+			mediaFavourites		: metadata_get(item, "mediaFavourites"),
+			mediastarRatingcount	: metadata_get(item, "mediastarRatingcount"),
+			mediastarRatingavg	: metadata_get(item, "mediastarRatingavg"),
 			categories		: item.metadata.filter((m) => m.category).map((m) => m.category),
 			videos			: enclosures.filter((m) => m.mime?.startsWith('video/')),
 			audios			: enclosures.filter((m) => m.mime?.startsWith('audio/'))

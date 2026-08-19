@@ -33,24 +33,22 @@
 static void
 ns_itunes_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
-	gchar *tmp;
-	
 	if (!xmlStrcmp(cur->name, BAD_CAST"author")) {
-		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
-		if (tmp) {
-			ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "author", tmp);
-			g_free (tmp);
-		}
+		g_autofree gchar *tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "author", tmp);
 	}
-	
-	if (!xmlStrcmp (cur->name, BAD_CAST"summary")) {
-		tmp = xhtml_extract (cur, 0, NULL);
+	else if (!xmlStrcmp (cur->name, BAD_CAST"summary")) {
+		g_autofree gchar *tmp = xhtml_extract (cur, 0, NULL);
 		item_set_description (ctxt->item, tmp);
-		g_free (tmp);
 	}
-	
-	if (!xmlStrcmp(cur->name, BAD_CAST"keywords")) {
-		gchar *keyword = tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+	else if (!xmlStrcmp (cur->name, BAD_CAST"image")) {
+		g_autofree gchar *tmp = xml_get_attribute (cur, "href");
+		if (tmp)
+			metadata_list_set (&(ctxt->item->metadata), "mediathumbnail", tmp);
+	}
+	else if (!xmlStrcmp(cur->name, BAD_CAST"keywords")) {
+		gchar *tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+		gchar *keyword = tmp;
 		gchar *allocated = tmp;
 		/* parse comma separated list and strip leading spaces... */
 		while (tmp) {

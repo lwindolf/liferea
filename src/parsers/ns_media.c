@@ -34,7 +34,7 @@
 static void
 parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
-	gchar *description, *tmp, *tmp2, *thumbnail, *count, *max, *avg, *views;
+	gchar *description, *tmp, *tmp2, *thumbnail, *count, *max, *avg;
 	/*
 	   Maximum definition could look like this:
 	   
@@ -149,12 +149,13 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			g_free (max);
 	}
 	else if (!xmlStrcmp(cur->name, BAD_CAST"statistics")) {
-			views = xml_get_attribute (cur, "views");
+			g_autofree gchar *views = xml_get_attribute (cur, "views");
+			g_autofree gchar *favourites = xml_get_attribute (cur, "favorites");
 
-			if (!views)
-				return;
-			metadata_list_set (&(ctxt->item->metadata), "mediaviews", views);
-			g_free (views);
+			if (views && !g_str_equal (views, "0"))
+				metadata_list_set (&(ctxt->item->metadata), "mediaviews", views);
+			if (favourites && !g_str_equal (favourites, "0"))
+				metadata_list_set (&(ctxt->item->metadata), "mediaFavourites", favourites);
 	}
 	// FIXME: should we support media:player too?
 }

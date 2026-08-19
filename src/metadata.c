@@ -95,6 +95,7 @@ metadata_init (void)
 	metadata_type_register ("slash",		METADATA_TYPE_HTML);	// deprecated
 	metadata_type_register ("slashSection",		METADATA_TYPE_HTML);
 	metadata_type_register ("slashDepartment",	METADATA_TYPE_HTML);
+	metadata_type_register ("slashComments",	METADATA_TYPE_TEXT);
 
 	/* type for gravatars */
 	metadata_type_register ("gravatar",		METADATA_TYPE_URL);
@@ -116,6 +117,7 @@ metadata_init (void)
 	metadata_type_register ("mediastarRatingcount", METADATA_TYPE_TEXT);
 	metadata_type_register ("mediastarRatingavg", 	METADATA_TYPE_TEXT);
 	metadata_type_register ("mediastarRatingmax", 	METADATA_TYPE_TEXT);
+	metadata_type_register ("mediaFavourites", 	METADATA_TYPE_TEXT);
 	metadata_type_register ("mediaviews", 		METADATA_TYPE_TEXT);
 
 	/* for source */

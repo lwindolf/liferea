@@ -49,13 +49,15 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp)
 			metadata_list_set (&(ctxt->item->metadata), "slashSection", tmp);
-			
 	} else if (!xmlStrcmp (BAD_CAST"department", cur->name)) {
 		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp)
 			metadata_list_set (&(ctxt->item->metadata), "slashDepartment", tmp);
-	}
-	
+	} else if (!xmlStrcmp (BAD_CAST"comments", cur->name)) {
+		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+		if (tmp && !g_str_equal (tmp, "0"))
+			metadata_list_set (&(ctxt->item->metadata), "slashComments", tmp);
+	}	
 }
 
 void

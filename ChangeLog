@@ -4,6 +4,14 @@ To be released
 
 	* Fixes missing installation of OPML default files
 	  (reported by marciof)
+	* Render media:starRating, media:community @favourites + @views, itunes:image and slash:comments
+	  (Lars Windolf)
+
+	Known problems
+	
+	* DnD of feeds causes random crashes
+	* Crashes when removing items
+	* Missing top margin when Readability.js does not convert text
 
 
 2025-08-19  Lars Windolf <lars.windolf@gmx.de>
@@ -80,10 +88,6 @@ To be released
 
 	* Update of Brazilian Portuguese translation
 	  (Fúlvio Alves)
-
-	Known problems
-	
-	* DnD of feeds causes random crashes
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>

@@ -54,6 +54,22 @@
                                                 </span>
                                         {{/if}}
                                 </div>
+                                <div class='socialHeader'>
+                                        {{#if mediastarRatingcount}}
+                                        {{#if mediastarRatingavg}}
+                                                 <span class='meta'><_span>{{mediastarRatingavg}} ⭐ ({{mediastarRatingcount}} votes)</_span></span>
+                                        {{/if}}
+                                        {{/if}}
+                                        {{#if mediaViews}}
+                                                <span class='meta'><_span>{{mediaViews}} Views</_span></span>
+                                        {{/if}}
+                                        {{#if slashComments}}
+                                                <span class='meta'><_span>{{slashComments}} Comments</_span></span>
+                                        {{/if}}
+                                        {{#if mediaFavourites}}
+                                                <span class='meta'><_span>{{mediaFavourites}} Likes</_span></span>
+                                        {{/if}}
+                                </div>
                         </header>			
 
                         <div id="content" class="content">
