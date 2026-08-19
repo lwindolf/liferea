@@ -1,6 +1,26 @@
-To be released
+2025-08-19  Lars Windolf <lars.windolf@gmx.de>
 
-	Version 2.0-RC5
+	Version 2.0
+
+	Changes:
+
+	* Liferea was ported to GTK4 and uses libadwaita
+	* Liferea uses a headerbar now instead of a menubar
+	* Feed and item list do use GtkListView
+	* New WebDAV based sync backend
+	* All node sources now use a common subscribing dialog
+	* Unread count numbers are now lazy-updated (every 500ms) to improve performance
+	* New update monitor that gives deeper insight into the background updating
+	  and node source synchronization
+	* Most of the dialogs use libadwaita widgets and are modal now
+
+	Removed Features:
+
+	* Reduced feed list mode is not supported anymore
+	* Item list view headers are now gone (use the context menu for sorting)
+	* Tray icon support has lost the feature to indicate the unread counter
+	
+	Changes to 2.0-RC4:
 
 	* Fixes #1575 Serialize feed item document as HTML not XML
 	  (Peter Simonyi)
@@ -53,15 +73,9 @@ To be released
 	* Update of Brazilian Portuguese translation
 	  (Fúlvio Alves)
 
-	Dropped features
-
-	* Reduced feed list mode is not supported anymore.
-
 	Known problems
 	
 	* DnD of feeds causes random crashes
-	* Crash on feed removal
-	* Add subscription when feed (and not a folder) selected does not work
 
 
 2025-06-16  Lars Windolf <lars.windolf@gmx.de>
@@ -204,6 +218,7 @@ To be released
 
 	* Changed simple search from a dialog to a search bar
 	  (Lars Windolf)
+
 
 2026-05-02  Lars Windolf <lars.windolf@gmx.de>
 
