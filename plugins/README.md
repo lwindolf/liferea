@@ -21,6 +21,6 @@ To help you getting started there is a tutorial on writing plugins:
 
 To find out where to download 3rd party plugins run this bash command:
 
-	    echo "${XDG_CONFIG_HOME-~/.local/share}/liferea/plugins"
+	echo "${XDG_DATA_HOME-~/.local/share}/liferea/plugins"
 
 Extract the 3rd party plugin to a new subdirectory in this path and restart Liferea.
