@@ -1,3 +1,11 @@
+To be released
+
+	Version 2.0.1
+
+	* Fixes missing installation of OPML default files
+	  (reported by marciof)
+
+
 2025-08-19  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0
