@@ -95,6 +95,7 @@ endforeach
 
 install_subdir('plugins', install_dir: libdir)
 install_subdir('css', install_dir: datadir)
+install_subdir('opml', install_dir: datadir)
 install_subdir('resources/help', install_dir: datadir)
 
 dbus_service_file = configure_file(
