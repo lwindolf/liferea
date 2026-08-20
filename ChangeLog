@@ -4,7 +4,11 @@ To be released
 
 	* Fixes missing installation of OPML default files
 	  (reported by marciof)
+
 	* Render media:starRating, media:community @favourites + @views, itunes:image and slash:comments
+	  (Lars Windolf)
+	
+	* Restores comment feed functionality. Now updates item view without scroll reset
 	  (Lars Windolf)
 
 	Known problems

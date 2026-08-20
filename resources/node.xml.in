@@ -202,6 +202,9 @@
 	import { load_node } from '/js/htmlview.js';
 	import * as u from '/js/user.js';
 
-        REPLACE_MARKER
-</script>
+        window.load_node = load_node;
+	window.update = load_node;
+        window.onload = (e) => {
+                REPLACE_MARKER
+        };</script>
 </html>

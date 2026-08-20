@@ -100,6 +100,31 @@
                                                 {{/if}}
                                         </div>
                                 {{/if}}
+
+                                <!-- add comments -->
+                                {{#if comments}}
+                                        <hr/>
+                                        <div id="item_comments">
+                                                {{#if commentsUri}}
+                                                        <h2><a href="{{commentsUri}}"><_span>Comments</_span></a> ({{comments.items.length}})</h2>
+                                                {{else}}
+                                                        <h2><_span>Comments</_span> ({{comments.items.length}})</h2>
+                                                {{/if}}
+
+                                                <!-- FIXME handle status and errors -->
+
+                                                {{#each comments.items}}
+                                                        <div class="comment">
+                                                                <div class="comment_title">{{title}}</div>
+                                                                <div class="comment_body">{{{description}}}</div>
+                                                        </div>
+                                                {{/each}}
+                                        </div>
+                                {{else}}
+                                        {{#if commentsUri}}
+                                               <p><a href="{{commentsUri}}"><_span>Comments</_span></a></p>
+                                        {{/if}}
+                                {{/if}}
                         </div>
                 </div>
         </script>
@@ -112,6 +137,7 @@
         import * as u from '/js/user.js';
 
         window.load_item = load_item;
+        window.update = load_item;
         window.onload = (e) => {
                 REPLACE_MARKER
         };

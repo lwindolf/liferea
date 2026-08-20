@@ -1,7 +1,7 @@
 /**
  * @file comments.c comment feed handling
  *
- * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,72 +22,55 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
+#include "itemlist.h"
+#include "json.h"
 #include "node_providers/feed.h"
 #include "metadata.h"
 #include "net.h"
-#include "net_monitor.h"
+#include "node.h"
 #include "update.h"
 
 /* Comment feeds in Liferea are simple flat lists of items attached
-   to a single item. Each item that has a comment feed URL in its
-   metadata list gets its comment feed updated as soon as the user
-   triggers rendering of the item in 3 pane mode.
+   as metadata to a single item. They are persisted in the item metadata.
 
-   Although rendered differently items and comment items are handled
-   in the same way. */
+   Comment feeds are fetched once on demand when viewing an item. Once the
+   comment feed fetch finished an item view reload presents the comments
+   at the bottom.
 
-static GHashTable	*commentFeeds = NULL;
+   Comment feeds are not associated with any node, they are an ephemeral
+   ad-hoc subscription.
 
-typedef struct commentFeed
-{
-	gulong		itemId;			/*<< parent item id */
-	gchar		*id;			/*<< id of the items comments feed (or NULL) */
-	gchar		*error;			/*<< description of error if comments download failed (or NULL)*/
-
-	UpdateJob	*updateJob;		/*<< update job structure used when downloading comments */
-	updateStatePtr	updateState;		/*<< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
-} *commentFeedPtr;
-
-static void
-comment_feed_free (commentFeedPtr commentFeed)
-{
-	if (commentFeed->updateJob)
-		update_job_cancel_by_owner (commentFeed);
-	if (commentFeed->updateState)
-		update_state_free (commentFeed->updateState);
-
-	g_free (commentFeed->error);
-	g_free (commentFeed->id);
-	g_free (commentFeed);
-}
-
-static void
-comment_feed_free_cb (gpointer key, gpointer value, gpointer user_data)
-{
-	comment_feed_free (value);
-}
-
-void
-comments_deinit (void)
-{
-	if (commentFeeds) {
-		g_hash_table_foreach (commentFeeds, comment_feed_free_cb, NULL);
-		g_hash_table_destroy (commentFeeds);
-		commentFeeds = NULL;
-	}
-}
-
-/**
- * Hash lookup to find comment feeds with the given id.
- * Returns the comment feed (or NULL).
+   No special feed settings are supported for comments feeds.
  */
-static commentFeedPtr
-comment_feed_from_id (const gchar *id)
-{
-	if (!commentFeeds)
-		return NULL;
 
-	return (commentFeedPtr) g_hash_table_lookup (commentFeeds, id);
+static gchar *
+comments_to_json (GList *items)
+{
+	g_autoptr(JsonBuilder) b = json_builder_new ();
+
+	json_builder_begin_object (b);
+	json_builder_set_member_name (b, "items");
+	json_builder_begin_array (b);
+	for (GList *iter = items; iter; iter = g_list_next (iter)) {
+		itemPtr item = (itemPtr)iter->data;
+		json_builder_begin_object (b);
+		json_builder_set_member_name (b, "title");
+		json_builder_add_string_value (b, item->title);
+		json_builder_set_member_name (b, "source");
+		json_builder_add_string_value (b, item->source);
+		// FIXME: add author from metadata
+		json_builder_set_member_name (b, "time");
+		json_builder_add_int_value (b, item->time);
+		json_builder_set_member_name (b, "description");
+		json_builder_add_string_value (b, item->description);
+		json_builder_end_object (b);
+	}
+	json_builder_end_array (b);
+	json_builder_set_member_name (b, "status");
+	json_builder_add_string_value (b, "ok");
+	json_builder_end_object (b);
+
+	return json_dump (b);
 }
 
 static gboolean
@@ -95,77 +78,45 @@ comments_process_update_result (UpdateJob *job)
 {
 	UpdateResult		*result = job->result;
 	feedParserCtxtPtr	ctxt;
-	commentFeedPtr		commentFeed = (commentFeedPtr)job->user_data;
 	itemPtr			item;
-	Node			*node;
+	g_autofree gchar	*error = NULL;
 
-	if(!(item = item_load (commentFeed->itemId)))
+	if (!(item = item_load (GPOINTER_TO_UINT (job->user_data))))
 		return TRUE;	/* item was deleted since */
 
-	/* note this is to update the feed URL on permanent redirects */
-	if (result->source && !g_strcmp0 (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
-
-		debug (DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"",
-		                      metadata_list_get (item->metadata, "commentFeedUri"),
-				      result->source);
-
-		metadata_list_set (&(item->metadata), "commentFeedUri", result->source);
-	}
-
-	if (401 == result->httpstatus) { /* unauthorized */
-		commentFeed->error = g_strdup (_("Authorization Error"));
-	} else if (410 == result->httpstatus) { /* gone */
-		metadata_list_set (&item->metadata, "commentFeedGone", "true");
-	} else if (304 == result->httpstatus) {
-		debug (DEBUG_UPDATE, "comment feed \"%s\" did not change", result->source);
+	if (304 == result->httpstatus) {
+		g_warning ("Comment feed update returned 304 Not Modified, this should not happen!");
 	} else if (result->data) {
 		debug (DEBUG_UPDATE, "received update result for comment feed \"%s\"", result->source);
 
-		/* parse the new downloaded feed into fake node, subscription and feed */
-		node = node_new ("feed");
-		node_set_subscription (node, subscription_new (result->source, NULL, NULL));
-		ctxt = feed_parser_ctxt_new (node->subscription, result->data, result->size);
+		/* parse the new downloaded feed using a ad-hoc subscription */
+		subscriptionPtr subscription = subscription_new (result->source, NULL, NULL);
+		ctxt = feed_parser_ctxt_new (subscription, result->data, result->size);
 
 		if (!feed_parse (ctxt)) {
-			debug (DEBUG_UPDATE, "parsing comment feed failed!");
+			// FIXME: use error from feed_parse() instead of generic error message
+			error = g_strdup (ctxt->subscription->parseErrors->str);
 		} else {
-			itemSetPtr	comments;
-			GList		*iter;
-
-			/* before merging mark all downloaded items as comments */
-			iter = ctxt->items;
-			while (iter) {
-				itemPtr comment = (itemPtr) iter->data;
-				comment->isComment = TRUE;
-				comment->parentItemId = commentFeed->itemId;
-				comment->parentNodeId = g_strdup (item->nodeId);
-				iter = g_list_next (iter);
-			}
-
 			debug (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
-			comments = db_itemset_load (commentFeed->id);
-			itemset_merge_items (comments, ctxt->items, ctxt->subscription->valid, FALSE);
-			itemset_free (comments);
-
-			/* No comment feed truncating as comment items are automatically
-			   dropped when the parent items are removed from cache. */
+			g_autofree gchar *json = comments_to_json (ctxt->items);
+			metadata_list_set (&(item->metadata), "commentFeedJson", json);
+			db_item_update (item);
+			itemlist_update_item (item);
 		}
 
-		g_object_unref (ctxt->subscription->node);
 		feed_parser_ctxt_free (ctxt);
+		subscription_free (subscription);
 	}
 
-	/* update error message */
-	g_free (commentFeed->error);
-	commentFeed->error = NULL;
-
-	if ((result->httpstatus < 200) || (result->httpstatus >= 400))
-		commentFeed->error = g_strdup (network_strerror (result->httpstatus));
-
-	/* clean up... */
-	commentFeed->updateJob = NULL;
-	update_state_free (commentFeed->updateState);
-	commentFeed->updateState = update_state_copy (result->updateState);
+	if (!error && ((result->httpstatus < 200) || (result->httpstatus >= 400)))
+		error = g_strdup (network_strerror (result->httpstatus));
+	
+	if (error) {
+		debug (DEBUG_UPDATE, "comment feed update failed for item \"%s\" (comment URL: %s): %s", item->title, result->source, error);
+		g_autofree gchar *json = g_strdup_printf("{ \"items\": [], \"status\": \"error\", \"error\": \"%s\" }", error);
+		metadata_list_set (&(item->metadata), "commentFeedJson", json);
+		db_item_update (item);
+	}
 
 	item_unload (item);
 
@@ -175,60 +126,35 @@ comments_process_update_result (UpdateJob *job)
 void
 comments_refresh (itemPtr item)
 {
-	commentFeedPtr	commentFeed = NULL;
-	UpdateRequest	*request;
-	const gchar	*url;
+	const gchar	*url, *json;
 
-	if (!network_monitor_is_online ())
-		return;
-
-	if (metadata_list_get (item->metadata, "commentFeedGone")) {
-		debug (DEBUG_UPDATE, "Comment feed returned HTTP 410. Not updating anymore!");
-		return;
-	}
+	json = metadata_list_get (item->metadata, "commentFeedJson");
+	if (json)
+		return;	/* we fetch only once */
 
 	url = metadata_list_get (item->metadata, "commentFeedUri");
-	if (url) {
-		debug (DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
+	if (!url)
+		return;
 
-		// FIXME: restore update state from DB?
+	debug (DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
 
-		if (item->commentFeedId) {
-			commentFeed = comment_feed_from_id (item->commentFeedId);
-		} else {
-			item->commentFeedId = node_new_id ();
-			db_item_update (item);
-		}
+	// Set empty list to avoid multiple fetches
+	metadata_list_set (&(item->metadata), "commentFeedJson", "{ \"items\": [], \"status\": \"fetching\" }");
+	db_item_update (item);
 
-		if (!commentFeed) {
-			commentFeed = g_new0 (struct commentFeed, 1);
-			commentFeed->id = g_strdup (item->commentFeedId);
-			commentFeed->itemId = item->id;
+	UpdateRequest *request = update_request_new (
+		"GET",
+		url,
+		NULL,	// No special state
+		NULL	// No special options
+	);
 
-			if (!commentFeeds)
-				commentFeeds = g_hash_table_new (g_str_hash, g_str_equal);
-			g_hash_table_insert (commentFeeds, commentFeed->id, commentFeed);
-		}
-
-		request = update_request_new (
-			"GET",
-			url,
-			commentFeed->updateState,
-			NULL	// FIXME: use copy of parent subscription options
-		);
-
-		commentFeed->updateJob = update_job_new (commentFeed, request, comments_process_update_result, commentFeed, UPDATE_REQUEST_PRIORITY_HIGH | UPDATE_REQUEST_NO_FEED);
-	}
+	Node *node = node_from_id (item->nodeId);
+	(void) update_job_new (
+		node->subscription,
+		request,
+		comments_process_update_result,
+		GUINT_TO_POINTER(item->id),
+		UPDATE_REQUEST_PRIORITY_HIGH | UPDATE_REQUEST_NO_FEED
+	);
 }
-
-itemSetPtr
-comments_get_itemset (const gchar *id)
-{
-	commentFeedPtr	commentFeed = comment_feed_from_id (id);
-
-	if (!commentFeed || !commentFeed->error)
-		return NULL;
-
-	return db_itemset_load (id);
-}
-

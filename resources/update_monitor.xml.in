@@ -195,6 +195,7 @@
         import { load_update_monitor } from '/js/htmlview.js';
 
         window.load_update_monitor = load_update_monitor;
+        window.update = load_update_monitor;
         window.onload = (e) => {
                 REPLACE_MARKER
         };

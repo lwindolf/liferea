@@ -66,8 +66,9 @@ metadata_init (void)
 	metadata_type_register ("feedgeneratorUri",	METADATA_TYPE_URL);
 	metadata_type_register ("category",		METADATA_TYPE_HTML);
 	metadata_type_register ("enclosure",		METADATA_TYPE_TEXT);
-	metadata_type_register ("commentsUri",		METADATA_TYPE_URL);
-	metadata_type_register ("commentFeedUri",	METADATA_TYPE_URL);
+	metadata_type_register ("commentsUri",		METADATA_TYPE_URL);	/* URL leading to a web page with comments */
+	metadata_type_register ("commentFeedUri",	METADATA_TYPE_URL);	/* URL with actual feed of comments */
+	metadata_type_register ("commentFeedJson",	METADATA_TYPE_TEXT);	/* cache of comment feed fetch */
 	metadata_type_register ("feedTitle",		METADATA_TYPE_HTML);
 	metadata_type_register ("description",		METADATA_TYPE_HTML);
 	metadata_type_register ("richContent",		METADATA_TYPE_HTML5);
@@ -77,7 +78,7 @@ metadata_init (void)
 	metadata_type_register ("agTimestamp",		METADATA_TYPE_TEXT);
 
 	/* types for blog channel */
-	metadata_type_register ("blogChannel",		METADATA_TYPE_HTML);
+	metadata_type_register ("blogChannel",		METADATA_TYPE_HTML);	/* deprecated, is extinct */
 
 	/* types for creative commons */
 	metadata_type_register ("license",		METADATA_TYPE_HTML);
@@ -98,7 +99,7 @@ metadata_init (void)
 	metadata_type_register ("slashComments",	METADATA_TYPE_TEXT);
 
 	/* type for gravatars */
-	metadata_type_register ("gravatar",		METADATA_TYPE_URL);
+	metadata_type_register ("gravatar",		METADATA_TYPE_URL);	/* gravatar icon used if a item has no images */
 
 	/* for RSS 2.0 real source and newsbin real source info */
 	metadata_type_register ("realSourceUrl",	METADATA_TYPE_URL);

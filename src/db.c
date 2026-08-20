@@ -606,6 +606,9 @@ db_init (void)
 	db_exec ("DELETE FROM metadata WHERE item_id NOT IN "
 		 "(SELECT item_id FROM items);");
 
+	debug (DEBUG_DB, "Removing legacy comment items...");
+	db_exec ("DELETE FROM items WHERE comment = 1;");
+
 	debug (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 
 	/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
@@ -887,10 +890,7 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item->flagStatus	= sqlite3_column_int (stmt, 4)?TRUE:FALSE;
 	item->validGuid		= sqlite3_column_int (stmt, 7)?TRUE:FALSE;
 	item->time		= sqlite3_column_int64 (stmt, 9);
-	item->commentFeedId	= g_strdup ((const gchar *) sqlite3_column_text (stmt, 10));
-	item->isComment		= sqlite3_column_int (stmt, 11);
 	item->id		= sqlite3_column_int (stmt, 12);
-	item->parentItemId	= sqlite3_column_int (stmt, 13);
 	item->nodeId		= g_strdup ((const gchar *) sqlite3_column_text (stmt, 14));
 	item->parentNodeId	= g_strdup ((const gchar *) sqlite3_column_text (stmt, 15));
 
@@ -969,10 +969,6 @@ db_item_search_folders_update (itemPtr item)
 	gint 		res;
 	GSList		*iter, *list;
 
-	/* Bail on comments which are not covered by search folders */
-	if (item->isComment)
-		return;
-
 	/* Add item to all search folders it now belongs to */
 
 	stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
@@ -1030,21 +1026,21 @@ db_item_update (itemPtr item)
 	stmt = db_get_statement ("itemUpdateStmt");
 	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 2,  item->readStatus?1:0);
-	sqlite3_bind_int  (stmt, 3,  0);  // updateStatus not used anymore
-	sqlite3_bind_int  (stmt, 4,  0);  // popupStatus not used anymore
+	sqlite3_bind_int  (stmt, 3,  0); // updateStatus not used anymore
+	sqlite3_bind_int  (stmt, 4,  0); // popupStatus not used anymore
 	sqlite3_bind_int  (stmt, 5,  item->flagStatus?1:0);
 	sqlite3_bind_text (stmt, 6,  item->source, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 7,  item->sourceId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 8,  item->validGuid?1:0);
 	sqlite3_bind_text (stmt, 9,  item->description, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int64  (stmt, 10, item->time);
-	sqlite3_bind_text (stmt, 11, item->commentFeedId, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 12, item->isComment?1:0);
+	sqlite3_bind_null (stmt, 11); // commentFeedId not used anymore
+	sqlite3_bind_int  (stmt, 12, 0); // isComment not used anymore
 	if (item->id)
 		sqlite3_bind_int  (stmt, 13, item->id);
 	else
 		sqlite3_bind_null (stmt, 13);
-	sqlite3_bind_int  (stmt, 14, item->parentItemId);
+	sqlite3_bind_int  (stmt, 14, 0); // parentItemId not used anymore
 	sqlite3_bind_text (stmt, 15, item->nodeId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 16, item->parentNodeId, -1, SQLITE_TRANSIENT);
 

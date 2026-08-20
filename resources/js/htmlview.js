@@ -186,6 +186,8 @@ async function load_item(data, baseURL, direction) {
 	try {
 		const item = JSON.parse(decodeURIComponent(data));
 		const richContent = metadata_get(item, "richContent");
+		const commentFeedJson = metadata_get(item, "commentFeedJson");
+		const comments = commentFeedJson ? JSON.parse(commentFeedJson) : null;
 		const enclosures = item.metadata.filter((m) => m.enclosure).map((m) => m.enclosure);
 		let title = item.title;
 		let article;
@@ -235,14 +237,12 @@ async function load_item(data, baseURL, direction) {
 			mediastarRatingavg	: metadata_get(item, "mediastarRatingavg"),
 			categories		: item.metadata.filter((m) => m.category).map((m) => m.category),
 			videos			: enclosures.filter((m) => m.mime?.startsWith('video/')),
-			audios			: enclosures.filter((m) => m.mime?.startsWith('audio/'))
+			audios			: enclosures.filter((m) => m.mime?.startsWith('audio/')),
+			comments,
+			commentsUri		: metadata_get(item, "commentsUri"),
 			// FIXME: use this too
 			/*let related		= metadata_get(item, "related");
-			let point		= metadata_get(item, "point");
-			let mediaviews	= metadata_get(item, "mediaviews");
-			let ratingavg	= metadata_get(item, "mediastarRatingavg");
-			let ratingmax	= metadata_get(item, "mediastarRatingMax");
-			let gravatar	= metadata_get(item, "gravatar");*/
+			let point		= metadata_get(item, "point");*/
 		});
 
 		// Title duplicate elimination:
@@ -356,11 +356,9 @@ async function load_item(data, baseURL, direction) {
 
 async function load_update_monitor(data) {
 	try {
-		window.update = load_update_monitor;
-
 		const feedlist = JSON.parse(decodeURIComponent(data));
 		console.log(feedlist);
-		render("body", templateFix (document.getElementById('template').innerHTML), {
+		render("body", templateFix(document.getElementById('template').innerHTML), {
 			feedlist
 		});
 

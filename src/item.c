@@ -1,7 +1,7 @@
 /**
  * @file item.c item handling
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -48,9 +48,7 @@ liferea_item_finalize (GObject *object)
 	g_free (item->source);
 	g_free (item->sourceId);
 	g_free (item->description);
-	g_free (item->commentFeedId);
 	g_free (item->nodeId);
-	g_free (item->parentNodeId);
 
 	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free (item->metadata);
@@ -312,37 +310,9 @@ item_to_json (LifereaItem *item)
 		json_builder_add_string_value (b, node_get_title (feedNode));
 
 		subscriptionPtr subscription = feedNode->subscription;
-		if (subscription) {
-			if (!subscription->ignoreComments) {
-				if (item->commentFeedId) {
-					itemSetPtr itemSet = comments_get_itemset (item->commentFeedId);
-					if (itemSet) {
-						json_builder_set_member_name (b, "comments");
-						json_builder_begin_array (b);
-
-						GList *iter = itemSet->ids;
-						while (iter) {
-							itemPtr comment = item_load (GPOINTER_TO_UINT (iter->data));
-
-							json_builder_set_member_name (b, "title");
-							json_builder_add_string_value (b, item_get_title (comment));
-							json_builder_set_member_name (b, "description");
-							json_builder_add_string_value (b, item_get_description (comment));
-							// FIXME: maybe support author too
-
-							item_unload (comment);
-							iter = g_list_next (iter);
-						}
-
-						json_builder_end_array (b);
-
-						itemset_free (itemSet);
-					}
-				}
-			} else {
-				json_builder_set_member_name (b, "commentsSuppressed");
-				json_builder_add_boolean_value (b, TRUE);
-			}
+		if (subscription && subscription->ignoreComments) {
+			json_builder_set_member_name (b, "ignoreComments");
+			json_builder_add_boolean_value (b, TRUE);
 		}
 	}
 

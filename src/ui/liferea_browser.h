@@ -173,26 +173,6 @@ void liferea_browser_set_zoom (LifereaBrowser *browser, gfloat zoom);
 gfloat liferea_browser_get_zoom (LifereaBrowser *browser);
 
 /**
- * liferea_browser_set_reader_mode:
- * @browser:	browser to change
- * @readerMode:	new mode
- *
- * Allows to temporarily change the reader mode of the browser, will be
- * reset when navigating to another URL
- */
-void liferea_browser_set_reader_mode (LifereaBrowser *browser, gboolean readerMode);
-
-/**
- * liferea_browser_get_reader_mode:
- * @browser:	browser to get mode of
- *
- * Allows to query the currently active reader mode setting
- *
- * Returns: TRUE if reader mode is on
- */
-gboolean liferea_browser_get_reader_mode (LifereaBrowser *browser);
-
-/**
  * liferea_browser_scroll:
  * @browser:	browser to scroll
  *

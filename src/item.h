@@ -1,7 +1,7 @@
 /*
  * @file item.h item handling
  *
- * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -64,15 +64,9 @@ struct _LifereaItem {
 	GHashTable	*tmpdata;		/*<< Temporary data hash used during stateful parsing */
 	gint64		time;			/*<< Last modified date of the headline */
 
-	gchar		*commentFeedId;		/*<< Id of the comment feed of this item (or NULL if there is no comment feed) */
-
-	/* comment item properties */
-	gulong		parentItemId;		/*<< Id of the parent item the item belongs to(or 0 if no comment item) */
-	gboolean	isComment;		/*<< TRUE if item is from a comment feed */
-
 	/* item source properties */
-	gchar		*nodeId;		/*<< Node *id the containing node. Might be a comment feed id. */
-	gchar		*parentNodeId;		/*<< Real parent node id. Always a feed list node id. */
+	gchar		*nodeId;		/*<< id the feed list node */
+	gchar		*parentNodeId;		/*<< Real parent node id. Always a feed list node id */
 	gulong 		sourceNr;		/*<< Either equal to nr or the number of the item this one is a copy of */
 
 	/* remote states used during sync of remote accounts */

@@ -1,7 +1,7 @@
 /*
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 #include <libxml/uri.h>
 
-#include "comments.h"
 #include "common.h"
 #include "conf.h"
 #include "db.h"
@@ -139,9 +138,6 @@ feedlist_finalize (GObject *object)
 	feedlist_foreach (feedlist_free_node);
 	g_object_unref (ROOTNODE);
 	ROOTNODE = NULL;
-
-	/* This might also be a good place to use for some other cleanup */
-	comments_deinit ();
 }
 
 static void
@@ -454,9 +450,7 @@ feedlist_find_node (Node *parent, feedListFindType type, const gchar *str)
 gboolean
 feedlist_is_writable (void)
 {
-	Node *node;
-
-	node = feedlist_get_parent_node ();
+	Node *node= feedlist_get_parent_node ();
 
 	return (0 != (NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS));
 }
@@ -505,6 +499,8 @@ feedlist_reset_new_item_count (void)
 
 	feedlist_new_items (0);
 }
+
+/* feed list node manipulation */
 
 Node *
 feedlist_add_folder (const gchar *title)
