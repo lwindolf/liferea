@@ -66,7 +66,7 @@ node_source_cleanup (void) {
 static void
 node_source_import_feedlist (Node *node) 
 {
-	g_autofree gchar *filename, *backupFilename, *content;
+	g_autofree gchar *filename, *backupFilename, *content = NULL;
 	gssize	length;
 
 	g_assert (TRUE == feedlistImport);
