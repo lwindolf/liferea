@@ -93,7 +93,6 @@ node_source_import_feedlist (Node *node)
 	}
 
 	feedlistImport = FALSE;
-
 }
 
 void

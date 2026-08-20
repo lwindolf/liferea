@@ -40,10 +40,7 @@
 
 static void feedlist_save	(void);
 
-static gboolean feedlist_flush_pending_node_recounts_cb (gpointer user_data);
-static void feedlist_flush_pending_node_recounts (void);
 static void feedlist_update_node_counters_now (Node *node);
-static void feedlist_collect_dirty_nodes (Node *node, gpointer user_data);
 
 static guint
 feedlist_node_depth (Node *node)
@@ -239,6 +236,81 @@ feedlist_class_init (FeedListClass *klass)
 		G_TYPE_STRING);
 }
 
+/* Deferred unread count handling */
+
+static void
+feedlist_update_node_counters_now (Node *node)
+{
+	guint oldUnreadCount = node->unreadCount;
+	guint oldItemCount = node->itemCount;
+
+	NODE_PROVIDER (node)->update_counters (node);
+	node->needsRecount = FALSE;
+
+	if ((oldUnreadCount != node->unreadCount) ||
+	    (oldItemCount != node->itemCount))
+		g_signal_emit_by_name (feedlist, "node-updated", node->id);
+}
+
+static void
+feedlist_collect_dirty_nodes (Node *node, gpointer user_data)
+{
+	GPtrArray *nodes = user_data;
+
+	if (node->needsRecount)
+		g_ptr_array_add (nodes, node);
+
+	if (node->children)
+		node_foreach_child_data (node, feedlist_collect_dirty_nodes, user_data);
+}
+
+static void
+feedlist_flush_pending_node_recounts (void)
+{
+	GPtrArray *nodes;
+
+	if (feedlist->recountTimer) {
+		g_source_remove (feedlist->recountTimer);
+		feedlist->recountTimer = 0;
+	}
+
+	nodes = g_ptr_array_new ();
+	feedlist_collect_dirty_nodes (ROOTNODE, nodes);
+
+	if (nodes->len == 0) {
+		g_ptr_array_free (nodes, TRUE);
+		return;
+	}
+
+	g_ptr_array_sort (nodes, feedlist_dirty_node_compare);
+	for (guint i = 0; i < nodes->len; i++) {
+		Node *node = g_ptr_array_index (nodes, i);
+
+		if (node && node->needsRecount)
+			feedlist_update_node_counters_now (node);
+	}
+	g_ptr_array_free (nodes, TRUE);
+}
+
+static gboolean
+feedlist_flush_pending_node_recounts_cb (gpointer user_data)
+{
+	feedlist->recountTimer = 0;
+	feedlist_flush_pending_node_recounts ();
+	return G_SOURCE_REMOVE;
+}
+
+void
+feedlist_mark_node_recount (Node *node)
+{
+	for (Node *iter = node; iter; iter = iter->parent) {
+		iter->needsRecount = TRUE;
+	}
+
+	if (!feedlist->loading && !feedlist->recountTimer)
+		feedlist->recountTimer = g_timeout_add (500, feedlist_flush_pending_node_recounts_cb, NULL);
+}
+
 /* This method is used to initialize the node states in the feed list */
 static void
 feedlist_init_node (Node *node)
@@ -387,86 +459,6 @@ feedlist_is_writable (void)
 	node = feedlist_get_parent_node ();
 
 	return (0 != (NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS));
-}
-
-static void
-feedlist_update_node_counters_now (Node *node)
-{
-	guint oldUnreadCount = node->unreadCount;
-	guint oldItemCount = node->itemCount;
-
-	NODE_PROVIDER (node)->update_counters (node);
-	node->needsRecount = FALSE;
-
-	if ((oldUnreadCount != node->unreadCount) ||
-	    (oldItemCount != node->itemCount))
-		g_signal_emit_by_name (feedlist, "node-updated", node->id);
-}
-
-void
-feedlist_mark_node_recount (Node *node)
-{
-	if (!feedlist || !node)
-		return;
-
-	for (Node *iter = node; iter; iter = iter->parent) {
-		iter->needsRecount = TRUE;
-	}
-
-	if (!feedlist->loading && !feedlist->recountTimer)
-		feedlist->recountTimer = g_timeout_add (500, feedlist_flush_pending_node_recounts_cb, NULL);
-}
-
-static gboolean
-feedlist_flush_pending_node_recounts_cb (gpointer user_data)
-{
-	(void) user_data;
-	feedlist->recountTimer = 0;
-	feedlist_flush_pending_node_recounts ();
-	return G_SOURCE_REMOVE;
-}
-
-static void
-feedlist_flush_pending_node_recounts (void)
-{
-	GPtrArray *nodes;
-
-	if (!feedlist || !ROOTNODE)
-		return;
-
-	if (feedlist->recountTimer) {
-		g_source_remove (feedlist->recountTimer);
-		feedlist->recountTimer = 0;
-	}
-
-	nodes = g_ptr_array_new ();
-	feedlist_collect_dirty_nodes (ROOTNODE, nodes);
-
-	if (nodes->len == 0) {
-		g_ptr_array_free (nodes, TRUE);
-		return;
-	}
-
-	g_ptr_array_sort (nodes, feedlist_dirty_node_compare);
-	for (guint i = 0; i < nodes->len; i++) {
-		Node *node = g_ptr_array_index (nodes, i);
-
-		if (node && node->needsRecount)
-			feedlist_update_node_counters_now (node);
-	}
-	g_ptr_array_free (nodes, TRUE);
-}
-
-static void
-feedlist_collect_dirty_nodes (Node *node, gpointer user_data)
-{
-	GPtrArray *nodes = user_data;
-
-	if (node->needsRecount)
-		g_ptr_array_add (nodes, node);
-
-	if (node->children)
-		node_foreach_child_data (node, feedlist_collect_dirty_nodes, user_data);
 }
 
 void
