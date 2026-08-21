@@ -61,7 +61,6 @@ struct _LifereaItem {
 	gchar		*description;		/*<< XHTML string containing the item's description */
 
 	GSList		*metadata;		/*<< Metadata of this item */
-	GHashTable	*tmpdata;		/*<< Temporary data hash used during stateful parsing */
 	gint64		time;			/*<< Last modified date of the headline */
 
 	/* item source properties */

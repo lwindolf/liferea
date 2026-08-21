@@ -132,7 +132,7 @@ static const gchar * mapToItemMetadata[] = {
 				  };
 			  
 
-/* generic tag parsing (used for RSS and Atom) */
+/* generic tag parsing (used for RSS and Atom) items and feed XML nodes */
 static void
 parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 {

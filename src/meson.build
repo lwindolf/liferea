@@ -74,7 +74,6 @@ liferea_sources = files(
   'parsers/html5_feed.c',
   'parsers/ldjson_feed.c',
   'parsers/ns_admin.c',
-  'parsers/ns_ag.c',
   'parsers/ns_cC.c',
   'parsers/ns_content.c',
   'parsers/ns_dc.c',

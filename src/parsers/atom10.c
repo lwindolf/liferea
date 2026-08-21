@@ -31,7 +31,6 @@
 #include "feed_parser.h"
 #include "feedlist.h"
 #include "ns_admin.h"
-#include "ns_ag.h"
 #include "ns_cC.h"
 #include "ns_content.h"
 #include "ns_dc.h"
@@ -818,7 +817,6 @@ atom10_init_feed_handler (void)
 		ns_content_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
 		ns_syn_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
 		ns_admin_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
-		ns_ag_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
 		ns_cC_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
 		ns_wfw_register_ns (atom10_nstable, ns_atom10_ns_uri_table);
 		ns_media_register_ns (atom10_nstable, ns_atom10_ns_uri_table);

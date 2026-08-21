@@ -7,6 +7,9 @@ To be released
 	
 	* Fixes folder expansion regression on startup
 	  (Lars Windolf)
+	
+	* Fixes an issue where RSS metadata values were not stored once but multiple times
+	  (Lars Windolf)
 
 	* Render media:starRating, media:community @favourites + @views, itunes:image and slash:comments
 	  (Lars Windolf)
@@ -23,6 +26,7 @@ To be released
 	* Crashes when removing items
 	* Missing top margin when Readability.js does not convert text
 	* Manual feed update gives no info when it is not allowed
+	* OPML source does not import htmlUrl as homepage
 
 
 2025-08-19  Lars Windolf <lars.windolf@gmx.de>
