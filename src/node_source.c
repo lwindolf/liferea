@@ -490,11 +490,18 @@ void
 node_source_auto_update (Node *node, updateFlags flags)
 {
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| start login", node->id, node->id);
-		node_source_set_state (node, NODE_SOURCE_STATE_IN_PROGRESS);
-		g_assert (node->source->type->source_login);
-		(node->source->type->source_login) (node, flags);
-		return;
+		if (node->source->type->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) {
+			/* If the source type supports login we need to do that first */
+			debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| start login", node->id, node->title);
+			node_source_set_state (node, NODE_SOURCE_STATE_IN_PROGRESS);
+			g_assert (node->source->type->source_login);
+			(node->source->type->source_login) (node, flags);
+			return;
+		} else {
+			/* If the source type does not support login we can just set it to active */
+			debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| no login required", node->id, node->title);
+			node_source_set_state (node, NODE_SOURCE_STATE_ACTIVE);
+		}
 	}
 
 	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS) {
