@@ -133,40 +133,6 @@ feed_list_view_create_child_model_cb (gpointer item, gpointer user_data)
 }
 
 static void
-feed_list_view_rebuild (void)
-{
-	Node *root;
-
-	if (!flv)
-		return;
-
-	gtk_widget_set_sensitive (GTK_WIDGET (flv->listview), FALSE);
-
-	g_clear_object (&flv->tree_model);
-	g_clear_object (&flv->tree_root_model);
-
-	flv->tree_root_model = g_list_store_new (feed_list_node_item_get_type ());
-	root = feedlist_get_root ();
-	if (root) {
-		for (GSList *iter = root->children; iter; iter = g_slist_next (iter)) {
-			Node *node = (Node *)iter->data;
-			g_list_store_append (flv->tree_root_model, feed_list_node_item_new (node));
-		}
-	}
-
-	flv->tree_model = gtk_tree_list_model_new (G_LIST_MODEL (flv->tree_root_model),
-	                                            FALSE,
-	                                            FALSE,
-	                                            feed_list_view_create_child_model_cb,
-	                                            NULL,
-	                                            NULL);
-
-	gtk_single_selection_set_model (flv->selection_model, G_LIST_MODEL (flv->tree_model));
-
-	gtk_widget_set_sensitive (GTK_WIDGET (flv->listview), TRUE);
-}
-
-static void
 feed_list_view_class_init (FeedListViewClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -413,17 +379,17 @@ feed_list_view_refresh_bound_row_widget (GtkWidget *widget, Node *node)
 	return TRUE;
 }
 
-static gboolean
-feed_list_view_refresh_node_item (Node *node)
+static void
+feed_list_view_refresh_node (Node *node)
 {
 	guint position;
 
 	if (!node || !flv || !flv->tree_model)
-		return FALSE;
+		return;
 
 	position = feed_list_view_find_position (node->id);
 	if (position == GTK_INVALID_LIST_POSITION)
-		return feed_list_view_insert_node_item (node);
+		feed_list_view_insert_node_item (node);
 
 	feed_list_view_refresh_bound_row_widget (GTK_WIDGET (flv->listview), node);
 	if (feed_list_view_is_expandable (node) && node->expanded) {
@@ -433,8 +399,6 @@ feed_list_view_refresh_node_item (Node *node)
 			g_object_unref (row);
 		}
 	}
-
-	return TRUE;
 }
 
 static gboolean
@@ -905,7 +869,7 @@ feed_list_view_node_moved (GObject *obj, gchar *nodeId, gpointer user_data)
 	feed_list_view_insert_node_item (node);
 
 	if (feed_list_view_is_expandable (node) && node->expanded)
-		feed_list_view_refresh_node_item (node);
+		feed_list_view_refresh_node (node);
 
 	if (feedlist_get_selected () == node)
 		feed_list_view_select (node);
@@ -914,7 +878,7 @@ feed_list_view_node_moved (GObject *obj, gchar *nodeId, gpointer user_data)
 static void
 feed_list_view_node_updated (GObject *obj, const gchar *nodeId, gpointer user_data)
 {
-	feed_list_view_refresh_node_item (node_from_id (nodeId));
+	feed_list_view_refresh_node (node_from_id (nodeId));
 }
 
 static void
@@ -933,6 +897,42 @@ feed_list_view_node_selected (GObject *obj, gchar *nodeId, gpointer user_data)
 		return;
 
 	feed_list_view_select (target);
+}
+
+static void
+feed_list_view_rebuild (void)
+{
+	Node *root;
+
+	if (!flv)
+		return;
+
+	gtk_widget_set_sensitive (GTK_WIDGET (flv->listview), FALSE);
+
+	g_clear_object (&flv->tree_model);
+	g_clear_object (&flv->tree_root_model);
+
+	flv->tree_root_model = g_list_store_new (feed_list_node_item_get_type ());
+	root = feedlist_get_root ();
+	if (root) {
+		for (GSList *iter = root->children; iter; iter = g_slist_next (iter)) {
+			Node *node = (Node *)iter->data;
+			g_list_store_append (flv->tree_root_model, feed_list_node_item_new (node));
+		}
+	}
+
+	flv->tree_model = gtk_tree_list_model_new (G_LIST_MODEL (flv->tree_root_model),
+	                                            FALSE,
+	                                            FALSE,
+	                                            feed_list_view_create_child_model_cb,
+	                                            NULL,
+	                                            NULL);
+
+	gtk_single_selection_set_model (flv->selection_model, G_LIST_MODEL (flv->tree_model));
+
+	feedlist_recurse (feed_list_view_refresh_node);
+
+	gtk_widget_set_sensitive (GTK_WIDGET (flv->listview), TRUE);
 }
 
 FeedListView *
@@ -1096,7 +1096,7 @@ on_nodenamedialog_response (GtkButton *button, gpointer user_data)
 
 	if (node) {
 		node_set_title (node, liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "nameEntry"));
-		feed_list_view_refresh_node_item (node);
+		feed_list_view_refresh_node (node);
 		feedlist_schedule_save ();
 	}
 

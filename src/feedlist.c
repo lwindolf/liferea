@@ -105,6 +105,20 @@ FeedList *feedlist = NULL;	// singleton
 G_DEFINE_TYPE (FeedList, feedlist, G_TYPE_OBJECT);
 
 static void
+feedlist_recurse_cb (Node *node, nodeActionFunc func)
+{
+	func (node);
+	node_foreach_child_data (node, feedlist_recurse_cb, func);
+}
+
+void
+feedlist_recurse (nodeActionFunc func)
+{
+	// do not run function for root node, only for its children
+	node_foreach_child_data (ROOTNODE, feedlist_recurse_cb, func);
+}
+
+static void
 feedlist_free_node (Node *node)
 {
 	if (node->children)
@@ -330,15 +344,15 @@ feedlist_init (FeedList *fl)
 	debug (DEBUG_CACHE, "Setting up root node");
 	ROOTNODE = node_source_setup_root ();
 
-	/* 3. Ensure folder expansion and unread count*/
+	/* 3. Import nodes from DB */
 	debug (DEBUG_CACHE, "Initializing node state");
 	feedlist_foreach (feedlist_init_node);
 	feedlist_flush_pending_node_recounts ();
 
-	/* 4. Finally save the new feed list state */
+	/* 4. Finally save the new feed list state (to persist migration 
+	      related feed drops or initial default feed list import) */
 	feedlist->loading = FALSE;
 	feedlist_schedule_save ();
-
 }
 
 static void feedlist_unselect(void);

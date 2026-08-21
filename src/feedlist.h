@@ -274,12 +274,23 @@ void feedlist_mark_all_read (Node *node);
 /* feed list iterating interface */
 
 /**
+ * feedlist_recurse: (skip)
+ * @func:		the function to all nodes with
+ *
+ * Helper function to call node methods for all children of the feed list.
+ * It works recursively compared to feedlist_foreach() which only iterates 
+ * over the first level of children.
+ * 
+ * Does not process the root node!
+ */
+void feedlist_recurse(nodeActionFunc func);
+
+/**
  * feedlist_foreach: (skip)
  * @func:		the function to process all found elements
  *
- * Helper function to recursivly call node methods for all
- * nodes in the feed list. This method is just a wrapper for
- * node_foreach_child().
+ * Helper function to call node methods for all children of the root node.
+ * This method is just a wrapper for node_foreach_child().
  */
 #define feedlist_foreach(func) node_foreach_child(feedlist_get_root(), func)
 
