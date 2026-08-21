@@ -13,6 +13,9 @@ To be released
 	
 	* Restores comment feed functionality. Now updates item view without scroll reset
 	  (Lars Windolf)
+	
+	* Dropped bold-unread plugin as it does not work anymore with GtkListView
+	  (Lars Windolf)
 
 	Known problems
 	
