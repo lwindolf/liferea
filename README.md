@@ -11,6 +11,7 @@ Many distributions have packaged Liferea:
 [![Packages](https://repology.org/badge/latest-versions/liferea.svg)](https://repology.org/metapackage/liferea/versions)
 [![Packages](https://repology.org/badge/tiny-repos/liferea.svg)](https://repology.org/metapackage/liferea/versions)
 
+There is also a [flatpak package](https://github.com/flathub/net.sourceforge.liferea) available.
 
 ## Building
 
