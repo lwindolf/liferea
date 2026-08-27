@@ -11,6 +11,9 @@ To be released
 	* Fixes an issue where RSS metadata values were not stored once but multiple times
 	  (Lars Windolf)
 
+	* Fixes #1591, #1588: network_init called too late
+	  (Christoph Moench-Tegeder)
+
 	* Render media:starRating, media:community @favourites + @views, itunes:image and slash:comments
 	  (Lars Windolf)
 	

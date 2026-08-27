@@ -40,6 +40,7 @@
 #include "dbus.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "net.h"
 #include "social.h"
 #include "update.h"
 #include "xml.h"
