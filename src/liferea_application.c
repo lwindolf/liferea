@@ -143,6 +143,7 @@ on_app_startup (GApplication *gapp, gpointer user_data)
 	/* Configuration necessary for network options, so it
 	   has to be initialized before network_init() */
 	conf_init ();
+	network_init();
 
 	/* Setup update queue handling */
 	app->updateQueue = update_job_queue_get_instance ();
