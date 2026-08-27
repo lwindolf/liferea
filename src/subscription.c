@@ -33,6 +33,7 @@
 #include "metadata.h"
 #include "node_source.h"
 #include "net.h"
+#include "net_monitor.h"
 #include "subscription_icon.h"
 #include "xml.h"
 #include "ui/auth_dialog.h"
@@ -368,6 +369,11 @@ subscription_auto_update (subscriptionPtr subscription, updateFlags flags)
 
 	if (!subscription || !subscription->type)
 		return;
+
+	if (!network_monitor_is_online ()) {
+		debug (DEBUG_UPDATE, "subscription: |%s| skip update because we are offline", subscription->source);
+		return;
+	}
 
 	interval = subscription_get_update_interval (subscription);
 	if (-1 == interval)
