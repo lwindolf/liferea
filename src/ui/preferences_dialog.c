@@ -132,6 +132,13 @@ on_folder_settings_changed (GtkCheckButton *togglebutton, gpointer user_data)
 }
 
 static void
+on_startupactionbtn_toggled (GtkCheckButton *button, gpointer user_data)
+{
+    gboolean enabled = gtk_check_button_get_active (button);
+    conf_set_int_value (STARTUP_FEED_ACTION, enabled ? 0 : 1);
+}
+
+static void
 on_browser_changed (GtkDropDown *dropdown, gpointer user_data)
 {
 	PreferencesDialog *pd = PREFERENCES_DIALOG (user_data);
@@ -270,8 +277,12 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* ================== panel 1 "feeds" ==================== */
 
-	conf_bind (CONFIRM_MARK_ALL_READ, liferea_dialog_lookup (pd->dialog, "confirmMarkAllReadButton"), "active", G_SETTINGS_BIND_DEFAULT);
 	conf_bind (DEFAULT_MAX_ITEMS, liferea_dialog_lookup (pd->dialog, "itemCountBtn"), "value", G_SETTINGS_BIND_DEFAULT);
+
+	/* check box for feed startup update (Note: bind not possible as legacy schema is an int with 0=active logic */
+	conf_get_int_value (STARTUP_FEED_ACTION, &tmp);
+	gtk_check_button_set_active (GTK_CHECK_BUTTON (liferea_dialog_lookup (pd->dialog, "startupactionbtn")), (tmp == 0));
+	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "startupactionbtn")), "toggled", G_CALLBACK (on_startupactionbtn_toggled), pd);
 
 	/* set default update interval spin button and unit drop down */
 	preferences_dialog_setup_drop_down (pd, "globalRefreshIntervalUnit", default_update_interval_unit_options, DEFAULT_UPDATE_INTERVAL);
@@ -300,6 +311,8 @@ preferences_dialog_init (PreferencesDialog *pd)
 	conf_bind (FOLDER_DISPLAY_HIDE_READ, liferea_dialog_lookup (pd->dialog, "hidereadbtn"), "active", G_SETTINGS_BIND_DEFAULT);
 
 	/* ================== panel 3 "headlines" ==================== */
+
+	conf_bind (CONFIRM_MARK_ALL_READ, liferea_dialog_lookup (pd->dialog, "confirmMarkAllReadButton"), "active", G_SETTINGS_BIND_DEFAULT);
 
 	preferences_dialog_setup_drop_down (pd, "skimKey", browser_skim_key_options, BROWSE_KEY_SETTING);
 	preferences_dialog_setup_drop_down (pd, "defaultViewMode", default_view_mode_options, DEFAULT_VIEW_MODE);
