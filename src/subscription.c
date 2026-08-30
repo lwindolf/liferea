@@ -328,7 +328,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	UpdateRequest	*request;
 	guint64		now;
 
-	if (!subscription)
+	if (!subscription || !subscription->type)
 		return;
 
 	debug (DEBUG_UPDATE, "subscription: |%s| scheduling update (flags=%u)", subscription->source, flags);

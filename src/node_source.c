@@ -208,7 +208,8 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 	if (typeStr) {
 		debug (DEBUG_CACHE, "node_source: %s |%s| import as type=%s", node->id, node->title, typeStr);
 
-		node->available = FALSE;
+		node->available = TRUE;
+		node->source = NULL;
 
 		type = node_source_type_find ((const gchar *)typeStr, 0);
 		if (!type) {
@@ -217,13 +218,11 @@ node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 			   in the feed list. So we load a dummy source type
 			   instead and save the real source id in the
 			   unused node's data field */
-			type = node_source_type_find (NODE_SOURCE_TYPE_DUMMY_ID, 0);
-			g_assert (NULL != type);
+			type = dummy_source_get_type ();
 			node->data = g_strdup ((gchar *)typeStr);
+			node->available = FALSE;
 		}
 
-		node->available = TRUE;
-		node->source = NULL;
 		node_set_subscription (node, subscription_import (xml, trusted));
 		node_source_new (node, type, NULL);
 	} else {
