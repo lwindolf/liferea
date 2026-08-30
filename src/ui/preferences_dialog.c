@@ -301,7 +301,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	widget = liferea_dialog_lookup (pd->dialog,"globalRefreshIntervalSpinButton");
 	gtk_spin_button_set_range (GTK_SPIN_BUTTON (widget), 0, 1000000000);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (widget), tmp);
-	g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK (on_default_update_interval_value_changed), pd);
+	g_signal_connect (G_OBJECT (widget), "value-changed", G_CALLBACK (on_default_update_interval_value_changed), pd);
 
 	/* ================== panel 2 "folders" ==================== */
 
