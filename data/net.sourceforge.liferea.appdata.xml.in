@@ -77,6 +77,144 @@
     <color type="primary" scheme_preference="dark">#64647D</color>
   </branding>
   <releases>
+    <release date="2025-09-01" version="2.0.1">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Fixes missing installation of OPML default files (reported by marciof)</li>
+          <li>Fixes folder expansion regression on startup (Lars Windolf)</li>
+          <li>Fixes an issue where RSS metadata values were not stored once but multiple times (Lars Windolf)</li>
+          <li>Fixes #1591, #1588: network_init called too late (Christoph Moench-Tegeder)</li>
+          <li>Render media:starRating, media:community @favourites + @views, itunes:image and slash:comments (Lars Windolf)</li>
+          <li>Restores comment feed functionality. Now updates item view without scroll reset (Lars Windolf)</li>
+          <li>Dropped bold-unread plugin as it does not work anymore with GtkListView (Lars Windolf)</li>
+          <li>Update of all default OPML files. Updated international feeds section. Removed some broken feeds. (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
+
+    <release date="2025-08-19" version="2.0">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Liferea was ported to GTK4 and uses libadwaita</li>
+          <li>Liferea uses a headerbar now instead of a menubar</li>
+          <li>Feed and item list do use GtkListView</li>
+          <li>New WebDAV based sync backend</li>
+          <li>All node sources now use a common subscribing dialog</li>
+          <li>Unread count numbers are now lazy-updated (every 500ms) to improve performance</li>
+          <li>New update monitor that gives deeper insight into the background updating and node source synchronization</li>
+          <li>Most of the dialogs use libadwaita widgets and are modal now</li>
+        </ul>
+        <p>Removed Features:</p>
+        <ul>
+          <li>Reduced feed list mode is not supported anymore</li>
+          <li>Item list view headers are now gone (use the context menu for sorting)</li>
+          <li>Tray icon support has lost the feature to indicate the unread counter</li>
+        </ul>
+        <p>Changes to 2.0-RC4:</p>
+        <ul>
+          <li>Fixes #1575 Serialize feed item document as HTML not XML (Peter Simonyi)</li>
+          <li>Fixes #1551 full screen mode for videos broken (Lars Windolf)</li>
+          <li>Fixes #1534: icons cannot be found (AndyM48, Lars Windolf)</li>
+          <li>Fixes #1533: refresh feed info on update broken (Lars Windolf)</li>
+          <li>Fixes #1525 folder collapse state is not persisted over restarts (Lars Windolf)</li>
+          <li>Fixes Atom 1.0 fields like "contentUpdateDate" were not store as single values but as lists. (Lars Windolf)</li>
+          <li>Refactored feed list and item list to not use GtkTreeView anymore (Lars Windolf)</li>
+          <li>Refactored unread counting for better performance (Lars Windolf)</li>
+          <li>Reimplemented trayicon plugin using Status-Notifier-Item and libstray (Lars Windolf)</li>
+          <li>Convert OPML source and properties dialog to libadwaita (Lars Windolf)</li>
+          <li>Add python-console plugin to make plugin development easier (Lars Windolf)</li>
+          <li>Auth challenge dialog now uses AdwPasswordEntryRow (Lars Windolf)</li>
+          <li>All online account node sources now use a common dialog that also allows to specify the node title. (Lars Windolf)</li>
+          <li>Update of Javascript library DomPurify (Lars Windolf)</li>
+          <li>Dropped helper script "liferea-add-feed" as it is equivalent to "liferea --add-feed" (Lars Windolf)</li>
+          <li>Update of Brazilian Portuguese translation (Fúlvio Alves)</li>
+        </ul>
+      </description>
+    </release>
+
+    <release date="2026-05-02" version="1.16.9">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Fixes a regression that breaks using online accounts (Lars Windolf)</li>
+          <li>Fixes a regression when subscribing to local files (Lars Windolf)</li>
+          <li>Fixes some memory leaks (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
+
+    <release date="2026-04-25" version="1.16.8">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Reimplements category display, improves metadata display by displaying all in a wrapped line to optimize vertical space usage</li>
+          <li>Add a new user.js which is automatically installed to ~/.config/liferea/user.js that provides hooks for data and rendering manipulation. (Lars Windolf)</li>
+          <li>#1490: Add blogroll support. For feeds with &lt;source:blogroll&gt; element or homepages with &lt;link rel="blogroll"&gt; blogroll URLs are detected and the blogroll is downloaded and shown in the feed view. (Lars Windolf)</li>
+          <li>Change "Discover Feeds" to open in external browser. Due to rss-finder using ESM and Webkit enforcing CORS for ESM and Cloudflares corsproxy.io now not available anymore there is no easy and secure way to simply embed it. (Lars Windolf)</li>
+          <li>Security updates for JS modules (Lars Windolf)</li>
+          <li>Fixes #1494: Better contrast in light mode, a bit less in dark mode (Lars Windolf)</li>
+          <li>Fixes #1482: Extraneous white space in item header (Lars Windolf)</li>
+          <li>Fixes #1481: Updating feeds satuarates the main look making interaction difficult (Lars Windolf)</li>
+          <li>Fixes a memory leak when loading subscription metadata (Lars Windolf)</li>
+          <li>Update of Spanish translation (Cristian Othón Martínez Vera)</li>
+        </ul>
+      </description>
+    </release>
+
+    <release date="2025-12-27" version="1.16.7">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Drop Youtube video embedding due to "error 153" and the general privacy implications (Lars Windolf)</li>
+          <li>Fixes #805: use white on red instead of black on red for item list "Important" label (Lars Windolf)</li>
+          <li>Fixes #1478: No favicons for several feeds (Lars Windolf)</li>
+          <li>Fixes #1477: bsky.app links not being used (Lars Windolf)</li>
+          <li>Fixes #1480: Extract item content is sometimes unexpectedly colored (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
+
+    <release date="2025-10-30" version="1.16.6">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Removes GAsyncQueue usage and uses proper GThreadPools, this significantly speeds up updating and reduced GUI lag a lot (Rich Coe)</li>
+          <li>Add support for subscribing to phlog gopher listings (Lars Windolf)</li>
+          <li>Add support for gopher:// URI schema in internal browser (Lars Windolf)</li>
+          <li>Readd incorrectly removed reference.css file (Lars Windolf)</li>
+          <li>Dark mode: dimmed images filter gets reset when hovering over image (Lars Windolf)</li>
+          <li>Fixes #1457 link rel=alternate/self parsing (Lars Windolf)</li>
+          <li>Fixes frozen HTML page after launching feed:// links (Lars Windolf)</li>
+          <li>Fixes #1459 better requiring girepository-2.0 (oreo639)</li>
+          <li>Fixes #1462 panes too small on start (Lars Windolf)</li>
+          <li>Fixes #1466 zoom in from browser context menu broken (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
+
+    <release date="2025-09-13" version="1.16.5">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Fixes a crash on subscribing when at least one news bin does exist. (Lars Windolf)</li>
+          <li>Fixes #1455 crash on viewing items with comment feeds. (Lars Windolf)</li>
+          <li>Fix input field vertical expand and margins in several dialogs (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
+
+    <release date="2025-09-09" version="1.16.4">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Fixes a regression introduced in 1.16.3 that broken newsbins. The "type" attribute in the exported OPML was wrong. If you are affected please manually change "type" for your news bins back to "newsbin" in the OPML file usually ~/.config/liferea/feedlist.opml. (Lars Windolf)</li>
+          <li>Fixes #1423 regression in main window geometry restoration (Lars Windolf)</li>
+          <li>Fixes #1454 deprecated icon in headerbar plugin (Branko Grubić)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2024-09-26" version="1.15.8">
       <description>
         <p>Changes:</p>
