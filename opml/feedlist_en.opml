@@ -32,7 +32,7 @@
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 		</outline>
 		<outline text="Discover Blogs" description="Feeds that help you discover new interesting content. For more content have a look at &lt;a href=&quot;https://lwindolf.github.io/rss-finder&quot;&gt;RSS Finder&lt;/a&gt;.">
-			<outline text="bubbles.town" htmlUrl="https://bubbles.town/" xmlUrl="https://bubbles.town/feed/"/>
+			<outline text="bubbles.town" htmlUrl="https://bubbles.town/" xmlUrl="https://bubbles.town/feed"/>
 			<outline text="Random Indie blogs" htmlUrl="https://indieblog.page/" xmlUrl="https://indieblog.page/dailyfeed?num=5"/>
 			<outline text="kagi smallweb" htmlUrl="https://kagi.com/smallweb" xmlUrl="https://kagi.com/api/v1/smallweb/feed/"/>
 		</outline>
