@@ -77,7 +77,7 @@
     <color type="primary" scheme_preference="dark">#64647D</color>
   </branding>
   <releases>
-    <release date="2025-09-01" version="2.0.1">
+    <release date="2026-09-01" version="2.0.1">
       <description>
         <p>Changes:</p>
         <ul>
@@ -93,7 +93,7 @@
       </description>
     </release>
 
-    <release date="2025-08-19" version="2.0">
+    <release date="2026-08-19" version="2.0">
       <description>
         <p>Changes:</p>
         <ul>
