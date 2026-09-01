@@ -22,8 +22,9 @@
 		<outline text="PCManias" htmlUrl="http://www.pcmanias.com/" xmlUrl="http://www.pcmanias.com/feed/" />
 		<outline text="Gadgets Portugal" htmlUrl="http://gadgets.clix.pt/" xmlUrl="http://feeds.feedburner.com/gadgets-portugal" />
 	</outline>
-        <!-- lets keep this English block in sync over all feed lists! -->
+        
         <outline text="internacional">
+		<!-- start of default block: lets keep this default English block in sync over all feed lists! -->
 		<outline text="News">		<!-- translate this title for localized feed list -->
 			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
@@ -42,15 +43,18 @@
 		<outline text="Comics">
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 		</outline>
+		<!-- end of default block -->
 	</outline>
-	<!-- end of default block -->
 
+  	<!-- the following search folders should also be in sync for all feed lists -->
+  	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->
         <outline text="Não Lidos" title="Não Lidos" description="Notícias ainda não lidas" type="vfolder" htmlUrl="" xmlUrl="vfolder">
             <outline type="rule" text="Estado de leitura" rule="unread" value="" additive="true"/>
         </outline>
         <outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder" totalCount="true">
             <outline type="rule" text="Sinalizador de estado" rule="flagged" value="" additive="true"/>
         </outline>
+    	<!-- end of search folder block -->
     </outline>
   </body>
 </opml>

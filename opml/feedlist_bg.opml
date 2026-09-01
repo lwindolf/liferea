@@ -10,8 +10,8 @@
       <outline text="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" title="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" description="&#x41B;&#x438;&#x43D;&#x443;&#x43A;&#x441; &#x437;&#x430; &#x431;&#x44A;&#x43B;&#x433;&#x430;&#x440;&#x438;: &#x41D;&#x43E;&#x432;&#x438;&#x43D;&#x438;" type="rss" htmlUrl="http://www.linux-bg.org" xmlUrl="http://linux-bg.org/linux-bg-news.rdf" updateInterval="-1"/>
     </outline>
 
-	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="International">		<!-- translate this title for localized feed list -->
+		<!-- start of default block: lets keep this default English block in sync over all feed lists! -->
 		<outline text="News">
 			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
@@ -30,8 +30,8 @@
 		<outline text="Comics">
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 		</outline>
+		<!-- end of default block -->
 	</outline>
-	<!-- end of default block -->
 
 	<!-- the following search folders should also be in sync for all feed lists -->
 	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->

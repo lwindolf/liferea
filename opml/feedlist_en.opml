@@ -4,17 +4,20 @@
 	<title>Liferea Default Feed List - English</title>	<!-- translate this for localized feed list -->
 </head>
 <body>
-	<!-- lets keep this default English block in sync over all feed lists! -->
+
 	<outline text="Example Feeds">		<!-- translate this title for localized feed list -->
+		<!-- start of default block: lets keep this default English block in sync over all feed lists! -->
 		<outline text="News">
 			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
 			<outline text="BBC" htmlUrl="https://www.bbc.com/news" xmlUrl="https://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
-			<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feed"/>
+			<outline text="r/worldnews" htmlUrl="https://www.reddit.com/r/worldnews/" xmlUrl="https://www.reddit.com/r/worldnews.rss"/>
 		</outline>
 		<outline text="Knowledge">
+			<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feed"/>
 			<outline text="Aeon" htmlUrl="https://aeon.co/" xmlUrl="https://aeon.co/feed.rss"/>
 			<outline text="Quanta Magazine" htmlUrl="https://api.quantamagazine.org/" xmlUrl="https://api.quantamagazine.org/feed/"/>
+			<outline text="bioGraphic" htmlUrl="https://www.biographic.com" xmlUrl="https://www.biographic.com/feed/"/>
 		</outline>
 		<outline text="Open Source">		<!-- translate this title for localized feed list -->
 			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://lzone.de/feed/liferea.xml" />
@@ -22,18 +25,19 @@
 		</outline>
 		<outline text="Podcasts">		<!-- translate this title for localized feed list -->
 			<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/atom/"/>
-		</outline>
-		<outline text="Music Blogs">		<!-- translate this title for localized feed list -->
-			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
-			<outline text="Gorilla vs. Bear"   htmlUrl="https://www.gorillavsbear.net" xmlUrl="https://www.gorillavsbear.net/category/mp3/feed/"/>
-			<outline text="KEXP"               htmlUrl="https://kexp.org/" xmlUrl="http://feeds.kexp.org/kexp/songoftheday"/>
-			<outline text="Fluxblog"           htmlUrl="http://fluxblog.org" xmlUrl="http://www.fluxblog.org/"/>
+			<outline text="Philosophize This!" htmlUrl="https://philosophizethis.org" xmlUrl="https://feeds.megaphone.fm/QCD6036500916"/>
+			<outline text="The Rest Is History" htmlUrl="https://therestishistory.com/" xmlUrl="https://feeds.megaphone.fm/GLT4787413333"/>
 		</outline>
 		<outline text="Comics">
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 		</outline>
+		<outline text="Discover Blogs" description="Feeds that help you discover new interesting content. For more content have a look at &lt;a href=&quot;https://lwindolf.github.io/rss-finder&quot;&gt;RSS Finder&lt;/a&gt;.">
+			<outline text="bubbles.town" htmlUrl="https://bubbles.town/" xmlUrl="https://bubbles.town/feed/"/>
+			<outline text="Random Indie blogs" htmlUrl="https://indieblog.page/" xmlUrl="https://indieblog.page/dailyfeed?num=5"/>
+			<outline text="kagi smallweb" htmlUrl="https://kagi.com/smallweb" xmlUrl="https://kagi.com/api/v1/smallweb/feed/"/>
+		</outline>
+		<!-- end of default block -->
 	</outline>
-	<!-- end of default block -->
 
 	<!-- the following search folders should also be in sync for all feed lists -->
 	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->

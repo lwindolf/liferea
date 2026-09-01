@@ -71,35 +71,14 @@ liferea_web_view_class_init(LifereaWebViewClass *klass)
 }
 
 static void
-can_copy_callback (GObject *web_view, GAsyncResult *result, gpointer user_data)
-{
-	gboolean 	enabled;
-	GError 		*error = NULL;
-	GActionGroup 	*action_group;
-	GSimpleAction 	*copy_action;
-
-	enabled = webkit_web_view_can_execute_editing_command_finish (WEBKIT_WEB_VIEW (web_view), result, &error);
-
-	if (error) {
-		g_warning ("Error can_execute_editing_command callback : %s\n", error->message);
-		g_error_free (error);
-		return;
-	}
-
-	action_group = LIFEREA_WEB_VIEW (web_view)->menu_action_group;
-	copy_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "copy-selection"));
-	g_simple_action_set_enabled (copy_action, enabled);
-}
-
-static void
 liferea_web_view_update_actions_sensitivity (LifereaWebView *self)
 {
-	webkit_web_view_can_execute_editing_command (
-		WEBKIT_WEB_VIEW (self),
-		WEBKIT_EDITING_COMMAND_COPY,
-		NULL,
-		can_copy_callback,
-                NULL);
+	GSimpleAction *copy_action;
+	WebKitEditorState *editor_state;
+
+	copy_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (self->menu_action_group), "copy-selection"));
+	editor_state = webkit_web_view_get_editor_state (WEBKIT_WEB_VIEW (self));
+	g_simple_action_set_enabled (copy_action, webkit_editor_state_is_copy_available (editor_state));
 }
 
 static void
@@ -592,6 +571,9 @@ liferea_web_view_init(LifereaWebView *self)
 	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
 
 	g_action_map_add_action_entries (G_ACTION_MAP (self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
+	g_simple_action_set_enabled (
+		G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (self->menu_action_group), "copy-selection")),
+		FALSE);
 	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
 
 	/* Register context menu signal */

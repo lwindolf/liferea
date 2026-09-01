@@ -11,8 +11,8 @@
 			</outline>
 		</outline>
 		
-		<!-- lets keep this default English block in sync over all feed lists! -->
 		<outline text="International">		
+			<!-- start of default block: lets keep this default English block in sync over all feed lists! -->
 			<outline text="News">
 				<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
 				<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
@@ -31,8 +31,8 @@
 			<outline text="Comics">
 				<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 			</outline>
+			<!-- end of default block -->
 		</outline>
-		<!-- end of default block -->
 	</outline>
 	<!-- end of default block -->
 

@@ -13,8 +13,8 @@
         <outline title="Nyheter fr&#xE5;n Expressen" htmlUrl="http://expressen.se/1.573280.1175529352?standAlone=true" xmlUrl="http://expressen.se/1.573280?standAlone=true" />
       </outline>
 
-	<!-- lets keep this default English block in sync over all feed lists! -->
       <outline title="&#xD6;ppen k&#xE4;llkod" text="&#xD6;ppen k&#xE4;llkod" description="&#xD6;ppen k&#xE4;llkod" type="folder">
+      	<!-- start of default block: lets keep this default English block in sync over all feed lists! -->
 		<outline text="News">		<!-- translate this title for localized feed list -->
 			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
@@ -33,8 +33,8 @@
 		<outline text="Comics">
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 		</outline>
-      </outline>
 	<!-- end of default block -->
+      </outline>
     </outline>
 
     <!-- the following search folders should also be in sync for all feed lists -->

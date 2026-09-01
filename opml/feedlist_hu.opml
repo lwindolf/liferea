@@ -4,8 +4,8 @@
 	<title>Liferea alapértelmezett hírforráslista 🇭🇺</title>	<!-- translate this for localized feed list -->
 </head>
 <body>
-	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="Példa hírforrások">		<!-- translate this for localized feed list -->
+		<!-- start of default block: lets keep this default English block in sync over all feed lists! -->
 		<outline text="Magyar hírek 🇭🇺">
 			<outline text="[origo]" htmlUrl="http://www.origo.hu/" xmlUrl="http://www.origo.hu/contentpartner/rss/hircentrum/origo.xml" />
 			<outline text="Index" htmlUrl="https://index.hu/" xmlUrl="https://index.hu/24ora/rss/" />
@@ -26,8 +26,8 @@
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 			<outline text="Párkocka" htmlUrl="https://parkocka.hu/" xmlUrl="https://parkocka.hu/feed/"/>
 		</outline>
+		<!-- end of default block -->
 	</outline>
-	<!-- end of default block -->
 
 	<!-- the following search folders should also be in sync for all feed lists -->
 	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->

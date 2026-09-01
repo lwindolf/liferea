@@ -16,8 +16,9 @@
                         <outline text="Repubblica.it" htmlUrl="https://www.repubblica.it/" xmlUrl="https://www.repubblica.it/rss/homepage/rss2.0.xml" />
                         <outline text="Tuttobici News" htmlUrl="https://www.tuttobiciweb.it/" xmlUrl="https://www.tuttobiciweb.it/rss.php" />
 	        </outline>
-	<!-- lets keep this default English block in sync over all feed lists! -->
-	<outline text="Notizie internazionali">
+
+		<outline text="Notizie internazionali">
+		<!-- start of default block: lets keep this default English block in sync over all feed lists! -->
 		<outline text="Notizie">
 			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
@@ -38,9 +39,9 @@
 		<outline text="Fumetti">
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 		</outline>
+		<!-- end of default block -->
 	    </outline>
 	</outline>
-	<!-- end of default block -->
 
 	<!-- the following search folders should also be in sync for all feed lists -->
 	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->
