@@ -77,6 +77,13 @@ liferea = executable('liferea',
 memcheck = find_program('src/tests/memcheck.sh')
 testrunner = find_program('src/tests/run.sh')
 
+# As tests use conf_*() methods we need to provide gsettings schemata
+test_env = environment()
+test_env.set(
+  'GSETTINGS_SCHEMA_DIR',
+  get_option('prefix') / get_option('datadir') / 'glib-2.0' / 'schemas'
+)
+
 # Note: the 'update' test is explicitly skipped as it's gsettings dependency breaks CI build (missing X11/DBUS)
 foreach name: [
   'favicon',
@@ -90,8 +97,18 @@ foreach name: [
   'social',
   'subscription'
 ]
-  test(name, testrunner, args: [liferea, '--test', name])
-  test('memcheck-' + name, memcheck, args: [name])
+  test(
+    name,
+    testrunner,
+    args: [liferea, '--test', name],
+    env: test_env
+  )
+  test(
+    'memcheck-' + name,
+    memcheck,
+    args: [name],
+    env: test_env
+  )
 endforeach
 
 
