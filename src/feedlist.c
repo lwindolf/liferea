@@ -789,14 +789,6 @@ feedlist_to_json_collect_subscriptions (Node *node, JsonBuilder *b)
 		if (node->subscription->updateState)
 			last_poll = node->subscription->updateState->lastPoll;
 
-		// determine effective update interval in [min]
-		gint interval = subscription_get_effective_update_interval (node->subscription);
-		gint defaultInterval = subscription_get_default_update_interval (node->subscription);
-
-		// Determine whether the user can force update the subscription using manual
-		// update. This depends on the age + defaultUpdateInterval being in the past.
-		gboolean canUpdateNow = (g_get_real_time () - last_poll) / G_USEC_PER_SEC > defaultInterval * 60;
-
 		json_builder_begin_object (b);
 		json_builder_set_member_name (b, "id");
 		json_builder_add_string_value (b, node->id);
@@ -807,11 +799,11 @@ feedlist_to_json_collect_subscriptions (Node *node, JsonBuilder *b)
 		json_builder_set_member_name (b, "syncState");
 		json_builder_add_int_value (b, node->syncState);
 		json_builder_set_member_name (b, "interval");
-		json_builder_add_int_value (b, interval * 60);
+		json_builder_add_int_value (b, subscription_get_effective_update_interval (node->subscription) * 60);
 		json_builder_set_member_name (b, "age");
 		json_builder_add_int_value (b, (g_get_real_time () - last_poll) / G_USEC_PER_SEC);
 		json_builder_set_member_name (b, "canUpdateNow");
-		json_builder_add_boolean_value (b, canUpdateNow);
+		json_builder_add_boolean_value (b, subscription_can_update_now (node->subscription));
 
 		if (node->source) {
 			json_builder_set_member_name (b, "nodeSourceId");

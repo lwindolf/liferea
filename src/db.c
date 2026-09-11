@@ -1597,7 +1597,7 @@ db_subscription_update (subscriptionPtr subscription)
 	sqlite3_bind_text (stmt, 3, subscription->origSource, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 4, subscription->filtercmd, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 5, subscription->updateInterval);
-	sqlite3_bind_int  (stmt, 6, subscription->defaultInterval);
+	sqlite3_bind_int  (stmt, 6, 0); // defaultInterval is unused now (update_state max_age_minutes is used instead)
 	sqlite3_bind_int  (stmt, 7, subscription->discontinued?1:0);
 	sqlite3_bind_int  (stmt, 8, subscription->node->available?1:0);
 

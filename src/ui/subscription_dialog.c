@@ -342,7 +342,7 @@ subscription_prop_dialog_load (GtkWidget *dialog,
 	}
 
 	interval = subscription_get_update_interval (subscription);
-	defaultInterval = subscription_get_default_update_interval (subscription);
+	defaultInterval = update_state_get_cache_maxage (subscription->updateState);
 	conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &default_update_interval);
 	spinSetInterval = defaultInterval > 0 ? defaultInterval : default_update_interval;
 

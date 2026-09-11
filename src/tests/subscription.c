@@ -66,13 +66,20 @@ struct tc tc_intervals[] = {
 		.feedInterval = 30,
 		.propsInterval = 60,
 		.globalInterval = -2,
-		.effectiveInterval = 0
+		.effectiveInterval = 60
 	},
 	{
 		.name = "/subscription/never-update-by-props",
 		.feedInterval = 30,
 		.propsInterval = -2,
 		.globalInterval = 120,
+		.effectiveInterval = 0
+	},
+	{
+		.name = "/subscription/never-update-by-both",
+		.feedInterval = 30,
+		.propsInterval = -2,
+		.globalInterval = -2,
 		.effectiveInterval = 0
 	},
 	{
@@ -85,6 +92,42 @@ struct tc tc_intervals[] = {
 	{ NULL }
 };
 
+// update cache age test cases
+typedef struct tcCache {
+	const gchar	*name;
+	gint    	maxage;		/* largest cache age in [min] (i.e. minimum interval between updates) required by feed */
+	gint    	nowDiff;	/* difference of lastPoll in [s] to current timestamp */
+	gboolean	canUpdate;
+} *tcCachePtr;
+
+struct tcCache tc_cache_ages[] = {
+	{
+		.name = "/subscription/cache-age-none-uninitialized",
+		.maxage = -1,
+		.nowDiff = 1234567890,	// just a very large diff	
+		.canUpdate = TRUE
+	},
+	{
+		.name = "/subscription/cache-age-none",
+		.maxage = -1,
+		.nowDiff = 1000,	// in the past
+		.canUpdate = TRUE
+	},
+	{
+		.name = "/subscription/cache-age-blocks-update",
+		.maxage = 1440,		// 1 day
+		.nowDiff = 60 * 60 * 2,	// 2 hours later
+		.canUpdate = FALSE
+	},
+	{
+		.name = "/subscription/cache-age-allows-update",
+		.maxage = 45,			// 45min
+		.nowDiff = 60 * 60 * 24,	// 1 day later
+		.canUpdate = TRUE
+	},
+	{ NULL }
+};
+
 static void
 tc_interval (gconstpointer user_data)
 {
@@ -93,12 +136,26 @@ tc_interval (gconstpointer user_data)
 
 	// Do not use subscription_set_update_interval (s, tc->propsInterval); as it triggers feed list saving
 	s->updateInterval = tc->propsInterval;
-	subscription_set_default_update_interval (s, tc->feedInterval);
+	update_state_set_cache_maxage (s->updateState, tc->feedInterval);
 	conf_set_int_value (DEFAULT_UPDATE_INTERVAL, tc->globalInterval);
 
 	if (subscription_get_effective_update_interval (s) != tc->effectiveInterval)
 		g_print ("Effective interval mismatch: actual %d expected %d\n", subscription_get_effective_update_interval (s), tc->effectiveInterval);
 	g_assert_true (subscription_get_effective_update_interval (s) == tc->effectiveInterval);
+
+	subscription_free (s);
+}
+
+static void
+tc_cache_age (gconstpointer user_data)
+{
+	tcCachePtr	tc = (tcCachePtr)user_data;
+	subscriptionPtr s = subscription_new (NULL, NULL, NULL);
+
+	s->updateState->lastPoll = g_get_real_time () - (gint64)tc->nowDiff * G_USEC_PER_SEC;
+	update_state_set_cache_maxage (s->updateState, tc->maxage);
+
+	g_assert_true (subscription_can_update_now (s) == tc->canUpdate);
 
 	subscription_free (s);
 }
@@ -114,6 +171,9 @@ test_subscription (int argc, char *argv[])
 
 	for (int i = 0; tc_intervals[i].name != NULL; i++) {
 		g_test_add_data_func (tc_intervals[i].name, &tc_intervals[i], &tc_interval);
+	}
+	for (int i = 0; tc_cache_ages[i].name != NULL; i++) {
+		g_test_add_data_func (tc_cache_ages[i].name, &tc_cache_ages[i], &tc_cache_age);
 	}
 
 	result = g_test_run();
