@@ -25,64 +25,64 @@
 
 // update interval test cases
 typedef struct tc {
-        const gchar *name;
-	gint    feedInterval;           /* feed specific update interval as configured feed author / webmaster */
-        gint    propsInterval;          /* feed specific update interval configured in subscription properties by user */
-        gint    globalInterval;         /* global update interval as configured in preferences */
-	guint   effectiveInterval;      /* resulting interval */
+	const gchar *name;
+	gint    feedInterval;		/* feed specific update interval as configured feed author / webmaster */
+	gint    propsInterval;		/* feed specific update interval configured in subscription properties by user */
+	gint    globalInterval;		/* global update interval as configured in preferences */
+	guint   effectiveInterval;	/* resulting interval */
 } *tcPtr;
 
 struct tc tc_intervals[] = {
-        {
-                .name = "/subscription/limit-to-feed-interval",
-                .feedInterval = 30,
-                .propsInterval = 60,
-                .globalInterval = 120,
-                .effectiveInterval = 30
-        },
-        {
-                .name = "/subscription/props-interval-wins1",
-                .feedInterval = 65,
-                .propsInterval = 60,
-                .globalInterval = 120,
-                .effectiveInterval = 60
-        },
-        {
-                .name = "/subscription/props-interval-wins2",
-                .feedInterval = 65,
-                .propsInterval = 60,
-                .globalInterval = 20,
-                .effectiveInterval = 60
-        },
-        {
-                .name = "/subscription/props-interval-wins3",
-                .feedInterval = 0,
-                .propsInterval = 60,
-                .globalInterval = 120,
-                .effectiveInterval = 60
-        },
-        {
-                .name = "/subscription/never-update-by-prefs",
-                .feedInterval = 30,
-                .propsInterval = 60,
-                .globalInterval = -2,
-                .effectiveInterval = 0
-        },
-        {
-                .name = "/subscription/never-update-by-props",
-                .feedInterval = 30,
-                .propsInterval = -2,
-                .globalInterval = 120,
-                .effectiveInterval = 0
-        },
-        {
-                .name = "/subscription/pref-interval-wins",
-                .feedInterval = 0,
-                .propsInterval = 240,
-                .globalInterval = 120,
-                .effectiveInterval = 120
-        },
-        { NULL } 
+	{
+		.name = "/subscription/limit-to-feed-interval",
+		.feedInterval = 30,
+		.propsInterval = 60,
+		.globalInterval = 120,
+		.effectiveInterval = 60
+	},
+	{
+		.name = "/subscription/props-interval-wins1",
+		.feedInterval = 65,
+		.propsInterval = 60,
+		.globalInterval = 120,
+		.effectiveInterval = 65
+	},
+	{
+		.name = "/subscription/props-interval-wins2",
+		.feedInterval = 65,
+		.propsInterval = 60,
+		.globalInterval = 20,
+		.effectiveInterval = 65
+	},
+	{
+		.name = "/subscription/props-interval-wins3",
+		.feedInterval = 0,
+		.propsInterval = 60,
+		.globalInterval = 120,
+		.effectiveInterval = 60
+	},
+	{
+		.name = "/subscription/never-update-by-prefs",
+		.feedInterval = 30,
+		.propsInterval = 60,
+		.globalInterval = -2,
+		.effectiveInterval = 0
+	},
+	{
+		.name = "/subscription/never-update-by-props",
+		.feedInterval = 30,
+		.propsInterval = -2,
+		.globalInterval = 120,
+		.effectiveInterval = 0
+	},
+	{
+		.name = "/subscription/pref-interval-wins",
+		.feedInterval = 0,
+		.propsInterval = 240,
+		.globalInterval = 120,
+		.effectiveInterval = 240
+	},
+	{ NULL }
 };
 
 static void
@@ -91,13 +91,13 @@ tc_interval (gconstpointer user_data)
 	tcPtr		tc = (tcPtr)user_data;
 	subscriptionPtr s = subscription_new (NULL, NULL, NULL);
 
-        // Do not use subscription_set_update_interval (s, tc->propsInterval); as it triggers feed list saving
-       	s->updateInterval = tc->propsInterval;
-        subscription_set_default_update_interval (s, tc->feedInterval);
-        conf_set_int_value (DEFAULT_UPDATE_INTERVAL, tc->globalInterval);
+	// Do not use subscription_set_update_interval (s, tc->propsInterval); as it triggers feed list saving
+	s->updateInterval = tc->propsInterval;
+	subscription_set_default_update_interval (s, tc->feedInterval);
+	conf_set_int_value (DEFAULT_UPDATE_INTERVAL, tc->globalInterval);
 
-        if (subscription_get_effective_update_interval (s) != tc->effectiveInterval)
-                g_print ("Effective interval mismatch: actual %d expected %d\n", subscription_get_effective_update_interval (s), tc->effectiveInterval);
+	if (subscription_get_effective_update_interval (s) != tc->effectiveInterval)
+		g_print ("Effective interval mismatch: actual %d expected %d\n", subscription_get_effective_update_interval (s), tc->effectiveInterval);
 	g_assert_true (subscription_get_effective_update_interval (s) == tc->effectiveInterval);
 
 	subscription_free (s);
@@ -108,7 +108,7 @@ test_subscription (int argc, char *argv[])
 {
 	gint result;
 
-        conf_init ();
+	conf_init ();
 
 	g_test_init (&argc, &argv, NULL);
 
