@@ -442,19 +442,36 @@ subscription_get_effective_update_interval (subscriptionPtr subscription)
 	   <interval>     | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
 	   <interval>     | -1 (use preferences) | <interval>               | max(feed <interval>, preference <interval>)
 	   <interval>     | <interval>           | <interval>               | max(feed <interval>, properties <interval>)
-	
 	*/
+	gint feedInterval = subscription_get_default_update_interval (subscription);
+	gint userInterval = subscription_get_update_interval (subscription);
+	gint globalInterval = 0;
 
-	// FIXME: enforce max interval according to above table
-	gint interval = subscription_get_update_interval (subscription);
-	if (-1 == interval)
-		interval = subscription_get_default_update_interval (subscription);
-	if (-1 == interval)
-		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
-	if (interval < 0)
-		interval = 0;
+	/* if the feed has specified no interval, feedInterval is -1
+	   set it to 0 for easier processing */
+	if (feedInterval < 0)
+		feedInterval = 0;
 
-	return (guint)interval;
+	if (-2 == userInterval || -2 == globalInterval)
+		return 0;
+
+	conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &globalInterval);
+	if (-2 == globalInterval || 0 == globalInterval)
+		return 0;
+
+	if (userInterval > 0) {
+		if (feedInterval > userInterval)
+			return (guint)feedInterval;
+		return (guint)userInterval;
+	}
+
+	if (feedInterval > 0) {
+		if (feedInterval > globalInterval)
+			return (guint)feedInterval;
+		return (guint)globalInterval;
+	}
+
+	return (guint)globalInterval;
 }
 
 guint
