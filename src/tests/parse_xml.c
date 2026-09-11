@@ -60,7 +60,7 @@ struct tcXPath tc_xpath[] = {
 		"//link[@rel='alternate']/@href",
 		TRUE
 	},
-	NULL
+        { NULL }
 };
 
 typedef struct tcStripper {
@@ -100,7 +100,7 @@ struct tcStripper tc_strippers[] = {
 		"<div><iframe>Some iframe\n</iframe><iframe/><iframe>another iframe</iframe></div>",
 		"//iframe"
 	},
-	NULL
+        { NULL } 
 };
 
 

@@ -75,6 +75,7 @@ liferea = executable('liferea',
   install: true
 )
 memcheck = find_program('src/tests/memcheck.sh')
+testrunner = find_program('src/tests/run.sh')
 
 # Note: the 'update' test is explicitly skipped as it's gsettings dependency breaks CI build (missing X11/DBUS)
 foreach name: [
@@ -86,9 +87,10 @@ foreach name: [
   'parse_rss',
   'parse_uri',
   'parse_xml',
-  'social'
+  'social',
+  'subscription'
 ]
-  test(name, liferea, args: ['--test', name])
+  test(name, testrunner, args: [liferea, '--test', name])
   test('memcheck-' + name, memcheck, args: [name])
 endforeach
 

@@ -76,10 +76,10 @@ typedef struct subscription {
 	struct feedHandler *fhp;		/**< Feed format parsing handler. */
 
 	// settings
-	gint		updateInterval;		/*<< user defined update interval in minutes */
+	gint		updateInterval;		/*<< user defined update interval in minutes (-1 for global default, -2 for no auto update) */
 
 	// feed-only settings
-	guint		defaultInterval;	/*<< optional update interval as specified by the feed in minutes */
+	guint		defaultInterval;	/*<< optional update interval as specified by the feed in minutes (or 0) */
 	gchar		*filtercmd;		/*<< feed filter command */
 	gchar		*filterError;		/*<< textual description of filter errors */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
@@ -153,11 +153,31 @@ void subscription_auto_update (subscriptionPtr subscription, updateFlags flags);
 void subscription_cancel_update (subscriptionPtr subscription);
 
 /**
+ * Get the effective update interval for a given subscription.
+ * This takes into account the subscription's own update interval,
+ * its default update interval, and the global default update interval.
+ *
+ * @param subscription	the subscription
+ *
+ * @returns the effective update interval (in minutes) or 0
+ */
+guint subscription_get_effective_update_interval (subscriptionPtr subscription);
+
+/**
+ * Get the default update interval for a given subscription.
+ *
+ * @param subscription	the subscription
+ *
+ * @returns the default update interval (in minutes) or 0
+ */
+guint subscription_get_default_update_interval(subscriptionPtr subscription);
+
+/**
  * Get the update interval setting of a given subscription
  *
  * @param subscription	the subscription
  *
- * @returns the currently configured update interval (in minutes)
+ * @returns the currently configured update interval (in minutes), -1 (use global default) or -2 (no auto update)
  */
 gint subscription_get_update_interval(subscriptionPtr subscription);
 
@@ -165,7 +185,7 @@ gint subscription_get_update_interval(subscriptionPtr subscription);
  * Set the update interval setting for the given subscription
  *
  * @param subscription	the subscription
- * @param interval	the new update interval (in minutes)
+ * @param interval	the new update interval (in minutes), -1 (use global default) or -2 (no auto update)
  */
 void subscription_set_update_interval(subscriptionPtr subscription, gint interval);
 
@@ -174,7 +194,7 @@ void subscription_set_update_interval(subscriptionPtr subscription, gint interva
  *
  * @param subscription	the subscription
  *
- * @returns the default update interval (in minutes) or 0
+ * @returns the default update interval (in minutes) or -1 (if none defined)
  */
 guint subscription_get_default_update_interval(subscriptionPtr subscription);
 

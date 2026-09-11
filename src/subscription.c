@@ -425,6 +425,39 @@ subscription_set_update_interval (subscriptionPtr subscription, gint interval)
 }
 
 guint
+subscription_get_effective_update_interval (subscriptionPtr subscription)
+{
+	/* The are three layers to consider here:
+	
+	   1.) feed specified max interval (<ttl> tag, <sy:updateInterval> tag or Cache-Control header)
+	   2.) user specified update interval
+	   3.) global default update setting
+
+	   Here is an overview table on the combinations
+
+	   feed specified | properties specified | global preference        | our result
+	   ---------------|----------------------|--------------------------|--------------------------------------------
+	   %              | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
+	   %              | -1 (use preferences) | <interval>               | preference <interval>
+	   <interval>     | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
+	   <interval>     | -1 (use preferences) | <interval>               | max(feed <interval>, preference <interval>)
+	   <interval>     | <interval>           | <interval>               | max(feed <interval>, properties <interval>)
+	
+	*/
+
+	// FIXME: enforce max interval according to above table
+	gint interval = subscription_get_update_interval (subscription);
+	if (-1 == interval)
+		interval = subscription_get_default_update_interval (subscription);
+	if (-1 == interval)
+		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
+	if (interval < 0)
+		interval = 0;
+
+	return (guint)interval;
+}
+
+guint
 subscription_get_default_update_interval (subscriptionPtr subscription)
 {
 	return subscription->defaultInterval;
@@ -433,6 +466,10 @@ subscription_get_default_update_interval (subscriptionPtr subscription)
 void
 subscription_set_default_update_interval (subscriptionPtr subscription, guint interval)
 {
+	// sanitation: either a real interval or -1 for no default defined
+	if (0 >= interval)
+		interval = -1;
+
 	subscription->defaultInterval = interval;
 }
 
