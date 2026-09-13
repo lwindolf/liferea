@@ -412,14 +412,6 @@ function contentCleanup() {
 			el.width = size[2] - size[0];
 			el.heigth = size[3] - size[1];
 		});
-
-	// Drop empty elements (to get rid of empty picture/video/iframe divs)
-	document.getElementById('content')
-		.querySelectorAll(":only-child")
-		.forEach((el) => {
-			if(el.innerHTML.length == 1)
-				el.parentNode.removeChild(el);
-		});
 }
 
 export { load_node, load_item, load_update_monitor };
