@@ -321,34 +321,35 @@ node_to_json (Node *node)
 	json_builder_add_int_value (b, g_slist_length (node->children));
 
 	if (node->subscription) {
+		subscriptionPtr subscription = node->subscription;
 		json_builder_set_member_name (b, "source");
-		json_builder_add_string_value (b, subscription_get_source (node->subscription));
+		json_builder_add_string_value (b, subscription_get_source (subscription));
 		json_builder_set_member_name (b, "origSource");
-		json_builder_add_string_value (b, node->subscription->origSource);
+		json_builder_add_string_value (b, subscription->origSource);
 
 		json_builder_set_member_name (b, "discontinued");
-		json_builder_add_boolean_value (b, node->subscription->discontinued);
+		json_builder_add_boolean_value (b, subscription->discontinued);
 		json_builder_set_member_name (b, "error");
-		json_builder_add_int_value (b, node->subscription->error);
+		json_builder_add_int_value (b, subscription->error);
 		json_builder_set_member_name (b, "updateError");
-		json_builder_add_string_value (b, node->subscription->updateError);
+		json_builder_add_string_value (b, subscription->updateError);
 		json_builder_set_member_name (b, "httpError");
-		json_builder_add_string_value (b, node->subscription->httpError);
+		json_builder_add_string_value (b, subscription->httpError);
 		json_builder_set_member_name (b, "httpErrorCode");
-		json_builder_add_int_value (b, node->subscription->httpErrorCode);
+		json_builder_add_int_value (b, subscription->httpErrorCode);
 		json_builder_set_member_name (b, "filterError");
-		json_builder_add_string_value (b, node->subscription->filterError);
+		json_builder_add_string_value (b, subscription->filterError);
+
+		if (subscription->parseErrors && (strlen(subscription->parseErrors->str) > 0)) {
+			json_builder_set_member_name (b, "parseError");
+			json_builder_add_string_value (b, subscription->parseErrors->str);
+		}
 
 		metadata_list_to_json (node->subscription->metadata, b);
 	}
 
 	if (node->source)
 		node_source_to_json (node, b);
-
-	if(node->subscription && node->subscription->parseErrors && (strlen(node->subscription->parseErrors->str) > 0)) {
-		json_builder_set_member_name (b, "parseError");
-		json_builder_add_string_value (b, node->subscription->parseErrors->str);
-	}
 
 	json_builder_end_object (b);
 

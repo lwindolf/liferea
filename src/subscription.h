@@ -76,10 +76,9 @@ typedef struct subscription {
 	struct feedHandler *fhp;		/**< Feed format parsing handler. */
 
 	// settings
-	gint		updateInterval;		/*<< user defined update interval in minutes */
+	gint		updateInterval;		/*<< user defined update interval in minutes (-1 for global default, -2 for no auto update) */
 
 	// feed-only settings
-	guint		defaultInterval;	/*<< optional update interval as specified by the feed in minutes */
 	gchar		*filtercmd;		/*<< feed filter command */
 	gchar		*filterError;		/*<< textual description of filter errors */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
@@ -153,11 +152,59 @@ void subscription_auto_update (subscriptionPtr subscription, updateFlags flags);
 void subscription_cancel_update (subscriptionPtr subscription);
 
 /**
+ * subscription_can_update_now:
+ * @param subscription	the subscription
+ *
+ * Determine whether the user can update the subscription using manual update
+ * according to the update interval indicated by the feed. This is the case when
+ * lastUpdate + defaultUpdateInterval is in the past.
+ * 
+ * This is a pre-scheduling check (called by subscription_auto_update, in contrast
+ * to subscription_can_be_updated which is run post-scheduling).
+ * 
+ * Does NOT check the auto update interval (from feed properties and preferences)!
+ * Does NOT provide an UI indication of the check result.
+ * 
+ * Returns: TRUE if the subscription can be updated, FALSE otherwise
+ */
+gboolean subscription_can_update_now (subscriptionPtr subscription);
+
+/**
+ * subscription_can_be_updated:
+ * @param subscription	the subscription
+ * @param flags		update flags
+ *
+ * Determine whether the subscription can be updated at this moment.
+ * This is a post-scheduling check (called by subscription_update), 
+ * i.e., it considers whether an update job is already running or if 
+ * the subscription is discontinued. If the check fails a proper error
+ * is presented in the feed details and for single subscription updates 
+ * as a toast notification.
+ * 
+ * Does NOT check any update intervals (feed, properties or preferences)
+ *
+ * Returns: TRUE if the subscription can be updated, FALSE otherwise
+ */
+gboolean subscription_can_be_updated (subscriptionPtr subscription, guint flags);
+
+/**
+ * subscription_get_effective_update_interval:
+ * @param subscription	the subscription
+ *
+ * Get the effective update interval for a given subscription.
+ * This takes into account the subscription's own update interval,
+ * its default update interval, and the global default update interval.
+ * 
+ * Returns: the effective update interval (in minutes) or 0
+ */
+guint subscription_get_effective_update_interval (subscriptionPtr subscription);
+
+/**
  * Get the update interval setting of a given subscription
  *
  * @param subscription	the subscription
  *
- * @returns the currently configured update interval (in minutes)
+ * @returns the currently configured update interval (in minutes), -1 (use global default) or -2 (no auto update)
  */
 gint subscription_get_update_interval(subscriptionPtr subscription);
 
@@ -165,26 +212,9 @@ gint subscription_get_update_interval(subscriptionPtr subscription);
  * Set the update interval setting for the given subscription
  *
  * @param subscription	the subscription
- * @param interval	the new update interval (in minutes)
+ * @param interval	the new update interval (in minutes), -1 (use global default) or -2 (no auto update)
  */
 void subscription_set_update_interval(subscriptionPtr subscription, gint interval);
-
-/**
- * Get the default update interval setting of a given subscription
- *
- * @param subscription	the subscription
- *
- * @returns the default update interval (in minutes) or 0
- */
-guint subscription_get_default_update_interval(subscriptionPtr subscription);
-
-/**
- * Set the default update interval setting for the given subscription
- *
- * @param subscription	the subscription
- * @param interval	the default update interval (in minutes)
- */
-void subscription_set_default_update_interval(subscriptionPtr subscription, guint interval);
 
 /**
  * Reset the update counter for the given subscription.

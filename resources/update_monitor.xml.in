@@ -33,6 +33,11 @@
                         border-color: #66f;
                         color: black;
                 }
+                .ok.refrain_from_update {
+                        background: #77f;
+                        border-color: #44f;
+                        color: black;
+                }
                 .warn {
                         background: yellow;
                         border-color: #cc5;
@@ -76,7 +81,12 @@
                 {{#*inline "status"}}
                         {{#if updating}}updating{{else}}
                         {{#if error}}bad{{else}}
-                        {{#compare age 'lt' interval}}ok{{else}}warn{{/compare}}
+                        {{#compare age 'lt' interval}}
+                                ok
+                                {{#unless canUpdateNow}}refrain_from_update{{/unless}}
+                        {{else}}
+                                warn
+                        {{/compare}}
                         {{/if}}{{/if}}
                 {{/inline}}
 
@@ -105,9 +115,10 @@
                                 <tr>
                                         <td id="update_monitor_legend">
                                                 Legend
-                                                <span class="update_monitor_status ok">OK</span>
+                                                <span class="update_monitor_status ok" title="This state indicates that the feed is up-to-date and can be updated again right now.">Fresh, can update now</span>
+                                                <span class="update_monitor_status ok refrain_from_update" title="This state indicates the feed is up-to-date and should not yet be pulled again (as requested by the feed author / webmaster)">Fresh, refrain from update</span>
                                                 <span class="update_monitor_status updating">Updating</span>
-                                                <span class="update_monitor_status warn">Outdated</span>
+                                                <span class="update_monitor_status warn" title="This state indicates that the feed should be updated.">Outdated</span>
                                                 <span class="update_monitor_status bad">Error</span>
                                         </td>
                                 </tr>

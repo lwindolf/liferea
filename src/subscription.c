@@ -63,7 +63,6 @@ subscription_new (const gchar *source,
 
 	subscription->updateState = update_state_new ();
 	subscription->updateInterval = -1;
-	subscription->defaultInterval = -1;
 
 	if (source) {
 		gboolean feedPrefix = FALSE;
@@ -105,7 +104,7 @@ subscription_new (const gchar *source,
 }
 
 /* Checks whether updating a feed makes sense. */
-static gboolean
+gboolean
 subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 {
 	const gboolean interactive = flags & UPDATE_REQUEST_PRIORITY_HIGH;
@@ -126,7 +125,7 @@ subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 
 	// can be the case for newsbins
 	if (!subscription_get_source (subscription)) {
-		debug (DEBUG_UPDATE, "subscription: |%s| has no source!", subscription->source);
+		debug (DEBUG_UPDATE, "subscription: || has no source!");
 		return FALSE;
 	}
 
@@ -305,6 +304,7 @@ subscription_process_update_result (UpdateJob *job)
 	}
 
 	/* 4. generic postprocessing */
+	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
@@ -375,15 +375,12 @@ subscription_auto_update (subscriptionPtr subscription, updateFlags flags)
 		return;
 	}
 
-	interval = subscription_get_update_interval (subscription);
-	if (-1 == interval)
-		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
-
-	if (-2 >= interval || 0 == interval) {
-		debug (DEBUG_UPDATE, "subscription: |%s| configured not to update", subscription->source);
+	if (!subscription_can_update_now (subscription)) {
+		debug (DEBUG_UPDATE, "subscription: |%s| skipping update: should not be updated yet (feed specified interval)", subscription->source);
 		return;
 	}
 
+	interval = subscription_get_update_interval (subscription);
 	now = g_get_real_time();
 
 	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now) {
@@ -425,15 +422,58 @@ subscription_set_update_interval (subscriptionPtr subscription, gint interval)
 }
 
 guint
-subscription_get_default_update_interval (subscriptionPtr subscription)
+subscription_get_effective_update_interval (subscriptionPtr subscription)
 {
-	return subscription->defaultInterval;
+	/* The are three layers to consider here:
+	
+	   1.) feed specified max interval (<ttl> tag, <sy:updateInterval> tag or Cache-Control header)
+	   2.) user specified update interval
+	   3.) global default update setting
+
+	   Here is an overview table on the combinations
+
+	   feed specified | properties specified | global preference        | our result
+	   ---------------|----------------------|--------------------------|--------------------------------------------
+	   %              | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
+	   %              | -1 (use preferences) | <interval>               | preference <interval>
+	   <interval>     | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
+	   <interval>     | -1 (use preferences) | <interval>               | max(feed <interval>, preference <interval>)
+	   <interval>     | <interval>           | <interval>               | max(feed <interval>, properties <interval>)
+	*/
+	gint feedInterval = update_state_get_cache_maxage (subscription->updateState);
+	gint userInterval = subscription_get_update_interval (subscription);
+	gint globalInterval = 0;
+
+	/* if the feed has specified no interval then feedInterval is -1,
+	   we assume it to be 0 for easier processing below */
+	if (feedInterval < 0)
+		feedInterval = 0;
+
+	if (-2 == userInterval || 0 == userInterval)
+		return 0;
+
+	// FIXME: Position wrong: global update might be disabled, but feed specified interval might still allow updates
+	conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &globalInterval);
+
+	if (userInterval > 0)
+		return (guint)MAX (feedInterval, userInterval);
+
+	if (globalInterval > 0)
+		return (guint)MAX (feedInterval, globalInterval);
+
+	return 0;
 }
 
-void
-subscription_set_default_update_interval (subscriptionPtr subscription, guint interval)
+gboolean
+subscription_can_update_now (subscriptionPtr subscription)
 {
-	subscription->defaultInterval = interval;
+	gint64	last_poll = 0;
+	gint	feedInterval = update_state_get_cache_maxage (subscription->updateState);
+	
+	if (subscription->updateState)
+		last_poll = subscription->updateState->lastPoll;
+
+	return (g_get_real_time () - last_poll) / G_USEC_PER_SEC > feedInterval * 60;
 }
 
 void
