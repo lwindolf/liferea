@@ -104,7 +104,7 @@ subscription_new (const gchar *source,
 }
 
 /* Checks whether updating a feed makes sense. */
-static gboolean
+gboolean
 subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 {
 	const gboolean interactive = flags & UPDATE_REQUEST_PRIORITY_HIGH;
@@ -125,7 +125,7 @@ subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 
 	// can be the case for newsbins
 	if (!subscription_get_source (subscription)) {
-		debug (DEBUG_UPDATE, "subscription: |%s| has no source!", subscription->source);
+		debug (DEBUG_UPDATE, "subscription: || has no source!");
 		return FALSE;
 	}
 
@@ -375,15 +375,12 @@ subscription_auto_update (subscriptionPtr subscription, updateFlags flags)
 		return;
 	}
 
-	interval = subscription_get_update_interval (subscription);
-	if (-1 == interval)
-		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
-
-	if (-2 >= interval || 0 == interval) {
-		debug (DEBUG_UPDATE, "subscription: |%s| configured not to update", subscription->source);
+	if (!subscription_can_update_now (subscription)) {
+		debug (DEBUG_UPDATE, "subscription: |%s| skipping update: should not be updated yet (feed specified interval)", subscription->source);
 		return;
 	}
 
+	interval = subscription_get_update_interval (subscription);
 	now = g_get_real_time();
 
 	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now) {

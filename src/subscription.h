@@ -159,9 +159,33 @@ void subscription_cancel_update (subscriptionPtr subscription);
  * according to the update interval indicated by the feed. This is the case when
  * lastUpdate + defaultUpdateInterval is in the past.
  * 
+ * This is a pre-scheduling check (called by subscription_auto_update, in contrast
+ * to subscription_can_be_updated which is run post-scheduling).
+ * 
+ * Does NOT check the auto update interval (from feed properties and preferences)!
+ * Does NOT provide an UI indication of the check result.
+ * 
  * Returns: TRUE if the subscription can be updated, FALSE otherwise
  */
 gboolean subscription_can_update_now (subscriptionPtr subscription);
+
+/**
+ * subscription_can_be_updated:
+ * @param subscription	the subscription
+ * @param flags		update flags
+ *
+ * Determine whether the subscription can be updated at this moment.
+ * This is a post-scheduling check (called by subscription_update), 
+ * i.e., it considers whether an update job is already running or if 
+ * the subscription is discontinued. If the check fails a proper error
+ * is presented in the feed details and for single subscription updates 
+ * as a toast notification.
+ * 
+ * Does NOT check any update intervals (feed, properties or preferences)
+ *
+ * Returns: TRUE if the subscription can be updated, FALSE otherwise
+ */
+gboolean subscription_can_be_updated (subscriptionPtr subscription, guint flags);
 
 /**
  * subscription_get_effective_update_interval:

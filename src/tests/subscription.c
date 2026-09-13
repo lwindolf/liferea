@@ -128,6 +128,66 @@ struct tcCache tc_cache_ages[] = {
 	{ NULL }
 };
 
+// update cache age test cases
+typedef struct tcCanBeUpdated {
+	const gchar	*name;
+	gboolean	discontinued;	/* TRUE if HTTP 410 */
+	gboolean	alreadyRunning;	/* TRUE if update is pending */
+	const gchar	*source;	/* source URI of the feed */
+	gboolean	canUpdate;	/* result */
+} *tcCanBeUpdatedPtr;
+
+static struct tcCanBeUpdated tc_can_be_updated[] = {
+	{
+		.name = "/subscription/can-be-updated-yes",
+		.source = "http://example.com/feed",	
+		.canUpdate = TRUE
+	},
+	{
+		.name = "/subscription/can-be-updated-no-discontinued",
+		.discontinued = TRUE,
+		.source = "http://example.com/feed",	
+		.canUpdate = FALSE
+	},
+	{
+		.name = "/subscription/can-be-updated-no-already-running",
+		.alreadyRunning = TRUE,
+		.source = "http://example.com/feed",	
+		.canUpdate = FALSE
+	},
+	{
+		.name = "/subscription/can-be-updated-command",
+		.source = "| curl http://example.com/feed",	
+		.canUpdate = TRUE
+	},
+	{
+		.name = "/subscription/can-be-updated-file",
+		.source = "/home/jane/myrss.xml",	
+		.canUpdate = TRUE
+	},
+	{
+		.name = "/subscription/can-be-updated-no-invalid-uri",
+		.source = "://exa|mple.com/feed",
+		.canUpdate = FALSE
+	},
+	{
+		.name = "/subscription/can-be-updated-no-invalid-uri2",
+		.source = "abc",
+		.canUpdate = FALSE
+	},
+	{
+		.name = "/subscription/can-be-updated-no-empty-uri",
+		.source = "",
+		.canUpdate = FALSE
+	},
+	{
+		.name = "/subscription/can-be-updated-short-domain",
+		.source = "abc.com",
+		.canUpdate = FALSE	// FIXME: this is a regression, should work and default to https://
+	},
+	{ NULL }
+};
+
 static void
 tc_interval (gconstpointer user_data)
 {
@@ -160,6 +220,22 @@ tc_cache_age (gconstpointer user_data)
 	subscription_free (s);
 }
 
+static void
+tc_can_be_updated_func (gconstpointer user_data)
+{
+	tcCanBeUpdatedPtr	tc = (tcCanBeUpdatedPtr)user_data;
+	subscriptionPtr 	s = subscription_new (NULL, NULL, NULL);
+
+	s->updateJob = tc->alreadyRunning ? (UpdateJob *)1 : NULL;	// set invalid pointer "1", do not actually create a job (as it would crash due to missing job queue)
+	s->source = g_strdup (tc->source);
+	s->discontinued = tc->discontinued;
+
+	g_assert_true (subscription_can_be_updated (s, 0) == tc->canUpdate);
+
+	s->updateJob = NULL;	// avoid freeing bogus pointer
+	subscription_free (s);
+}
+
 int
 test_subscription (int argc, char *argv[])
 {
@@ -174,6 +250,9 @@ test_subscription (int argc, char *argv[])
 	}
 	for (int i = 0; tc_cache_ages[i].name != NULL; i++) {
 		g_test_add_data_func (tc_cache_ages[i].name, &tc_cache_ages[i], &tc_cache_age);
+	}
+	for (int i = 0; tc_can_be_updated[i].name != NULL; i++) {
+		g_test_add_data_func (tc_can_be_updated[i].name, &tc_can_be_updated[i], &tc_can_be_updated_func);
 	}
 
 	result = g_test_run();
