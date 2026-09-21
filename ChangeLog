@@ -1,3 +1,20 @@
+To be released
+
+	Version 2.0.2
+
+	* Fixes #1598: Don't delete elements that are potential footnotes
+	  (Peter Simonyi, Lars Windolf)
+
+	* Fixes #1595: Fix prefs dialog changing the update interval when opened
+	  (Peter Simonyi)
+
+	* Fixes #1594: WEBDAV sync on missing index.json fails
+	  (Lars Windolf)
+
+	* Fixes #1593: Update all doesn't work
+	  (Lars Windolf)
+
+
 2026-09-01  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0.1
