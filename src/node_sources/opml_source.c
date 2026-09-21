@@ -140,6 +140,7 @@ opml_source_check_for_removal (Node *node, gpointer user_data)
 		feedlist_node_removed (node);
 	} else {
 		debug (DEBUG_UPDATE, "keeping %s...", node_get_title (node));
+		node->syncState = NODE_SYNC_STATE_IN_SYNC;
 	}
 	g_free (expr);
 }
