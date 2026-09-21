@@ -413,9 +413,11 @@ function contentCleanup() {
 			el.heigth = size[3] - size[1];
 		});
 
-	// Drop empty elements (to get rid of empty picture/video/iframe divs)
+	// Drop empty media wrappers (to get rid of empty picture/video/object/iframe wrappers)
+	// This is to drop empty elements caused by content extraction / disabled JS
+	// preventing dynamic insertion used by some CMS
 	document.getElementById('content')
-		.querySelectorAll(":only-child")
+		.querySelectorAll('picture:only-child, video:only-child, object:only-child, iframe:only-child')
 		.forEach((el) => {
 			if(el.innerHTML.length == 1)
 				el.parentNode.removeChild(el);
