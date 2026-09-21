@@ -380,10 +380,15 @@ subscription_auto_update (subscriptionPtr subscription, updateFlags flags)
 		return;
 	}
 
-	interval = subscription_get_update_interval (subscription);
+	interval = subscription_get_effective_update_interval (subscription);
 	now = g_get_real_time();
 
-	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now) {
+	if (0 == interval) {
+		debug (DEBUG_UPDATE, "subscription: |%s| auto update disabled", subscription->source);
+		return;
+	}
+
+	if (subscription->updateState->lastPoll + (guint64)interval * 60 * G_USEC_PER_SEC <= now) {
 		subscription_update (subscription, flags);
 	} else {
 		debug (DEBUG_UPDATE, "subscription: |%s| skipping update: was updated recently", subscription->source);
@@ -409,14 +414,8 @@ subscription_get_update_interval (subscriptionPtr subscription)
 void
 subscription_set_update_interval (subscriptionPtr subscription, gint interval)
 {
-	if (0 == interval) {
-		interval = -1;	/* This is evil, I know, but when this method
-				   is called to set the update interval to 0
-				   we mean "never updating". The updating logic
-				   expects -1 for "never updating" and 0 for
-				   updating according to the global update
-				   interval... */
-	}
+	g_assert (interval >= -2);
+
 	subscription->updateInterval = interval;
 	feedlist_schedule_save ();
 }
@@ -439,6 +438,7 @@ subscription_get_effective_update_interval (subscriptionPtr subscription)
 	   <interval>     | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
 	   <interval>     | -1 (use preferences) | <interval>               | max(feed <interval>, preference <interval>)
 	   <interval>     | <interval>           | <interval>               | max(feed <interval>, properties <interval>)
+	   %              | -2 (do not update)   | *                        | (0) do not update
 	*/
 	gint feedInterval = update_state_get_cache_maxage (subscription->updateState);
 	gint userInterval = subscription_get_update_interval (subscription);
@@ -470,6 +470,11 @@ subscription_can_update_now (subscriptionPtr subscription)
 	gint64	last_poll = 0;
 	gint	feedInterval = update_state_get_cache_maxage (subscription->updateState);
 	
+	/*
+	  Note on special interval values:
+	   -1 -> use global update interval -> means we can update (if feedInterval allows it)
+	   -2 -> never update -> means we can update (as this is an interactive user override)
+	 */
 	if (subscription->updateState)
 		last_poll = subscription->updateState->lastPoll;
 
