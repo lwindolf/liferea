@@ -398,7 +398,7 @@ function contentCleanup() {
 			if(!viewbox)
 				return;
 
-			const size = viewbox.split(/\s+/);
+			const size = viewbox.split(/\s+/).map(Number);
 			if(size.length != 4)
 				return;
 
