@@ -272,6 +272,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 {
 	GtkWidget		*widget;
 	gint			tmp, i;
+	guint			interval_unit;
 
 	pd->dialog = liferea_dialog_new ("prefs");
 
@@ -287,21 +288,24 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* set default update interval spin button and unit drop down */
 	preferences_dialog_setup_drop_down (pd, "globalRefreshIntervalUnit", default_update_interval_unit_options, DEFAULT_UPDATE_INTERVAL);
 
-	widget = liferea_dialog_lookup (pd->dialog, "globalRefreshIntervalUnit");
 	conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &tmp);
 	if (tmp % 1440 == 0) {		/* days */
-		gtk_drop_down_set_selected (GTK_DROP_DOWN (widget), 2);
+		interval_unit = 2;
 		tmp /= 1440;
 	} else if (tmp % 60 == 0) {	/* hours */
-		gtk_drop_down_set_selected (GTK_DROP_DOWN (widget), 1);
+		interval_unit = 1;
 		tmp /= 60;
 	} else {			/* minutes */
-		gtk_drop_down_set_selected (GTK_DROP_DOWN (widget), 0);
+		interval_unit = 0;
 	}
 	widget = liferea_dialog_lookup (pd->dialog,"globalRefreshIntervalSpinButton");
 	gtk_spin_button_set_range (GTK_SPIN_BUTTON (widget), 0, 1000000000);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (widget), tmp);
 	g_signal_connect (G_OBJECT (widget), "value-changed", G_CALLBACK (on_default_update_interval_value_changed), pd);
+	// The spin button's value must be set before changing the drop down,
+	// because the drop down change callback is already connected.
+	widget = liferea_dialog_lookup (pd->dialog, "globalRefreshIntervalUnit");
+	gtk_drop_down_set_selected (GTK_DROP_DOWN (widget), interval_unit);
 
 	/* ================== panel 2 "folders" ==================== */
 
