@@ -77,7 +77,7 @@ struct tcAtomFeed tc_atom_feed[] = {
                 "{\"type\":\"feed\",\"id\":\"dummy\",\"title\":null,\"unreadCount\":0,\"children\":0,\"source\":null,\"origSource\":null,\"discontinued\":false,\"error\":0,\"updateError\":null,\"httpError\":null,\"httpErrorCode\":0,\"filterError\":null,\"metadata\":[{\"homepage\":\"https://bits.debian.org/feeds/atom.xml\"}]}",
                 NULL
         },
-        NULL
+        { NULL }
 };
 
 static void

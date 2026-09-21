@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Simple wrapper to valgrind/memcheck the test cases
-# To be run in the meson builddir
+# To be run in the meson builddir.
 
 # $@ 	checks to run
 
@@ -13,7 +13,8 @@ export G_SLICE=always-malloc
 if command -v valgrind >/dev/null; then
 	for check in $@; do
 		details=$(
-			valgrind -q --enable-debuginfod=no --leak-check=full --gen-suppressions=all --suppressions="$(dirname "$0")/memcheck.supp" ./liferea --test "$check" 2>&1
+			# Needs to use run.sh to ensure isolated DBUS session with own dconf env
+			"$(dirname "$0")/run.sh" valgrind -q --enable-debuginfod=no --leak-check=full --gen-suppressions=all --suppressions="$(dirname "$0")/memcheck.supp" ./liferea --test "$check" 2>&1
 		)
 		output=$(
 			echo "$details" | grep "definitely lost" | grep -v "0 bytes in 0 blocks"

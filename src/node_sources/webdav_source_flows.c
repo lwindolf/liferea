@@ -367,7 +367,14 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                         break;
 
                 case BOOTSTRAP_STEP_GET_INDEX:
-                        // For index fetch we accept a 404 and a normal result
+                        // For index fetch we accept a 404 and a normal result.
+                        // A fresh remote collection should start life with an empty index.
+                        if (result && result->httpstatus == 404) {
+                                // FIXME: this is not race safe in regards to the 1st update
+                                webdav_source_feed_list_upload (flow->root);
+                                (flow->callback) (flow->root, "{\"nodes\":[ ]}");
+                                return TRUE;
+                        }
                         if (!((result->httpstatus >= 200 && result->httpstatus < 400) || result->httpstatus == 404)) {
                                 // FIXME: provide better error for user
                                 flow->root->available = FALSE;

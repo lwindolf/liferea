@@ -102,6 +102,7 @@ liferea_sources = files(
   'tests/parse_uri.c',
   'tests/parse_xml.c',
   'tests/social.c',
+  'tests/subscription.c',
   'tests/test.c',
   'tests/update.c',
   'ui/auth_dialog.c',
