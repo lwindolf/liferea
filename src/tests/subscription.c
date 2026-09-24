@@ -98,6 +98,7 @@ typedef struct tcCache {
 	gint    	maxage;		/* largest cache age in [min] (i.e. minimum interval between updates) required by feed */
 	gint    	nowDiff;	/* difference of lastPoll in [s] to current timestamp */
 	gboolean	canUpdate;
+	fetchError	error;
 } *tcCachePtr;
 
 struct tcCache tc_cache_ages[] = {
@@ -124,6 +125,34 @@ struct tcCache tc_cache_ages[] = {
 		.maxage = 45,			// 45min
 		.nowDiff = 60 * 60 * 24,	// 1 day later
 		.canUpdate = TRUE
+	},
+	{
+		.name = "/subscription/fetch-error-net-allows-update",
+		.maxage = 45,			// 45min
+		.nowDiff = 5,			// 5min later
+		.error = FETCH_ERROR_NET,
+		.canUpdate = TRUE
+	},
+	{
+		.name = "/subscription/fetch-error-auth-allows-update",
+		.maxage = 45,			// 45min
+		.nowDiff = 5,			// 5min later
+		.error = FETCH_ERROR_AUTH,
+		.canUpdate = TRUE
+	},
+	{
+		.name = "/subscription/fetch-error-xml-disallows-update",
+		.maxage = 45,			// 45min
+		.nowDiff = 5,			// 5min later
+		.error = FETCH_ERROR_XML,
+		.canUpdate = FALSE
+	},
+	{
+		.name = "/subscription/fetch-error-discovery-disallows-update",
+		.maxage = 45,			// 45min
+		.nowDiff = 5,			// 5min later
+		.error = FETCH_ERROR_DISCOVER,
+		.canUpdate = FALSE
 	},
 	{ NULL }
 };
@@ -212,6 +241,7 @@ tc_cache_age (gconstpointer user_data)
 	tcCachePtr	tc = (tcCachePtr)user_data;
 	subscriptionPtr s = subscription_new (NULL, NULL, NULL);
 
+	s->error = tc->error;
 	s->updateState->lastPoll = g_get_real_time () - (gint64)tc->nowDiff * G_USEC_PER_SEC;
 	update_state_set_cache_maxage (s->updateState, tc->maxage);
 

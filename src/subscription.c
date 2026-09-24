@@ -470,6 +470,12 @@ subscription_can_update_now (subscriptionPtr subscription)
 	gint64	last_poll = 0;
 	gint	feedInterval = update_state_get_cache_maxage (subscription->updateState);
 	
+	/* Always allow manual update when subscription is faulty */
+	// FIXME: improve this to back-off with less than n tries logic
+	if (subscription->error == FETCH_ERROR_NET ||
+	    subscription->error == FETCH_ERROR_AUTH)
+		return TRUE;
+
 	/*
 	  Note on special interval values:
 	   -1 -> use global update interval -> means we can update (if feedInterval allows it)
