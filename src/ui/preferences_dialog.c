@@ -62,7 +62,7 @@ enum fts_columns {
 extern GSList *bookmarkSites;	/* from social.c */
 
 /* Note: these update interval literal should be kept in sync with the
-   ones in ui_subscription.c! */
+   ones in subscription_dialog.c and node_actions.c! */
 
 static const gchar * default_update_interval_unit_options[] = {
 	N_("minutes"),
