@@ -153,6 +153,20 @@ static GHashTable *http429 = NULL;	/* Map of domains reporting HTTP 429 and cool
 
 static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
 
+gint
+network_get_retry_after_seconds (const gchar *retry_after)
+{
+	gint retry_after_seconds = -1;
+
+	if (retry_after)
+		retry_after_seconds = atoi (retry_after);   // for now we only support seconds but no date
+
+	if (retry_after_seconds <= 0)
+		retry_after_seconds = 60 * 5;              // default to 5min
+
+	return retry_after_seconds;
+}
+
 static void
 network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 {
@@ -208,12 +222,8 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 
 	/* handle HTTP 429 response */
 	if (429 == job->result->httpstatus) {
-		gint retry_after = -1;
 		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Retry-After");
-		if (tmp)
-			retry_after = atoi (tmp);	// for now we only support seconds but no date
-		if (0 < retry_after)
-			retry_after = 60*5;		// default to 5min
+		gint retry_after = network_get_retry_after_seconds (tmp);
 
 		g_autoptr(GUri) uri = g_uri_parse (job->request->source, G_URI_FLAGS_NONE, NULL);
 		if (uri) {

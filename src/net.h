@@ -110,4 +110,15 @@ void network_process_request (UpdateJob *job);
  */
 const char * network_strerror (gint status);
 
+/**
+ * network_get_retry_after_seconds:
+ * @retry_after: Retry-After header value (nullable)
+ *
+ * Parses Retry-After value in seconds.
+ * Returns default 5 minutes when value is missing or invalid.
+ *
+ * @returns retry timeout in seconds
+ */
+gint network_get_retry_after_seconds (const gchar *retry_after);
+
 #endif

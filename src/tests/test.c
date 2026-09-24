@@ -1,6 +1,7 @@
 #include <glib.h>
 
 extern int test_parse_atom (int argc, char *argv[]);
+extern int test_net (int argc, char *argv[]);
 extern int test_parse_date (int argc, char *argv[]);
 extern int test_parse_enclosure (int argc, char *argv[]);
 extern int test_parse_html (int argc, char *argv[]);
@@ -18,6 +19,8 @@ int run_test (int argc, char *argv[]) {
         if (argv[2]) {
                 if (g_str_equal (argv[2], "parse_atom"))
                         return test_parse_atom (argc, argv);
+                if (g_str_equal (argv[2], "net"))
+                        return test_net (argc, argv);
                 if (g_str_equal (argv[2], "parse_date"))
                         return test_parse_date (argc, argv);
                 if (g_str_equal (argv[2], "parse_enclosure"))

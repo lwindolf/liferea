@@ -303,16 +303,18 @@ subscription_process_update_result (UpdateJob *job)
 			subscription_icon_update (subscription);
 	}
 
-	/* 4. generic postprocessing */
-	// FIXME: we almost copy everything, can we just use update_state_copy()?
-	update_state_set_cache_maxage (subscription->updateState, result->updateState->_maxAgeMinutes);
-	update_state_set_ttl (subscription->updateState, result->updateState->_ttl);
-	update_state_set_syn_period (subscription->updateState, result->updateState->_synPeriod);
-	update_state_set_syn_frequency (subscription->updateState, result->updateState->_synFrequency);
+	/* 3. set new subscription update state */
+	if (result->httpstatus < 400) {
+		// FIXME: we almost copy everything, can we just use update_state_copy()?
+		update_state_set_cache_maxage (subscription->updateState, result->updateState->_maxAgeMinutes);
+		update_state_set_ttl (subscription->updateState, result->updateState->_ttl);
+		update_state_set_syn_period (subscription->updateState, result->updateState->_synPeriod);
+		update_state_set_syn_frequency (subscription->updateState, result->updateState->_synFrequency);
 
-	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
-	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
-	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
+		update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
+		update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
+		update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
+	}
 	subscription->updateState->lastPoll = g_get_real_time ();
 
 	db_subscription_update (subscription);

@@ -87,6 +87,7 @@ test_env.set(
 # Note: the 'update' test is explicitly skipped as it's gsettings dependency breaks CI build (missing X11/DBUS)
 foreach name: [
   'favicon',
+  'net',
   'parse_atom',
   'parse_date',
   'parse_enclosure',
