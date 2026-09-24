@@ -467,7 +467,7 @@ subscription_get_effective_update_interval (subscriptionPtr subscription)
 gboolean
 subscription_can_update_now (subscriptionPtr subscription)
 {
-	gint64	last_poll = 0;
+	gint64	lastPoll = 0;
 	gint	feedInterval = update_state_get_cache_maxage (subscription->updateState);
 	
 	/* Always allow manual update when subscription is faulty */
@@ -482,9 +482,9 @@ subscription_can_update_now (subscriptionPtr subscription)
 	   -2 -> never update -> means we can update (as this is an interactive user override)
 	 */
 	if (subscription->updateState)
-		last_poll = subscription->updateState->lastPoll;
+		lastPoll = subscription->updateState->lastPoll;
 
-	return (g_get_real_time () - last_poll) / G_USEC_PER_SEC > feedInterval * 60;
+	return (g_get_real_time () - lastPoll) / G_USEC_PER_SEC > feedInterval * 60;
 }
 
 void
