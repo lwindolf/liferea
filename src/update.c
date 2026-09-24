@@ -64,15 +64,49 @@ void
 update_state_set_cache_maxage (updateStatePtr state, const gint maxage)
 {
 	if (0 < maxage)
-		state->maxAgeMinutes = maxage;
+		state->_maxAgeMinutes = maxage;
 	else
-		state->maxAgeMinutes = -1;
+		state->_maxAgeMinutes = -1;
+}
+
+void
+update_state_set_ttl (updateStatePtr state, guint ttl)
+{
+	state->_ttl = ttl;
+}
+
+void
+update_state_set_syn_period (updateStatePtr state, guint synPeriod)
+{
+	state->_synPeriod = synPeriod;
+}
+
+void
+update_state_set_syn_frequency (updateStatePtr state, guint synFrequency)
+{
+	state->_synFrequency = synFrequency;
 }
 
 gint
-update_state_get_cache_maxage (updateStatePtr state)
+update_state_get_min_interval (updateStatePtr state)
 {
-	return state->maxAgeMinutes;
+	gint interval = -1;
+
+	/* Always return the largest interval we know of */
+	
+	if (state->_maxAgeMinutes > 0 &&
+	    state->_maxAgeMinutes > interval)
+		interval = state->_maxAgeMinutes;
+	
+	if (state->_ttl > 0 &&
+	    state->_ttl > interval)
+		interval = state->_ttl;
+
+	if (state->_synFrequency * state->_synPeriod > 0 &&
+	    state->_synFrequency * state->_synPeriod > interval)
+		interval = state->_synFrequency * state->_synPeriod;
+	
+	return interval;
 }
 
 const gchar *

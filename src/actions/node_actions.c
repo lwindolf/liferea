@@ -58,8 +58,10 @@ on_force_update (Node *node)
 	GtkWidget *applyBtn = liferea_dialog_lookup (GTK_WIDGET (dialog), "applyBtn");
 	GtkWidget *cancelBtn = liferea_dialog_lookup (GTK_WIDGET (dialog), "cancelBtn");
 
+	gdouble interval = (gdouble)update_state_get_min_interval (node->subscription->updateState);
+	g_assert (-1 != interval);
+
 	// Use same unit strings here as in preferences_dialog!
-	guint interval = node->subscription->updateState->maxAgeMinutes;
 	gchar *unit = _("minutes");
 	if (interval > 60*24) {
 		unit = _("days");
@@ -77,8 +79,13 @@ on_force_update (Node *node)
 	g_signal_connect_swapped (G_OBJECT (cancelBtn), "clicked", G_CALLBACK (adw_dialog_close), dialog);
 }
 
+// special recursive update helper, checks for force updates, but never allows
+// forced updates on child nodes implementing the following two requirements
+//
+// 1. never force update entire subtrees
+// 2. allow force updating single selected feeds
 static void
-do_menu_update (Node *node)
+do_menu_update (Node *node, gboolean doForce)
 {
 	/* Indicate problems (duplicates some checks from subscription_auto_update ())... */
 
@@ -87,14 +94,26 @@ do_menu_update (Node *node)
 		return;
 	}
 
-	if (node->subscription && !subscription_can_update_now (node->subscription)) {
-		on_force_update (node);
-		return;
+	if (node->subscription) {
+		if (!subscription_can_update_now (node->subscription)) {
+			if (doForce)
+				on_force_update (node);
+		} else {
+			subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+		}
+		// No return here to allow force updating node sources (which have a subscription and children)
 	}
 
-	node_auto_update_subscription (node, GINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
+	GSList *children = node->children;
+	for (GSList *iter = children; iter != NULL; iter = iter->next) {
+		Node *child = (Node *) iter->data;
+		// we do not use node_[auto_]update_subscription() to call subscription_update() 
+		// for children if subscription_can_update_now() allows it
+		do_menu_update (child, FALSE);
+	}
 }
 
+// single node or recursive folder update
 static void
 on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
@@ -106,9 +125,9 @@ on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 		node = feedlist_get_selected ();
 
 	if (node)
-		do_menu_update (node);
+		do_menu_update (node, TRUE);
 	else
-		g_warning ("on_menu_update: no feedlist selected");
+		g_warning ("on_menu_update: feed list selection empty");
 }
 
 static void

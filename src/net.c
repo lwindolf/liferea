@@ -263,7 +263,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 						}
 					}
 					if (0 < maxage) {
-						job->result->updateState->maxAgeMinutes = ceil ( (float) (maxage / 60));
+						update_state_set_cache_maxage (job->result->updateState, ceil ( (float) (maxage / 60)));
 					}
 				}
 			}

@@ -17,12 +17,14 @@ To be released
 	* Fixes an exception in SVG image resizing on invalid image sizes in content
 	  (Lars Windolf)
 
+	* Fixes a bug that RSS ttl / syn period+frequency values were not used
+	  (Lars Windolf)
+
 	Known problems
 	
 	* DnD of feeds causes random crashes
 	* Crashes when removing items
 	* Missing top margin when Readability.js does not convert text
-	* do-not-yet-update somehow does not persist restarts and even vanishes during runtime for some feeds (test!)
 	* update counter max only ever grows (should reset after most updates are finished after a while)
 
 

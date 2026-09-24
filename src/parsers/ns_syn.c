@@ -40,11 +40,10 @@ static void
 ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
 	xmlChar	*tmp;
-	gint	period = 0;
-	gint	frequency = 1;
 
 	if (!xmlStrcmp (cur->name, BAD_CAST"updatePeriod")) {
 		if (NULL != (tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
+			gint period = 0;
 
 			if (!xmlStrcmp (tmp, BAD_CAST"hourly"))
 				period = 60;
@@ -58,19 +57,16 @@ ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			else if (!xmlStrcmp (tmp, BAD_CAST"yearly"))
 				period = 365*24*60;
 
-			ctxt->subscription->updateState->synPeriod = period;
+			update_state_set_syn_period (ctxt->subscription->updateState, period);
 			xmlFree (tmp);
 		}
 	} else if (!xmlStrcmp (cur->name, BAD_CAST"updateFrequency")) {
 		tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
-			frequency = atoi ((gchar *)tmp);
-
-			ctxt->subscription->updateState->synFrequency = frequency;
+			update_state_set_syn_frequency (ctxt->subscription->updateState, atoi ((gchar *)tmp));
 			xmlFree (tmp);
 		}
 	}
-
 }
 
 void

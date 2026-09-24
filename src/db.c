@@ -1464,10 +1464,10 @@ db_update_state_load (const gchar *id,
 		updateState->lastFaviconPoll	= sqlite3_column_int64 (stmt, 2);
 		updateState->cookies		= g_strdup ((const gchar *) sqlite3_column_text (stmt, 3));
 		updateState->etag		= g_strdup ((const gchar *) sqlite3_column_text (stmt, 4));
-		updateState->maxAgeMinutes	= sqlite3_column_int (stmt, 5);
-		updateState->synFrequency	= sqlite3_column_int (stmt, 6);
-		updateState->synPeriod		= sqlite3_column_int (stmt, 7);
-		updateState->timeToLive		= sqlite3_column_int (stmt, 8);
+		updateState->_maxAgeMinutes	= sqlite3_column_int (stmt, 5);
+		updateState->_synFrequency	= sqlite3_column_int (stmt, 6);
+		updateState->_synPeriod		= sqlite3_column_int (stmt, 7);
+		updateState->_ttl		= sqlite3_column_int (stmt, 8);
 	} else {
 		debug (DEBUG_DB, "Could not load update state for subscription %s (error code %d)!", id, res);
 	}
@@ -1494,10 +1494,10 @@ db_update_state_save (const gchar *id,
 	sqlite3_bind_int64 (stmt, 4, updateState->lastFaviconPoll);
 	sqlite3_bind_text  (stmt, 5, updateState->cookies, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text  (stmt, 6, updateState->etag, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int   (stmt, 7, updateState->maxAgeMinutes);
-	sqlite3_bind_int   (stmt, 8, updateState->synFrequency);
-	sqlite3_bind_int   (stmt, 9, updateState->synPeriod);
-	sqlite3_bind_int   (stmt, 10, updateState->timeToLive);
+	sqlite3_bind_int   (stmt, 7, updateState->_maxAgeMinutes);
+	sqlite3_bind_int   (stmt, 8, updateState->_synFrequency);
+	sqlite3_bind_int   (stmt, 9, updateState->_synPeriod);
+	sqlite3_bind_int   (stmt, 10, updateState->_ttl);
 
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)

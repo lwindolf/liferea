@@ -109,7 +109,7 @@ parseChannel (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		else if (!xmlStrcmp (cur->name, BAD_CAST"ttl")) {
 			g_autofree gchar *tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, TRUE);
 			if (tmp)
-				ctxt->subscription->updateState->timeToLive = atoi (tmp);
+				update_state_set_ttl (ctxt->subscription->updateState, atoi (tmp));
 		}
 		else if (!xmlStrcmp (cur->name, BAD_CAST"title")) {
 			g_autofree gchar *tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, TRUE);

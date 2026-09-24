@@ -304,7 +304,12 @@ subscription_process_update_result (UpdateJob *job)
 	}
 
 	/* 4. generic postprocessing */
-	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
+	// FIXME: we almost copy everything, can we just use update_state_copy()?
+	update_state_set_cache_maxage (subscription->updateState, result->updateState->_maxAgeMinutes);
+	update_state_set_ttl (subscription->updateState, result->updateState->_ttl);
+	update_state_set_syn_period (subscription->updateState, result->updateState->_synPeriod);
+	update_state_set_syn_frequency (subscription->updateState, result->updateState->_synFrequency);
+
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
@@ -425,7 +430,7 @@ subscription_get_effective_update_interval (subscriptionPtr subscription)
 {
 	/* The are three layers to consider here:
 	
-	   1.) feed specified max interval (<ttl> tag, <sy:updateInterval> tag or Cache-Control header)
+	   1.) feed specified min interval (<ttl> tag, <sy:updateInterval> tag or Cache-Control header)
 	   2.) user specified update interval
 	   3.) global default update setting
 
@@ -435,12 +440,12 @@ subscription_get_effective_update_interval (subscriptionPtr subscription)
 	   ---------------|----------------------|--------------------------|--------------------------------------------
 	   %              | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
 	   %              | -1 (use preferences) | <interval>               | preference <interval>
-	   <interval>     | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
-	   <interval>     | -1 (use preferences) | <interval>               | max(feed <interval>, preference <interval>)
-	   <interval>     | <interval>           | <interval>               | max(feed <interval>, properties <interval>)
+	   <min interval> | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
+	   <min interval> | -1 (use preferences) | <interval>               | max(feed <min interval>, preference <interval>)
+	   <min interval> | <interval>           | <interval>               | max(feed <min interval>, properties <interval>)
 	   %              | -2 (do not update)   | *                        | (0) do not update
 	*/
-	gint feedInterval = update_state_get_cache_maxage (subscription->updateState);
+	gint feedInterval = update_state_get_min_interval (subscription->updateState);
 	gint userInterval = subscription_get_update_interval (subscription);
 	gint globalInterval = 0;
 
@@ -468,7 +473,7 @@ gboolean
 subscription_can_update_now (subscriptionPtr subscription)
 {
 	gint64	lastPoll = 0;
-	gint	feedInterval = update_state_get_cache_maxage (subscription->updateState);
+	gint	feedInterval = update_state_get_min_interval (subscription->updateState);
 	
 	/* Always allow manual update when subscription is faulty */
 	// FIXME: improve this to back-off with less than n tries logic

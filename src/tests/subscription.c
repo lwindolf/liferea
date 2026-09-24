@@ -157,7 +157,59 @@ struct tcCache tc_cache_ages[] = {
 	{ NULL }
 };
 
-// update cache age test cases
+typedef struct tcMinInterval {
+	const gchar *name;
+	gint maxAgeMinutes;
+	gint ttl;
+	gint synFrequency;
+	gint synPeriod;
+	gint expected;
+} *tcMinIntervalPtr;
+
+static struct tcMinInterval tc_min_intervals[] = {
+	{
+		.name = "/update-state/min-interval/none-set",
+		.maxAgeMinutes = 0,
+		.ttl = 0,
+		.synFrequency = 0,
+		.synPeriod = 0,
+		.expected = -1
+	},
+	{
+		.name = "/update-state/min-interval/max-age-only",
+		.maxAgeMinutes = 45,
+		.ttl = 0,
+		.synFrequency = 0,
+		.synPeriod = 0,
+		.expected = 45
+	},
+	{
+		.name = "/update-state/min-interval/ttl-wins",
+		.maxAgeMinutes = 30,
+		.ttl = 90,
+		.synFrequency = 0,
+		.synPeriod = 0,
+		.expected = 90
+	},
+	{
+		.name = "/update-state/min-interval/syndication-wins",
+		.maxAgeMinutes = 30,
+		.ttl = 0,
+		.synFrequency = 2,
+		.synPeriod = 60,
+		.expected = 120
+	},
+	{
+		.name = "/update-state/min-interval/largest-of-all-wins",
+		.maxAgeMinutes = 120,
+		.ttl = 90,
+		.synFrequency = 3,
+		.synPeriod = 60,
+		.expected = 180
+	},
+	{ NULL }
+};
+
 typedef struct tcCanBeUpdated {
 	const gchar	*name;
 	gboolean	discontinued;	/* TRUE if HTTP 410 */
@@ -251,6 +303,22 @@ tc_cache_age (gconstpointer user_data)
 }
 
 static void
+tc_min_interval (gconstpointer user_data)
+{
+	tcMinIntervalPtr tc = (tcMinIntervalPtr)user_data;
+	updateStatePtr state = update_state_new ();
+
+	update_state_set_cache_maxage (state, tc->maxAgeMinutes);
+	update_state_set_ttl (state, tc->ttl);
+	update_state_set_syn_frequency (state, tc->synFrequency);
+	update_state_set_syn_period (state, tc->synPeriod);
+
+	g_assert_true (update_state_get_min_interval (state) == tc->expected);
+
+	update_state_free (state);
+}
+
+static void
 tc_can_be_updated_func (gconstpointer user_data)
 {
 	tcCanBeUpdatedPtr	tc = (tcCanBeUpdatedPtr)user_data;
@@ -280,6 +348,9 @@ test_subscription (int argc, char *argv[])
 	}
 	for (int i = 0; tc_cache_ages[i].name != NULL; i++) {
 		g_test_add_data_func (tc_cache_ages[i].name, &tc_cache_ages[i], &tc_cache_age);
+	}
+	for (int i = 0; tc_min_intervals[i].name != NULL; i++) {
+		g_test_add_data_func (tc_min_intervals[i].name, &tc_min_intervals[i], &tc_min_interval);
 	}
 	for (int i = 0; tc_can_be_updated[i].name != NULL; i++) {
 		g_test_add_data_func (tc_can_be_updated[i].name, &tc_can_be_updated[i], &tc_can_be_updated_func);

@@ -59,10 +59,10 @@ typedef struct updateState {
 	gint64 		lastFaviconPoll;	/*<< time at which the feeds favicon was last updated */
 	gchar		*cookies;		/*<< cookies to be used */
 	gchar		*etag;			/*<< ETag sent by the server */
-	gint		maxAgeMinutes;		/*<< default update interval, greatest value sourced from HTTP and XML */
-	gint		synFrequency;		/*<< syn:updateFrequency */
-	gint		synPeriod;		/*<< syn:updatePeriod */
-	gint		timeToLive;		/*<< ttl */
+	gint		_maxAgeMinutes;		/*<< default update interval, greatest value sourced from HTTP and XML */
+	gint		_synFrequency;		/*<< syn:updateFrequency */
+	gint		_synPeriod;		/*<< syn:updatePeriod */
+	gint		_ttl;			/*<< RSS TTL in [min] */
 } *updateStatePtr;
 
 G_BEGIN_DECLS
@@ -117,8 +117,53 @@ void update_state_set_lastmodified (updateStatePtr state, const gchar *lastmodif
 const gchar * update_state_get_etag (updateStatePtr state);
 void update_state_set_etag (updateStatePtr state, const gchar *etag);
 
-gint update_state_get_cache_maxage (updateStatePtr state);
+
+// Note: there are explicitely only setters for all types of interval limiting techniques
+// Use update_state_get_min_interval () to retrieve the effective setting. 
+
+/**
+ * update_state_set_cache_maxage:
+ * @state:  the update state
+ * @maxage: the maximum age for the cache in [min]
+ *
+ * Sets the maximum age for the cache in the update state.
+ */
 void update_state_set_cache_maxage (updateStatePtr state, const gint maxage);
+
+/**
+ * update_state_set_ttl:
+ * @state:  the update state
+ * @ttl:    the time-to-live value in [min]
+ *
+ * Sets the RSS TTL for the update state.
+ */
+void update_state_set_ttl (updateStatePtr state, guint ttl);
+
+/**
+ * update_state_set_syn_period:
+ * @state:          the update state
+ * @synPeriod:      the synchronization period in [min]
+ *
+ * Sets the synchronization period for the update state.
+ */
+void update_state_set_syn_period (updateStatePtr state, guint synPeriod);
+
+/**
+ * update_state_set_syn_frequency:
+ * @state:          the update state
+ * @synFrequency:   the synchronization frequency
+ *
+ * Sets the synchronization frequency for the update state.
+ */
+void update_state_set_syn_frequency (updateStatePtr state, guint synFrequency);
+
+/**
+ * update_state_get_min_interval:
+ * @state:  the update state
+ * 
+ * Returns: the effective minimum interval in [min] (or -1 if not set)
+ */
+gint update_state_get_min_interval (updateStatePtr state);
 
 const gchar * update_state_get_cookies (updateStatePtr state);
 void update_state_set_cookies (updateStatePtr state, const gchar *cookies);
