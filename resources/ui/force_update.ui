@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 1.0.2 -->
+<interface>
+  <!-- interface-name force_update_dialog.ui -->
+  <requires lib="gtk" version="4.18"/>
+  <requires lib="libadwaita" version="1.5"/>
+  <object class="AdwDialog" id="force_update">
+    <property name="title">Feed update back-off</property>
+    <property name="width-request">0</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">12</property>
+        <child>
+          <object class="AdwHeaderBar"/>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="margin-bottom">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-start">12</property>
+            <property name="margin-top">12</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkLabel" id="label">
+                <property name="halign">start</property>
+                <property name="label">label placeholder</property>
+                <property name="width-request">300</property>
+                <property name="wrap">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="dialog-action_area7_2">
+                <property name="baseline-position">bottom</property>
+                <property name="halign">end</property>
+                <property name="homogeneous">false</property>
+                <property name="margin-bottom">5</property>
+                <property name="margin-end">5</property>
+                <property name="margin-start">5</property>
+                <property name="margin-top">5</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">6</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+                <child>
+                  <object class="GtkButton" id="applyBtn">
+                    <property name="css-classes">destructive-action</property>
+                    <property name="focusable">1</property>
+                    <property name="label" translatable="yes">_Force Update</property>
+                    <property name="use-underline">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="cancelBtn">
+                    <property name="focusable">1</property>
+                    <property name="label" translatable="yes">_Cancel</property>
+                    <property name="use-underline">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

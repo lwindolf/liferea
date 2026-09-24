@@ -18,6 +18,7 @@
     <file compressed="true">ui/gtk-liferea.css</file>
     <file compressed="true">ui/about.ui</file>
     <file compressed="true">ui/auth.ui</file>
+    <file compressed="true">ui/force_update.ui</file>
     <file compressed="true">ui/mainwindow.ui</file>
     <file compressed="true">ui/mark_read_dialog.ui</file>
     <file compressed="true">ui/new_folder.ui</file>

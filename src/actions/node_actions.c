@@ -34,6 +34,7 @@
 #include "node_providers/newsbin.h"
 #include "node_providers/vfolder.h"
 #include "node_source.h"
+#include "subscription.h"
 #include "ui/feed_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
@@ -41,13 +42,57 @@
 /* action callbacks */
 
 static void
+on_force_update_response (GtkWidget *btn, gpointer user_data)
+{
+	AdwDialog *dialog = ADW_DIALOG (user_data);
+	Node *node = g_object_get_data (G_OBJECT (dialog), "node");
+	subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+	adw_dialog_close (dialog);
+}
+
+static void
+on_force_update (Node *node)
+{
+	AdwDialog *dialog = ADW_DIALOG (liferea_dialog_new ("force_update"));
+	GtkWidget *label = liferea_dialog_lookup (GTK_WIDGET (dialog), "label");
+	GtkWidget *applyBtn = liferea_dialog_lookup (GTK_WIDGET (dialog), "applyBtn");
+	GtkWidget *cancelBtn = liferea_dialog_lookup (GTK_WIDGET (dialog), "cancelBtn");
+
+	// Use same unit strings here as in preferences_dialog!
+	guint interval = node->subscription->updateState->maxAgeMinutes;
+	gchar *unit = _("minutes");
+	if (interval > 60*24) {
+		unit = _("days");
+		interval /= 60*24;
+	} else if (interval > 60) {
+		unit = _("hours");
+		interval /= 60;
+	}
+
+	g_autofree gchar *title = g_strdup_printf(_("The subscription indicates not to update more often than every %g %s!"), interval, unit);
+	gtk_label_set_text (GTK_LABEL (label), title);
+
+	g_object_set_data (G_OBJECT (dialog), "node", node);
+	g_signal_connect (G_OBJECT (applyBtn), "clicked", G_CALLBACK (on_force_update_response), dialog);
+	g_signal_connect_swapped (G_OBJECT (cancelBtn), "clicked", G_CALLBACK (adw_dialog_close), dialog);
+}
+
+static void
 do_menu_update (Node *node)
 {
-	if (network_monitor_is_online ())
-		node_auto_update_subscription (node, GINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
-	else
-		liferea_shell_toast (_("Liferea is in offline mode. No update possible."));
+	/* Indicate problems (duplicates some checks from subscription_auto_update ())... */
 
+	if (!network_monitor_is_online ()) {
+		liferea_shell_toast (_("Liferea is in offline mode. No update possible."));
+		return;
+	}
+
+	if (node->subscription && !subscription_can_update_now (node->subscription)) {
+		on_force_update (node);
+		return;
+	}
+
+	node_auto_update_subscription (node, GINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
 }
 
 static void
