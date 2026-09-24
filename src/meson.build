@@ -101,6 +101,7 @@ liferea_sources = files(
   'tests/parse_rss.c',
   'tests/parse_uri.c',
   'tests/parse_xml.c',
+  'tests/rule.c',
   'tests/social.c',
   'tests/subscription.c',
   'tests/test.c',

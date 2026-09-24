@@ -94,6 +94,7 @@ foreach name: [
   'parse_rss',
   'parse_uri',
   'parse_xml',
+  'rule',
   'social',
   'subscription'
 ]

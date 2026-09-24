@@ -49,6 +49,7 @@ liferea_item_finalize (GObject *object)
 	g_free (item->sourceId);
 	g_free (item->description);
 	g_free (item->nodeId);
+	g_free (item->parentNodeId);
 
 	metadata_list_free (item->metadata);
 

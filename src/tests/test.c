@@ -6,6 +6,7 @@ extern int test_parse_enclosure (int argc, char *argv[]);
 extern int test_parse_html (int argc, char *argv[]);
 extern int test_parse_uri (int argc, char *argv[]);
 extern int test_parse_xml (int argc, char *argv[]);
+extern int test_rule (int argc, char *argv[]);
 extern int test_parse_rss (int argc, char *argv[]);
 extern int test_social (int argc, char *argv[]);
 extern int test_subscription (int argc, char *argv[]);
@@ -29,6 +30,8 @@ int run_test (int argc, char *argv[]) {
                         return test_parse_uri (argc, argv);
                 if (g_str_equal (argv[2], "parse_xml"))
                         return test_parse_xml (argc, argv);
+                if (g_str_equal (argv[2], "rule"))
+                        return test_rule (argc, argv);
                 if (g_str_equal (argv[2], "favicon"))
                         return test_favicon (argc, argv);
                 if (g_str_equal (argv[2], "social"))
