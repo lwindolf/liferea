@@ -74,6 +74,26 @@ function debug(text, obj) {
 			console.log(text);
 }
 
+function ensureOuterParagraph(container) {
+	if (!container)
+		return;
+
+	const contentNodes = Array.from(container.childNodes).filter((node) =>
+		!(node.nodeType === Node.TEXT_NODE && node.textContent.trim() === "")
+	);
+
+	if (contentNodes.length === 1 &&
+		contentNodes[0].nodeType === Node.ELEMENT_NODE &&
+		contentNodes[0].tagName.toLowerCase() === "p")
+		return;
+
+	const outerParagraph = document.createElement("p");
+	while (container.firstChild)
+		outerParagraph.appendChild(container.firstChild);
+
+	container.appendChild(outerParagraph);
+}
+
 function parse_opml(blogrollData) {
 	try {
 		const parser = new DOMParser();
@@ -244,6 +264,11 @@ async function load_item(data, baseURL, direction) {
 			/*let related		= metadata_get(item, "related");
 			let point		= metadata_get(item, "point");*/
 		});
+
+		// Depending on whether the content comes out of Readability or not,
+		// we might have an outer <p> or not. For proper margin we always 
+		// want one...
+		ensureOuterParagraph(document.getElementById('description'));
 
 		// Title duplicate elimination:
 		// Check if there is an element which contains exactly the text from item.title
