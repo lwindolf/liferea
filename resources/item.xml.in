@@ -53,8 +53,6 @@
                                                         {{/each}}
                                                 </span>
                                         {{/if}}
-                                </div>
-                                <div class='socialHeader'>
                                         {{#if mediastarRatingcount}}
                                         {{#if mediastarRatingavg}}
                                                  <span class='meta'><_span>{{mediastarRatingavg}} ⭐ ({{mediastarRatingcount}} votes)</_span></span>

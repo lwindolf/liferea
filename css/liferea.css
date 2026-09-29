@@ -251,6 +251,8 @@ img.gravatar {
 }
 .meta + .meta::before {
   content: "---";
+  margin-left: 0.2rem;
+  margin-right: 0.2rem;
 }
 
 .category {
