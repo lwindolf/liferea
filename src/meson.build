@@ -94,6 +94,7 @@ liferea_sources = files(
   'plugins/node_source_activatable.c',
   'plugins/plugins_engine.c',
   'tests/favicon.c',
+  'tests/itemlist.c',
   'tests/net.c',
   'tests/parse_atom.c',
   'tests/parse_date.c',

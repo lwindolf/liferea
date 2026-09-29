@@ -20,10 +20,12 @@ To be released
 	* Fixes a bug that RSS ttl / syn period+frequency values were not used
 	  (Lars Windolf)
 
+	* Fixes crash when removing items
+	  (Lars Windolf)
+
 	Known problems
 	
 	* DnD of feeds causes random crashes
-	* Crashes when removing items
 	* Missing top margin when Readability.js does not convert text
 	* update counter max only ever grows (should reset after most updates are finished after a while)
 

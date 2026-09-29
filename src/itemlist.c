@@ -486,6 +486,9 @@ itemlist_unhide_item (itemPtr item)
 void
 itemlist_remove_item (itemPtr item)
 {
+	if (!item || !itemlist || !itemlist->priv)
+		return;
+
 	if (itemlist->priv->selectedId == item->id) {
 		itemlist_set_selected (NULL);
 		itemlist->priv->deferredRemove = FALSE;

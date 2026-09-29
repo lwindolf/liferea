@@ -742,17 +742,22 @@ item_list_view_update_all_items (GObject *obj, const gchar *nodeId, gpointer use
 static gboolean
 on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer user_data)
 {
+	itemPtr item = itemlist_get_selected ();
+
+	if (!item)
+		return FALSE;
+
 	switch (keyval) {
 		case GDK_KEY_Delete:
 		case GDK_KEY_KP_Delete:
-			itemlist_remove_item (itemlist_get_selected ());
+			itemlist_remove_item (item);
 			return TRUE;
 		case GDK_KEY_space:
-			itemlist_toggle_read_status (itemlist_get_selected ());
+			itemlist_toggle_read_status (item);
 			return TRUE;
 		case GDK_KEY_Return:
 		case GDK_KEY_KP_Enter:
-			browser_launch_item (itemlist_get_selected (), BROWSER_LAUNCH_DEFAULT);
+			browser_launch_item (item, BROWSER_LAUNCH_DEFAULT);
 			return TRUE;
 		default:
 			return FALSE;
