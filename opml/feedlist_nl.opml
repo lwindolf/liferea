@@ -10,7 +10,6 @@
 			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
 			<outline text="BBC" htmlUrl="https://www.bbc.com/news" xmlUrl="https://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
-			<outline text="r/worldnews" htmlUrl="https://www.reddit.com/r/worldnews/" xmlUrl="https://www.reddit.com/r/worldnews.rss"/>
 		</outline>
 		<outline text="Knowledge">
 			<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feed"/>
