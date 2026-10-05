@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-26 09:18+0100\n"
+"POT-Creation-Date: 2026-10-05 22:59+0200\n"
 "PO-Revision-Date: 2012-12-23 18:24+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Language: he\n"
 "X-Source-Language: en\n"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:347
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:354
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "‫Liferea"
@@ -42,26 +42,6 @@ msgstr "קרא ערוצי חדשות ובלוגים"
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr "חדשות;ערוץ;הזנה;פיד;מאגד;בלוג;פודקסט;"
 
-#: ../plugins/getfocus.py:95
-msgid "Opacity:"
-msgstr ""
-
-#: ../plugins/getfocus.py:96
-msgid "Opacity"
-msgstr ""
-
-#: ../plugins/getfocus.py:106
-msgid "Min"
-msgstr ""
-
-#: ../plugins/getfocus.py:111
-msgid "Max"
-msgstr ""
-
-#: ../plugins/getfocus.py:117
-msgid "Save"
-msgstr ""
-
 #: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
 #: ../glade/liferea_toolbar.ui.h:5
 msgid "Previous Item"
@@ -82,7 +62,7 @@ msgstr "_פריט הבא שלא נקרא"
 msgid "_Mark Items Read"
 msgstr "_סמן פריטים ככאלה שנקראו"
 
-#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:38
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:41
 #: ../glade/liferea_toolbar.ui.h:10
 msgid "Search All Feeds..."
 msgstr "חפש בכל הערוצים..."
@@ -92,185 +72,21 @@ msgstr "חפש בכל הערוצים..."
 msgid "Feed Updates"
 msgstr "עדכון ערוץ"
 
-#: ../plugins/plugin-installer.py:55
-msgid "Plugins"
-msgstr "תוספים"
-
-#: ../plugins/plugin-installer.py:72
-#, fuzzy
-msgid "Plugin Installer"
-msgstr "תוספים"
-
-#: ../plugins/plugin-installer.py:86
-#, fuzzy
-msgid "Activate Plugins"
-msgstr "תוספים"
-
-#: ../plugins/plugin-installer.py:87
-#, fuzzy
-msgid "Download Plugins"
-msgstr "_הורד באמצעות"
-
-#: ../plugins/plugin-installer.py:105
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:128
-msgid "All"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:128 ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "מתקדם"
-
-#: ../plugins/plugin-installer.py:128
-msgid "Menu"
-msgstr ""
-
-# הגדרות התראה
-#: ../plugins/plugin-installer.py:128
-#, fuzzy
-msgid "Notifications"
-msgstr "הגדרת התראות"
-
-#: ../plugins/plugin-installer.py:136
-msgid "Filter by category"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:143
-msgid "_Install"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:147
-msgid "_Uninstall"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:252
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:275
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:278
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:287
-msgid "Command \"git\" not found, please install it!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:296
-#, python-format
-msgid "Copying %s to %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:299
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:308
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:318
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:329
-#, fuzzy, python-format
-msgid "Creating schema directory %s"
-msgstr "לא ניתן ליצור מדור מטמון עבור \"%s\"!"
-
-#: ../plugins/plugin-installer.py:331
-#, python-format
-msgid "Installing schema %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:335
-msgid "Compiling schemas..."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:340
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:350
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:356
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:370
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr ""
-
-# הרשומה נמחקת כעת
-#: ../plugins/plugin-installer.py:377 ../plugins/plugin-installer.py:397
-#, fuzzy, python-format
-msgid "Deleting '%s'"
-msgstr "מוחק הרשמה"
-
-#: ../plugins/plugin-installer.py:380
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:390
-msgid "Failed to remove .py file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:400
-msgid "Failed to remove .plugin file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:411
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!"
-msgstr ""
-
-#: ../plugins/trayicon.py:168
+#: ../plugins/trayicon.py:167
 #, fuzzy
 msgid "Liferea unread icon"
 msgstr "‏Liferea מקוון כעת"
 
-#: ../plugins/trayicon.py:186
+#: ../plugins/trayicon.py:185
 #, fuzzy
 msgid "Show / Hide"
 msgstr "הצג פרטים"
 
-#: ../plugins/trayicon.py:187
+#: ../plugins/trayicon.py:186
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:188
+#: ../plugins/trayicon.py:187
 #, fuzzy
 msgid "Quit"
 msgstr "י_ציאה"
@@ -280,7 +96,7 @@ msgstr "י_ציאה"
 msgid "Browser command failed: %s"
 msgstr "פקודת דפדפן נכשלה: ‭%s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1143
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1183
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "מפעיל כעת את: \"%s\""
@@ -326,96 +142,91 @@ msgstr "%d ב%b %Y"
 msgid "Error renaming %s to %s: %s\n"
 msgstr "שגיאה בשינוי השם %s אל %s\n"
 
-#: ../src/export.c:371 ../src/export.c:373
+#: ../src/export.c:380 ../src/export.c:382
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "שגיאת XML במהלך קריאת קובץ OPML! לא ניתן לייבא את \"%s\"!"
 
-#: ../src/export.c:379 ../src/export.c:381
+#: ../src/export.c:388 ../src/export.c:390
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "מסמך ריק! מסמך OPML ‏\"%s\" לא אמור להיות ריק במהלך ייבוא."
 
-#: ../src/export.c:402 ../src/export.c:404
+#: ../src/export.c:411 ../src/export.c:413
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "‏\"%s\" אינו מסמך OPML תקין. Liferea לא מסוגל לייבא קובץ זה!"
 
-#: ../src/export.c:423
+#: ../src/export.c:432
 msgid "Imported feed list"
 msgstr "רשימת ערוצים מיובאת"
 
-#: ../src/export.c:435
+#: ../src/export.c:444
 msgid "Import Feed List"
 msgstr "ייבוא רשימת ערוצים"
 
-#: ../src/export.c:435
+#: ../src/export.c:444
 msgid "Import"
 msgstr "יב_א"
 
-#: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:366
+#: ../src/export.c:444 ../src/export.c:461
+#: ../src/node_sources/opml_source.c:372
 msgid "OPML Files"
 msgstr "קבצי OPML"
 
-#: ../src/export.c:443
+#: ../src/export.c:452
 msgid "Error while exporting feed list!"
 msgstr "אירעה שגיאה במהלך ייצוא רשימת ערוצים!"
 
-#: ../src/export.c:445
+#: ../src/export.c:454
 msgid "Feed List exported!"
 msgstr "ייצוא רשימת ערוצים הסתיים בהצלחה!"
 
-#: ../src/export.c:452
+#: ../src/export.c:461
 msgid "Export Feed List"
 msgstr "ייצוא רשימת ערוצים"
 
-#: ../src/export.c:452
+#: ../src/export.c:461
 msgid "Export"
 msgstr "יצ_א"
 
-#: ../src/feed_parser.c:201
+#: ../src/feed_parser.c:203
 msgid "Empty document!"
 msgstr "מסמך ריק!"
 
 # האם XML זה זכר או נקבה?
-#: ../src/feed_parser.c:210
+#: ../src/feed_parser.c:212
 msgid "Invalid XML!"
 msgstr "‏XML לא תקין!"
 
-#: ../src/node_source.c:113
-msgid "Miniflux"
-msgstr ""
-
-#: ../src/node_source.c:343
+#: ../src/node_source.c:330
 msgid "Source Type"
 msgstr "טיפוס מקור"
 
-#: ../src/node_source.c:394
+#: ../src/node_source.c:381
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr "כניסה של '%s' עדיין לא הושלמה! אנא המתן עד לסיום הכניסה."
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:560
+#: ../src/node_source.c:547
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "ההרשמה '%s' הומרה בהצלחה לערוצים מקומיים!"
 
-#: ../src/node_sources/default_source.c:135 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
+#: ../src/node_sources/default_source.c:133 ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "הרשמה חדשה"
 
-#: ../src/node_sources/google_source.c:192
-#: ../src/node_sources/reedah_source.c:120
-#: ../src/node_sources/theoldreader_source.c:122
+#: ../src/node_sources/google_source.c:195
+#: ../src/node_sources/reedah_source.c:123
+#: ../src/node_sources/theoldreader_source.c:125
 msgid "Login failed!"
 msgstr "התחברות נכשלה!"
 
-#: ../src/node_sources/google_source.c:404
+#: ../src/node_sources/google_source.c:414
 msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
 msgstr ""
 
@@ -424,70 +235,70 @@ msgstr ""
 msgid "Could not parse JSON returned by Google Reader API!"
 msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של Reedah!"
 
-#: ../src/node_sources/opml_source.c:313
-msgid "Planet, BlogRoll, OPML"
-msgstr "‏Planet, BlogRoll, OPML"
-
-#: ../src/node_sources/opml_source.c:366
-msgid "Choose OPML File"
-msgstr "בחירת קובץ ‫‫OPML"
-
-#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
-msgid "_Open"
-msgstr "_פתח"
-
-#: ../src/node_sources/opml_source.h:28
+#: ../src/node_sources/opml_source.c:41
 msgid "New OPML Subscription"
 msgstr "הרשמת OPML חדשה"
 
-#: ../src/node_sources/reedah_source.c:333
+#: ../src/node_sources/opml_source.c:323
+msgid "Planet, BlogRoll, OPML"
+msgstr "‏Planet, BlogRoll, OPML"
+
+#: ../src/node_sources/opml_source.c:372
+msgid "Choose OPML File"
+msgstr "בחירת קובץ ‫‫OPML"
+
+#: ../src/node_sources/opml_source.c:372 ../src/ui/subscription_dialog.c:361
+msgid "_Open"
+msgstr "_פתח"
+
+#: ../src/node_sources/reedah_source.c:338
 msgid "Reedah"
 msgstr "‏Reedah"
 
-#: ../src/node_sources/reedah_source_feed.c:154
+#: ../src/node_sources/reedah_source_feed.c:155
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של Reedah!"
 
-#: ../src/node_sources/theoldreader_source.c:362
+#: ../src/node_sources/theoldreader_source.c:365
 msgid "TheOldReader"
 msgstr "‏TheOldReader"
 
-#: ../src/node_sources/ttrss_source.c:227
-#: ../src/node_sources/ttrss_source.c:293
+#: ../src/node_sources/ttrss_source.c:218
+#: ../src/node_sources/ttrss_source.c:281
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr "‏TinyTinyRSS: ‏HTTP API של לא נגיש!"
 
-#: ../src/node_sources/ttrss_source.c:234
+#: ../src/node_sources/ttrss_source.c:225
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr "‏TinyTinyRSS הרשמה לערוץ נכשלה! בדוק אם באמת העברת URL ערוץ!"
 
-#: ../src/node_sources/ttrss_source.c:300
+#: ../src/node_sources/ttrss_source.c:288
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr "‏TinyTinyRSS: ביטול הרשמת ערוץ נכשל!"
 
-#: ../src/node_sources/ttrss_source.c:318
+#: ../src/node_sources/ttrss_source.c:305
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr "גרסת TinyTinyRSS זו לא תומכת בהסרת ערוצים. שדרג לגרסא %s או חדשה יותר!"
 
-#: ../src/node_sources/ttrss_source.c:470
+#: ../src/node_sources/ttrss_source.c:460
 msgid "Tiny Tiny RSS"
 msgstr "‏Tiny Tiny RSS"
 
-#: ../src/node_sources/ttrss_source_feed.c:150
+#: ../src/node_sources/ttrss_source_feed.c:151
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של TinyTinyRSS!"
 
-#: ../src/node_providers/newsbin.c:116
+#: ../src/node_providers/newsbin.c:98
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "מאפייני הרשמה"
 
-#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:102 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "צור סל איסוף"
 
@@ -500,7 +311,7 @@ msgstr "תיקיית חיפוש חדשה"
 msgid "There are no unread items"
 msgstr "אין פריטים שלא נקראו"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:284
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
@@ -508,56 +319,56 @@ msgstr ""
 "לחתה"
 
 # cli
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:284
 msgid "STATE"
 msgstr ""
 
 # cli
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:285
 msgid "Show version information and exit"
 msgstr "אצו אסרג עדימ גצה"
 
 # cli
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:286
 msgid "Add a new subscription"
 msgstr "השדח המשרה ףסוה"
 
 # cli
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:286
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:287
 msgid "Start with all plugins disabled"
 msgstr ""
 
 # cli
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all types"
 msgstr "סופיט לכמ גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages for the cache handling"
 msgstr "ןומטמב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages for the configuration handling"
 msgstr "הרוצתב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of the database handling"
 msgstr "םינותנ דסמב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages of all GUI functions"
 msgstr "GUI תויצקנופ לכ לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:297
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -566,43 +377,43 @@ msgstr ""
 "Liferea הב םעפ לכב .HTML רויצ גאביד רשפאמ"
 
 # cli
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of all network activity"
 msgstr "תשר תוליעפ לכ לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of all parsing functions"
 msgstr "חונעפ תויצקנופ לכ לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:300
 msgid "Print debugging messages of the feed update processing"
 msgstr "ץורע ינוכדע דוביע לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:301
 msgid "Print debugging messages of the search folder matching"
 msgstr "שופיח תייקית תמאתה לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/liferea_application.c:302 ../src/liferea_application.c:303
+#: ../src/liferea_application.c:306 ../src/liferea_application.c:307
 msgid "Print debugging messages for the given topic"
 msgstr "ןותנה אשונה רובע גאביד תועדוה ספדה"
 
 #. Some libsoup transport errors
-#: ../src/net.c:475
+#: ../src/net.c:465
 msgid "The update request was cancelled"
 msgstr "בקשת העדכון בוטלה"
 
 # באופן קבוע
 #. http 3xx redirection
-#: ../src/net.c:478
+#: ../src/net.c:468
 msgid "The resource moved permanently to a new location"
 msgstr "המשאב הועבר לצמיתות למיקום חדש"
 
 #. http 4xx client error
-#: ../src/net.c:481
+#: ../src/net.c:471
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -610,37 +421,37 @@ msgstr ""
 "אינך מורשה לטעון את ערוץ זה. אנא עדכן את שם המשתמש והסיסמה שלך בתוך תיבת דו "
 "שיח של מאפייני ערוץ"
 
-#: ../src/net.c:483
+#: ../src/net.c:473
 msgid "Payment required"
 msgstr "נדרש תשלום"
 
 # אין באפשרות לגשת אל משאב זה
 # לא מותר לך לגשת אל משאב זה
-#: ../src/net.c:484
+#: ../src/net.c:474
 msgid "You're not allowed to access this resource"
 msgstr "אינך מורשה לגשת אל משאב זה"
 
-#: ../src/net.c:485
+#: ../src/net.c:475
 msgid "Resource Not Found"
 msgstr "משאב לא נמצא"
 
-#: ../src/net.c:486
+#: ../src/net.c:476
 msgid "Method Not Allowed"
 msgstr "שיטה לא מורשית"
 
-#: ../src/net.c:487
+#: ../src/net.c:477
 msgid "Not Acceptable"
 msgstr "לא קביל"
 
-#: ../src/net.c:488
+#: ../src/net.c:478
 msgid "Proxy authentication required"
 msgstr "נדרשת הזדהות אל מול פרוקסי"
 
-#: ../src/net.c:489
+#: ../src/net.c:479
 msgid "Request timed out"
 msgstr "תם הזמן שהוקצב לבקשה"
 
-#: ../src/net.c:490
+#: ../src/net.c:480
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -650,57 +461,57 @@ msgstr ""
 "ערוץ זה הופסק, ואינו זמין יותר. Liferea לא יעדכן את ערוץ זה בעתיד, אולם "
 "עדיין יש באפשרותך לגשת לכותרות המוטמנות."
 
-#: ../src/net.c:491
+#: ../src/net.c:481
 msgid "Too many requests. Liferea has to wait a while before trying again."
 msgstr ""
 
 #. http 5xx server errors
-#: ../src/net.c:494
+#: ../src/net.c:484
 #, fuzzy
 msgid "Internal Server Error"
 msgstr "שגיאת שרת"
 
-#: ../src/net.c:495
+#: ../src/net.c:485
 msgid "Not Implemented"
 msgstr ""
 
-#: ../src/net.c:496
+#: ../src/net.c:486
 msgid "Bad Gateway"
 msgstr ""
 
-#: ../src/net.c:497
+#: ../src/net.c:487
 #, fuzzy
 msgid "Service Unavailable"
 msgstr "‏\"%s\" אינו זמין"
 
-#: ../src/net.c:498
+#: ../src/net.c:488
 msgid "Gateway Timeout"
 msgstr ""
 
-#: ../src/net.c:499
+#: ../src/net.c:489
 msgid "HTTP Version Not Supported"
 msgstr ""
 
-#: ../src/net.c:503
+#: ../src/net.c:493
 msgid "An unknown networking error happened!"
 msgstr "אירעה שגיאת תקשורת לא מוכרת!"
 
-#: ../src/node.c:654
+#: ../src/node.c:646
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr ""
 
-#: ../src/node.c:673
+#: ../src/node.c:665
 #, fuzzy
 msgid "Feed file exported from Liferea"
 msgstr "ייצוא רשימת ערוצים הסתיים בהצלחה!"
 
-#: ../src/node.c:688
+#: ../src/node.c:680
 #, fuzzy, c-format
 msgid "Error while saving feed file"
 msgstr "אירעה שגיאה במהלך ייצוא רשימת ערוצים!"
 
-#: ../src/parsers/atom10.c:240
+#: ../src/parsers/atom10.c:241
 msgid "Website"
 msgstr "אתר אינטרנט"
 
@@ -803,38 +614,43 @@ msgstr "מקור ערוץ"
 msgid "Parent folder title"
 msgstr ""
 
-#: ../src/subscription.c:108
+#: ../src/subscription.c:116
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "ההרשמה \"%s\" כבר מתעדכנת כעת!"
 
-#: ../src/subscription.c:113
+#: ../src/subscription.c:123
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "ההרשמה \"%s\" הופסקה. Liferea לא יעדכן אותה יותר!"
 
-#: ../src/subscription.c:188
+#: ../src/subscription.c:140
+#, fuzzy, c-format
+msgid "The subscription \"%s\" has an invalid source URI!"
+msgstr "ההרשמה \"%s\" הופסקה. Liferea לא יעדכן אותה יותר!"
+
+#: ../src/subscription.c:252
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "כתובת URL של \"%s\" הוחלפה לצמיתות ועודכנה"
 
-#: ../src/subscription.c:194
+#: ../src/subscription.c:258
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "‏\"%s\" לא השתנה מאז עדכון אחרון"
 
-#: ../src/subscription.c:207
+#: ../src/subscription.c:271
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "‏\"%s\" הופסק. Liferea לא יעדכן אותו יותר!"
 
-#: ../src/subscription.c:221 ../src/subscription.c:297
+#: ../src/subscription.c:285 ../src/subscription.c:371
 #, fuzzy, c-format
 msgid "Updating (%d / %d) ..."
 msgstr "מעדכן כעת…"
 
-#: ../src/subscription.c:299
+#: ../src/subscription.c:373
 #, fuzzy, c-format
 msgid "Updating '%s'..."
 msgstr "מעדכן כעת…"
@@ -853,30 +669,67 @@ msgstr "מקור לא ידוע"
 msgid "Untitled"
 msgstr "ללא כותרת"
 
-#: ../src/ui/feed_list_view.c:426
+#: ../src/ui/feed_list_view.c:437 ../src/ui/preferences_dialog.c:81
+#: ../src/ui/subscription_dialog.c:51
+msgid "minutes"
+msgstr "דקות"
+
+#: ../src/ui/feed_list_view.c:443 ../src/ui/preferences_dialog.c:83
+#: ../src/ui/subscription_dialog.c:53
+msgid "days"
+msgstr "ימים"
+
+#: ../src/ui/feed_list_view.c:446 ../src/ui/preferences_dialog.c:82
+#: ../src/ui/subscription_dialog.c:52
+msgid "hours"
+msgstr "שעות"
+
+#: ../src/ui/feed_list_view.c:450
+#, c-format
+msgid ""
+"The subscription \"%s\" indicates not to update more often than every %g %s. "
+"Force the update anyway?"
+msgstr ""
+
+#: ../src/ui/feed_list_view.c:464 ../src/ui/feed_list_view.c:983
+#: ../src/ui/feed_list_view.c:1031 ../src/ui/popup_menu.c:224
+msgid "_Cancel"
+msgstr "_ביטול"
+
+#: ../src/ui/feed_list_view.c:465
+#, fuzzy
+msgid "_Force Update"
+msgstr "עדכון ערוץ"
+
+#: ../src/ui/feed_list_view.c:467
+#, fuzzy
+msgid "Force Update"
+msgstr "עדכון ערוץ"
+
+#: ../src/ui/feed_list_view.c:488
 msgid "Liferea is in offline mode. No update possible."
 msgstr "‏Liferea מצוי כעת במצב לא־מקוון. אין אפשרות לעדכן ערוצים."
 
-#: ../src/ui/feed_list_view.c:472
+#: ../src/ui/feed_list_view.c:551
 #, fuzzy
 msgid "all feeds"
 msgstr "חיפוש בכל הערוצים"
 
-#: ../src/ui/feed_list_view.c:473
+#: ../src/ui/feed_list_view.c:552
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "סמן הכל ככאלה שנקראו"
 
-#: ../src/ui/feed_list_view.c:477
+#: ../src/ui/feed_list_view.c:556
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "האם אתה בטוח כי ברצונך למחוק את \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:615
+#: ../src/ui/feed_list_view.c:694
 msgid "(Empty)"
 msgstr "(ריק)"
 
-#: ../src/ui/feed_list_view.c:825
+#: ../src/ui/feed_list_view.c:904
 #, c-format
 msgid ""
 "%s\n"
@@ -886,45 +739,40 @@ msgstr ""
 "<i>כעת מרכיב מחדש</i>"
 
 # הרשומה נמחקת כעת
-#: ../src/ui/feed_list_view.c:894
+#: ../src/ui/feed_list_view.c:973
 msgid "Deleting entry"
 msgstr "מוחק הרשמה"
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:974
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "האם אתה בטוח כי ברצונך למחוק את \"%s\" ואת כל תכולתו?"
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:974
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "האם אתה בטוח כי ברצונך למחוק את \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
-#: ../src/ui/popup_menu.c:224
-msgid "_Cancel"
-msgstr "_ביטול"
-
-#: ../src/ui/feed_list_view.c:905 ../src/ui/popup_menu.c:375
+#: ../src/ui/feed_list_view.c:984 ../src/ui/popup_menu.c:375
 msgid "_Delete"
 msgstr "_מחק"
 
-#: ../src/ui/feed_list_view.c:907
+#: ../src/ui/feed_list_view.c:986
 msgid "Deletion Confirmation"
 msgstr "אימות מחיקה"
 
-#: ../src/ui/feed_list_view.c:940
+#: ../src/ui/feed_list_view.c:1019
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:953
+#: ../src/ui/feed_list_view.c:1032
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:955
+#: ../src/ui/feed_list_view.c:1034
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "אימות מחיקה"
@@ -939,7 +787,7 @@ msgid "This item has no link specified!"
 msgstr "לפריט זה לא צוין קישור!"
 
 #: ../src/ui/item_list_view.c:492
-msgid " <span background='red' color='black'> important </span> "
+msgid " <span background='red' color='white'> important </span> "
 msgstr ""
 
 #: ../src/ui/item_list_view.c:853
@@ -959,34 +807,25 @@ msgstr "עליך לבחור ערוץ כדי למחוק את הפריטים של�
 msgid "No item has been selected"
 msgstr "לא נבחר אף פריט"
 
-#: ../src/ui/liferea_shell.c:410
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "(%d חדש) "
 msgstr[1] "(%d חדשים) "
 
-#: ../src/ui/liferea_shell.c:415
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d לא נקרא%s "
 msgstr[1] "%d לא נקראו%s "
 
-#: ../src/ui/liferea_shell.c:857
+#: ../src/ui/liferea_shell.c:879
 msgid "Help Topics"
 msgstr "נושאי עזרה"
 
-# הפנייה מהירה
-#: ../src/ui/liferea_shell.c:863
-msgid "Quick Reference"
-msgstr "תיעוד מהיר"
-
-#: ../src/ui/liferea_shell.c:869
-msgid "FAQ"
-msgstr "שו״ת"
-
-#: ../src/ui/liferea_shell.c:1140
+#: ../src/ui/liferea_shell.c:1180
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "פקודת דפדפן נכשלה: ‭%s"
@@ -1125,18 +964,6 @@ msgstr "סמלים בלבד"
 msgid "Text only"
 msgstr "טקסט בלבד"
 
-#: ../src/ui/preferences_dialog.c:81 ../src/ui/subscription_dialog.c:43
-msgid "minutes"
-msgstr "דקות"
-
-#: ../src/ui/preferences_dialog.c:82 ../src/ui/subscription_dialog.c:44
-msgid "hours"
-msgstr "שעות"
-
-#: ../src/ui/preferences_dialog.c:83 ../src/ui/subscription_dialog.c:45
-msgid "days"
-msgstr "ימים"
-
 #: ../src/ui/preferences_dialog.c:88
 msgid "Space"
 msgstr "רווח"
@@ -1161,11 +988,11 @@ msgstr "תצוגה רחבה"
 msgid "Automatic"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:406
+#: ../src/ui/preferences_dialog.c:357
 msgid "Default Browser"
 msgstr "דפדפן ברירת מחדל"
 
-#: ../src/ui/preferences_dialog.c:408
+#: ../src/ui/preferences_dialog.c:359
 msgid "Manual"
 msgstr "ידני"
 
@@ -1178,11 +1005,11 @@ msgstr "הס_ר"
 msgid "Saved Search"
 msgstr "חיפוש שמור"
 
-#: ../src/ui/subscription_dialog.c:352
+#: ../src/ui/subscription_dialog.c:361
 msgid "Choose File"
 msgstr "בחר קובץ"
 
-#: ../src/ui/subscription_dialog.c:424
+#: ../src/ui/subscription_dialog.c:437
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1190,7 +1017,7 @@ msgid_plural ""
 msgstr[0] "הספק של ערוץ זה ממליץ על תדירות עדכון בת דקה %d."
 msgstr[1] "הספק של ערוץ זה ממליץ על תדירות עדכון בת %d דקות."
 
-#: ../src/ui/subscription_dialog.c:428
+#: ../src/ui/subscription_dialog.c:441
 msgid "This feed specifies no default update interval."
 msgstr "לערוץ זה לא הוגדרה תדירות עדכון."
 
@@ -1198,98 +1025,98 @@ msgstr "לערוץ זה לא הוגדרה תדירות עדכון."
 msgid "All Files"
 msgstr "כל הקבצים"
 
-#: ../src/update_job.c:67
+#: ../src/update_job.c:68
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "שגיאה בפתיחת הקובץ הזמני %s לשימוש בסינון!"
 
-#: ../src/update_job.c:89
+#: ../src/update_job.c:90
 #, c-format
 msgid "%s exited with status %d"
 msgstr "<div style=\"direction:rtl\">&lrm;%s סיים עם סטטוס %d</div>"
 
-#: ../src/update_job.c:95 ../src/update_job.c:318
+#: ../src/update_job.c:96 ../src/update_job.c:356
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "שגיאה: לא ניתן לפתוח צינור \"%s\""
 
-#: ../src/update_job.c:99
+#: ../src/update_job.c:100
 #, fuzzy
 msgid "Error: Could not write temporary file!"
 msgstr "שגיאה: לא ניתן לפתוח את הקובץ \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update_job.c:349
+#: ../src/update_job.c:386
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "שגיאה: לא ניתן לפתוח את הקובץ \"%s\""
 
-#: ../src/update_job.c:355
+#: ../src/update_job.c:392
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "שגיאה: הקובץ \"%s\" לא קיים"
 
-#: ../src/webkit/liferea_web_view.c:163
+#: ../src/webkit/liferea_web_view.c:164
 msgid "Open Link In _Tab"
 msgstr "פתח קישור בתוך _כרטיסייה"
 
-#: ../src/webkit/liferea_web_view.c:164
+#: ../src/webkit/liferea_web_view.c:165
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "_פתח קישור בתוך דפדפן"
 
-#: ../src/webkit/liferea_web_view.c:165
+#: ../src/webkit/liferea_web_view.c:166
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "_פתח קישור בתוך דפדפן חיצוני"
 
-#: ../src/webkit/liferea_web_view.c:171
+#: ../src/webkit/liferea_web_view.c:172
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_סמן קישור באתר %s"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 msgid "_Copy Link Location"
 msgstr "_העתק מיקום קישור"
 
-#: ../src/webkit/liferea_web_view.c:181
+#: ../src/webkit/liferea_web_view.c:182
 #, fuzzy
 msgid "_View Image"
 msgstr "שמור _תמונה בשם"
 
-#: ../src/webkit/liferea_web_view.c:182
+#: ../src/webkit/liferea_web_view.c:183
 msgid "_Copy Image Location"
 msgstr "_העתק מיקום תמונה"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:186
 msgid "S_ave Link As"
 msgstr "_שמור קישור בשם"
 
-#: ../src/webkit/liferea_web_view.c:188
+#: ../src/webkit/liferea_web_view.c:189
 msgid "S_ave Image As"
 msgstr "שמור _תמונה בשם"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Subscribe..."
 msgstr "ה_רשמה..."
 
-#: ../src/webkit/liferea_web_view.c:199
+#: ../src/webkit/liferea_web_view.c:200
 msgid "_Copy"
 msgstr "ה_עתק"
 
-#: ../src/webkit/liferea_web_view.c:205
+#: ../src/webkit/liferea_web_view.c:206
 msgid "_Increase Text Size"
 msgstr "ה_גדל גודל טקסט"
 
-#: ../src/webkit/liferea_web_view.c:206
+#: ../src/webkit/liferea_web_view.c:207
 msgid "_Decrease Text Size"
 msgstr "ה_קטן גודל טקסט"
 
-#: ../src/xml.c:427
+#: ../src/xml.c:440
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[היו שגיאות נוספות. הפלט קוצץ!]"
 
-#: ../src/xml.c:595
+#: ../src/xml.c:606
 msgid "XML Parser: Could not parse document:\n"
 msgstr "מפענח XML: לא ניתן לפענח את המסמך:\n"
 
@@ -1436,34 +1263,44 @@ msgid "_Tools"
 msgstr "_כלים"
 
 #: ../glade/liferea_menu.ui.h:35
+#, fuzzy
+msgid "_Discover Feeds"
+msgstr "מיין ערוצים"
+
+#: ../glade/liferea_menu.ui.h:36
 msgid "_Update Monitor"
 msgstr "_עקוב אחר עדכונים"
 
-#: ../glade/liferea_menu.ui.h:36
+#: ../glade/liferea_menu.ui.h:37
 msgid "_Preferences"
 msgstr "_העדפות"
 
-#: ../glade/liferea_menu.ui.h:37
+#: ../glade/liferea_menu.ui.h:38
+#, fuzzy
+msgid "_Manage Plugins"
+msgstr "תוספים"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "_Print"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:40
 msgid "S_earch"
 msgstr "_חיפוש"
 
-#: ../glade/liferea_menu.ui.h:39
+#: ../glade/liferea_menu.ui.h:42
 msgid "_Help"
 msgstr "_עזרה"
 
-#: ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_menu.ui.h:43
 msgid "_Contents"
 msgstr "_תכנים"
 
-#: ../glade/liferea_menu.ui.h:41
-msgid "_Quick Reference"
-msgstr "_עזרה מהירה"
+#: ../glade/liferea_menu.ui.h:44
+msgid "_Shortcuts"
+msgstr ""
 
-#: ../glade/liferea_menu.ui.h:42
-msgid "_FAQ"
-msgstr "_שו״ת"
-
-#: ../glade/liferea_menu.ui.h:43
+#: ../glade/liferea_menu.ui.h:45
 msgid "_About"
 msgstr "_אודות"
 
@@ -1526,59 +1363,6 @@ msgstr "שם _סל איסוף:"
 msgid "_Always show in Reduced Feed List"
 msgstr "רשימת ערוצים מ_צומצמת"
 
-#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
-msgid "Feed Source"
-msgstr "מקור ערוץ"
-
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:12
-msgid "Source Type:"
-msgstr "טיפוס מקור:"
-
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:13
-msgid "_URL"
-msgstr "_כתובת URL"
-
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:14
-msgid "_Command"
-msgstr "_פקודה"
-
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:15
-msgid "_Local File"
-msgstr "_קובץ מקומי"
-
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
-msgid "Select File..."
-msgstr "בחר קובץ..."
-
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
-msgid "_Source:"
-msgstr "_מקור:"
-
-#: ../glade/new_subscription.ui.h:9
-msgid "Download / Postprocessing"
-msgstr "טעינה \\ עיבוד־מאוחר"
-
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:30
-msgid "_Don't use proxy for download"
-msgstr "א_ל תשתמש בפרוקסי"
-
-#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:18
-msgid "Use conversion _filter"
-msgstr "_השתמש במסנן המרה"
-
-#: ../glade/new_subscription.ui.h:12
-msgid ""
-"Liferea can use external filter plugins in order to access feeds and "
-"directories in non-supported formats.  See the documentation for more "
-"information."
-msgstr ""
-"‏Liferea מסוגל לעבוד עם תוספים מסננים חיצוניים על מנת לגשת לערוצים ולתיקיות "
-"בפורמטים שלא נתמכים.  ראה את התיעוד למידע נוסף."
-
-#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:20
-msgid "Convert _using:"
-msgstr "המר ב_אמצעות:"
-
 #: ../glade/node_source.ui.h:1
 msgid "Source Selection"
 msgstr "בחירת מקור"
@@ -1605,6 +1389,14 @@ msgstr "_מיקום"
 #: ../glade/opml_source.ui.h:4
 msgid "_Select File"
 msgstr "בחר _קובץ"
+
+#: ../glade/plugins.ui.h:1
+msgid "Plugins"
+msgstr "תוספים"
+
+#: ../glade/plugins.ui.h:2
+msgid "_Configure"
+msgstr ""
 
 #: ../glade/prefs.ui.h:1
 msgid "Liferea Preferences"
@@ -1782,69 +1574,39 @@ msgid "_No Proxy"
 msgstr "_בלי פרוקסי"
 
 #: ../glade/prefs.ui.h:43
-msgid "_Manual Setting:"
-msgstr "_הגדרה ידנית:"
-
-#: ../glade/prefs.ui.h:44
-msgid "Proxy _Host:"
-msgstr "_מארח פרוקסי:"
-
-#: ../glade/prefs.ui.h:45
-msgid "Proxy _Port:"
-msgstr "_יציאת פרוקסי:"
-
-#: ../glade/prefs.ui.h:46
-msgid "Use Proxy Au_thentication"
-msgstr "ה_שתמש בזיהוי פרוקסי"
-
-#: ../glade/prefs.ui.h:47
-msgid "Proxy _Username:"
-msgstr "שם מש_תמש פרוקסי:"
-
-#: ../glade/prefs.ui.h:48
-msgid "Proxy Pass_word:"
-msgstr "סיסמת _פרוקסי:"
-
-#: ../glade/prefs.ui.h:49
-msgid ""
-"Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
-"application proxy settings. The system's default proxy settings will be used."
-msgstr ""
-
-#: ../glade/prefs.ui.h:50
 msgid "Proxy"
 msgstr "פרוקסי"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:44
 msgid "Privacy Settings"
 msgstr "הגדרות פרטיות"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:45
 #, fuzzy
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "אמור לאתרים כי אני _לא רוצה להיות נתון למעקב"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:46
 msgid "Tell websites not to _sell or share my data."
 msgstr ""
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:47
 msgid "_Intelligent Tracking Prevention. "
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:48
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:49
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:50
 msgid "Privacy"
 msgstr "פרטיות"
 
@@ -1884,6 +1646,38 @@ msgstr "ספק ערוץ זה ממליץ על תדירות עדכון של %d ד�
 msgid "General"
 msgstr "כללי"
 
+#: ../glade/properties.ui.h:11
+msgid "Feed Source"
+msgstr "מקור ערוץ"
+
+#: ../glade/properties.ui.h:12
+msgid "Source Type:"
+msgstr "טיפוס מקור:"
+
+#: ../glade/properties.ui.h:13
+msgid "_URL"
+msgstr "_כתובת URL"
+
+#: ../glade/properties.ui.h:14
+msgid "_Command"
+msgstr "_פקודה"
+
+#: ../glade/properties.ui.h:15
+msgid "_Local File"
+msgstr "_קובץ מקומי"
+
+#: ../glade/properties.ui.h:16
+msgid "Select File..."
+msgstr "בחר קובץ..."
+
+#: ../glade/properties.ui.h:17
+msgid "_Source:"
+msgstr "_מקור:"
+
+#: ../glade/properties.ui.h:18
+msgid "Use conversion _filter"
+msgstr "_השתמש במסנן המרה"
+
 #: ../glade/properties.ui.h:19
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
@@ -1891,6 +1685,10 @@ msgid ""
 msgstr ""
 "‏Liferea מסוגל לעבוד עם תסריטי סינון חיצוניים על מנת לגשת לערוצים ולתיקיות "
 "בפורמטים שלא נתמכים."
+
+#: ../glade/properties.ui.h:20
+msgid "Convert _using:"
+msgstr "המר ב_אמצעות:"
 
 #: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
 msgid "Source"
@@ -1928,6 +1726,10 @@ msgstr "ארכיון"
 msgid "Use HTTP _authentication"
 msgstr "_השתמש בזיהוי HTTP"
 
+#: ../glade/properties.ui.h:30
+msgid "_Don't use proxy for download"
+msgstr "א_ל תשתמש בפרוקסי"
+
 # טעינת פריטים
 #: ../glade/properties.ui.h:33
 msgid "Download"
@@ -1952,6 +1754,10 @@ msgstr "_סמן פריטים שנטענו ככאלה שנקראו."
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr ""
+
+#: ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "מתקדם"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
@@ -2050,17 +1856,17 @@ msgid "Advanced..."
 msgstr "מתקדם..."
 
 #: ../glade/simple_subscription.ui.h:3
-#, fuzzy
-msgid "Feed _Source"
-msgstr "מקור ערוץ"
-
-#: ../glade/simple_subscription.ui.h:4
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
 "בכדי לעשות שימוש בגילוי ערוצים אוטומטי יש להזין כתובת URL של אתר אינטרנט, או "
 "כתובת מדויקת של הערוץ במידה והכתובת המדויקת ידועה לך."
+
+#: ../glade/simple_subscription.ui.h:4
+#, fuzzy
+msgid "Feed _Source"
+msgstr "מקור ערוץ"
 
 #: ../glade/theoldreader_source.ui.h:1
 msgid "Add TheOldReader Account"
@@ -2124,6 +1930,11 @@ msgstr "מומלץ על ידי"
 msgid "Via"
 msgstr "דרך"
 
+#: ../js/item.xml.in.h:5
+#, fuzzy
+msgid "Filed under:"
+msgstr "תויק תחת"
+
 #: ../js/node.xml.in.h:3
 msgid "Publisher"
 msgstr "<p dir=\"rtl\">מוציא לאור</p>"
@@ -2134,86 +1945,163 @@ msgstr "זכויות יוצרים"
 
 #: ../js/node.xml.in.h:5
 msgid ""
+"⛔ Unknown account type '{{node.nodeSource.type}}'! This can happen if you "
+"downgrade Liferea and this version does not support this account type yet or "
+"when support for this account type was dropped. You can 'Convert To Local "
+"Subscriptions' from the feed list context menu!"
+msgstr ""
+
+#: ../js/node.xml.in.h:6
+msgid ""
 "⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
 "{{ maxFailures }} retries)!"
 msgstr ""
 
-#: ../js/node.xml.in.h:6
+#: ../js/node.xml.in.h:7
 msgid "Please check your credentials!"
 msgstr ""
 
-#: ../js/node.xml.in.h:7
+#: ../js/node.xml.in.h:8
 msgid ""
 "⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
 "{{ maxFailures }} retries)..."
 msgstr ""
 
-#: ../js/node.xml.in.h:8
+#: ../js/node.xml.in.h:9
 msgid "⚠️ Account login for '{{ title }}' has not yet started."
 msgstr ""
 
+#: ../js/node.xml.in.h:10
+#, fuzzy
+msgid "This feed is discontinued. Liferea won't updated it anymore."
+msgstr "‏\"%s\" הופסק. Liferea לא יעדכן אותו יותר!"
+
 # RTL HTML MARKUP IS NEEDED
-#: ../js/node.xml.in.h:9
+#: ../js/node.xml.in.h:11
 #, fuzzy
 msgid "There was a problem when fetching this subscription!"
 msgstr "אירעה בעיה במהלך קריאת הרשמה זו. אנא בדוק כתובת URL ופלט מסוף."
 
-#: ../js/node.xml.in.h:10
+#: ../js/node.xml.in.h:12
 #, fuzzy
 msgid "1. Authentication"
 msgstr "אימות"
 
 # טעינת פריטים
-#: ../js/node.xml.in.h:11
+#: ../js/node.xml.in.h:13
 #, fuzzy
 msgid "2. Download"
 msgstr "טעינה"
 
-#: ../js/node.xml.in.h:12
+#: ../js/node.xml.in.h:14
 msgid "3. Feed Discovery"
 msgstr ""
 
-#: ../js/node.xml.in.h:13
+#: ../js/node.xml.in.h:15
 msgid "4. Parsing"
 msgstr ""
 
-#: ../js/node.xml.in.h:14
+#: ../js/node.xml.in.h:16
 #, fuzzy
 msgid "Details:"
 msgstr "<p dir=\"rtl\">פרטים</p>"
 
-#: ../js/node.xml.in.h:15
+#: ../js/node.xml.in.h:17
 msgid "Authentication failed. Please check the credentials and try again!"
 msgstr ""
 
 # <div style=\"direction:rtl\">
 # </div>
-#: ../js/node.xml.in.h:16
+#: ../js/node.xml.in.h:18
 #, fuzzy
 msgid "There was an error when downloading the feed source:"
 msgstr "<p dir=\"rtl\">אירעו שגיאות במהלך פענוח ערוץ זה!</p>"
 
 # <div style=\"direction:rtl\">
 # </div>
-#: ../js/node.xml.in.h:17
+#: ../js/node.xml.in.h:19
 #, fuzzy
 msgid "There was an error when running the feed filter command:"
 msgstr "<p dir=\"rtl\">אירעו שגיאות במהלך פענוח ערוץ זה!</p>"
 
-#: ../js/node.xml.in.h:18
+#: ../js/node.xml.in.h:20
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
 
-#: ../js/node.xml.in.h:19
+#: ../js/node.xml.in.h:21
 msgid "Sorry, the feed could not be parsed!"
 msgstr ""
 
-#: ../js/node.xml.in.h:20
+#: ../js/node.xml.in.h:22
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 "<p dir=\"rtl\">אפשרי כי ברצונך ליצור קשר עם מחבר/מנהל הערוץ אודות זאת!</p>"
+
+#, fuzzy
+#~ msgid "Plugin Installer"
+#~ msgstr "תוספים"
+
+#, fuzzy
+#~ msgid "Download Plugins"
+#~ msgstr "_הורד באמצעות"
+
+# הגדרות התראה
+#, fuzzy
+#~ msgid "Notifications"
+#~ msgstr "הגדרת התראות"
+
+#, fuzzy, python-format
+#~ msgid "Creating schema directory %s"
+#~ msgstr "לא ניתן ליצור מדור מטמון עבור \"%s\"!"
+
+# הרשומה נמחקת כעת
+#, fuzzy, python-format
+#~ msgid "Deleting '%s'"
+#~ msgstr "מוחק הרשמה"
+
+# הפנייה מהירה
+#~ msgid "Quick Reference"
+#~ msgstr "תיעוד מהיר"
+
+#~ msgid "FAQ"
+#~ msgstr "שו״ת"
+
+#~ msgid "_Quick Reference"
+#~ msgstr "_עזרה מהירה"
+
+#~ msgid "_FAQ"
+#~ msgstr "_שו״ת"
+
+#~ msgid "Download / Postprocessing"
+#~ msgstr "טעינה \\ עיבוד־מאוחר"
+
+#~ msgid ""
+#~ "Liferea can use external filter plugins in order to access feeds and "
+#~ "directories in non-supported formats.  See the documentation for more "
+#~ "information."
+#~ msgstr ""
+#~ "‏Liferea מסוגל לעבוד עם תוספים מסננים חיצוניים על מנת לגשת לערוצים "
+#~ "ולתיקיות בפורמטים שלא נתמכים.  ראה את התיעוד למידע נוסף."
+
+#~ msgid "_Manual Setting:"
+#~ msgstr "_הגדרה ידנית:"
+
+#~ msgid "Proxy _Host:"
+#~ msgstr "_מארח פרוקסי:"
+
+#~ msgid "Proxy _Port:"
+#~ msgstr "_יציאת פרוקסי:"
+
+#~ msgid "Use Proxy Au_thentication"
+#~ msgstr "ה_שתמש בזיהוי פרוקסי"
+
+#~ msgid "Proxy _Username:"
+#~ msgstr "שם מש_תמש פרוקסי:"
+
+#~ msgid "Proxy Pass_word:"
+#~ msgstr "סיסמת _פרוקסי:"
 
 #, c-format
 #~ msgid "\"%s\" is not a valid enclosure type config file!"
@@ -2265,9 +2153,6 @@ msgstr ""
 
 #~ msgid "Feed"
 #~ msgstr "ערוץ"
-
-#~ msgid "Filed under"
-#~ msgstr "תויק תחת"
 
 #~ msgid "Related"
 #~ msgstr "קשורים"
@@ -2513,9 +2398,9 @@ msgstr ""
 #~ msgstr "אירעה שגיאת תקשורת, או שהקצה המרוחק ניתק את הקשר באופן בלתי צפוי"
 
 #~ msgid ""
-#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
-#~ "></b>"
+#~ "The last update of this subscription failed!<br/><b>HTTP error code "
+#~ "<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+#~ "select=\"httpError\"/></b>"
 #~ msgstr ""
 #~ "<div style=\"direction:rtl\">העדכון האחרון של הרשמה זו נכשל!<br/><b>HTTP "
 #~ "error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "

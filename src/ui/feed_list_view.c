@@ -418,12 +418,92 @@ on_menu_delete(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 }
 
 static void
-do_menu_update (Node *node)
+on_force_update_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	if (network_monitor_is_online ())
-		node_auto_update_subscription (node);
-	else
+	Node *node = (Node *)user_data;
+
+	if (GTK_RESPONSE_OK == response_id)
+		subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static void
+on_force_update (Node *node)
+{
+	GtkWidget *dialog;
+	GtkWindow *mainwindow = GTK_WINDOW (liferea_shell_get_window ());
+	gchar *text;
+	const gchar *unit = _("minutes");
+	gdouble interval = (gdouble) update_state_get_min_interval (node->subscription->updateState);
+
+	g_assert (-1 != interval);
+
+	if (interval > 60 * 24) {
+		unit = _("days");
+		interval /= 60 * 24;
+	} else if (interval > 60) {
+		unit = _("hours");
+		interval /= 60;
+	}
+
+	text = g_strdup_printf (_("The subscription \"%s\" indicates not to update more often than every %g %s. Force the update anyway?"),
+					 node_get_title (node),
+					 interval,
+					 unit);
+
+	dialog = gtk_message_dialog_new (mainwindow,
+						 GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
+						 GTK_MESSAGE_QUESTION,
+						 GTK_BUTTONS_NONE,
+						 "%s",
+						 text);
+	g_free (text);
+
+	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
+						 _("_Cancel"), GTK_RESPONSE_CANCEL,
+						 _("_Force Update"), GTK_RESPONSE_OK,
+						 NULL);
+	gtk_window_set_title (GTK_WINDOW (dialog), _("Force Update"));
+	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CANCEL);
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+				  G_CALLBACK (on_force_update_response), node);
+	gtk_widget_show_all (dialog);
+}
+
+// special recursive update helper, checks for force updates, but never allows
+// forced updates on child nodes implementing the following two requirements
+//
+// 1. never force update entire subtrees
+// 2. allow force updating single selected feeds
+static void
+do_menu_update (Node *node, gboolean doForce)
+{
+	/* Indicate problems (duplicates some checks from subscription_auto_update ())... */
+
+	if (!network_monitor_is_online ())
 		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
+
+	if (node->subscription) {
+		if (!subscription_can_update_now (node->subscription)) {
+			if (doForce)
+				on_force_update (node);
+		} else {
+			subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+		}
+		// No return here to allow force updating node sources (which have a subscription and children)
+	}
+
+	GSList *children = node->children;
+	for (GSList *iter = children; iter != NULL; iter = iter->next) {
+		Node *child = (Node *) iter->data;
+		// we do not use node_[auto_]update_subscription() to call subscription_update() 
+		// for children if subscription_can_update_now() allows it
+		do_menu_update (child, FALSE);
+	}
 }
 
 void
@@ -437,7 +517,7 @@ on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 		node = feedlist_get_selected ();
 
 	if (node)
-		do_menu_update (node);
+		do_menu_update (node, TRUE);
 	else
 		g_warning ("on_menu_update: no feedlist selected");
 }
@@ -445,7 +525,7 @@ on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 void
 on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	do_menu_update (feedlist_get_root ());
+	do_menu_update (feedlist_get_root (), FALSE);
 }
 
 void

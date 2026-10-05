@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-26 09:18+0100\n"
+"POT-Creation-Date: 2026-10-05 22:59+0200\n"
 "PO-Revision-Date: 2025-03-12 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:347
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:354
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -39,28 +39,8 @@ msgstr "Haber beslemelerini ve blogları oku"
 #: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
-"news;feed;aggregator;blog;podcast;syndication;rss;atom;haber;besleme;"
-"toplayıcı;kaynak;günlük;sendikasyon;ortam akışı;"
-
-#: ../plugins/getfocus.py:95
-msgid "Opacity:"
-msgstr "Donukluk:"
-
-#: ../plugins/getfocus.py:96
-msgid "Opacity"
-msgstr "Donukluk"
-
-#: ../plugins/getfocus.py:106
-msgid "Min"
-msgstr "Asgari"
-
-#: ../plugins/getfocus.py:111
-msgid "Max"
-msgstr "Azami"
-
-#: ../plugins/getfocus.py:117
-msgid "Save"
-msgstr "Kaydet"
+"news;feed;aggregator;blog;podcast;syndication;rss;atom;haber;besleme;toplayıcı;kaynak;günlük;sendikasyon;ortam "
+"akışı;"
 
 #: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
 #: ../glade/liferea_toolbar.ui.h:5
@@ -82,7 +62,7 @@ msgstr "_Sonraki Okunmamış Öge"
 msgid "_Mark Items Read"
 msgstr "_Ögeleri Okundu Olarak İmle"
 
-#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:38
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:41
 #: ../glade/liferea_toolbar.ui.h:10
 msgid "Search All Feeds..."
 msgstr "Tüm Beslemeleri Ara..."
@@ -91,183 +71,19 @@ msgstr "Tüm Beslemeleri Ara..."
 msgid "Feed Updates"
 msgstr "Besleme Güncellemeleri"
 
-#: ../plugins/plugin-installer.py:55
-msgid "Plugins"
-msgstr "Eklentiler"
-
-#: ../plugins/plugin-installer.py:72
-msgid "Plugin Installer"
-msgstr "Eklenti Kurucu"
-
-#: ../plugins/plugin-installer.py:86
-msgid "Activate Plugins"
-msgstr "Eklentileri Etkinleştir"
-
-#: ../plugins/plugin-installer.py:87
-msgid "Download Plugins"
-msgstr "Eklentiler İndir"
-
-#: ../plugins/plugin-installer.py:105
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr "Eklenti girdisi için kötü alanlar: %s"
-
-#: ../plugins/plugin-installer.py:128
-msgid "All"
-msgstr "Tümü"
-
-#: ../plugins/plugin-installer.py:128 ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "Gelişmiş"
-
-#: ../plugins/plugin-installer.py:128
-msgid "Menu"
-msgstr "Menü"
-
-#: ../plugins/plugin-installer.py:128
-msgid "Notifications"
-msgstr "Bildirimler"
-
-#: ../plugins/plugin-installer.py:136
-msgid "Filter by category"
-msgstr "Kategoriye göre süz"
-
-#: ../plugins/plugin-installer.py:143
-msgid "_Install"
-msgstr "_Kur"
-
-#: ../plugins/plugin-installer.py:147
-msgid "_Uninstall"
-msgstr "_Kaldır"
-
-#: ../plugins/plugin-installer.py:252
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-"Paket yöneticisi '%s' yok. Gerekli bağımlılıklar denetlenemiyor ya da "
-"kurulamıyor."
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr "'%s' paketi eksik. Kurmak ister misiniz? ('%s' çalıştırılacak)"
-
-#: ../plugins/plugin-installer.py:275
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-"Paket kurulumu başarısız (%s)! İleri sorun ayrıntıları için konsol çıktısını "
-"gözden geçirin!"
-
-#: ../plugins/plugin-installer.py:278
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr "Eklenti bağımlılıkları denetlenemedi (%s)!"
-
-#: ../plugins/plugin-installer.py:287
-msgid "Command \"git\" not found, please install it!"
-msgstr "\"git\" komutu bulunamadı, lütfen kurun!"
-
-#: ../plugins/plugin-installer.py:296
-#, python-format
-msgid "Copying %s to %s"
-msgstr "%s şuna kopyalanıyor: %s"
-
-#: ../plugins/plugin-installer.py:299
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr "Eklenti dizini kopyalanamadı (%s)!"
-
-#: ../plugins/plugin-installer.py:308
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr "Eklenti .py dosyası kopyalanamadı (%s)!"
-
-#: ../plugins/plugin-installer.py:318
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr ".plugin dosyası kopyalanamadı (%s)!"
-
-#: ../plugins/plugin-installer.py:329
-#, python-format
-msgid "Creating schema directory %s"
-msgstr "Şema dizini %s yaratılamadı"
-
-#: ../plugins/plugin-installer.py:331
-#, python-format
-msgid "Installing schema %s"
-msgstr "%s şeması kuruluyor"
-
-#: ../plugins/plugin-installer.py:335
-msgid "Compiling schemas..."
-msgstr "Şemalar derleniyor..."
-
-#: ../plugins/plugin-installer.py:340
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr "Şema dosyaları (%s) kurulamadı!"
-
-#: ../plugins/plugin-installer.py:350
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr "Eklenti (%s) etkinleştirilemedi!"
-
-#: ../plugins/plugin-installer.py:356
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr "'%s' eklentisi kuruldu. Liferea'yı yeniden başlatınız!"
-
-#: ../plugins/plugin-installer.py:370
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr "Eklenti (%s) devre dışı bırakılamadı"
-
-#: ../plugins/plugin-installer.py:377 ../plugins/plugin-installer.py:397
-#, python-format
-msgid "Deleting '%s'"
-msgstr "'%s' siliniyor"
-
-#: ../plugins/plugin-installer.py:380
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr "'%s' dizini kaldırılamadı (%s)!"
-
-#: ../plugins/plugin-installer.py:390
-msgid "Failed to remove .py file!"
-msgstr ".py dosyası kaldırılamadı!"
-
-#: ../plugins/plugin-installer.py:400
-msgid "Failed to remove .plugin file!"
-msgstr ".plugn dosyası kaldırılamadı!"
-
-#: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!"
-msgstr "Üzgünüz! Eklenti kaldırılamadı!"
-
-#: ../plugins/plugin-installer.py:411
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!"
-msgstr ""
-"Eklenti kaldırıldı. Tümüyle etkin olması için lütfen Liferea'yı yeniden "
-"başlatın!"
-
-#: ../plugins/trayicon.py:168
+#: ../plugins/trayicon.py:167
 msgid "Liferea unread icon"
 msgstr "Liferea okunmadı simgesi"
 
-#: ../plugins/trayicon.py:186
+#: ../plugins/trayicon.py:185
 msgid "Show / Hide"
 msgstr "Göster / Gizle"
 
-#: ../plugins/trayicon.py:187
+#: ../plugins/trayicon.py:186
 msgid "Minimize to tray on close"
 msgstr "Kapatınca sistem tepsisine küçült"
 
-#: ../plugins/trayicon.py:188
+#: ../plugins/trayicon.py:187
 msgid "Quit"
 msgstr "Çık"
 
@@ -276,7 +92,7 @@ msgstr "Çık"
 msgid "Browser command failed: %s"
 msgstr "Tarayıcı komutu başarısız oldu: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1143
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1183
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Başlıyor: \"%s\""
@@ -321,96 +137,91 @@ msgstr "%d %b %Y"
 msgid "Error renaming %s to %s: %s\n"
 msgstr "%s ögesi %s olarak yeniden adlandırılırken hata: %s\n"
 
-#: ../src/export.c:371 ../src/export.c:373
+#: ../src/export.c:380 ../src/export.c:382
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "OPML dosyası okunurken XML hatası! \"%s\" içeri aktarılamadı!"
 
-#: ../src/export.c:379 ../src/export.c:381
+#: ../src/export.c:388 ../src/export.c:390
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Boş dosya! \"%s\" adlı OPML dosyası içeri aktarılırken boş olmamalı."
 
-#: ../src/export.c:402 ../src/export.c:404
+#: ../src/export.c:411 ../src/export.c:413
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" geçerli bir OPML dosyası değil! Liferea bu dosyayı içeri aktaramıyor!"
 
-#: ../src/export.c:423
+#: ../src/export.c:432
 msgid "Imported feed list"
 msgstr "İçe aktarılan besleme listesi"
 
-#: ../src/export.c:435
+#: ../src/export.c:444
 msgid "Import Feed List"
 msgstr "Besleme Listesini İçeri Aktar"
 
-#: ../src/export.c:435
+#: ../src/export.c:444
 msgid "Import"
 msgstr "İçeri Aktar"
 
-#: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:366
+#: ../src/export.c:444 ../src/export.c:461
+#: ../src/node_sources/opml_source.c:372
 msgid "OPML Files"
 msgstr "OPML Dosyaları"
 
-#: ../src/export.c:443
+#: ../src/export.c:452
 msgid "Error while exporting feed list!"
 msgstr "Besleme listesi dışarı aktarılırken hata!"
 
-#: ../src/export.c:445
+#: ../src/export.c:454
 msgid "Feed List exported!"
 msgstr "Besleme listesi dışarı aktarıldı!"
 
-#: ../src/export.c:452
+#: ../src/export.c:461
 msgid "Export Feed List"
 msgstr "Besleme Listesini Dışarı Aktar"
 
-#: ../src/export.c:452
+#: ../src/export.c:461
 msgid "Export"
 msgstr "Dışarı Aktar"
 
-#: ../src/feed_parser.c:201
+#: ../src/feed_parser.c:203
 msgid "Empty document!"
 msgstr "Boş belge!"
 
-#: ../src/feed_parser.c:210
+#: ../src/feed_parser.c:212
 msgid "Invalid XML!"
 msgstr "Geçersiz XML!"
 
-#: ../src/node_source.c:113
-msgid "Miniflux"
-msgstr "Miniflux"
-
-#: ../src/node_source.c:343
+#: ../src/node_source.c:330
 msgid "Source Type"
 msgstr "Kaynak Türü"
 
-#: ../src/node_source.c:394
+#: ../src/node_source.c:381
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr "'%s' için giriş henüz bitmedi! Lütfen giriş bitene dek bekleyiniz."
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:560
+#: ../src/node_source.c:547
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "'%s' aboneliği başarıyla yerel beslemelere dönüştürüldü!"
 
-#: ../src/node_sources/default_source.c:135 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
+#: ../src/node_sources/default_source.c:133 ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Yeni Abonelik"
 
-#: ../src/node_sources/google_source.c:192
-#: ../src/node_sources/reedah_source.c:120
-#: ../src/node_sources/theoldreader_source.c:122
+#: ../src/node_sources/google_source.c:195
+#: ../src/node_sources/reedah_source.c:123
+#: ../src/node_sources/theoldreader_source.c:125
 msgid "Login failed!"
 msgstr "Giriş başarısız!"
 
-#: ../src/node_sources/google_source.c:404
+#: ../src/node_sources/google_source.c:414
 msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
 msgstr "Google Okuyucu API (FreshRSS, FeedHQ, Miniflux...)"
 
@@ -418,40 +229,40 @@ msgstr "Google Okuyucu API (FreshRSS, FeedHQ, Miniflux...)"
 msgid "Could not parse JSON returned by Google Reader API!"
 msgstr "Google Okuyucu API’sının döndürdüğü JSON ayrıştırılamadı!"
 
-#: ../src/node_sources/opml_source.c:313
-msgid "Planet, BlogRoll, OPML"
-msgstr "Planet, BlogRoll, OPML"
-
-#: ../src/node_sources/opml_source.c:366
-msgid "Choose OPML File"
-msgstr "OPML Dosyası Seç"
-
-#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
-msgid "_Open"
-msgstr "_Aç"
-
-#: ../src/node_sources/opml_source.h:28
+#: ../src/node_sources/opml_source.c:41
 msgid "New OPML Subscription"
 msgstr "Yeni OPML Aboneliği"
 
-#: ../src/node_sources/reedah_source.c:333
+#: ../src/node_sources/opml_source.c:323
+msgid "Planet, BlogRoll, OPML"
+msgstr "Planet, BlogRoll, OPML"
+
+#: ../src/node_sources/opml_source.c:372
+msgid "Choose OPML File"
+msgstr "OPML Dosyası Seç"
+
+#: ../src/node_sources/opml_source.c:372 ../src/ui/subscription_dialog.c:361
+msgid "_Open"
+msgstr "_Aç"
+
+#: ../src/node_sources/reedah_source.c:338
 msgid "Reedah"
 msgstr "Reedah"
 
-#: ../src/node_sources/reedah_source_feed.c:154
+#: ../src/node_sources/reedah_source_feed.c:155
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "Reedah API’sının döndürdüğü JSON ayrıştırılamadı!"
 
-#: ../src/node_sources/theoldreader_source.c:362
+#: ../src/node_sources/theoldreader_source.c:365
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
-#: ../src/node_sources/ttrss_source.c:227
-#: ../src/node_sources/ttrss_source.c:293
+#: ../src/node_sources/ttrss_source.c:218
+#: ../src/node_sources/ttrss_source.c:281
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr "TinyTinyRSS HTTP API’sı erişilebilir değil!"
 
-#: ../src/node_sources/ttrss_source.c:234
+#: ../src/node_sources/ttrss_source.c:225
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
@@ -459,11 +270,11 @@ msgstr ""
 "TinyTinyRSS besleme aboneliği başarısız! Gerçekten besleme adresi yazıp "
 "yazmadığınızı denetleyiniz!"
 
-#: ../src/node_sources/ttrss_source.c:300
+#: ../src/node_sources/ttrss_source.c:288
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr "TinyTinyRSS besleme aboneliğinin kaldırılması başarısız!"
 
-#: ../src/node_sources/ttrss_source.c:318
+#: ../src/node_sources/ttrss_source.c:305
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
@@ -472,19 +283,19 @@ msgstr ""
 "Bu TinyTinyRSS sürümü beslemelerin kaldırılmasını desteklemiyor. %s ya da "
 "sonraki sürüme yükselt!"
 
-#: ../src/node_sources/ttrss_source.c:470
+#: ../src/node_sources/ttrss_source.c:460
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
-#: ../src/node_sources/ttrss_source_feed.c:150
+#: ../src/node_sources/ttrss_source_feed.c:151
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "TinyTinyRSS API’sının döndürdüğü JSON ayrıştırılamadı!"
 
-#: ../src/node_providers/newsbin.c:116
+#: ../src/node_providers/newsbin.c:98
 msgid "News Bin Properties"
 msgstr "Haber Sepeti Özellikleri"
 
-#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:102 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Haber Sepeti Yarat"
 
@@ -497,54 +308,54 @@ msgstr "Yeni Arama Klasörü"
 msgid "There are no unread items"
 msgstr "Okunmamış öge yok"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:284
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Liferea’nın penceresini DURUM olarak aç. DURUM  `shown' (gösterilen) ya da "
 "`hidden' (saklı) olabilir."
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:284
 msgid "STATE"
 msgstr "DURUM"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:285
 msgid "Show version information and exit"
 msgstr "Sürüm bilgisini göster ve çık"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:286
 msgid "Add a new subscription"
 msgstr "Yeni bir abonelik ekle"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:286
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:287
 msgid "Start with all plugins disabled"
 msgstr "Tüm eklentiler devre dışı başlat"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all types"
 msgstr "Her tür hata ayıklama iletisini göster"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages for the cache handling"
 msgstr "Önbelleğin işlenmesi hakkındaki hata ayıklama iletilerini göster"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages for the configuration handling"
 msgstr "Yapılandırmanın işlenmesi hakkındaki hata ayıklama iletilerini göster"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of the database handling"
 msgstr "Veri tabanının işlenmesi hakkındaki hata ayıklama iletilerini göster"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages of all GUI functions"
 msgstr "Grafik arayüz işlevleri hakkındaki hata ayıklama iletilerini göster"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:297
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -553,38 +364,38 @@ msgstr ""
 "çıktısını her canlandırdığında oluşturulan HTML’yi ayrıca /.cache/liferea/"
 "output.html içine yığar"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of all network activity"
 msgstr "Tüm ağ etkinliği hakkındaki hata ayıklama iletilerini göster"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of all parsing functions"
 msgstr "Ayrıştırma işlevleri hakkındaki hata ayıklama iletilerini göster"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:300
 msgid "Print debugging messages of the feed update processing"
 msgstr "Besleme güncellemesi hakkındaki hata ayıklama iletilerini göster"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:301
 msgid "Print debugging messages of the search folder matching"
 msgstr "Arama klasörü eşleştirme hakkındaki hata ayıklama iletilerini göster"
 
-#: ../src/liferea_application.c:302 ../src/liferea_application.c:303
+#: ../src/liferea_application.c:306 ../src/liferea_application.c:307
 msgid "Print debugging messages for the given topic"
 msgstr "Verilen başlık için hata ayıklama iletisini göster"
 
 #. Some libsoup transport errors
-#: ../src/net.c:475
+#: ../src/net.c:465
 msgid "The update request was cancelled"
 msgstr "Güncelleme isteği iptal edildi"
 
 #. http 3xx redirection
-#: ../src/net.c:478
+#: ../src/net.c:468
 msgid "The resource moved permanently to a new location"
 msgstr "Kaynak kalıcı olarak yeni bir konuma taşınmış"
 
 #. http 4xx client error
-#: ../src/net.c:481
+#: ../src/net.c:471
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -592,35 +403,35 @@ msgstr ""
 "Bu beslemeyi indirmeye yetkili değilsiniz. Lütfen kullanıcı adınızı ve "
 "parolanızı besleme özellikleri iletişim kutusunu kullanarak güncelleyiniz."
 
-#: ../src/net.c:483
+#: ../src/net.c:473
 msgid "Payment required"
 msgstr "Ödeme gerekli"
 
-#: ../src/net.c:484
+#: ../src/net.c:474
 msgid "You're not allowed to access this resource"
 msgstr "Bu kaynağa erişmeye yetkiniz yok"
 
-#: ../src/net.c:485
+#: ../src/net.c:475
 msgid "Resource Not Found"
 msgstr "Kaynak Bulunamadı"
 
-#: ../src/net.c:486
+#: ../src/net.c:476
 msgid "Method Not Allowed"
 msgstr "Yönteme İzin Verilmiyor"
 
-#: ../src/net.c:487
+#: ../src/net.c:477
 msgid "Not Acceptable"
 msgstr "Kabul Edilemez"
 
-#: ../src/net.c:488
+#: ../src/net.c:478
 msgid "Proxy authentication required"
 msgstr "Vekil sunucu kimlik doğrulaması gerekli"
 
-#: ../src/net.c:489
+#: ../src/net.c:479
 msgid "Request timed out"
 msgstr "İstek zaman aşımına uğradı"
 
-#: ../src/net.c:490
+#: ../src/net.c:480
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -630,54 +441,54 @@ msgstr ""
 "artık bunu güncellemeyecek ama siz önbellekteki haber başlıklarına "
 "ulaşabilirsiniz."
 
-#: ../src/net.c:491
+#: ../src/net.c:481
 msgid "Too many requests. Liferea has to wait a while before trying again."
 msgstr "Çok istek var. Yeniden denemeden önce beklenmesi gerekiyor."
 
 #. http 5xx server errors
-#: ../src/net.c:494
+#: ../src/net.c:484
 msgid "Internal Server Error"
 msgstr "İç Sunucu Hatası"
 
-#: ../src/net.c:495
+#: ../src/net.c:485
 msgid "Not Implemented"
 msgstr "Gerçeklenmemiş"
 
-#: ../src/net.c:496
+#: ../src/net.c:486
 msgid "Bad Gateway"
 msgstr "Kötü Geçit"
 
-#: ../src/net.c:497
+#: ../src/net.c:487
 msgid "Service Unavailable"
 msgstr "Hizmet Kullanılamaz"
 
-#: ../src/net.c:498
+#: ../src/net.c:488
 msgid "Gateway Timeout"
 msgstr "Geçit Zaman Aşımı"
 
-#: ../src/net.c:499
+#: ../src/net.c:489
 msgid "HTTP Version Not Supported"
 msgstr "HTTP Sürümü Desteklenmiyor"
 
-#: ../src/net.c:503
+#: ../src/net.c:493
 msgid "An unknown networking error happened!"
 msgstr "Bilinmeyen bir ağ hatası oldu!"
 
-#: ../src/node.c:654
+#: ../src/node.c:646
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr "Besleme dosyası yaratılamadı: %s"
 
-#: ../src/node.c:673
+#: ../src/node.c:665
 msgid "Feed file exported from Liferea"
 msgstr "Besleme dosyası Liferea’dan dışa aktarıldı"
 
-#: ../src/node.c:688
+#: ../src/node.c:680
 #, c-format
 msgid "Error while saving feed file"
 msgstr "Besleme dosyası kaydedilirken hata"
 
-#: ../src/parsers/atom10.c:240
+#: ../src/parsers/atom10.c:241
 msgid "Website"
 msgstr "Ağ sitesi"
 
@@ -777,38 +588,43 @@ msgstr "Besleme kaynağı"
 msgid "Parent folder title"
 msgstr "Üst klasör başlığı"
 
-#: ../src/subscription.c:108
+#: ../src/subscription.c:116
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "\"%s\" aboneliği zaten güncelleniyor!"
 
-#: ../src/subscription.c:113
+#: ../src/subscription.c:123
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "\"%s\" aboneliği sonlanmış. Liferea bunu artık güncellemeyecek!"
 
-#: ../src/subscription.c:188
+#: ../src/subscription.c:140
+#, fuzzy, c-format
+msgid "The subscription \"%s\" has an invalid source URI!"
+msgstr "\"%s\" aboneliği sonlanmış. Liferea bunu artık güncellemeyecek!"
+
+#: ../src/subscription.c:252
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\" için adres süresiz değiştirildi ve güncellendi"
 
-#: ../src/subscription.c:194
+#: ../src/subscription.c:258
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" son güncellemeden beri değişmemiş"
 
-#: ../src/subscription.c:207
+#: ../src/subscription.c:271
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "\"%s\" sonlanmış. Liferea bunu artık güncellemeyecek!"
 
-#: ../src/subscription.c:221 ../src/subscription.c:297
+#: ../src/subscription.c:285 ../src/subscription.c:371
 #, c-format
 msgid "Updating (%d / %d) ..."
 msgstr "Güncelleniyor (%d / %d) ..."
 
-#: ../src/subscription.c:299
+#: ../src/subscription.c:373
 #, c-format
 msgid "Updating '%s'..."
 msgstr "'%s' güncelleniyor..."
@@ -826,29 +642,66 @@ msgstr "Bilinmeyen kaynak"
 msgid "Untitled"
 msgstr "Başlıksız"
 
-#: ../src/ui/feed_list_view.c:426
+#: ../src/ui/feed_list_view.c:437 ../src/ui/preferences_dialog.c:81
+#: ../src/ui/subscription_dialog.c:51
+msgid "minutes"
+msgstr "dakika"
+
+#: ../src/ui/feed_list_view.c:443 ../src/ui/preferences_dialog.c:83
+#: ../src/ui/subscription_dialog.c:53
+msgid "days"
+msgstr "gün"
+
+#: ../src/ui/feed_list_view.c:446 ../src/ui/preferences_dialog.c:82
+#: ../src/ui/subscription_dialog.c:52
+msgid "hours"
+msgstr "saat"
+
+#: ../src/ui/feed_list_view.c:450
+#, c-format
+msgid ""
+"The subscription \"%s\" indicates not to update more often than every %g %s. "
+"Force the update anyway?"
+msgstr ""
+
+#: ../src/ui/feed_list_view.c:464 ../src/ui/feed_list_view.c:983
+#: ../src/ui/feed_list_view.c:1031 ../src/ui/popup_menu.c:224
+msgid "_Cancel"
+msgstr "_İptal Et"
+
+#: ../src/ui/feed_list_view.c:465
+#, fuzzy
+msgid "_Force Update"
+msgstr "Besleme Güncellemeleri"
+
+#: ../src/ui/feed_list_view.c:467
+#, fuzzy
+msgid "Force Update"
+msgstr "Besleme Güncellemeleri"
+
+#: ../src/ui/feed_list_view.c:488
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea çevrim dışı. Güncelleme olanaksız."
 
-#: ../src/ui/feed_list_view.c:472
+#: ../src/ui/feed_list_view.c:551
 msgid "all feeds"
 msgstr "Tüm beslemeler"
 
-#: ../src/ui/feed_list_view.c:473
+#: ../src/ui/feed_list_view.c:552
 #, c-format
 msgid "Mark %s as read ?"
 msgstr "%s okundu imlensin mi?"
 
-#: ../src/ui/feed_list_view.c:477
+#: ../src/ui/feed_list_view.c:556
 #, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "%s içindeki tüm ögeleri okundu imlemek istediğinizden emin misiniz?"
 
-#: ../src/ui/feed_list_view.c:615
+#: ../src/ui/feed_list_view.c:694
 msgid "(Empty)"
 msgstr "(Boş)"
 
-#: ../src/ui/feed_list_view.c:825
+#: ../src/ui/feed_list_view.c:904
 #, c-format
 msgid ""
 "%s\n"
@@ -857,34 +710,29 @@ msgstr ""
 "%s\n"
 "<i>Yeniden inşa ediliyor</i>"
 
-#: ../src/ui/feed_list_view.c:894
+#: ../src/ui/feed_list_view.c:973
 msgid "Deleting entry"
 msgstr "Girdi siliniyor"
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:974
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "\"%s\" ve içeriğini silmek istediğinizden emin misiniz?"
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:974
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "\"%s\"yi silmek istediğinizden emin misiniz?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
-#: ../src/ui/popup_menu.c:224
-msgid "_Cancel"
-msgstr "_İptal Et"
-
-#: ../src/ui/feed_list_view.c:905 ../src/ui/popup_menu.c:375
+#: ../src/ui/feed_list_view.c:984 ../src/ui/popup_menu.c:375
 msgid "_Delete"
 msgstr "_Sil"
 
-#: ../src/ui/feed_list_view.c:907
+#: ../src/ui/feed_list_view.c:986
 msgid "Deletion Confirmation"
 msgstr "Silme Onayı"
 
-#: ../src/ui/feed_list_view.c:940
+#: ../src/ui/feed_list_view.c:1019
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
@@ -893,11 +741,11 @@ msgstr ""
 "\"%s\" URL’li yeni aboneliği eklemek istediğinizden emin misiniz? Aynı "
 "URL’li başka abonelik var (\"%s\")."
 
-#: ../src/ui/feed_list_view.c:953
+#: ../src/ui/feed_list_view.c:1032
 msgid "_Add"
 msgstr "_Ekle"
 
-#: ../src/ui/feed_list_view.c:955
+#: ../src/ui/feed_list_view.c:1034
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Yineleyen Abonelik Ekleme Onaylaması"
 
@@ -911,7 +759,8 @@ msgid "This item has no link specified!"
 msgstr "Bu öge için belirlenmiş bağlantı yok!"
 
 #: ../src/ui/item_list_view.c:492
-msgid " <span background='red' color='black'> important </span> "
+#, fuzzy
+msgid " <span background='red' color='white'> important </span> "
 msgstr " <span background='red' color='black'> önemli </span> "
 
 #: ../src/ui/item_list_view.c:853
@@ -931,31 +780,23 @@ msgstr "Ögelerini silmek için bir besleme seçmelisiniz!"
 msgid "No item has been selected"
 msgstr "Hiçbir öge seçilmedi"
 
-#: ../src/ui/liferea_shell.c:410
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d yeni)"
 
-#: ../src/ui/liferea_shell.c:415
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d okunmamış%s"
 
-#: ../src/ui/liferea_shell.c:857
+#: ../src/ui/liferea_shell.c:879
 msgid "Help Topics"
 msgstr "Yardım Konuları"
 
-#: ../src/ui/liferea_shell.c:863
-msgid "Quick Reference"
-msgstr "Hızlı Başvuru"
-
-#: ../src/ui/liferea_shell.c:869
-msgid "FAQ"
-msgstr "SSS"
-
-#: ../src/ui/liferea_shell.c:1140
+#: ../src/ui/liferea_shell.c:1180
 #, c-format
 msgid "Email command failed: %s"
 msgstr "E-posta komutu başarısız: %s"
@@ -1093,18 +934,6 @@ msgstr "Yalnızca simge"
 msgid "Text only"
 msgstr "Yalnızca yazı"
 
-#: ../src/ui/preferences_dialog.c:81 ../src/ui/subscription_dialog.c:43
-msgid "minutes"
-msgstr "dakika"
-
-#: ../src/ui/preferences_dialog.c:82 ../src/ui/subscription_dialog.c:44
-msgid "hours"
-msgstr "saat"
-
-#: ../src/ui/preferences_dialog.c:83 ../src/ui/subscription_dialog.c:45
-msgid "days"
-msgstr "gün"
-
 #: ../src/ui/preferences_dialog.c:88
 msgid "Space"
 msgstr "Boşluk"
@@ -1129,11 +958,11 @@ msgstr "Geniş Görünüm"
 msgid "Automatic"
 msgstr "Kendiliğinden"
 
-#: ../src/ui/preferences_dialog.c:406
+#: ../src/ui/preferences_dialog.c:357
 msgid "Default Browser"
 msgstr "Öntanımlı Tarayıcı"
 
-#: ../src/ui/preferences_dialog.c:408
+#: ../src/ui/preferences_dialog.c:359
 msgid "Manual"
 msgstr "El İle"
 
@@ -1145,18 +974,18 @@ msgstr "Kaldır"
 msgid "Saved Search"
 msgstr "Kaydedilmiş Arama"
 
-#: ../src/ui/subscription_dialog.c:352
+#: ../src/ui/subscription_dialog.c:361
 msgid "Choose File"
 msgstr "Dosya Seç"
 
-#: ../src/ui/subscription_dialog.c:424
+#: ../src/ui/subscription_dialog.c:437
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] "Bu beslemenin sunucusu %d dakikalık güncelleme aralığı öneriyor."
 
-#: ../src/ui/subscription_dialog.c:428
+#: ../src/ui/subscription_dialog.c:441
 msgid "This feed specifies no default update interval."
 msgstr "Bu beslemenin öntanımlı güncelleme aralığı yok."
 
@@ -1164,94 +993,94 @@ msgstr "Bu beslemenin öntanımlı güncelleme aralığı yok."
 msgid "All Files"
 msgstr "Tüm Dosyalar"
 
-#: ../src/update_job.c:67
+#: ../src/update_job.c:68
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Süzgeçte kullanılacak %s geçici dosyası açılırken hata!"
 
-#: ../src/update_job.c:89
+#: ../src/update_job.c:90
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s , %d durumunda çıktı"
 
-#: ../src/update_job.c:95 ../src/update_job.c:318
+#: ../src/update_job.c:96 ../src/update_job.c:356
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Hata: \"%s\" borusu açılamadı"
 
-#: ../src/update_job.c:99
+#: ../src/update_job.c:100
 msgid "Error: Could not write temporary file!"
 msgstr "Hata: Geçici dosya yazılamadı!"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update_job.c:349
+#: ../src/update_job.c:386
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Hata: \"%s\" dosyası açılamadı"
 
-#: ../src/update_job.c:355
+#: ../src/update_job.c:392
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Hata: \"%s\" dosyası yok"
 
-#: ../src/webkit/liferea_web_view.c:163
+#: ../src/webkit/liferea_web_view.c:164
 msgid "Open Link In _Tab"
 msgstr "Bağlantıyı _Sekmede Aç"
 
-#: ../src/webkit/liferea_web_view.c:164
+#: ../src/webkit/liferea_web_view.c:165
 msgid "Open Link In Browser"
 msgstr "Bağlantıyı Tarayıcıda Aç"
 
-#: ../src/webkit/liferea_web_view.c:165
+#: ../src/webkit/liferea_web_view.c:166
 msgid "Open Link In External Browser"
 msgstr "Bağlantıyı Dış Tarayıcıda Aç"
 
-#: ../src/webkit/liferea_web_view.c:171
+#: ../src/webkit/liferea_web_view.c:172
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Bağlantıyı %s’de Yer İmi Olarak Ekle"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 msgid "_Copy Link Location"
 msgstr "Bağlantı Konumunu _Kopyala"
 
-#: ../src/webkit/liferea_web_view.c:181
+#: ../src/webkit/liferea_web_view.c:182
 msgid "_View Image"
 msgstr "Resmi _Gör"
 
-#: ../src/webkit/liferea_web_view.c:182
+#: ../src/webkit/liferea_web_view.c:183
 msgid "_Copy Image Location"
 msgstr "Resim Konumunu _Kopyala"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:186
 msgid "S_ave Link As"
 msgstr "Bağlantıyı Farklı K_aydet"
 
-#: ../src/webkit/liferea_web_view.c:188
+#: ../src/webkit/liferea_web_view.c:189
 msgid "S_ave Image As"
 msgstr "Resmi F_arklı Kaydet"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Subscribe..."
 msgstr "_Abone Ol..."
 
-#: ../src/webkit/liferea_web_view.c:199
+#: ../src/webkit/liferea_web_view.c:200
 msgid "_Copy"
 msgstr "_Kopyala"
 
-#: ../src/webkit/liferea_web_view.c:205
+#: ../src/webkit/liferea_web_view.c:206
 msgid "_Increase Text Size"
 msgstr "Metin Boyutunu _Büyüt"
 
-#: ../src/webkit/liferea_web_view.c:206
+#: ../src/webkit/liferea_web_view.c:207
 msgid "_Decrease Text Size"
 msgstr "Metin Boyutunu _Küçült"
 
-#: ../src/xml.c:427
+#: ../src/xml.c:440
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Daha çok hata vardı. Çıktı kısaltılmıştı!]"
 
-#: ../src/xml.c:595
+#: ../src/xml.c:606
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML Ayrıştırıcısı: Dosya ayrıştırılamadı:\n"
 
@@ -1393,34 +1222,44 @@ msgid "_Tools"
 msgstr "A_raçlar"
 
 #: ../glade/liferea_menu.ui.h:35
+#, fuzzy
+msgid "_Discover Feeds"
+msgstr "Beslemeleri Sırala"
+
+#: ../glade/liferea_menu.ui.h:36
 msgid "_Update Monitor"
 msgstr "_Güncelleme Gözlemcisi"
 
-#: ../glade/liferea_menu.ui.h:36
+#: ../glade/liferea_menu.ui.h:37
 msgid "_Preferences"
 msgstr "_Seçenekler"
 
-#: ../glade/liferea_menu.ui.h:37
+#: ../glade/liferea_menu.ui.h:38
+#, fuzzy
+msgid "_Manage Plugins"
+msgstr "Eklentileri Etkinleştir"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "_Print"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:40
 msgid "S_earch"
 msgstr "_Ara"
 
-#: ../glade/liferea_menu.ui.h:39
+#: ../glade/liferea_menu.ui.h:42
 msgid "_Help"
 msgstr "_Yardım"
 
-#: ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_menu.ui.h:43
 msgid "_Contents"
 msgstr "_İçindekiler"
 
-#: ../glade/liferea_menu.ui.h:41
-msgid "_Quick Reference"
-msgstr "_Hızlı Başvuru"
+#: ../glade/liferea_menu.ui.h:44
+msgid "_Shortcuts"
+msgstr ""
 
-#: ../glade/liferea_menu.ui.h:42
-msgid "_FAQ"
-msgstr "_SSS"
-
-#: ../glade/liferea_menu.ui.h:43
+#: ../glade/liferea_menu.ui.h:45
 msgid "_About"
 msgstr "_Hakkında"
 
@@ -1483,60 +1322,6 @@ msgstr "_Haber Sepetinin Adı:"
 msgid "_Always show in Reduced Feed List"
 msgstr "Hep _Daraltılmış Besleme Listesinde göster"
 
-#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
-msgid "Feed Source"
-msgstr "Besleme Kaynağı"
-
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:12
-msgid "Source Type:"
-msgstr "Kaynak Türü:"
-
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:13
-msgid "_URL"
-msgstr "_Adres"
-
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:14
-msgid "_Command"
-msgstr "_Komut"
-
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:15
-msgid "_Local File"
-msgstr "_Yerel Dosya"
-
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
-msgid "Select File..."
-msgstr "Dosya Seç..."
-
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
-msgid "_Source:"
-msgstr "_Kaynak:"
-
-#: ../glade/new_subscription.ui.h:9
-msgid "Download / Postprocessing"
-msgstr "İndirme / Ardişlem"
-
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:30
-msgid "_Don't use proxy for download"
-msgstr "İndirme için vekil sunucu kullan_ma"
-
-#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:18
-msgid "Use conversion _filter"
-msgstr "Dönüştürme süzgeci _kullan"
-
-#: ../glade/new_subscription.ui.h:12
-msgid ""
-"Liferea can use external filter plugins in order to access feeds and "
-"directories in non-supported formats.  See the documentation for more "
-"information."
-msgstr ""
-"Liferea, desteklenmeyen biçim kullanan haber kaynağına ve dizinlere erişmek "
-"için dış süzgeç eklentileri kullanabilir. Daha çok bilgi için yardım "
-"belgelerine bakınız."
-
-#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:20
-msgid "Convert _using:"
-msgstr "_Bunu kullanarak dönüştür:"
-
 #: ../glade/node_source.ui.h:1
 msgid "Source Selection"
 msgstr "Kaynak Seçimi"
@@ -1563,6 +1348,14 @@ msgstr "_Konum"
 #: ../glade/opml_source.ui.h:4
 msgid "_Select File"
 msgstr "_Dosya Seç"
+
+#: ../glade/plugins.ui.h:1
+msgid "Plugins"
+msgstr "Eklentiler"
+
+#: ../glade/plugins.ui.h:2
+msgid "_Configure"
+msgstr ""
 
 #: ../glade/prefs.ui.h:1
 msgid "Liferea Preferences"
@@ -1728,58 +1521,26 @@ msgid "_No Proxy"
 msgstr "Vekil Sunucu Yok"
 
 #: ../glade/prefs.ui.h:43
-msgid "_Manual Setting:"
-msgstr "E_l İle Ayar:"
-
-#: ../glade/prefs.ui.h:44
-msgid "Proxy _Host:"
-msgstr "Vekil Makina _Adı:"
-
-#: ../glade/prefs.ui.h:45
-msgid "Proxy _Port:"
-msgstr "Vekil _Bağlantı Noktası:"
-
-#: ../glade/prefs.ui.h:46
-msgid "Use Proxy Au_thentication"
-msgstr "Vekil _Kimlik Doğrulaması Kullan"
-
-#: ../glade/prefs.ui.h:47
-msgid "Proxy _Username:"
-msgstr "Vekil _Kullanıcı Adı:"
-
-#: ../glade/prefs.ui.h:48
-msgid "Proxy Pass_word:"
-msgstr "Vekil Par_olası:"
-
-#: ../glade/prefs.ui.h:49
-msgid ""
-"Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
-"application proxy settings. The system's default proxy settings will be used."
-msgstr ""
-"WebKitGTK+ sürümünüz 2.15.3’ten eskidir. Her bir uygulama için başka vekil "
-"ayarlarını desteklemez. Sistemin öntanımlı vekil ayarları kullanılacak."
-
-#: ../glade/prefs.ui.h:50
 msgid "Proxy"
 msgstr "Vekil"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:44
 msgid "Privacy Settings"
 msgstr "Gizlilik Ayarları"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:45
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "Sitelere izlenmek iste_mediğimi söyle."
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:46
 msgid "Tell websites not to _sell or share my data."
 msgstr "Sitelere verimin _satılmamasını ya da paylaşılmamasını söyle."
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:47
 msgid "_Intelligent Tracking Prevention. "
 msgstr "_Akıllı İzleme Önlemesi. "
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:48
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
@@ -1787,14 +1548,14 @@ msgstr ""
 "Bu, <a href=\"https://webkit.org/tracking-prevention/\">burada</a> açıklanan "
 "WebKit özelliğini etkinleştirir."
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:49
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 "Akıllı izleme önlemesi yalnızca WebKitGtk+ 2.30 ya da üstünde kullanılabilir."
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:50
 msgid "Privacy"
 msgstr "Gizlilik"
 
@@ -1831,6 +1592,38 @@ msgstr "Bu beslemenin sunucusu %d dakikalık güncelleme aralığı öneriyor."
 msgid "General"
 msgstr "Genel"
 
+#: ../glade/properties.ui.h:11
+msgid "Feed Source"
+msgstr "Besleme Kaynağı"
+
+#: ../glade/properties.ui.h:12
+msgid "Source Type:"
+msgstr "Kaynak Türü:"
+
+#: ../glade/properties.ui.h:13
+msgid "_URL"
+msgstr "_Adres"
+
+#: ../glade/properties.ui.h:14
+msgid "_Command"
+msgstr "_Komut"
+
+#: ../glade/properties.ui.h:15
+msgid "_Local File"
+msgstr "_Yerel Dosya"
+
+#: ../glade/properties.ui.h:16
+msgid "Select File..."
+msgstr "Dosya Seç..."
+
+#: ../glade/properties.ui.h:17
+msgid "_Source:"
+msgstr "_Kaynak:"
+
+#: ../glade/properties.ui.h:18
+msgid "Use conversion _filter"
+msgstr "Dönüştürme süzgeci _kullan"
+
 #: ../glade/properties.ui.h:19
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
@@ -1838,6 +1631,10 @@ msgid ""
 msgstr ""
 "Liferea, desteklenmeyen biçim kullanan besleme ve dizinlere erişmek için dış "
 "süzgeç eklentileri kullanabilir."
+
+#: ../glade/properties.ui.h:20
+msgid "Convert _using:"
+msgstr "_Bunu kullanarak dönüştür:"
 
 #: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
 msgid "Source"
@@ -1875,6 +1672,10 @@ msgstr "Arşiv"
 msgid "Use HTTP _authentication"
 msgstr "HTTP kimlik doğrulaması _kullan"
 
+#: ../glade/properties.ui.h:30
+msgid "_Don't use proxy for download"
+msgstr "İndirme için vekil sunucu kullan_ma"
+
 #: ../glade/properties.ui.h:33
 msgid "Download"
 msgstr "İndir"
@@ -1899,6 +1700,10 @@ msgstr "İndirilen ögeleri okundu olarak _imle."
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr "HTML5 ve Google AMP’den tüm içeriği ayıkla"
+
+#: ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "Gelişmiş"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
@@ -1997,16 +1802,16 @@ msgid "Advanced..."
 msgstr "Gelişmiş..."
 
 #: ../glade/simple_subscription.ui.h:3
-msgid "Feed _Source"
-msgstr "Besleme _Kaynağı"
-
-#: ../glade/simple_subscription.ui.h:4
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
 "Kendiliğinden besleme keşfini kullanmak istediğiniz ya da haber kaynağının "
 "tam yerini bildiğiniz web sitesinin adresini belirtiniz. "
+
+#: ../glade/simple_subscription.ui.h:4
+msgid "Feed _Source"
+msgstr "Besleme _Kaynağı"
 
 #: ../glade/theoldreader_source.ui.h:1
 msgid "Add TheOldReader Account"
@@ -2064,6 +1869,10 @@ msgstr "Paylaşan"
 msgid "Via"
 msgstr "Aracılığıyla"
 
+#: ../js/item.xml.in.h:5
+msgid "Filed under:"
+msgstr ""
+
 #: ../js/node.xml.in.h:3
 msgid "Publisher"
 msgstr "Yayımcı"
@@ -2074,17 +1883,25 @@ msgstr "Telif Hakkı"
 
 #: ../js/node.xml.in.h:5
 msgid ""
+"⛔ Unknown account type '{{node.nodeSource.type}}'! This can happen if you "
+"downgrade Liferea and this version does not support this account type yet or "
+"when support for this account type was dropped. You can 'Convert To Local "
+"Subscriptions' from the feed list context menu!"
+msgstr ""
+
+#: ../js/node.xml.in.h:6
+msgid ""
 "⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
 "{{ maxFailures }} retries)!"
 msgstr ""
-"⛔ '{{ title }}' oturumu açılamadı ({{ authFailures }}/"
-"{{ maxFailures }} deneme)!"
+"⛔ '{{ title }}' oturumu açılamadı ({{ authFailures }}/{{ maxFailures }} "
+"deneme)!"
 
-#: ../js/node.xml.in.h:6
+#: ../js/node.xml.in.h:7
 msgid "Please check your credentials!"
 msgstr "Lütfen kimlik bilgilerinizi gözden geçirin!"
 
-#: ../js/node.xml.in.h:7
+#: ../js/node.xml.in.h:8
 msgid ""
 "⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
 "{{ maxFailures }} retries)..."
@@ -2092,49 +1909,54 @@ msgstr ""
 "⚠️ '{{ title }}' için oturum açılması sürüyor ({{ authFailures }}/"
 "{{ maxFailures }} deneme)..."
 
-#: ../js/node.xml.in.h:8
+#: ../js/node.xml.in.h:9
 msgid "⚠️ Account login for '{{ title }}' has not yet started."
 msgstr "⚠️ '{{ title }}' için oturum açılması henüz başlamadı."
 
-#: ../js/node.xml.in.h:9
+#: ../js/node.xml.in.h:10
+#, fuzzy
+msgid "This feed is discontinued. Liferea won't updated it anymore."
+msgstr "\"%s\" sonlanmış. Liferea bunu artık güncellemeyecek!"
+
+#: ../js/node.xml.in.h:11
 msgid "There was a problem when fetching this subscription!"
 msgstr "Bu abonelik alınırken sorunla karşılaşıldı!"
 
-#: ../js/node.xml.in.h:10
+#: ../js/node.xml.in.h:12
 msgid "1. Authentication"
 msgstr "1. Kimlik Doğrulama"
 
-#: ../js/node.xml.in.h:11
+#: ../js/node.xml.in.h:13
 msgid "2. Download"
 msgstr "2. İndirme"
 
-#: ../js/node.xml.in.h:12
+#: ../js/node.xml.in.h:14
 msgid "3. Feed Discovery"
 msgstr "3. Besleme Keşfi"
 
-#: ../js/node.xml.in.h:13
+#: ../js/node.xml.in.h:15
 msgid "4. Parsing"
 msgstr "4. Ayıklama"
 
-#: ../js/node.xml.in.h:14
+#: ../js/node.xml.in.h:16
 msgid "Details:"
 msgstr "Ayrıntılar:"
 
-#: ../js/node.xml.in.h:15
+#: ../js/node.xml.in.h:17
 msgid "Authentication failed. Please check the credentials and try again!"
 msgstr ""
 "Kimlik doğrulama başarısız. Lütfen kimlik bilgilerini gözden geçirin ve "
 "yeniden deneyin!"
 
-#: ../js/node.xml.in.h:16
+#: ../js/node.xml.in.h:18
 msgid "There was an error when downloading the feed source:"
 msgstr "Besleme kaynağı indirilirken hata:"
 
-#: ../js/node.xml.in.h:17
+#: ../js/node.xml.in.h:19
 msgid "There was an error when running the feed filter command:"
 msgstr "Besleme süzme komutu çalıştırılırken hata:"
 
-#: ../js/node.xml.in.h:18
+#: ../js/node.xml.in.h:20
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
@@ -2142,12 +1964,203 @@ msgstr ""
 "Kaynak, doğrudan beslemeyi ya da beslemeye bağlanan web sayfasını "
 "göstermiyor!"
 
-#: ../js/node.xml.in.h:19
+#: ../js/node.xml.in.h:21
 msgid "Sorry, the feed could not be parsed!"
 msgstr "Üzgünüz, besleme ayrıştırılamadı!"
 
-#: ../js/node.xml.in.h:20
+#: ../js/node.xml.in.h:22
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 "Bununla ilgili olarak beslemenin yazarı ya da yöneticisiyle iletişime geçmek "
 "isteyebilirsiniz!"
+
+#~ msgid "Opacity:"
+#~ msgstr "Donukluk:"
+
+#~ msgid "Opacity"
+#~ msgstr "Donukluk"
+
+#~ msgid "Min"
+#~ msgstr "Asgari"
+
+#~ msgid "Max"
+#~ msgstr "Azami"
+
+#~ msgid "Save"
+#~ msgstr "Kaydet"
+
+#~ msgid "Plugin Installer"
+#~ msgstr "Eklenti Kurucu"
+
+#~ msgid "Download Plugins"
+#~ msgstr "Eklentiler İndir"
+
+#, python-format
+#~ msgid "Bad fields for plugin entry %s"
+#~ msgstr "Eklenti girdisi için kötü alanlar: %s"
+
+#~ msgid "All"
+#~ msgstr "Tümü"
+
+#~ msgid "Menu"
+#~ msgstr "Menü"
+
+#~ msgid "Notifications"
+#~ msgstr "Bildirimler"
+
+#~ msgid "Filter by category"
+#~ msgstr "Kategoriye göre süz"
+
+#~ msgid "_Install"
+#~ msgstr "_Kur"
+
+#~ msgid "_Uninstall"
+#~ msgstr "_Kaldır"
+
+#, python-format
+#~ msgid ""
+#~ "Missing package manager '%s'. Cannot check nor install necessary "
+#~ "dependencies!"
+#~ msgstr ""
+#~ "Paket yöneticisi '%s' yok. Gerekli bağımlılıklar denetlenemiyor ya da "
+#~ "kurulamıyor."
+
+#, python-format
+#~ msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+#~ msgstr "'%s' paketi eksik. Kurmak ister misiniz? ('%s' çalıştırılacak)"
+
+#, python-format
+#~ msgid ""
+#~ "Package installation failed (%s)! Check console output for further "
+#~ "problem details!"
+#~ msgstr ""
+#~ "Paket kurulumu başarısız (%s)! İleri sorun ayrıntıları için konsol "
+#~ "çıktısını gözden geçirin!"
+
+#, python-format
+#~ msgid "Failed to check plugin dependencies (%s)!"
+#~ msgstr "Eklenti bağımlılıkları denetlenemedi (%s)!"
+
+#~ msgid "Command \"git\" not found, please install it!"
+#~ msgstr "\"git\" komutu bulunamadı, lütfen kurun!"
+
+#, python-format
+#~ msgid "Copying %s to %s"
+#~ msgstr "%s şuna kopyalanıyor: %s"
+
+#, python-format
+#~ msgid "Failed to copy plugin directory (%s)!"
+#~ msgstr "Eklenti dizini kopyalanamadı (%s)!"
+
+#, python-format
+#~ msgid "Failed to copy plugin .py file (%s)!"
+#~ msgstr "Eklenti .py dosyası kopyalanamadı (%s)!"
+
+#, python-format
+#~ msgid "Failed to copy .plugin file (%s)!"
+#~ msgstr ".plugin dosyası kopyalanamadı (%s)!"
+
+#, python-format
+#~ msgid "Creating schema directory %s"
+#~ msgstr "Şema dizini %s yaratılamadı"
+
+#, python-format
+#~ msgid "Installing schema %s"
+#~ msgstr "%s şeması kuruluyor"
+
+#~ msgid "Compiling schemas..."
+#~ msgstr "Şemalar derleniyor..."
+
+#, python-format
+#~ msgid "Failed to install schema files (%s)!"
+#~ msgstr "Şema dosyaları (%s) kurulamadı!"
+
+#, python-format
+#~ msgid "Failed to enable plugin (%s)!"
+#~ msgstr "Eklenti (%s) etkinleştirilemedi!"
+
+#, python-format
+#~ msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+#~ msgstr "'%s' eklentisi kuruldu. Liferea'yı yeniden başlatınız!"
+
+#, python-format
+#~ msgid "Failed to disable plugin (%s)!"
+#~ msgstr "Eklenti (%s) devre dışı bırakılamadı"
+
+#, python-format
+#~ msgid "Deleting '%s'"
+#~ msgstr "'%s' siliniyor"
+
+#, python-format
+#~ msgid "Failed to remove directory '%s' (%s)!"
+#~ msgstr "'%s' dizini kaldırılamadı (%s)!"
+
+#~ msgid "Failed to remove .py file!"
+#~ msgstr ".py dosyası kaldırılamadı!"
+
+#~ msgid "Failed to remove .plugin file!"
+#~ msgstr ".plugn dosyası kaldırılamadı!"
+
+#~ msgid "Sorry! Plugin removal failed!"
+#~ msgstr "Üzgünüz! Eklenti kaldırılamadı!"
+
+#~ msgid ""
+#~ "Plugin was removed. Please restart Liferea once for it to take full "
+#~ "effect!"
+#~ msgstr ""
+#~ "Eklenti kaldırıldı. Tümüyle etkin olması için lütfen Liferea'yı yeniden "
+#~ "başlatın!"
+
+#~ msgid "Miniflux"
+#~ msgstr "Miniflux"
+
+#~ msgid "Quick Reference"
+#~ msgstr "Hızlı Başvuru"
+
+#~ msgid "FAQ"
+#~ msgstr "SSS"
+
+#~ msgid "_Quick Reference"
+#~ msgstr "_Hızlı Başvuru"
+
+#~ msgid "_FAQ"
+#~ msgstr "_SSS"
+
+#~ msgid "Download / Postprocessing"
+#~ msgstr "İndirme / Ardişlem"
+
+#~ msgid ""
+#~ "Liferea can use external filter plugins in order to access feeds and "
+#~ "directories in non-supported formats.  See the documentation for more "
+#~ "information."
+#~ msgstr ""
+#~ "Liferea, desteklenmeyen biçim kullanan haber kaynağına ve dizinlere "
+#~ "erişmek için dış süzgeç eklentileri kullanabilir. Daha çok bilgi için "
+#~ "yardım belgelerine bakınız."
+
+#~ msgid "_Manual Setting:"
+#~ msgstr "E_l İle Ayar:"
+
+#~ msgid "Proxy _Host:"
+#~ msgstr "Vekil Makina _Adı:"
+
+#~ msgid "Proxy _Port:"
+#~ msgstr "Vekil _Bağlantı Noktası:"
+
+#~ msgid "Use Proxy Au_thentication"
+#~ msgstr "Vekil _Kimlik Doğrulaması Kullan"
+
+#~ msgid "Proxy _Username:"
+#~ msgstr "Vekil _Kullanıcı Adı:"
+
+#~ msgid "Proxy Pass_word:"
+#~ msgstr "Vekil Par_olası:"
+
+#~ msgid ""
+#~ "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
+#~ "application proxy settings. The system's default proxy settings will be "
+#~ "used."
+#~ msgstr ""
+#~ "WebKitGTK+ sürümünüz 2.15.3’ten eskidir. Her bir uygulama için başka "
+#~ "vekil ayarlarını desteklemez. Sistemin öntanımlı vekil ayarları "
+#~ "kullanılacak."
