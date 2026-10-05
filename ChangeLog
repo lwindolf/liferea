@@ -1,3 +1,18 @@
+2026-10-05  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16.15
+
+	* Fixes #1593 regression in update handling. Added force update 
+	  confirmation dialog for subscriptions
+	  (Lars Windolf)
+
+	* Be up and downward compatible with 2.0 folder expansion flag
+	  (Lars Windolf)
+
+	* Fixes <amg:img> handling.
+	  (Lars Windolf)
+	
+
 2026-08-11  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16.14
