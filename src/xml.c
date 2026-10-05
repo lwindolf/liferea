@@ -209,6 +209,18 @@ xhtml_extract_from_string (const gchar *html, const gchar *defaultBase)
 	return result;
 }
 
+gchar *
+xhtml_normalize_amp_html (const gchar *html)
+{
+	if (common_str_is_empty (html))
+		return g_strdup ("");
+
+	GString *normalized = g_string_new (html);
+	g_string_replace (normalized, "<amp-img", "<img", 0);
+	g_string_replace (normalized, "</amp-img>", "</img>", 0);
+	return g_string_free (normalized, FALSE);
+}
+
 gboolean
 xhtml_is_well_formed (const gchar *data)
 {

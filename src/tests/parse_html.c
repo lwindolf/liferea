@@ -19,9 +19,11 @@
  */
 
 #include <glib.h>
+#include <string.h>
 
 #include "debug.h"
 #include "html.h"
+#include "xml.h"
 
 /* We need two groups of autodiscovery test cases, one for the tag soup fuzzy
    finding and one for the XML parsing + XPath extraction variant. */
@@ -191,6 +193,18 @@ tc_auto_discover_blogroll (gconstpointer user_data)
 	g_assert_cmpstr (tc[2], ==, result);
 }
 
+static void
+tc_amp_image_normalization (void)
+{
+	g_autofree gchar *normalized = xhtml_normalize_amp_html (
+		"<amp-img src=\"https://example.com/image.jpg\" width=\"300\" height=\"200\"></amp-img>");
+
+	g_assert_nonnull (normalized);
+	g_assert_nonnull (strstr (normalized, "<img"));
+	g_assert_null (strstr (normalized, "<amp-img"));
+	g_assert_nonnull (strstr (normalized, "</img>"));
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -218,6 +232,8 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/html/auto_discover_blogroll_relative", &tc_blogroll_relative, &tc_auto_discover_blogroll);
 	g_test_add_data_func ("/html/auto_discover_blogroll_with_type", &tc_blogroll_with_type, &tc_auto_discover_blogroll);
 	g_test_add_data_func ("/html/auto_discover_blogroll_with_type2", &tc_blogroll_with_type2, &tc_auto_discover_blogroll);
+
+	g_test_add_func ("/html/normalize_amp_img", &tc_amp_image_normalization);
 	g_test_add_data_func ("/html/auto_discover_blogroll_none", &tc_blogroll_none, &tc_auto_discover_blogroll);
 
 	return g_test_run();

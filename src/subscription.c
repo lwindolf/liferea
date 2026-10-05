@@ -158,7 +158,6 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 static void
 subscription_process_update_blogroll_result(const UpdateResult *const result, gpointer user_data, guint32 flags)
 {
-	g_autofree gchar *now = g_strdup_printf("%ld", g_get_real_time());
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 
 	if (result->httpstatus >= 400 || !result->data)	{
@@ -779,12 +778,9 @@ subscription_html5_enrich_item_cb (const UpdateResult * const result, gpointer u
 
 	article = xhtml_extract_from_string (result->data, result->source);
 	if (article) {
-		// Enable AMP images by replacing <amg-img> by <img>
-		gchar **tmp_split = g_strsplit(article, "<amp-img", 0);
-		gchar *tmp = g_strjoinv("<img", tmp_split);
-		g_strfreev (tmp_split);
+		gchar *normalized = xhtml_normalize_amp_html (article);
 		g_free (article);
-		article = tmp;
+		article = normalized;
 
 		metadata_list_set (&(item->metadata), "richContent", article);
 		db_item_update (item);

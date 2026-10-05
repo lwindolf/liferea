@@ -84,6 +84,17 @@ xmlDocPtr xhtml_parse (const gchar *html, gint len);
 gchar * xhtml_extract_from_string (const gchar *html, const gchar *nodeBase);
 
 /**
+ * Replace AMP image tags with standard HTML img tags so content from AMP pages
+ * can be rendered. This keeps the tag pair balanced for the HTML we store as
+ * rich content.
+ *
+ * @param html The HTML to normalize.
+ *
+ * @returns newly allocated normalized HTML string
+ */
+gchar *xhtml_normalize_amp_html (const gchar *html);
+
+/**
 * Extract XHTML document from the children of the passed node.
 *
 * @param cur         parent of the nodes that will be returned
