@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.c  property dialog for feed subscriptions
  *
- * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -404,7 +404,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	spd->ui_data.refreshInterval = liferea_dialog_lookup (spd->ui_data.dialog, "refreshIntervalSpinButton");
 
 	interval = subscription_get_update_interval (subscription);
-	defaultInterval = subscription_get_default_update_interval (subscription);
+	defaultInterval = update_state_get_min_interval (subscription->updateState);
 	conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &default_update_interval);
 	spinSetInterval = defaultInterval > 0 ? defaultInterval : default_update_interval;
 

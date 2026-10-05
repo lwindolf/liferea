@@ -32,6 +32,7 @@
 #include "itemlist.h"
 #include "metadata.h"
 #include "net.h"
+#include "net_monitor.h"
 #include "subscription_icon.h"
 #include "xml.h"
 #include "ui/auth_dialog.h"
@@ -63,7 +64,6 @@ subscription_new (const gchar *source,
 
 	subscription->updateState = update_state_new ();
 	subscription->updateInterval = -1;
-	subscription->defaultInterval = -1;
 
 	if (source) {
 		gboolean feedPrefix = FALSE;
@@ -105,22 +105,42 @@ subscription_new (const gchar *source,
 }
 
 /* Checks whether updating a feed makes sense. */
-static gboolean
-subscription_can_be_updated (subscriptionPtr subscription)
+gboolean
+subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 {
+	const gboolean interactive = flags & UPDATE_REQUEST_PRIORITY_HIGH;
+
 	if (subscription->updateJob) {
-		liferea_shell_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
+		debug (DEBUG_UPDATE, "subscription: |%s| is already being updated!", subscription->source);
+		if (interactive)
+			liferea_shell_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
 		return FALSE;
 	}
 
 	if (subscription->discontinued) {
-		liferea_shell_set_status_bar (_("The subscription \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title (subscription->node));
+		debug (DEBUG_UPDATE, "subscription: |%s| is discontinued!", subscription->source);
+		if (interactive)
+			liferea_shell_set_status_bar (_("The subscription \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title (subscription->node));
 		return FALSE;
 	}
 
 	// can be the case for newsbins
-	if (!subscription_get_source (subscription))
+	if (!subscription_get_source (subscription)) {
+		debug (DEBUG_UPDATE, "subscription: || has no source!");
 		return FALSE;
+	}
+
+	// check for useful URI (except for file paths and commands)
+	if (subscription->source[0] != '|' &&
+	    subscription->source[0] != '/') {
+		g_autoptr(GUri) uri = g_uri_parse (subscription->source, G_URI_FLAGS_PARSE_RELAXED | G_URI_FLAGS_HAS_PASSWORD | G_URI_FLAGS_HAS_AUTH_PARAMS, NULL);
+		if (!uri) {
+			debug (DEBUG_UPDATE, "subscription: |%s| has invalid source URI!", subscription->source);
+			if (interactive)
+				liferea_shell_set_status_bar (_("The subscription \"%s\" has an invalid source URI!"), node_get_title (subscription->node));
+			return FALSE;
+		}
+	}
 
 	return TRUE;
 }
@@ -229,7 +249,8 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	if ((301 == result->httpstatus || 308 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
 		debug (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
-		statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+		if (subscription->node)
+			statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
 	}
 
 	/* consider everything that prevents processing the data we got */
@@ -250,7 +271,7 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 			subscription_set_discontinued (subscription, TRUE);
 			statusbar = g_strdup_printf (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 		}
-	} else if (result->filterErrors) {
+	} else if (result->filterErrors || result->updateError) {
 		node->available = FALSE;
 		subscription->error = FETCH_ERROR_NET;
 	} else {
@@ -270,20 +291,29 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	subscription->updateJob = NULL;
 
 	/* 2. call subscription type specific processing */
-	if (processing)
+	if (processing) {
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
                                   
-	/* 3. Update favicon monthly. Update only after subscription processing
-	      to ensure we have valid baseUrl for searching... 
+		/* 3. Update favicon monthly. Update only after subscription processing
+		to ensure we have valid baseUrl for searching... 
 
-	      Note: During favicon discovery blogrolls are also discovered and updated. */
-	if (g_get_real_time() > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
-		subscription_icon_update (subscription);
+		Note: During favicon discovery blogrolls are also discovered and updated. */
+		if (g_get_real_time() > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
+			subscription_icon_update (subscription);
+	}
 
-	/* 4. generic postprocessing */
-	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
-	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
-	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
+	/* 3. set new subscription update state */
+	if (result->httpstatus < 400) {
+		// FIXME: we almost copy everything, can we just use update_state_copy()?
+		update_state_set_cache_maxage (subscription->updateState, result->updateState->_maxAgeMinutes);
+		update_state_set_ttl (subscription->updateState, result->updateState->_ttl);
+		update_state_set_syn_period (subscription->updateState, result->updateState->_synPeriod);
+		update_state_set_syn_frequency (subscription->updateState, result->updateState->_synFrequency);
+
+		update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
+		update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
+		update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
+	}
 	subscription->updateState->lastPoll = g_get_real_time ();
 
 	// FIXME: use signal here
@@ -295,7 +325,7 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 
 	feed_list_view_update_node (node->id);	// FIXME: This should be dropped once the "node-updated" signal is consumed
 
-	if (processing && subscription->node->newCount > 0) {
+	if (subscription->error || (processing && subscription->node->newCount > 0)) {
 		// FIXME: use new-items signal in itemview class
 		feedlist_new_items (node->newCount);
 		feedlist_node_was_updated (node);
@@ -309,62 +339,73 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	guint64		now;
 	guint		count, maxcount;
 
-	if (!subscription)
+	if (!subscription || !subscription->type)
 		return;
 
-	if (subscription->updateJob)
+	debug (DEBUG_UPDATE, "subscription: |%s| scheduling update (flags=%u)", subscription->source, flags);
+
+	if (!subscription_can_be_updated (subscription, flags)) {
+		debug (DEBUG_UPDATE, "subscription: %s |%s| update cannot be scheduled", subscription->node->id, subscription->node->title);
 		return;
-
-	debug (DEBUG_UPDATE, "Scheduling %s to be updated (flags=%u)", node_get_title (subscription->node), flags);
-
-	if (subscription_can_be_updated (subscription)) {
-		now = g_get_real_time();
-		subscription_reset_update_counter (subscription, &now);
-
-		request = update_request_new (
-			subscription_get_source (subscription),
-			subscription->updateState,
-			subscription->updateOptions
-		);
-		update_request_allow_commands (request, TRUE);
-
-		if (subscription_get_filter (subscription))
-			request->filtercmd = g_strdup (subscription_get_filter (subscription));
-
-		if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request))
-			subscription->updateJob = update_job_new (subscription, request, subscription_process_update_result, subscription, flags);
-		else
-			g_object_unref (request);
-
-		update_job_queue_get_count (&count, &maxcount);
-		if (count > 1)
-			liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
-		else
-			liferea_shell_set_status_bar (_("Updating '%s'..."), node_get_title (subscription->node));
 	}
+
+	now = g_get_real_time();
+	subscription_reset_update_counter (subscription, &now);
+
+	request = update_request_new (
+		subscription_get_source (subscription),
+		subscription->updateState,
+		subscription->updateOptions
+	);
+	update_request_allow_commands (request, TRUE);
+
+	if (subscription_get_filter (subscription))
+		request->filtercmd = g_strdup (subscription_get_filter (subscription));
+
+	if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request))
+		subscription->updateJob = update_job_new (subscription, request, subscription_process_update_result, subscription, flags);
+	else
+		g_object_unref (request);
+
+	update_job_queue_get_count (&count, &maxcount);
+	if (count > 1)
+		liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
+	else
+		liferea_shell_set_status_bar (_("Updating '%s'..."), node_get_title (subscription->node));
 }
 
 void
 subscription_auto_update (subscriptionPtr subscription)
 {
-	gint		interval;
-	guint		flags = 0;
+	gint	interval;
 	guint64	now;
 
-	if (!subscription)
+	if (!subscription || !subscription->type)
 		return;
 
-	interval = subscription_get_update_interval (subscription);
-	if (-1 == interval)
-		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
+	if (!network_monitor_is_online ()) {
+		debug (DEBUG_UPDATE, "subscription: |%s| skip update because we are offline", subscription->source);
+		return;
+	}
 
-	if (-2 >= interval || 0 == interval)
-		return;		/* don't update this subscription */
+	if (!subscription_can_update_now (subscription)) {
+		debug (DEBUG_UPDATE, "subscription: |%s| skipping update: should not be updated yet (feed specified interval)", subscription->source);
+		return;
+	}
 
+	interval = subscription_get_effective_update_interval (subscription);
 	now = g_get_real_time();
 
-	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now)
-		subscription_update (subscription, flags);
+	if (0 == interval) {
+		debug (DEBUG_UPDATE, "subscription: |%s| auto update disabled", subscription->source);
+		return;
+	}
+
+	if (subscription->updateState->lastPoll + (guint64)interval * 60 * G_USEC_PER_SEC <= now) {
+		subscription_update (subscription, 0);
+	} else {
+		debug (DEBUG_UPDATE, "subscription: |%s| skipping update: was updated recently", subscription->source);
+	}
 }
 
 void
@@ -386,28 +427,77 @@ subscription_get_update_interval (subscriptionPtr subscription)
 void
 subscription_set_update_interval (subscriptionPtr subscription, gint interval)
 {
-	if (0 == interval) {
-		interval = -1;	/* This is evil, I know, but when this method
-				   is called to set the update interval to 0
-				   we mean "never updating". The updating logic
-				   expects -1 for "never updating" and 0 for
-				   updating according to the global update
-				   interval... */
-	}
+	g_assert (interval >= -2);
+
 	subscription->updateInterval = interval;
 	feedlist_schedule_save ();
 }
 
 guint
-subscription_get_default_update_interval (subscriptionPtr subscription)
+subscription_get_effective_update_interval (subscriptionPtr subscription)
 {
-	return subscription->defaultInterval;
+	/* The are three layers to consider here:
+	
+	   1.) feed specified min interval (<ttl> tag, <sy:updateInterval> tag or Cache-Control header)
+	   2.) user specified update interval
+	   3.) global default update setting
+
+	   Here is an overview table on the combinations
+
+	   feed specified | properties specified | global preference        | our result
+	   ---------------|----------------------|--------------------------|--------------------------------------------
+	   %              | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
+	   %              | -1 (use preferences) | <interval>               | preference <interval>
+	   <min interval> | -1 (use preferences) | (-2 or 0) no auto update | (0) do not update
+	   <min interval> | -1 (use preferences) | <interval>               | max(feed <min interval>, preference <interval>)
+	   <min interval> | <interval>           | <interval>               | max(feed <min interval>, properties <interval>)
+	   %              | -2 (do not update)   | *                        | (0) do not update
+	*/
+	gint feedInterval = update_state_get_min_interval (subscription->updateState);
+	gint userInterval = subscription_get_update_interval (subscription);
+	gint globalInterval = 0;
+
+	/* if the feed has specified no interval then feedInterval is -1,
+	   we assume it to be 0 for easier processing below */
+	if (feedInterval < 0)
+		feedInterval = 0;
+
+	if (-2 == userInterval || 0 == userInterval)
+		return 0;
+
+	// FIXME: Position wrong: global update might be disabled, but feed specified interval might still allow updates
+	conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &globalInterval);
+
+	if (userInterval > 0)
+		return (guint)MAX (feedInterval, userInterval);
+
+	if (globalInterval > 0)
+		return (guint)MAX (feedInterval, globalInterval);
+
+	return 0;
 }
 
-void
-subscription_set_default_update_interval (subscriptionPtr subscription, guint interval)
+gboolean
+subscription_can_update_now (subscriptionPtr subscription)
 {
-	subscription->defaultInterval = interval;
+	gint64	lastPoll = 0;
+	gint	feedInterval = update_state_get_min_interval (subscription->updateState);
+	
+	/* Always allow manual update when subscription is faulty */
+	// FIXME: improve this to back-off with less than n tries logic
+	if (subscription->error == FETCH_ERROR_NET ||
+	    subscription->error == FETCH_ERROR_AUTH)
+		return TRUE;
+
+	/*
+	  Note on special interval values:
+	   -1 -> use global update interval -> means we can update (if feedInterval allows it)
+	   -2 -> never update -> means we can update (as this is an interactive user override)
+	 */
+	if (subscription->updateState)
+		lastPoll = subscription->updateState->lastPoll;
+
+	return (g_get_real_time () - lastPoll) / G_USEC_PER_SEC > feedInterval * 60;
 }
 
 void

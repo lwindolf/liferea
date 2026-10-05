@@ -64,15 +64,49 @@ void
 update_state_set_cache_maxage (updateStatePtr state, const gint maxage)
 {
 	if (0 < maxage)
-		state->maxAgeMinutes = maxage;
+		state->_maxAgeMinutes = maxage;
 	else
-		state->maxAgeMinutes = -1;
+		state->_maxAgeMinutes = -1;
+}
+
+void
+update_state_set_ttl (updateStatePtr state, guint ttl)
+{
+	state->_ttl = ttl;
+}
+
+void
+update_state_set_syn_period (updateStatePtr state, guint synPeriod)
+{
+	state->_synPeriod = synPeriod;
+}
+
+void
+update_state_set_syn_frequency (updateStatePtr state, guint synFrequency)
+{
+	state->_synFrequency = synFrequency;
 }
 
 gint
-update_state_get_cache_maxage (updateStatePtr state)
+update_state_get_min_interval (updateStatePtr state)
 {
-	return state->maxAgeMinutes;
+	gint interval = -1;
+
+	/* Always return the largest interval we know of */
+	
+	if (state->_maxAgeMinutes > 0 &&
+	    state->_maxAgeMinutes > interval)
+		interval = state->_maxAgeMinutes;
+	
+	if (state->_ttl > 0 &&
+	    state->_ttl > interval)
+		interval = state->_ttl;
+
+	if (state->_synFrequency * state->_synPeriod > 0 &&
+	    state->_synFrequency * state->_synPeriod > interval)
+		interval = state->_synFrequency * state->_synPeriod;
+	
+	return interval;
 }
 
 const gchar *
@@ -223,31 +257,32 @@ update_request_allow_commands (UpdateRequest *request, gboolean allowCommands)
 
 G_DEFINE_TYPE (UpdateResult, update_result, G_TYPE_OBJECT)
 
-static void update_result_finalize (GObject *object) {
-	UpdateResult *self = UPDATE_RESULT(object);
+static void
+update_result_finalize (GObject *object)
+{
+	UpdateResult *result = UPDATE_RESULT (object);
 
-	g_free(self->source);
-	g_free(self->data);
-	g_free(self->contentType);
-	g_free(self->filterErrors);
-	if (self->updateState) {
-		update_state_free(self->updateState);
+	g_free (result->source);
+	g_free (result->data);
+	g_free (result->contentType);
+	g_free (result->filterErrors);
+	g_free (result->updateError);
+	if (result->updateState) {
+		update_state_free (result->updateState);
 	}
 
-	G_OBJECT_CLASS(update_result_parent_class)->finalize(object);
+	G_OBJECT_CLASS (update_result_parent_class)->finalize (object);
 }
 
-static void update_result_class_init (UpdateResultClass *klass) {
-	GObjectClass *object_class = G_OBJECT_CLASS(klass);
+static void
+update_result_class_init (UpdateResultClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	object_class->finalize = update_result_finalize;
 }
 
-static void update_result_init (UpdateResult *self) {
-	self->source = NULL;
-	self->httpstatus = 0;
-	self->data = NULL;
-	self->size = 0;
-	self->contentType = NULL;
-	self->filterErrors = NULL;
-	self->updateState = update_state_new ();
+static void
+update_result_init (UpdateResult *result)
+{
+	result->updateState = update_state_new ();
 }

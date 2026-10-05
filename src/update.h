@@ -1,5 +1,5 @@
-/**
- * @file update_request.h  generic update request processing
+/*
+ * update_request.h  generic update request processing
  *
  * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -41,7 +41,7 @@
 
 typedef enum {
 	UPDATE_REQUEST_RESET_TITLE   = (1<<0),	/*<< Feed's title should be reset to default upon update */
-	UPDATE_REQUEST_PRIORITY_HIGH = (1<<1),	/*<< set to signal that this is an important user triggered request */
+	UPDATE_REQUEST_PRIORITY_HIGH = (1<<1),	/*<< set to signal that this is an important interactive user triggered request */
 	UPDATE_REQUEST_NO_FEED       = (1<<2)	/*<< Requesting something not a feed (just for statistics) */
 } updateFlags;
 
@@ -59,10 +59,10 @@ typedef struct updateState {
 	gint64 		lastFaviconPoll;	/*<< time at which the feeds favicon was last updated */
 	gchar		*cookies;		/*<< cookies to be used */
 	gchar		*etag;			/*<< ETag sent by the server */
-	gint		maxAgeMinutes;		/*<< default update interval, greatest value sourced from HTTP and XML */
-	gint		synFrequency;		/*<< syn:updateFrequency */
-	gint		synPeriod;		/*<< syn:updatePeriod */
-	gint		timeToLive;		/*<< ttl */
+	gint		_maxAgeMinutes;		/*<< default update interval, greatest value sourced from HTTP and XML */
+	gint		_synFrequency;		/*<< syn:updateFrequency */
+	gint		_synPeriod;		/*<< syn:updatePeriod */
+	gint		_ttl;			/*<< RSS TTL in [min] */
 } *updateStatePtr;
 
 G_BEGIN_DECLS
@@ -116,8 +116,53 @@ void update_state_set_lastmodified (updateStatePtr state, const gchar *lastmodif
 const gchar * update_state_get_etag (updateStatePtr state);
 void update_state_set_etag (updateStatePtr state, const gchar *etag);
 
-gint update_state_get_cache_maxage (updateStatePtr state);
+
+// Note: there are explicitely only setters for all types of interval limiting techniques
+// Use update_state_get_min_interval () to retrieve the effective setting. 
+
+/**
+ * update_state_set_cache_maxage:
+ * @state:  the update state
+ * @maxage: the maximum age for the cache in [min]
+ *
+ * Sets the maximum age for the cache in the update state.
+ */
 void update_state_set_cache_maxage (updateStatePtr state, const gint maxage);
+
+/**
+ * update_state_set_ttl:
+ * @state:  the update state
+ * @ttl:    the time-to-live value in [min]
+ *
+ * Sets the RSS TTL for the update state.
+ */
+void update_state_set_ttl (updateStatePtr state, guint ttl);
+
+/**
+ * update_state_set_syn_period:
+ * @state:          the update state
+ * @synPeriod:      the synchronization period in [min]
+ *
+ * Sets the synchronization period for the update state.
+ */
+void update_state_set_syn_period (updateStatePtr state, guint synPeriod);
+
+/**
+ * update_state_set_syn_frequency:
+ * @state:          the update state
+ * @synFrequency:   the synchronization frequency
+ *
+ * Sets the synchronization frequency for the update state.
+ */
+void update_state_set_syn_frequency (updateStatePtr state, guint synFrequency);
+
+/**
+ * update_state_get_min_interval:
+ * @state:  the update state
+ * 
+ * Returns: the effective minimum interval in [min] (or -1 if not set)
+ */
+gint update_state_get_min_interval (updateStatePtr state);
 
 const gchar * update_state_get_cookies (updateStatePtr state);
 void update_state_set_cookies (updateStatePtr state, const gchar *cookies);
@@ -219,6 +264,7 @@ struct _UpdateResult {
 	size_t		size;		/*<< Size of downloaded data */
 	gchar		*contentType;	/*<< Content type of received data */
 	gchar		*filterErrors;	/*<< Error messages from filter execution */
+	gchar		*updateError;	/*<< Error messages from general update processing */
 	updateStatePtr	updateState;	/*<< New update state of the requested object (etags, last modified...) */
 };
 

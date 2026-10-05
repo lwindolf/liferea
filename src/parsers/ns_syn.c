@@ -1,7 +1,7 @@
 /**
  * @file ns_syn.c syndication namespace support
  * 
- * Copyright (C) 2003-2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <stdlib.h>
+
 #include "ns_syn.h"
+
+#include "xml.h"
 
 /* you can find the syn module documentation at
    http://web.resource.org/rss/1.0/modules/syndication/
@@ -40,11 +39,10 @@ static void
 ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
 	xmlChar	*tmp;
-	gint	period = 0;
-	gint	frequency = 1;
 
 	if (!xmlStrcmp (cur->name, BAD_CAST"updatePeriod")) {
 		if (NULL != (tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
+			gint period = 0;
 
 			if (!xmlStrcmp (tmp, BAD_CAST"hourly"))
 				period = 60;
@@ -58,19 +56,16 @@ ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			else if (!xmlStrcmp (tmp, BAD_CAST"yearly"))
 				period = 365*24*60;
 
-			ctxt->subscription->updateState->synPeriod = period;
+			update_state_set_syn_period (ctxt->subscription->updateState, period);
 			xmlFree (tmp);
 		}
 	} else if (!xmlStrcmp (cur->name, BAD_CAST"updateFrequency")) {
 		tmp = xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
-			frequency = atoi ((gchar *)tmp);
-
-			ctxt->subscription->updateState->synFrequency = frequency;
+			update_state_set_syn_frequency (ctxt->subscription->updateState, atoi ((gchar *)tmp));
 			xmlFree (tmp);
 		}
 	}
-
 }
 
 static void

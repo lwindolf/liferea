@@ -45,6 +45,20 @@ static GHashTable *http429 = NULL;	/* Map of domains reporting HTTP 429 and cool
 
 static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
 
+gint
+network_get_retry_after_seconds (const gchar *retry_after)
+{
+	gint retry_after_seconds = -1;
+
+	if (retry_after)
+		retry_after_seconds = atoi (retry_after);   // for now we only support seconds but no date
+
+	if (retry_after_seconds <= 0)
+		retry_after_seconds = 60 * 5;              // default to 5min
+
+	return retry_after_seconds;
+}
+
 static void
 network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 {
@@ -100,12 +114,8 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 
 	/* handle HTTP 429 response */
 	if (429 == job->result->httpstatus) {
-		gint retry_after = -1;
 		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Retry-After");
-		if (tmp)
-			retry_after = atoi (tmp);	// for now we only support seconds but no date
-		if (0 < retry_after)
-			retry_after = 60*5;		// default to 5min
+		gint retry_after = network_get_retry_after_seconds (tmp);
 
 		g_autoptr(GUri) uri = g_uri_parse (job->request->source, G_URI_FLAGS_NONE, NULL);
 		if (uri) {
@@ -155,7 +165,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 						}
 					}
 					if (0 < maxage) {
-						job->result->updateState->maxAgeMinutes = ceil ( (float) (maxage / 60));
+						update_state_set_cache_maxage (job->result->updateState, ceil ( (float) (maxage / 60)));
 					}
 				}
 			}
@@ -179,7 +189,7 @@ network_process_request (const UpdateJob *job)
 	g_autoptr(SoupMessage)	msg = NULL;
 	SoupMessageHeaders	*request_headers;
 	g_autoptr(GUri)		sourceUri = NULL;
-	gboolean		do_not_track = FALSE, do_not_sell = false;
+	gboolean		do_not_track = FALSE, do_not_sell = FALSE;
 	g_autofree gchar	*scheme = NULL, *user = NULL, *password = NULL, *auth_params = NULL, *host = NULL, *path = NULL, *query = NULL, *fragment = NULL;
 	gint			port;
 
@@ -195,9 +205,10 @@ network_process_request (const UpdateJob *job)
 		if (host) {
 			gint cooldown = GPOINTER_TO_INT (g_hash_table_lookup (http429, host));
 			if (0 < cooldown && cooldown > time (NULL)) {
-				debug (DEBUG_NET, "HTTP 429 cooldown for %s, skipping request (cooldown %d seconds)", host, cooldown - time (NULL));
+				gint remaining = cooldown - time (NULL);
 				job->result->source = g_strdup (job->request->source);
 				job->result->httpstatus = 429;
+				debug (DEBUG_NET, "HTTP 429 cooldown for %s, skipping request (cooldown %d seconds)", host, remaining);
 				update_job_finished ((UpdateJob *)job);
 				return;
 			}

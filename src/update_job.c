@@ -217,11 +217,11 @@ update_exec_cmd_cb_out_watch (GIOChannel *source, GIOCondition condition, gpoint
 	GIOStatus	st;
 	gsize		nread;
 
-	if (condition == G_IO_HUP) {
+	if (condition & G_IO_HUP) {
 		debug (DEBUG_UPDATE, "Pipe closed, child process %d is terminating", job->cmd.pid);
 		ret = FALSE;
 
-	} else if (condition == G_IO_IN) {
+	} else if (condition & G_IO_IN) {
 		while (TRUE) {
 			job->result->data = g_realloc (job->result->data, job->result->size + 1025);
 
@@ -270,13 +270,52 @@ update_exec_cmd_cb_out_watch (GIOChannel *source, GIOCondition condition, gpoint
 }
 
 static gboolean
+update_exec_cmd_cb_reap_timeout (gpointer user_data)
+{
+    UpdateJob *job = (UpdateJob *) user_data;
+    
+    /* Fallback: Force finish if child_watch hasn't fired after timeout + grace period */
+    if (job->cmd.pid != 0) {
+        g_warning ("Child process %d still not reaped, forcing job completion", job->cmd.pid);
+        
+        /* Try to kill again */
+        kill((pid_t) job->cmd.pid, SIGKILL);
+        
+        /* Force finish the job */
+        job->result->httpstatus = 504;
+        update_job_finished (job);
+    }
+    
+    return FALSE;
+}
+
+static gboolean
 update_exec_cmd_cb_timeout (gpointer user_data)
 {
 	UpdateJob *	job = (UpdateJob *) user_data;
 	debug (DEBUG_UPDATE, "Child process %d timed out, killing.", job->cmd.pid);
 
 	/* Kill child. Result will still be processed by update_exec_cmd_cb_child_watch */
-	kill((pid_t) job->cmd.pid, SIGKILL);
+	if (kill((pid_t) job->cmd.pid, SIGTERM) != 0) {
+		debug (DEBUG_UPDATE, "SIGTERM failed, trying SIGKILL");
+		kill((pid_t) job->cmd.pid, SIGKILL);
+	}
+
+	/* Catch zombies: force complete after timeout + 5 seconds grace */
+	g_timeout_add (5000, update_exec_cmd_cb_reap_timeout, job);
+
+	/* Close pipe to unblock IO watch */
+	if (job->cmd.fd >= 0) {
+		close (job->cmd.fd);
+		job->cmd.fd = -1;
+	}
+
+	/* Remove IO watch if still active */
+	if (job->cmd.io_watch_id > 0) {
+		g_source_remove (job->cmd.io_watch_id);
+		job->cmd.io_watch_id = 0;
+	}
+
 	job->cmd.timeout_id = 0;
 	job->result->httpstatus = 504;	/* Gateway timeout */
 	return FALSE;	/* Remove timeout source */

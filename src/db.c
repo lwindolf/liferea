@@ -736,7 +736,8 @@ db_init (void)
 			  "default_interval,"
 			  "discontinued,"
 			  "available "
-			  "FROM subscription");
+			  "FROM subscription "
+			  "WHERE node_id = ?");
 
 	db_new_statement ("subscriptionMetadataLoadStmt",
 	                  "SELECT key,value,nr FROM subscription_metadata WHERE node_id = ? ORDER BY nr");
@@ -795,8 +796,6 @@ db_init (void)
 void
 db_deinit (void)
 {
-
-
 	if (FALSE == sqlite3_get_autocommit (db))
 		g_warning ("Fatal: DB not in auto-commit mode. This is a bug. Data may be lost!");
 
@@ -1493,10 +1492,10 @@ db_update_state_load (const gchar *id,
 		updateState->lastFaviconPoll	= sqlite3_column_int64 (stmt, 2);
 		updateState->cookies		= g_strdup ((const gchar *) sqlite3_column_text (stmt, 3));
 		updateState->etag		= g_strdup ((const gchar *) sqlite3_column_text (stmt, 4));
-		updateState->maxAgeMinutes	= sqlite3_column_int (stmt, 5);
-		updateState->synFrequency	= sqlite3_column_int (stmt, 6);
-		updateState->synPeriod		= sqlite3_column_int (stmt, 7);
-		updateState->timeToLive		= sqlite3_column_int (stmt, 8);
+		updateState->_maxAgeMinutes	= sqlite3_column_int (stmt, 5);
+		updateState->_synFrequency	= sqlite3_column_int (stmt, 6);
+		updateState->_synPeriod		= sqlite3_column_int (stmt, 7);
+		updateState->_ttl		= sqlite3_column_int (stmt, 8);
 	} else {
 		debug (DEBUG_DB, "Could not load update state for subscription %s (error code %d)!", id, res);
 	}
@@ -1523,10 +1522,10 @@ db_update_state_save (const gchar *id,
 	sqlite3_bind_int64 (stmt, 4, updateState->lastFaviconPoll);
 	sqlite3_bind_text  (stmt, 5, updateState->cookies, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text  (stmt, 6, updateState->etag, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int   (stmt, 7, updateState->maxAgeMinutes);
-	sqlite3_bind_int   (stmt, 8, updateState->synFrequency);
-	sqlite3_bind_int   (stmt, 9, updateState->synPeriod);
-	sqlite3_bind_int   (stmt, 10, updateState->timeToLive);
+	sqlite3_bind_int   (stmt, 7, updateState->_maxAgeMinutes);
+	sqlite3_bind_int   (stmt, 8, updateState->_synFrequency);
+	sqlite3_bind_int   (stmt, 9, updateState->_synPeriod);
+	sqlite3_bind_int   (stmt, 10, updateState->_ttl);
 
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
@@ -1588,7 +1587,25 @@ db_subscription_metadata_update (subscriptionPtr subscription)
 void
 db_subscription_load (subscriptionPtr subscription)
 {
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	stmt = db_get_statement ("subscriptionLoadStmt");
+	res = sqlite3_bind_text (stmt, 1, subscription->node->id, -1, SQLITE_TRANSIENT);
+	if (SQLITE_OK != res)
+		g_warning ("db_subscription_load: sqlite bind failed (error code %d)!", res);
+
+	res = sqlite3_step (stmt);
+	if (SQLITE_ROW == res) {
+		subscription->discontinued = sqlite3_column_int (stmt, 6);
+	} else {
+		debug (DEBUG_DB, "Could not load subscription row for %s (error code %d)!", subscription->node->id, res);
+	}
+
+	sqlite3_finalize (stmt);
+
 	db_update_state_load (subscription->node->id, subscription->updateState);
+
 	if (subscription->metadata)
 		metadata_list_free (subscription->metadata);
 	subscription->metadata = db_subscription_metadata_load (subscription->node->id);
@@ -1608,7 +1625,7 @@ db_subscription_update (subscriptionPtr subscription)
 	sqlite3_bind_text (stmt, 3, subscription->origSource, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 4, subscription->filtercmd, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 5, subscription->updateInterval);
-	sqlite3_bind_int  (stmt, 6, subscription->defaultInterval);
+	sqlite3_bind_int  (stmt, 6, 0); // defaultInterval is unused now (update_state max_age_minutes is used instead)
 	sqlite3_bind_int  (stmt, 7, subscription->discontinued?1:0);
 	sqlite3_bind_int  (stmt, 8, (subscription->updateError ||
 	                             subscription->httpError ||
