@@ -436,7 +436,8 @@ atom10_parse_entry_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom1
 	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate"))
 		item_set_time (ctxt->item, date_parse_ISO8601 (datestr));
 
-	metadata_list_set (&ctxt->item->metadata, "contentUpdateDate", datestr);
+	if (datestr)
+		metadata_list_set (&ctxt->item->metadata, "contentUpdateDate", datestr);
 }
 
 /* <content> tag support, FIXME: base64 not supported */
@@ -649,7 +650,7 @@ atom10_parse_feed_subtitle (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom1
 static void
 atom10_parse_feed_title (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
-	gchar *title = atom10_parse_text_construct(cur, FALSE);
+	gchar *title = atom10_parse_text_construct (cur, FALSE);
 	if (title) {
 		if (ctxt->title)
 			g_free (ctxt->title);

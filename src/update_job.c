@@ -363,7 +363,6 @@ update_exec_cmd (UpdateJob *job)
 	job->cmd.child_watch_id = g_child_watch_add (job->cmd.pid, (GChildWatchFunc) update_exec_cmd_cb_child_watch, job);
 	job->cmd.stdout_ch = g_io_channel_unix_new (job->cmd.fd);
 	job->cmd.io_watch_id = g_io_add_watch (job->cmd.stdout_ch, G_IO_IN | G_IO_HUP, (GIOFunc) update_exec_cmd_cb_out_watch, job);
-
 	job->cmd.timeout_id = g_timeout_add (get_exec_timeout_ms(), (GSourceFunc) update_exec_cmd_cb_timeout, job);
 }
 
