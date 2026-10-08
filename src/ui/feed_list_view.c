@@ -404,13 +404,14 @@ feed_list_view_refresh_node (Node *node)
 static gboolean
 feed_list_view_remove_node_item (const gchar *nodeId)
 {
-	g_autoptr(GtkTreeListRow) row = NULL;
-	g_autoptr(GtkTreeListRow) parent_row = NULL;
+	GtkTreeListRow *row = NULL;
+	GtkTreeListRow *parent_row = NULL;
 	Node *node;
 	GListModel *model;
 	GListStore *store;
 	guint position;
 	guint index;
+	gboolean success = FALSE;
 
 	if (!nodeId || !flv || !flv->tree_model)
 		return FALSE;
@@ -424,19 +425,24 @@ feed_list_view_remove_node_item (const gchar *nodeId)
 		return FALSE;
 
 	node = feed_list_view_tree_row_get_node (row);
+	/* gtk_tree_list_row_get_parent() returns a borrowed pointer, not a new reference. */
 	parent_row = gtk_tree_list_row_get_parent (row);
 	model = parent_row ? gtk_tree_list_row_get_children (parent_row) : G_LIST_MODEL (flv->tree_root_model);
 
 	if (!model || !node)
-		return FALSE;
+		goto out;
 
 	store = G_LIST_STORE (model);
 	index = feed_list_view_find_index_in_model (model, node);
 	if (index == GTK_INVALID_LIST_POSITION)
-		return FALSE;
+		goto out;
 
 	g_list_store_remove (store, index);
-	return TRUE;
+	success = TRUE;
+
+out:
+	g_clear_object (&row);
+	return success;
 }
 
 static Node *
@@ -545,7 +551,6 @@ feed_list_view_factory_bind_cb (GtkListItemFactory *factory, GtkListItem *list_i
 	                                    "notify::expanded",
 	                                    G_CALLBACK (feed_list_view_tree_row_expanded_cb),
 	                                    node);
-	g_object_set_data (G_OBJECT (expander), "expanded-row", g_object_ref (tree_row));
 	g_object_set_data (G_OBJECT (expander), "expanded-handler", GSIZE_TO_POINTER ((gsize)expanded_handler));
 
 	g_free (label_markup);
@@ -562,18 +567,15 @@ feed_list_view_factory_unbind_cb (GtkListItemFactory *factory, GtkListItem *list
 	gtk_widget_set_sensitive (gtk_list_item_get_child (list_item), FALSE);
 
 	expander = gtk_list_item_get_child (list_item);
-	expanded_row = g_object_get_data (G_OBJECT (expander), "expanded-row");
+	expanded_row = gtk_tree_expander_get_list_row (GTK_TREE_EXPANDER (expander));
 	expanded_handler = (gulong)GPOINTER_TO_SIZE (g_object_get_data (G_OBJECT (expander), "expanded-handler"));
 
 	if (expanded_row && expanded_handler)
 		g_signal_handler_disconnect (expanded_row, expanded_handler);
 
-	/* Clear the expander's row while the row object is still guaranteed alive. */
+	/* Clear the expander row while it is still alive; the row is owned by the model,
+	 * not by the widget. */
 	gtk_tree_expander_set_list_row (GTK_TREE_EXPANDER (expander), NULL);
-	if (expanded_row)
-		g_object_unref (expanded_row);
-
-	g_object_set_data (G_OBJECT (expander), "expanded-row", NULL);
 	g_object_set_data (G_OBJECT (expander), "expanded-handler", NULL);
 	g_object_set_data (G_OBJECT (expander), "node", NULL);
 }
