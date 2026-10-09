@@ -757,14 +757,14 @@ feed_list_view_popup_menu (Node *node)
 	return menu_model;
 }
 
-static gboolean
+static void
 feed_list_view_pressed_cb (GtkGestureClick *gesture, gint n_press, gdouble x, gdouble y, gpointer data)
 {
 	Node *node;
 
 	(void) data;
 	if (n_press != 1)
-		return FALSE;
+		return;
 
 	node = feed_list_view_find_node_at_coords (x, y);
 
@@ -798,19 +798,17 @@ feed_list_view_pressed_cb (GtkGestureClick *gesture, gint n_press, gdouble x, gd
 			gtk_popover_set_pointing_to (GTK_POPOVER (popover), &rect);
 			gtk_popover_popup (GTK_POPOVER (popover));
 			g_object_unref (menu);
-			return TRUE;
+			return;
 		}
 		case GDK_BUTTON_MIDDLE:
 			if (node) {
-				/* Middle mouse click toggles read status (but do not select)... */
+				/* Middle mouse click marks all items in the clicked node as read (without selecting). */
 				gtk_gesture_set_state (GTK_GESTURE (gesture), GTK_EVENT_SEQUENCE_CLAIMED);
 				g_action_group_activate_action (G_ACTION_GROUP (g_application_get_default ()), "mark-feed-as-read", g_variant_new_string (node->id));
-				return TRUE;
+				return;
 			}
 			break;
 	}
-
-	return FALSE;
 }
 
 static gboolean
