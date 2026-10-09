@@ -5,13 +5,17 @@ To be released
 	* Fixes missing top margin when Readability.js does not convert text
 	  (Lars Windolf)
 
-	* Show likes/comment count in the same line as categories, slightly increase separator padding
+	* Show likes/comment count in the same line as categories, slightly 
+	  increase separator padding
+	  (Lars Windolf)
+
+	* Fixes update counter only ever growing. Now resets automatically 
+	  after 30s of no changes.
 	  (Lars Windolf)
 
 	Known problems
 	
 	* DnD of feeds causes random crashes
-	* update counter max only ever grows (should reset after most updates are finished after a while)
 
 
 2026-09-29  Lars Windolf <lars.windolf@gmx.de>

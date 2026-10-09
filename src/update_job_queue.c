@@ -33,6 +33,8 @@ enum {
 
 static guint update_job_queue_signals[LAST_SIGNAL] = { 0 };
 
+#define UPDATE_JOB_QUEUE_MAX_HANG_TIME (30 * G_TIME_SPAN_SECOND)
+
 G_DEFINE_TYPE (UpdateJobQueue, update_job_queue, G_TYPE_OBJECT)
 
 static UpdateJobQueue *queue = NULL;
@@ -94,6 +96,9 @@ update_job_queue_init (UpdateJobQueue *self)
 	gint max_jobs;
 	conf_get_int_value (MAX_UPDATE_THREADS, &max_jobs);
 	queue = self;
+	queue->currentJobCount = 0;
+	queue->maxCount = 0;
+	queue->lastStateChange = 0;
 	queue->normalPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_execute,        max_jobs, FALSE, NULL);
 	queue->priorityPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_execute,        max_jobs, FALSE, NULL);
 	queue->resultPool	= g_thread_pool_new (update_job_queue_run, (gpointer)update_job_process_result, max_jobs, FALSE, NULL);
@@ -114,7 +119,9 @@ update_job_queue_add (gpointer data, updateFlags flags)
 		// Count all subscription jobs (but ignore HTML5, favicon and other download requests)
 		if (!(job->flags & UPDATE_REQUEST_NO_FEED)) {
 			queue->currentJobCount++;
-			queue->maxCount++;
+			queue->lastStateChange = g_get_monotonic_time ();
+			if (queue->currentJobCount == 1)
+				queue->maxCount = 0;
 			g_signal_emit_by_name (queue, "update-running");
 		}
 	}
@@ -170,6 +177,7 @@ update_job_queue_remove (gpointer job)
 	if (!(((UpdateJob *)job)->flags & UPDATE_REQUEST_NO_FEED)) {
 		if (queue->currentJobCount > 0)
 			queue->currentJobCount--;
+		queue->lastStateChange = g_get_monotonic_time ();
 		g_signal_emit_by_name (queue, "update-running");
 	}
 }
@@ -197,12 +205,18 @@ update_job_queue_get_count (guint *count, guint *max)
 	       normal, prio, result,
 	       normalRunning, prioRunning, resultRunning);
 
-	if (g_slist_length(queue->jobs) == 0) // correct miscounting
+	if (g_slist_length(queue->jobs) == 0) { // correct miscounting
 		queue->currentJobCount = 0;
+		queue->maxCount = 0;
+		queue->lastStateChange = g_get_monotonic_time ();
+	}
 
 	*count = queue->currentJobCount;
 
 	if (*count > queue->maxCount)
+		queue->maxCount = *count;
+	else if (queue->lastStateChange &&
+		 (g_get_monotonic_time () - queue->lastStateChange) > UPDATE_JOB_QUEUE_MAX_HANG_TIME)
 		queue->maxCount = *count;
 	else if (*count == 0)
 		queue->maxCount = 0; // reset max when no jobs are running

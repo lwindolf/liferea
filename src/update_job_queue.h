@@ -33,7 +33,8 @@ struct _UpdateJobQueue {
 	GSList	*jobs;
 
 	guint	currentJobCount;	// actual number of pending / processing jobs
-	guint	maxCount;		// previous max number of jobs (gets reset when currentJobCount = 0)
+	guint	maxCount;		// current burst max number of jobs
+	guint64	lastStateChange;	// monotonic timestamp for queue activity changes
 
 	GThreadPool *normalPool;	// thread pool for normal priority request processing
 	GThreadPool *priorityPool;	// thread pool for high priority request processing
