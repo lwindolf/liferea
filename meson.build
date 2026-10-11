@@ -81,7 +81,7 @@ testrunner = find_program('src/tests/run.sh')
 test_env = environment()
 test_env.set(
   'GSETTINGS_SCHEMA_DIR',
-  get_option('prefix') / get_option('datadir') / 'glib-2.0' / 'schemas'
+  meson.project_build_root() / 'data'
 )
 
 # Note: the 'update' test is explicitly skipped as it's gsettings dependency breaks CI build (missing X11/DBUS)
