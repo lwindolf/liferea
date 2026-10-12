@@ -51,3 +51,10 @@ install_data (
   install_dir: join_paths(get_option('datadir'), 'glib-2.0', 'schemas')
 )
 
+# Ensure we can test with the schema
+gnome = import('gnome')
+
+gnome.compile_schemas(
+  build_by_default: true,
+  depend_files: 'net.sf.liferea.gschema.xml',
+)
