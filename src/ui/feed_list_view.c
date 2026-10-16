@@ -227,6 +227,7 @@ static Node *
 feed_list_view_tree_row_get_node (GtkTreeListRow *row)
 {
 	FeedListNodeItem *node_item;
+	Node *node;
 
 	if (!row)
 		return NULL;
@@ -235,14 +236,15 @@ feed_list_view_tree_row_get_node (GtkTreeListRow *row)
 	if (!node_item)
 		return NULL;
 
-	return node_item->node;
+	node = node_item->node;
+	g_object_unref (node_item);
+	return node;
 }
 
 static Node *
 feed_list_view_get_current_view_selection (void)
 {
 	GtkTreeListRow *tree_row;
-	Node *node;
 
 	if (!flv || !flv->selection_model)
 		return NULL;
@@ -251,9 +253,7 @@ feed_list_view_get_current_view_selection (void)
 	if (!tree_row)
 		return NULL;
 
-	node = feed_list_view_tree_row_get_node (tree_row);
-	g_object_unref (tree_row);
-	return node;
+	return feed_list_view_tree_row_get_node (tree_row);
 }
 
 static guint
