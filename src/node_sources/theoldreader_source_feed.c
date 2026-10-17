@@ -181,6 +181,9 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
 
 	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| update feed", subscription->node->id, subscription->node->title);
 
+	if (!subscription->node->source->authToken)
+		return FALSE;
+
 	if (!remoteId) {
 		g_warning ("Skipping TheOldReader feed '%s' (%s) without remote id!", subscription->node->title, subscription->node->id);
 		return FALSE;

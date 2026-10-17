@@ -196,6 +196,14 @@ theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr su
 
 	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| updating subscription list", node->id, node->title);
 
+	if (!node->source->authToken) {
+		if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
+			node->source->loginState = NODE_SOURCE_STATE_IN_PROGRESS;
+			theoldreader_source_login (node, 0);
+		}
+		return FALSE;
+	}
+
 	update_request_set_source (request, node->source->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);
 
