@@ -135,6 +135,15 @@ node_source_type_register (nodeSourceTypePtr type)
 	return TRUE;
 }
 
+static void
+node_source_load_node_subscription (Node *node)
+{
+	if (node->subscription)
+		db_subscription_load (node->subscription);
+
+	node_foreach_child (node, node_source_load_node_subscription);
+}
+
 Node *
 node_source_setup_root (void)
 {	
@@ -167,16 +176,19 @@ node_source_setup_root (void)
 	root->source->type = default_source_get_type ();
 	node_source_import_feedlist (root);
 
-	/* 4. Start updating*/
-	default_source_start_updating (root);
+	/* 4. Recursively load node subscriptions */
+	node_source_load_node_subscription (root);
 
-	/* 5. Purge old nodes from the database 
+	/* 5. Purge old nodes from the database
 
 	   This relies on node_source_import_feedlist (root) above to be
 	   synchronous about loading the previous state of all node sources 
 	   from OPML cache files.
 	 */
 	db_node_source_cleanup (root);
+
+	/* 6. Start updating */
+	default_source_start_updating (root);
 
 	return root;
 }
