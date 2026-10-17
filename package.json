@@ -6,7 +6,7 @@
   "dependencies": {
     "dompurify": "^3.4.16",
     "@mozilla/readability": "^0.6.0",
-    "handlebars": "^4.7.9"
+    "handlebars": "^4.7.10"
   },
   "devDependencies": {
     "eslint": "^8.49.0"
