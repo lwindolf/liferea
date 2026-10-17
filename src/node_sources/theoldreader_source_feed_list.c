@@ -95,6 +95,7 @@ theoldreader_source_merge_feed (Node *root, const gchar *url, const gchar *title
 	} else {
 		node->syncState &= ~NODE_SYNC_STATE_INITIAL_IMPORT;
 		node_set_title (node, title);
+		metadata_list_set (&node->subscription->metadata, "theoldreader-feed-id", id);
 		node_source_update_folder (node, folder?folder:root);
 	}
 }
