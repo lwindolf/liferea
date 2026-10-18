@@ -210,7 +210,7 @@ trayicon_activate (LifereaActivatable *activatable)
 	TrayiconPlugin *plugin = (TrayiconPlugin *)activatable;
 	TrayMenu *menu;
 
-        plugin->tray = stray_create ("Liferea", "emblem-web.svg", "Liferea");
+	plugin->tray = stray_create ("Liferea", "net.sourceforge.liferea", "Liferea");
 	stray_set_status (plugin->tray, STRAY_STATUS_ACTIVE);
 
 	// Create tray menu and add to icon
