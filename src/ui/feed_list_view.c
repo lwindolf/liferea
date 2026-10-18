@@ -1016,6 +1016,7 @@ feed_list_view_select (Node *node)
 			    gtk_widget_is_ancestor (focus, GTK_WIDGET (flv->listview));
 
 			gtk_single_selection_set_selected (flv->selection_model, position);
+			gtk_list_view_scroll_to (flv->listview, position, GTK_LIST_SCROLL_NONE, NULL);
 
 			/* Preserve feed list focus for feed-list navigation, but avoid stealing
 			   focus from the item list during background node-updated refreshes. */
