@@ -1,6 +1,9 @@
-To be released
+2026-10-20  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0.3
+
+	* Ensure schemas are available during testing
+	  (Paul Gevers)
 
 	* Fixes missing top margin when Readability.js does not convert text
 	  (Lars Windolf)
@@ -11,6 +14,12 @@ To be released
 
 	* Fixes update counter only ever growing. Now resets automatically 
 	  after 30s of no changes.
+	  (Lars Windolf)
+
+	* Update handlebars dependency
+	  (Lars Windolf)
+
+	* Fixes crash on feed list node selection
 	  (Lars Windolf)
 
 	Known problems
