@@ -269,14 +269,28 @@ static const GActionEntry gaction_entries[] = {
 };
 
 static void
-item_actions_item_updated (gpointer obj, gint unused, gpointer user_data)
+item_actions_handle_update (GActionGroup *ag)
 {
-        GActionGroup *ag = G_ACTION_GROUP (user_data);
-
-        ui_common_action_group_enable (ag, itemlist_get_selected () != NULL);
+	ui_common_action_group_enable (ag, itemlist_get_selected () != NULL);
 
 	Node *root = feedlist_get_root ();
 	liferea_shell_action_enable ("next-unread-item", root->unreadCount > 0);
+}
+
+static void
+item_actions_item_updated (gpointer obj, gint unused, gpointer user_data)
+{
+	GActionGroup *ag = G_ACTION_GROUP (user_data);
+
+	item_actions_handle_update(ag);
+}
+
+static void
+item_actions_node_updated (gpointer obj, gchar *unused, gpointer user_data)
+{
+	GActionGroup *ag = G_ACTION_GROUP (user_data);
+
+	item_actions_handle_update(ag);
 }
 
 GActionGroup *
@@ -291,8 +305,9 @@ item_actions_create (LifereaShell *shell)
 	              "itemlist", &itemlist, NULL);
 
 	g_signal_connect (itemlist, "item-selected", G_CALLBACK (item_actions_item_updated), ag);
-        g_signal_connect (feedlist, "items-updated", G_CALLBACK (item_actions_item_updated), ag);
-	g_signal_connect (feedlist, "node-selected", G_CALLBACK (item_actions_item_updated), ag);
+	g_signal_connect (feedlist, "items-updated", G_CALLBACK (item_actions_node_updated), ag);
+	g_signal_connect (feedlist, "node-selected", G_CALLBACK (item_actions_node_updated), ag);
+	g_signal_connect (feedlist, "node-updated", G_CALLBACK (item_actions_node_updated), ag);
 
 	item_actions_item_updated (NULL, 0, ag);
 
