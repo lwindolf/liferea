@@ -877,7 +877,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
 	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help);
 	gtk_application_set_accels_for_action (app, "app.show-shortcuts", liferea_accels_show_shortcuts);
-	gtk_application_set_accels_for_action (app, "app.launch-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
+	gtk_application_set_accels_for_action (app, "app.launch-selected-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
 
 	/* 4.) setup feed and item list widgets */
 	debug (DEBUG_GUI, "Setting up feed list");
