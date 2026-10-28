@@ -348,6 +348,7 @@ feedlist_init (FeedList *fl)
 	debug (DEBUG_CACHE, "Initializing node state");
 	feedlist_foreach (feedlist_init_node);
 	feedlist_flush_pending_node_recounts ();
+	feedlist_update_node_counters_now (ROOTNODE);
 
 	/* 4. Finally save the new feed list state (to persist migration 
 	      related feed drops or initial default feed list import) */
