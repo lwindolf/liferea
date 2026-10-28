@@ -167,8 +167,6 @@ async function load_item(data, baseURL, direction) {
 	try {
 		const item = JSON.parse(decodeURIComponent(data));
 		const richContent = metadata_get(item, "richContent");
-		const mediathumb = metadata_get(item, "mediathumbnail");
-		const mediadesc = metadata_get(item, "mediadescription");
 		let title = item.title;
 		let article;
 		let debugfooter = `<hr/>DEBUG: item_id=${item?.id} `;
@@ -212,8 +210,6 @@ async function load_item(data, baseURL, direction) {
 			slashSection		: metadata_get(item, "slashSection"),
 			slashDepartment		: metadata_get(item, "slashDepartment"),
 			categories		: item.metadata.filter((m) => m.category).map((m) => m.category),
-			mediathumb		: mediathumb,
-			mediadesc		: mediadesc,
 			videos			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/')),
 			audios			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'))
 			// FIXME: use this too
@@ -237,13 +233,34 @@ async function load_item(data, baseURL, direction) {
 			debugfooter += " titleDuplicateRemove";
 		}
 
-		// If there are no images and we have a thumbnail, add it
-		if (document.querySelectorAll('img').length == 0 && mediathumb) {
-			let img = document.createElement('img');
-			img.src = mediathumb;
-			img.alt = mediadesc;
-			document.getElementById('description').prepend(img);
-			debugfooter += " thumbnailAdd";
+		// If there are no images in the description let's present a single suitable image
+		// from possible metadata keys in the following priority order
+		// 1.) first "media" [type=image/...]
+		// 2.) "thumbnail"
+		// 3.) "gravatar"
+		if (document.querySelectorAll('img').length == 0) {
+			let imgUrl, imgAlt;
+
+			const imgEnclosures = item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('image/'));
+			if(imgEnclosures.length > 0) {
+				imgUrl = imgEnclosures[0].url;
+			}
+			if(!imgUrl) {
+				imgUrl = metadata_get(item, "mediathumbnail");
+				imgAlt = metadata_get(item, "mediadescription");
+			}
+			if(!imgUrl) {
+				imgUrl = metadata_get(item, "gravatar");
+			}
+
+			if(imgUrl) {
+				let img = document.createElement('img');
+				img.src = imgUrl;
+				if(imgAlt)
+					img.alt = imgAlt;
+				document.getElementById('description').prepend(img);
+				debugfooter += " addedImage";
+			}
 		}
 
 		// Convert all lazy-loaded images
