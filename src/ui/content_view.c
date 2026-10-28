@@ -23,6 +23,7 @@
 #include "comments.h"
 #include "common.h"
 #include "node_source.h"
+#include "subscription.h"
 #include "ui/liferea_browser.h"
 
 /*
@@ -65,6 +66,7 @@ content_view_item_selected (GObject *obj, gint itemId, gpointer user_data)
         Node			*node = NULL;
 	g_autofree gchar	*baseURL = NULL;
 	g_autofree gchar 	*json = NULL;
+	g_autofree gchar 	*link = NULL;
 	const gchar		*direction = NULL;
 
         if (!item)
@@ -79,6 +81,11 @@ content_view_item_selected (GObject *obj, gint itemId, gpointer user_data)
 
         comments_refresh (item);        // FIXME: do we want to debounce this for fast skipping?
         node = node_from_id (item->nodeId);
+
+	if (node->subscription && node->subscription->loadItemLink && (link = item_make_link (item))) {
+		liferea_browser_launch_URL_internal (LIFEREA_BROWSER (cv), link);
+		return;
+	}
 
         direction = item_get_text_direction (item);
         json = item_to_json (item);

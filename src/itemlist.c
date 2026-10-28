@@ -21,7 +21,6 @@
 #include <string.h>
 #include <glib.h>
 
-#include "browser.h"
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
@@ -596,19 +595,6 @@ itemlist_selection_changed (ItemList *ilv, gulong itemId, gpointer unused)
 		debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
 
 		itemlist_set_selected (item);
-
-		/* set read and unset update status when selecting */
-		if (item) {
-			gchar	*link = NULL;
-			Node	*node = node_from_id (item->nodeId);
-
-			item_set_read_state (item, TRUE);
-
-			if (node->subscription && node->subscription->loadItemLink && (link = item_make_link (item))) {
-				browser_launch_URL (link, TRUE /* force internal */);
-				g_free (link);
-			}
-		}
 
 		feedlist_reset_new_item_count ();
 	}
