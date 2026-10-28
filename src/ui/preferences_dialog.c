@@ -209,9 +209,8 @@ on_drop_down_changed (GtkDropDown *dropdown, guint selected, gpointer user_data)
 		settingName = BROWSER_ID;
 		// special handling as value is a string
 		on_browser_changed (dropdown, pd);
-		GtkStringObject *obj = GTK_STRING_OBJECT (gtk_drop_down_get_selected_item (dropdown));
-		const gchar *text = gtk_string_object_get_string (obj);
-		conf_set_str_value (BROWSER_ID, text);
+		guint selected = gtk_drop_down_get_selected (dropdown);
+		conf_set_str_value (BROWSER_ID,  selected==0?"default":"manual");
 		return;
 	} else if (dropdown == GTK_DROP_DOWN (liferea_dialog_lookup (pd->dialog, "social"))) {
 		// special handling as value is a string
@@ -243,7 +242,7 @@ preferences_dialog_setup_drop_down (PreferencesDialog *pd, const gchar *widget_n
 		// special handling as value is a string
 		g_autofree gchar *value = NULL;
 		conf_get_str_value (BROWSER_ID, &value);
-		gtk_drop_down_set_selected (dropdown, g_str_equal(value, "Default")?0:1);
+		gtk_drop_down_set_selected (dropdown, g_str_equal(value, "default")?0:1);
 	} else {
 		// Standard integer values
 		gint selected;
