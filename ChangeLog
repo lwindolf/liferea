@@ -5,6 +5,9 @@
 	* Fixes #1510: media:content images not displayed
 	  (Lars Windolf)
 
+	* Update JS dependencies
+	  (Lars Windolf)
+
 
 2026-10-05  Lars Windolf <lars.windolf@gmx.de>
 
