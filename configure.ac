@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.16.15])
+AC_INIT([liferea],[1.16.16])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
