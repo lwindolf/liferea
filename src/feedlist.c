@@ -325,9 +325,6 @@ feedlist_mark_node_recount (Node *node)
 static void
 feedlist_init_node (Node *node)
 {
-	if (node->subscription)
-		db_subscription_load (node->subscription);
-
 	node_foreach_child (node, feedlist_init_node);
 	feedlist_update_node_counters_now (node);
 }
@@ -344,12 +341,12 @@ feedlist_init (FeedList *fl)
 	debug (DEBUG_CACHE, "Setting up root node");
 	ROOTNODE = node_source_setup_root ();
 
-	/* 3. Import nodes from DB */
+	/* 3. Initialize node state */
 	debug (DEBUG_CACHE, "Initializing node state");
 	feedlist_foreach (feedlist_init_node);
 	feedlist_flush_pending_node_recounts ();
 
-	/* 4. Finally save the new feed list state (to persist migration 
+	/* 4. Finally save the new feed list state (to persist migration
 	      related feed drops or initial default feed list import) */
 	feedlist->loading = FALSE;
 	feedlist_schedule_save ();

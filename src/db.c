@@ -1682,9 +1682,7 @@ db_node_source_find (Node *node, gpointer id)
 
 	iter = node->children;
 	while (iter) {
-		Node *child = (Node *)iter->data;
-		/* only traverse on nodes of the same node source */
-		if (node->source == child->source && db_node_source_find (child, id))
+		if (db_node_source_find ((Node *)iter->data, id))
 			return TRUE;
 		iter = g_slist_next (iter);
 	}
