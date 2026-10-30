@@ -480,6 +480,17 @@ feed_list_node_source_type_dialog (void)
 static gboolean
 node_source_ensure_login (Node *node, updateFlags flags)
 {
+	/* Recovering from auth failures and user cancelled auth dialogs */
+	if ((flags & UPDATE_REQUEST_PRIORITY_HIGH) &&
+	    (node->source->type->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) &&
+	    (node->source->loginState == NODE_SOURCE_STATE_AUTH_FAILED ||
+	     node->source->loginState == NODE_SOURCE_STATE_AUTH_CHALLENGE) &&
+	    !(node->subscription->authPending && !node->subscription->authCancelled)) {	/* no dialog waiting for input */
+		node->subscription->authCancelled = FALSE;
+		node_source_set_state (node, NODE_SOURCE_STATE_NONE);
+	}
+
+	/* Initial login handling */
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		if (node->source->type->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) {
 			/* If the source type supports login we need to do that first */

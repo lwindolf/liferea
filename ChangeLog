@@ -16,7 +16,8 @@ To be released
 	
 	* DnD of feeds causes random crashes
 	* Node sources do login despite empty password
-	* Node sources do not query credentials again after cancelling auth dialog and doing a manual update
+	* Node sources do not prompt for auth when login on startup fails
+	* Node sources info not showing login error after startup
 
 
 2026-10-20  Lars Windolf <lars.windolf@gmx.de>
