@@ -109,7 +109,8 @@ micropub_auth_token_dialog_cb (const gchar *token, gpointer user_data)
         }
 
         debug (DEBUG_UPDATE, "micropub_auth_token_dialog_cb: token entered by user");
-        liferea_auth_info_set (micropub_get_auth_token_id (), "microblog auth token", token);
+        g_autofree gchar *tokenId = micropub_get_auth_token_id ();
+        liferea_auth_info_set (tokenId, tokenId /* as label */, token);
         (*cb) ();
 }
 

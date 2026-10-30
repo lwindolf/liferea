@@ -405,6 +405,8 @@ on_node_source_type_response (GtkButton *btn, gpointer user_data)
 
 			g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
 				G_CALLBACK (on_new_node_source_create), dialog);
+
+			liferea_dialog_present (dialog);
 		}
 	}
 

@@ -88,6 +88,9 @@ liferea_dialog_new (const gchar *name)
 {
 	LifereaDialog	*ld;
 	g_autoptr(GError) error = NULL;
+
+	g_return_val_if_fail (g_main_context_is_owner (g_main_context_default ()), NULL);
+
 	g_autofree gchar *path = g_strdup_printf ("/org/gnome/liferea/ui/%s.ui", name);
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
@@ -110,10 +113,16 @@ liferea_dialog_new (const gchar *name)
 	g_object_set_data (G_OBJECT (priv->dialog), "LifereaDialog", ld);
 	g_signal_connect_swapped (priv->dialog, "destroy", G_CALLBACK (g_object_unref), ld);
 
-	if (ADW_IS_DIALOG (priv->dialog))
-		adw_dialog_present (ADW_DIALOG (priv->dialog), liferea_shell_get_window ());
-
 	return priv->dialog;
+}
+
+void
+liferea_dialog_present (GtkWidget *dialog)
+{
+	g_return_if_fail (g_main_context_is_owner (g_main_context_default ()));
+	g_return_if_fail (ADW_IS_DIALOG (dialog));
+
+	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
 }
 
 static void
@@ -151,7 +160,7 @@ liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDia
 	g_signal_connect_data (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked", G_CALLBACK (on_liferea_dialog_run_cancel_cb), dialog, NULL, 0);
 
 	adw_dialog_set_default_widget (ADW_DIALOG (dialog), liferea_dialog_lookup (dialog, "applyBtn"));
-	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
+	liferea_dialog_present (dialog);
 
 	return dialog;
 }

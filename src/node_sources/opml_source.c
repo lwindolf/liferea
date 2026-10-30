@@ -340,6 +340,8 @@ ui_opml_source_get_source_url (void)
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (dialog, "select_button")), "clicked",
 	                  G_CALLBACK (on_opml_file_choose_clicked),
 			  dialog);
+
+	liferea_dialog_present (dialog);
 }
 
 nodeSourceTypePtr

@@ -77,6 +77,8 @@ on_force_update (Node *node)
 	g_object_set_data (G_OBJECT (dialog), "node", node);
 	g_signal_connect (G_OBJECT (applyBtn), "clicked", G_CALLBACK (on_force_update_response), dialog);
 	g_signal_connect_swapped (G_OBJECT (cancelBtn), "clicked", G_CALLBACK (adw_dialog_close), dialog);
+
+	liferea_dialog_present (GTK_WIDGET (dialog));
 }
 
 // special recursive update helper, checks for force updates, but never allows
@@ -291,6 +293,8 @@ on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data
 		g_object_set_data (G_OBJECT (dialog), "node", node);
 		g_signal_connect (G_OBJECT (applyBtn), "clicked", G_CALLBACK (on_mark_all_read_response), dialog);
 		g_signal_connect_swapped (G_OBJECT (cancelBtn), "clicked", G_CALLBACK (adw_dialog_close), dialog);
+
+		liferea_dialog_present (GTK_WIDGET (dialog));
 	} else {
 		feedlist_mark_all_read (node);
 	}

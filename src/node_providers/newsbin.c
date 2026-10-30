@@ -108,6 +108,8 @@ ui_newsbin_common (Node *node)
 	g_object_set_data (G_OBJECT (dialog), "node", node);
 	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked", G_CALLBACK (on_newsbin_common_btn_clicked), dialog);
 
+	liferea_dialog_present (dialog);
+
 	return TRUE;
 }
 

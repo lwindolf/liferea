@@ -1,3 +1,26 @@
+To be released
+
+	Version 2.0.4
+
+	* Prevent stacked modal auth dialogs. Now only one dialog at a time
+	  will be shown. Additional dialogs for other subscriptions will be 
+	  deferred until the next auto update.
+	  (Lars Windolf)
+	
+	* Implement micropub support for app token based auth (e.g. https://pika.page)
+	  Added a new preference to configure a blog URL.
+	  IndieAuth/OAuth2 is not yet supported!
+	  (Lars Windolf)
+
+	Known problems
+	
+	* DnD of feeds causes random crashes
+	* Node sources do login despite empty password
+	* Node sources fail on another login as authToken is already set
+	* Node sources do not login after auth fail and user enters credentials
+	* Auth cancelling currently does not work as intended
+
+
 2026-10-20  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0.3
@@ -21,10 +44,6 @@
 
 	* Fixes crash on feed list node selection
 	  (Lars Windolf)
-
-	Known problems
-	
-	* DnD of feeds causes random crashes
 
 
 2026-09-29  Lars Windolf <lars.windolf@gmx.de>

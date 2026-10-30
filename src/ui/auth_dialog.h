@@ -36,7 +36,10 @@ G_DECLARE_FINAL_TYPE (AuthDialog, auth_dialog, AUTH, DIALOG, GObject)
  * @flags:		the flags for the update request after authenticating
  * 
  * Create a new authentication dialog if there is not already one for
- * the given subscription.
+ * the given subscription. Ensures there is only one auth dialog at any time.
+ * If there is already one open the function does nothing. We rely on 
+ * subscription auto-updating to repeat the opening (using the subscription->authPending
+ * flag).
  */
 void auth_dialog_new (subscriptionPtr subscription, gint flags);
 

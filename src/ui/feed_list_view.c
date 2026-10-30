@@ -1113,6 +1113,8 @@ feed_list_view_rename_node (Node *node)
 	g_object_set_data (G_OBJECT (dialog), "node", node->id);
 	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked", G_CALLBACK (on_nodenamedialog_response), dialog);
 	g_signal_connect_swapped (liferea_dialog_lookup (dialog, "cancelBtn"), "clicked", G_CALLBACK (adw_dialog_close), dialog);
+
+	liferea_dialog_present (dialog);
 }
 
 /* node deletion dialog */

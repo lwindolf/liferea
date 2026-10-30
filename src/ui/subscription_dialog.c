@@ -490,6 +490,8 @@ subscription_prop_dialog_new (subscriptionPtr subscription)
 	g_object_set_data (G_OBJECT (dialog), "subscription", (gpointer)subscription);
 
 	g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked", G_CALLBACK (on_dialog_response), dialog);
+
+	liferea_dialog_present (dialog);
 }
 
 /* simple "New" dialog */

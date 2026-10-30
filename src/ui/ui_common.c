@@ -89,8 +89,6 @@ on_confirm_dialog_response (AdwDialog *dialog, gchar *response_id, gpointer user
 		acceptCb (user_data);
 	else if (cancelCb)
 		cancelCb (user_data);
-
-	adw_dialog_close (dialog);
 }
 
 void
