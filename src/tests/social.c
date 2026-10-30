@@ -21,7 +21,7 @@
 #include <glib.h>
 
 #include "conf.h"
-#include "social.h"
+#include "social/bookmark.h"
 
 extern GSList *bookmarkSites;
 extern socialSitePtr bookmarkSite;

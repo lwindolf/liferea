@@ -53,6 +53,20 @@ class LibsecretPlugin(GObject.Object, Liferea.Activatable, Liferea.AuthActivatab
                 username, password = items[0].get_secret().get_text().split('@@@')
                 Liferea.auth_info_from_store(id, username, password)
 
+    def do_get(self, id):
+        coll = self.get_collection()
+        if coll:
+            items = coll.search_sync(None, {'id': id}, Secret.SearchFlags.UNLOCK, None)
+            if items and items[0].load_secret_sync(None):
+                return items[0].get_secret().get_text()
+
+    def do_set(self, id, label, value):
+        coll = self.get_collection()
+        if not coll:
+            coll = Secret.Collection.create_sync(None, LABEL, None, Secret.CollectionCreateFlags(0), None)
+        secret = Secret.Value.new(value, len(value), 'text/plain')
+        Secret.Item.create_sync(coll, SCHEMA, {'id': id}, label, secret, Secret.ItemCreateFlags.REPLACE, None)
+
     def do_delete(self, id):
         Secret.password_clear_sync(SCHEMA, {'id': id}, None)
 

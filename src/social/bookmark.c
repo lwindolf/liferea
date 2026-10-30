@@ -1,5 +1,5 @@
 /*
- * @file social.c  social networking integration
+ * @file bookmark.c  bookmark service integration
  * 
  * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
  *
@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "social.h"
+#include "bookmark.h"
 
 #include "conf.h"
 #include "debug.h"

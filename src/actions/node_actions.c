@@ -46,7 +46,7 @@ on_force_update_response (GtkWidget *btn, gpointer user_data)
 {
 	AdwDialog *dialog = ADW_DIALOG (user_data);
 	Node *node = g_object_get_data (G_OBJECT (dialog), "node");
-	subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+	node_update_subscription (node, GINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
 	adw_dialog_close (dialog);
 }
 
@@ -77,6 +77,8 @@ on_force_update (Node *node)
 	g_object_set_data (G_OBJECT (dialog), "node", node);
 	g_signal_connect (G_OBJECT (applyBtn), "clicked", G_CALLBACK (on_force_update_response), dialog);
 	g_signal_connect_swapped (G_OBJECT (cancelBtn), "clicked", G_CALLBACK (adw_dialog_close), dialog);
+
+	liferea_dialog_present (GTK_WIDGET (dialog));
 }
 
 // special recursive update helper, checks for force updates, but never allows
@@ -99,7 +101,7 @@ do_menu_update (Node *node, gboolean doForce)
 			if (doForce)
 				on_force_update (node);
 		} else {
-			subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+			node_update_subscription (node, GINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
 		}
 		// No return here to allow force updating node sources (which have a subscription and children)
 	}
@@ -291,6 +293,8 @@ on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data
 		g_object_set_data (G_OBJECT (dialog), "node", node);
 		g_signal_connect (G_OBJECT (applyBtn), "clicked", G_CALLBACK (on_mark_all_read_response), dialog);
 		g_signal_connect_swapped (G_OBJECT (cancelBtn), "clicked", G_CALLBACK (adw_dialog_close), dialog);
+
+		liferea_dialog_present (GTK_WIDGET (dialog));
 	} else {
 		feedlist_mark_all_read (node);
 	}

@@ -23,7 +23,7 @@
 
 #include "browser.h"
 #include "common.h"
-#include "social.h"
+#include "social/bookmark.h"
 #include "ui/browser_tabs.h"
 #include "ui/ui_common.h"
 

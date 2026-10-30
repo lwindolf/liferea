@@ -36,7 +36,6 @@
 #include "debug.h"
 #include "download_activatable.h"
 #include "node_source_activatable.h"
-#include "liferea_activatable.h"
 #include "liferea_shell_activatable.h"
 #include "plugins_engine.h"
 #include "ui/liferea_dialog.h"
@@ -183,6 +182,14 @@ liferea_plugin_call (GType type, GFunc func, gpointer user_data)
 	ctxt.func = func;
 	ctxt.user_data = user_data;
 	peas_extension_set_foreach (set, (PeasExtensionSetForeachFunc)liferea_plugin_call_foreach, &ctxt);
+}
+
+LifereaActivatable *
+liferea_plugin_get (GType type)
+{
+	PeasExtensionSet *set = g_hash_table_lookup (plugins->extension_sets, GINT_TO_POINTER(type));
+
+	return g_list_model_get_item (G_LIST_MODEL (set), 0);
 }
 
 gboolean

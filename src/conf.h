@@ -38,9 +38,12 @@
 #define DEFAULT_FONT			"document-font-name"
 #define USER_FONT			"browser-font"
 #define DISABLE_JAVASCRIPT		"disable-javascript"
-#define SOCIAL_BM_SITE			"social-bm-site"
 #define ENABLE_ITP			"enable-itp"
 #define ENABLE_READER_MODE		"enable-reader-mode"
+
+/* social / sharing */
+#define SOCIAL_BM_SITE			"social-bm-site"
+#define MICROPUB_ENDPOINT		"micropub-endpoint"
 
 /* enclosure handling */
 #define DOWNLOAD_CUSTOM_COMMAND 	"download-custom-command"

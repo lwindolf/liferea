@@ -1,7 +1,7 @@
 /*
  * @file auth_activatable.c  password provider plugin type
  *
- * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,37 @@ void
 liferea_auth_activatable_default_init (LifereaAuthActivatableInterface *iface)
 {
 	/* No properties yet */
+}
+
+gchar *
+liferea_auth_activatable_get (LifereaAuthActivatable * activatable,
+                              const gchar *authId)
+{
+	LifereaAuthActivatableInterface *iface;
+
+	if (!LIFEREA_IS_AUTH_ACTIVATABLE (activatable))
+		return NULL;
+
+	iface = LIFEREA_AUTH_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->get)
+		return iface->get (activatable, authId);
+
+	return NULL;
+}
+
+void
+liferea_auth_activatable_set (LifereaAuthActivatable * activatable,
+                              const gchar *authId,
+			      const gchar *label,
+			      const gchar *value)
+{
+	LifereaAuthActivatableInterface *iface;
+
+	g_return_if_fail (LIFEREA_IS_AUTH_ACTIVATABLE (activatable));
+
+	iface = LIFEREA_AUTH_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->set)
+		iface->set (activatable, authId, label, value);
 }
 
 void

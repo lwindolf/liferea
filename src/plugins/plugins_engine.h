@@ -24,6 +24,7 @@
 
 #include <libpeas.h>
 
+#include "liferea_activatable.h"
 #include "ui/liferea_shell.h"
 
 G_BEGIN_DECLS
@@ -55,6 +56,14 @@ void liferea_plugins_engine_register_shell_plugins (LifereaShell *shell);
  * @user_data:		some user data (or NULL) 
  */
 void liferea_plugin_call (GType type, GFunc func, gpointer user_data);
+
+/**
+ * liferea_plugin_get: (skip)
+ * @type:		the type of the plugin interface
+ *
+ * Returns: first plugin of the type (or NULL)
+ */
+LifereaActivatable * liferea_plugin_get (GType type);
 
 /**
  * liferea_plugin_is_active: (skip)

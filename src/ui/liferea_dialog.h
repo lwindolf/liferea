@@ -43,17 +43,28 @@ typedef void (*LifereaDialogCallback) (GtkWidget *dialog, gpointer user_data);
  * 
  * For more complex scenarios and AdwAlertDialogs use liferea_dialog_new()
  */
-void liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata);
+GtkWidget * liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata);
 
 /**
  * liferea_dialog_new:
  * @name:		the dialog name
  *
- * Convenience wrapper to create a new dialog and set up its GUI
+ * Convenience wrapper to create a new dialog and set up its GUI.
+ * The dialog is not shown yet: the caller has to finish setting it up
+ * and then call liferea_dialog_present() exactly once.
  * 
  * Returns: the dialog widget
  */
 GtkWidget * liferea_dialog_new (const gchar *name);
+
+/**
+ * liferea_dialog_present:
+ * @dialog:	the dialog widget created with liferea_dialog_new()
+ *
+ * Shows an AdwDialog on top of the main window. Must be called only
+ * once per dialog and only from the main thread.
+ */
+void liferea_dialog_present (GtkWidget *dialog);
 
 /**
  * liferea_dialog_lookup:

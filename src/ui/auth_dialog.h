@@ -1,7 +1,7 @@
 /**
- * @file auth_dialog.h  authentication support dialog
+ * @file auth_dialog.h  authentication support dialogs
  *
- * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,13 +32,36 @@ G_DECLARE_FINAL_TYPE (AuthDialog, auth_dialog, AUTH, DIALOG, GObject)
 
 /**
  * auth_dialog_new:
- * Create a new authentication dialog if there is not already one for
- * the given subscription.
- *
  * @subscription:	the subscription whose authentication info is needed
- * @flags:			the flags for the update request after authenticating
+ * @flags:		the flags for the update request after authenticating
+ * 
+ * Create a new authentication dialog if there is not already one for
+ * the given subscription. Ensures there is only one auth dialog at any time.
+ * If there is already one open the function does nothing. We rely on 
+ * subscription auto-updating to repeat the opening (using the subscription->authPending
+ * flag).
  */
 void auth_dialog_new (subscriptionPtr subscription, gint flags);
+
+/**
+ * AuthTokenCallback:
+ * @token:      the non-empty token entered by the user
+ * @user_data:  user data passed to auth_token_dialog_new()
+ *
+ * Called only when the user submitted a token. Not called on cancel.
+ */
+typedef void (*AuthTokenCallback) (const gchar *token, gpointer user_data);
+
+/**
+ * auth_token_dialog_new:
+ * @url:        microblog service URL to be shown to user
+ * @tokenId:    lookup id
+ * @cb:         success callback
+ * @user_data:  user data for the callback
+ *
+ * Asks for an app token. Closes previous dialog if needed.
+ */
+void auth_token_dialog_new (const gchar *url, const gchar *tokenId, AuthTokenCallback cb, gpointer user_data);
 
 G_END_DECLS
 

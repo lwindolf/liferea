@@ -25,9 +25,99 @@
 
 #include "common.h"
 #include "debug.h"
+#include "node_source.h"
 #include "update.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
+
+/* The GtkBuilder inside LifereaDialog keeps its own reference on the dialog, so
+   a closed dialog is not necessarily finalized. Weak pointers would therefore
+   not be cleared, so singleton pointers are reset on the "closed" signal. */
+static void
+on_singleton_dialog_closed (AdwDialog *closed, gpointer user_data)
+{
+	GtkWidget **singleton = (GtkWidget **)user_data;
+
+	if (*singleton == GTK_WIDGET (closed))
+		*singleton = NULL;
+}
+
+/* token dialog */
+
+typedef struct {
+	AuthTokenCallback	cb;
+	gpointer		user_data;
+} AuthTokenContext;
+
+static void
+auth_token_context_free (gpointer user_data, GClosure* closure) 
+{
+	g_free (user_data);
+}
+
+/* There is only one token dialog at any time */
+static GtkWidget *tokenDialog = NULL;
+
+static void
+on_auth_token_changed (GtkEditable *editable, gpointer user_data)
+{
+	g_autofree gchar *token = g_strstrip (g_strdup (gtk_editable_get_text (editable)));
+
+	adw_alert_dialog_set_response_enabled (ADW_ALERT_DIALOG (user_data), "ok", token[0] != '\0');
+}
+
+static void
+on_auth_token_dialog_response (AdwDialog *dialog, gchar *response_id, gpointer user_data)
+{
+	AuthTokenContext *ctx = (AuthTokenContext *)user_data;
+	g_autofree gchar *token = NULL;
+
+	if (g_strcmp0 (response_id, "ok") == 0)
+		token = g_strstrip (g_strdup (liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "tokenEntry")));
+
+	ctx->cb (token, ctx->user_data);
+}
+
+void
+auth_token_dialog_new (const gchar *url, const gchar *tokenId, AuthTokenCallback cb, gpointer user_data)
+{
+	GtkWidget		*dialog;
+	AuthTokenContext	*ctx;
+	g_autofree gchar	*promptStr = NULL;
+
+	g_return_if_fail (tokenId != NULL);
+	g_return_if_fail (cb != NULL);
+
+	if (tokenDialog)
+		adw_dialog_force_close (ADW_DIALOG (tokenDialog));
+
+	dialog = liferea_dialog_new ("auth_token");
+	if (!dialog)
+		return;
+
+	tokenDialog = dialog;
+	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "cancel", _("_Cancel"));
+	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "ok", _("_OK"));
+	adw_alert_dialog_set_response_appearance (ADW_ALERT_DIALOG (dialog), "ok", ADW_RESPONSE_SUGGESTED);
+	adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
+	adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "cancel");
+	adw_alert_dialog_set_response_enabled (ADW_ALERT_DIALOG (dialog), "ok", FALSE);
+
+	promptStr = g_strdup_printf (_("Please enter the app token for \"%s\":"), url);
+	gtk_label_set_text (GTK_LABEL (liferea_dialog_lookup (dialog, "prompt")), promptStr);
+
+	g_signal_connect (liferea_dialog_lookup (dialog, "tokenEntry"), "changed", G_CALLBACK (on_auth_token_changed), dialog);
+
+	ctx = g_new0 (AuthTokenContext, 1);
+	ctx->cb = cb;
+	ctx->user_data = user_data;
+	g_signal_connect_data (dialog, "response", G_CALLBACK (on_auth_token_dialog_response), ctx, (GClosureNotify)auth_token_context_free, 0);
+	g_signal_connect (dialog, "closed", G_CALLBACK (on_singleton_dialog_closed), &tokenDialog);
+
+	liferea_dialog_present (dialog);
+}
+
+/* user + password dialog */
 
 static void
 on_authdialog_response (AdwDialog *dialog,
@@ -36,31 +126,37 @@ on_authdialog_response (AdwDialog *dialog,
 {
 
 	subscriptionPtr subscription = (subscriptionPtr)userdata;
-	subscription->activeAuth = FALSE;
 
 	if (g_strcmp0 (response_id, "ok") == 0) {
 		subscription_set_auth_info (subscription,
 		                            liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "usernameEntry"),
 		                            liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "passwordEntry"));
-		subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
-	}
 
-	adw_dialog_close (dialog);
+		/* If this is a node source: reset login state, so auto-update will automatically relogin with the new credentials */
+		if (subscription->node == subscription->node->source->root)
+			node_source_relogin (subscription->node);
+		else
+			subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+	} else {
+		/* ensure we do not automatically ask again */
+		subscription->authCancelled = TRUE;
+	}
 }
+
+static GtkWidget *dialog = NULL;
 
 void
 auth_dialog_new (subscriptionPtr subscription, gint unused)
 {
-	GtkWidget		*dialog;
 	gchar			*promptStr;
 	gchar			*source = NULL;
 	xmlURIPtr		uri;
 
-	if (subscription->activeAuth) {
-		debug (DEBUG_UPDATE, "Missing/wrong authentication. Skipping, as a dialog is already active.");
+	subscription->authPending = TRUE;
+
+	/* never show 2 auth dialogs at once, we rely on auto update to repeat a 2nd dialog later */
+	if (dialog)
 		return;
-	}
-	subscription->activeAuth = TRUE;
 
 	dialog = liferea_dialog_new ("auth");
 	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "cancel",  _("_Cancel"));
@@ -68,6 +164,7 @@ auth_dialog_new (subscriptionPtr subscription, gint unused)
 	adw_alert_dialog_set_response_appearance (ADW_ALERT_DIALOG (dialog), "ok", ADW_RESPONSE_SUGGESTED);
 	adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
 
+	g_signal_connect (dialog, "closed", G_CALLBACK (on_singleton_dialog_closed), &dialog);
 	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_authdialog_response), subscription);
 
 	uri = xmlParseURI (subscription_get_source (subscription));
@@ -96,5 +193,5 @@ auth_dialog_new (subscriptionPtr subscription, gint unused)
 	if (source)
 		xmlFree (source);
 
-	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
+	liferea_dialog_present (dialog);
 }

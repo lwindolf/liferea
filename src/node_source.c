@@ -294,6 +294,9 @@ node_source_set_state (Node *node, gint newState)
 	debug (DEBUG_UPDATE, "node_source: %s |%s| now in state %d (was %d)", node->id, node->title, newState, node->source->loginState);
 
 	/* State transition actions */
+	if (newState == NODE_SOURCE_STATE_NONE)
+		g_clear_pointer (&node->source->authToken, g_free);
+
 	if (newState == NODE_SOURCE_STATE_ACTIVE)
 		node->available = TRUE;
 
@@ -405,6 +408,8 @@ on_node_source_type_response (GtkButton *btn, gpointer user_data)
 
 			g_signal_connect (liferea_dialog_lookup (dialog, "applyBtn"), "clicked",
 				G_CALLBACK (on_new_node_source_create), dialog);
+
+			liferea_dialog_present (dialog);
 		}
 	}
 
@@ -471,11 +476,45 @@ feed_list_node_source_type_dialog (void)
 	return TRUE;
 }
 
+/* Checks login, performs login if needed and returns TRUE if source is logged in */
+static gboolean
+node_source_ensure_login (Node *node, updateFlags flags)
+{
+	/* Recovering from auth failures and user cancelled auth dialogs */
+	if ((flags & UPDATE_REQUEST_PRIORITY_HIGH) &&
+	    (node->source->type->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) &&
+	    (node->source->loginState == NODE_SOURCE_STATE_AUTH_FAILED ||
+	     node->source->loginState == NODE_SOURCE_STATE_AUTH_CHALLENGE) &&
+	    !(node->subscription->authPending && !node->subscription->authCancelled)) {	/* no dialog waiting for input */
+		node->subscription->authCancelled = FALSE;
+		node_source_set_state (node, NODE_SOURCE_STATE_NONE);
+	}
+
+	/* Initial login handling */
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
+		if (node->source->type->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) {
+			/* If the source type supports login we need to do that first */
+			debug (DEBUG_UPDATE, "node_source_ensure_login: %s |%s| start login", node->id, node->title);
+			node_source_set_state (node, NODE_SOURCE_STATE_IN_PROGRESS);
+			g_assert (node->source->type->source_login);
+			(node->source->type->source_login) (node, flags);
+			return FALSE;
+		} else {
+			/* If the source type does not support login we can just set it to active */
+			debug (DEBUG_UPDATE, "node_source_ensure_login: %s |%s| no login required", node->id, node->title);
+			node_source_set_state (node, NODE_SOURCE_STATE_ACTIVE);
+		}
+	}
+
+	return (node->source->loginState == NODE_SOURCE_STATE_ACTIVE);
+}
+
 void
 node_source_update (Node *node)
 {
 	if (node->subscription) {
-		subscription_update (node->subscription, 0);
+		if (node_source_ensure_login (node, UPDATE_REQUEST_PRIORITY_HIGH))
+			subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 
 		/* Note that node sources are required to auto-update child
 		   nodes themselves once login and feed list update is fine. */
@@ -488,29 +527,22 @@ node_source_update (Node *node)
 void
 node_source_auto_update (Node *node, updateFlags flags)
 {
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		if (node->source->type->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) {
-			/* If the source type supports login we need to do that first */
-			debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| start login", node->id, node->title);
-			node_source_set_state (node, NODE_SOURCE_STATE_IN_PROGRESS);
-			g_assert (node->source->type->source_login);
-			(node->source->type->source_login) (node, flags);
-			return;
-		} else {
-			/* If the source type does not support login we can just set it to active */
-			debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| no login required", node->id, node->title);
-			node_source_set_state (node, NODE_SOURCE_STATE_ACTIVE);
-		}
-	}
-
-	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS) {
-		debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| skipped as login in progress", node->id, node->title);
+	if (!node_source_ensure_login (node, flags)) {
+		debug (DEBUG_UPDATE, "node_source_auto_update: %s |%s| skipped as not logged in (yet)", node->id, node->title);
 		return;
 	}
 
 	// FIXME: does it make sense to use autoupdate for the subscription?
 	// there is no fetching besides login anyway
 	subscription_auto_update (node->subscription, 0 /* flags */);
+}
+
+void
+node_source_relogin (Node *node)
+{
+	/* For simplicity reset state and run auto update to relogin */
+	node_source_set_state (node->source->root, NODE_SOURCE_STATE_NONE);
+	node_source_update (node->source->root);
 }
 
 static gboolean

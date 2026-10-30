@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 1.0.2 -->
+<interface>
+  <!-- interface-name micropub.ui -->
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.7"/>
+  <object class="AdwDialog" id="micropub">
+    <property name="accessible-role">form</property>
+    <property name="default-widget">applyBtn</property>
+    <property name="focus-widget">postEntry</property>
+    <property name="follows-content-size">True</property>
+    <property name="width-request">400</property>
+    <child>
+      <object class="GtkBox">
+        <property name="margin-bottom">12</property>
+        <property name="margin-end">12</property>
+        <property name="margin-start">12</property>
+        <property name="margin-top">12</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">12</property>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkLabel" id="titleLabel">
+                <property name="css-classes">title-3</property>
+                <property name="label">Post Item</property>
+              </object>
+            </child>
+            <child>
+              <object class="AdwEntryRow" id="postEntry">
+                <property name="activates-default">True</property>
+                <property name="title">Post text</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="halign">end</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkButton" id="cancelBtn">
+                <property name="label">_Cancel</property>
+                <property name="use-underline">True</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="applyBtn">
+                <property name="css-classes">suggested-action</property>
+                <property name="label">_Post</property>
+                <property name="use-underline">True</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

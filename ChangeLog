@@ -1,6 +1,31 @@
 To be released
 
+	Version 2.0.4
+
+	* Prevent stacked modal auth dialogs. Now only one dialog at a time
+	  will be shown. Additional dialogs for other subscriptions will be 
+	  deferred until the next auto update.
+	  (Lars Windolf)
+	
+	* Implement micropub support for app token based auth (e.g. https://pika.page)
+	  Added a new preference to configure a blog URL.
+	  IndieAuth/OAuth2 is not yet supported!
+	  (Lars Windolf)
+
+	Known problems
+	
+	* DnD of feeds causes random crashes
+	* Node sources do login despite empty password
+	* Node sources do not prompt for auth when login on startup fails
+	* Node sources info not showing login error after startup
+
+
+2026-10-20  Lars Windolf <lars.windolf@gmx.de>
+
 	Version 2.0.3
+
+	* Ensure schemas are available during testing
+	  (Paul Gevers)
 
 	* Fixes missing top margin when Readability.js does not convert text
 	  (Lars Windolf)
@@ -13,9 +38,11 @@ To be released
 	  after 30s of no changes.
 	  (Lars Windolf)
 
-	Known problems
-	
-	* DnD of feeds causes random crashes
+	* Update handlebars dependency
+	  (Lars Windolf)
+
+	* Fixes crash on feed list node selection
+	  (Lars Windolf)
 
 
 2026-09-29  Lars Windolf <lars.windolf@gmx.de>

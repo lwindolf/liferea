@@ -65,4 +65,20 @@ void liferea_auth_info_store (gpointer subscription);
  */
 void liferea_auth_info_query (const gchar *authId);
 
+/**
+ * liferea_auth_info_get:
+ * @authId:		an id
+ * 
+ * Returns: auth information for a given id synchronously.
+ */
+gchar * liferea_auth_info_get (const gchar *authId);
+
+/**
+ * liferea_auth_info_set:
+ * @authId:		an id
+ * @label:              info string describing the secret
+ * @value:              credential
+ */
+void liferea_auth_info_set (const gchar *authId, const gchar *label, const gchar *value);
+
 #endif

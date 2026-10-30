@@ -65,7 +65,8 @@ typedef struct subscription {
 
 	guint		autoDiscoveryTries;	/*<< counter to break auto discovery redirect circles */
 
-	gboolean	activeAuth;		/*<< TRUE if authentication in progress */
+	gboolean	authPending;		/*<< TRUE if authentication input from user is missing */
+	gboolean	authCancelled;		/*<< TRUE if user has cancelled auth dialog, we must not force further auth dialogs */
 
 	gboolean	discontinued;		/*<< flag to avoid updating after HTTP 410 */
 

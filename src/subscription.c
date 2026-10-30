@@ -109,6 +109,9 @@ subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 {
 	const gboolean interactive = flags & UPDATE_REQUEST_PRIORITY_HIGH;
 
+	if (subscription->authCancelled)
+		return FALSE;
+
 	if (subscription->updateJob) {
 		debug (DEBUG_UPDATE, "subscription: |%s| is already being updated!", subscription->source);
 		if (interactive)
@@ -387,6 +390,12 @@ subscription_auto_update (subscriptionPtr subscription, updateFlags flags)
 		return;
 	}
 
+	if (subscription->authPending && !subscription->authCancelled) {
+		/* We are still waiting for auth info, retry opening auth dialog */
+		auth_dialog_new (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+		return;
+	}
+
 	interval = subscription_get_effective_update_interval (subscription);
 	now = g_get_real_time();
 
@@ -585,15 +594,20 @@ subscription_set_auth_info (subscriptionPtr subscription,
                             const gchar *username,
                             const gchar *password)
 {
-	g_assert (NULL != subscription->updateOptions);
+	g_assert (subscription->updateOptions);
+	g_assert (subscription->node);
 
 	g_free (subscription->updateOptions->username);
 	g_free (subscription->updateOptions->password);
 
+	subscription->authPending = FALSE;
+	subscription->authCancelled = FALSE;
 	subscription->updateOptions->username = g_strdup (username);
 	subscription->updateOptions->password = g_strdup (password);
 
-	liferea_auth_info_store (subscription);
+	g_autofree gchar *label = g_strdup_printf ("[%s] %s", subscription->node->id, subscription->node->title);
+	g_autofree gchar *secret = g_strdup_printf ("%s@@@%s", username, password);
+	liferea_auth_info_set (subscription->node->id, label, secret);
 }
 
 subscriptionPtr

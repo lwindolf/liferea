@@ -36,7 +36,7 @@
 #include "plugins/liferea_shell_activatable.h"
 #include "plugins/plugins_engine.h"
 #include "itemlist.h"
-#include "social.h"
+#include "social/bookmark.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -343,6 +343,8 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gtk_drop_down_set_model (dropdown, G_LIST_MODEL (list_model));
 	gtk_drop_down_set_selected (dropdown, (guint)tmp);
 	g_signal_connect (G_OBJECT (dropdown), "notify::selected", G_CALLBACK (on_drop_down_changed), pd);
+
+	conf_bind (MICROPUB_ENDPOINT, liferea_dialog_lookup (pd->dialog, "microblogEntry"), "text", G_SETTINGS_BIND_DEFAULT);
 
 	/* ================== panel 4 "browser" ==================== */
 

@@ -298,6 +298,14 @@ void node_source_set_active (Node *node);
 void node_source_set_auth_token (Node *node, gchar *token);
 
 /**
+ * node_source_relogin: (skip)
+ * @node:		a node
+ * 
+ * Forces a relogin
+ */
+void node_source_relogin (Node *node);
+
+/**
  * node_source_update: (skip)
  * @node:			the source node
  *
