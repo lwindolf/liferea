@@ -41,7 +41,8 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "net.h"
-#include "social.h"
+#include "social/bookmark.h"
+#include "social/micropub.h"
 #include "update.h"
 #include "xml.h"
 #include "plugins/plugins_engine.h"
@@ -82,8 +83,19 @@ liferea_application_finalize (GObject *gobject)
 	G_OBJECT_CLASS(liferea_application_parent_class)->finalize(gobject);
 }
 
-/* GApplication "open" callback for receiving feed-add requests from remote --add-feed option or
- * adding feeds passed as argument. */
+/* GApplication "open" callback for handling
+
+   1.) receiving different variants of feed-add requests
+
+       a) remote --add-feed option          "liferea --add-feed https://example.com/feed.xml"
+       b) adding feeds passed as argument   "liferea https://example.com/feed.xml"
+       c) adding files as an argument       "liferea /data/feed.xml"
+       d) adding files via file://          "liferea file:///data/feed.xml"
+       e) feed:// URI schema handler        "liferea feed:https://example.com/feed.xml"
+
+   2.) OAuth2 responses                     "liferea net.sf.liferea://<oauth payload>"
+   
+ */
 static void
 on_app_open (GApplication *application,
              gpointer      files,
@@ -102,6 +114,12 @@ on_app_open (GApplication *application,
 	for (i=0;(i<n_files) && uris[i];i++) {
 		gchar *uri = g_file_get_uri (uris[i]);
 		gchar *dir = g_get_current_dir ();
+
+		if (!g_str_has_prefix (uri, "net.sf.liferea://")) {
+			// For now we only have micropub using OAuth2 so we directly pass the URI
+			micropub_auth_callback (uri);
+			continue;
+		}
 
 		/* Prevent empty argument causing a subscription (Github #1359) */
 		if (!(g_str_has_prefix (uri, "file://") && strlen(uri) > 7 && g_str_equal (dir, uri + 7))) {

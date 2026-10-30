@@ -39,7 +39,7 @@
 #include "itemlist.h"
 #include "item_state.h"
 #include "node_providers/newsbin.h"
-#include "social.h"
+#include "social/bookmark.h"
 #include "xml.h"
 #include "ui/browser_tabs.h"
 #include "ui/icons.h"
@@ -829,6 +829,8 @@ item_list_view_popup_menu (ItemListView *ilv, itemPtr item)
 	g_menu_item_set_action_and_target (menu_item, "app.social-bookmark-link", "(ss)", item_link, item_get_title (item));
 	g_menu_append_item (section, menu_item);
 	g_free (text);
+
+	g_menu_append (section, _("Post to Blog"), "app.blog-item");
 
 	g_menu_item_set_label (menu_item, _("Copy Item _Location"));
 	g_menu_item_set_action_and_target (menu_item, "app.copy-link-to-clipboard", "s", item_link);

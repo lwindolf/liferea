@@ -43,7 +43,7 @@
 #include "itemlist.h"
 #include "liferea_application.h"
 #include "net_monitor.h"
-#include "social.h"
+#include "social/bookmark.h"
 #include "node_source.h"
 #include "node_providers/newsbin.h"
 #include "node_providers/vfolder.h"

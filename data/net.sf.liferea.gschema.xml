@@ -172,6 +172,11 @@
       <summary>Social bookmark site</summary>
       <description>This option determines which social bookmark site use to save links.</description>
     </key>
+    <key name="micropub-endpoint" type="s">
+      <default>''</default>
+      <summary>URL of users micro-blogging page</summary>
+      <description>This URL is used to discover the users microblogging service.</description>
+    </key>
     <key name="last-wpane-pos" type="i">
       <default>0</default>
       <summary>Width of the itemlist pane in the mainwindow</summary>

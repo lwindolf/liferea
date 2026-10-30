@@ -72,3 +72,17 @@ liferea_auth_has_active_store (void)
 {
 	return liferea_plugin_is_active (LIFEREA_AUTH_ACTIVATABLE_TYPE);
 }
+
+gchar *
+liferea_auth_info_get (const gchar *authId)
+{
+	LifereaActivatable *plugin = liferea_plugin_get (LIFEREA_AUTH_ACTIVATABLE_TYPE);
+	return liferea_auth_activatable_get (LIFEREA_AUTH_ACTIVATABLE (plugin), authId);
+}
+
+void
+liferea_auth_info_set (const gchar *authId, const gchar *label, const gchar *value)
+{
+	LifereaActivatable *plugin = liferea_plugin_get (LIFEREA_AUTH_ACTIVATABLE_TYPE);
+	liferea_auth_activatable_set (LIFEREA_AUTH_ACTIVATABLE (plugin), authId, label, value);
+}

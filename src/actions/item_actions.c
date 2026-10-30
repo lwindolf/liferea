@@ -26,6 +26,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "itemlist.h"
+#include "social/micropub.h"
 #include "node.h"
 #include "node_providers/feed.h"
 #include "node_providers/newsbin.h"
@@ -135,6 +136,12 @@ on_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_da
 	item = item_load (item_id);
 	g_assert (NULL != item);
 	newsbin_add_item (newsbin_index, item);
+}
+
+static void
+on_blog_item (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	micropub_post (itemlist_get_selected ());
 }
 
 static void
@@ -249,6 +256,7 @@ static const GActionEntry gaction_entries[] = {
 	{"launch-selected-item-in-browser", on_launch_item_in_browser, NULL, NULL, NULL},
 	{"launch-selected-item-in-external-browser", on_launch_item_in_external_browser, NULL, NULL, NULL},
 	{"copy-item-to-newsbin", on_copy_to_newsbin, "(ut)", NULL, NULL},
+	{"blog-item", on_blog_item, NULL, NULL, NULL},
 	{"next-unread-item", on_next_unread_item_activate, NULL, NULL, NULL},
 
 	// popup menu actions

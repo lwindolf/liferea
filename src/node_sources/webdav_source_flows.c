@@ -320,7 +320,8 @@ webdav_source_flow_upload_feed (Node *root, const gchar *node_id, gboolean uploa
                 webdav_source_flow_upload_feed_step,
                 flow,
                 webdav_source_flow_upload_feed_free,
-                0);
+                0 /* flags */
+        );
 }
 
 /* index bootstrap flow */

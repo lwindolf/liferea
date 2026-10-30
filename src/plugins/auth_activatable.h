@@ -1,7 +1,7 @@
 /*
  * @file liferea_auth_activatable.h  password provider plugin type
  *
- * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2026 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,33 @@ struct _LifereaAuthActivatableInterface
 {
 	GTypeInterface g_iface;
 
+       	gchar * (*get) (LifereaAuthActivatable * activatable, const gchar *authId);
+        void (*set) (LifereaAuthActivatable * activatable, const gchar *authId, const gchar *label, const gchar *value);
 	void (*query) (LifereaAuthActivatable * activatable, const gchar *authId);
 	void (*store) (LifereaAuthActivatable * activatable, const gchar *authId, const gchar *username, const gchar *password);
 };
+
+/**
+ * liferea_auth_activatable_get:
+ * @activatable:	a #LifereaAuthActivatable.
+ * @authId:		a unique auth info id 
+ *
+ * Returns: (transfer full) (nullable): the secret text (or NULL)
+ */
+gchar * liferea_auth_activatable_get (LifereaAuthActivatable *activatable,
+                                      const gchar *authId);
+
+/**
+ * liferea_auth_activatable_set:
+ * @activatable:	a #LifereaAuthActivatable
+ * @authId:		a unique auth info id 
+ * @label:              info string describing the secret
+ * @value:              credential
+ */
+void liferea_auth_activatable_set (LifereaAuthActivatable *activatable,
+                                   const gchar *authId,
+                                   const gchar *label,
+                                   const gchar *value);
 
 /**
  * liferea_auth_activatable_query:

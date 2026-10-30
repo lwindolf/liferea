@@ -135,13 +135,13 @@ on_liferea_dialog_run_apply_cb (GtkButton *btn, gpointer userdata)
 	adw_dialog_close (ADW_DIALOG (dialog));
 }
 
-void
+GtkWidget *
 liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata)
 {
 	GtkWidget *dialog = liferea_dialog_new (name);
 
 	if (!dialog)
-		return;
+		return NULL;
 
 	g_object_set_data (G_OBJECT (dialog), "apply", applyCb);
 	g_object_set_data (G_OBJECT (dialog), "cancel", cancelCb);
@@ -152,6 +152,8 @@ liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDia
 
 	adw_dialog_set_default_widget (ADW_DIALOG (dialog), liferea_dialog_lookup (dialog, "applyBtn"));
 	adw_dialog_present (ADW_DIALOG (dialog), liferea_shell_get_window ());
+
+	return dialog;
 }
 
 const gchar *

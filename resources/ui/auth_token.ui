@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 1.0.2 -->
+<interface>
+  <!-- interface-name auth_token.ui -->
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.5"/>
+  <object class="AdwAlertDialog" id="auth_token">
+    <property name="focus-widget">tokenEntry</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">12</property>
+        <child>
+          <object class="GtkLabel">
+            <property name="css-classes">title-3</property>
+            <property name="hexpand">True</property>
+            <property name="hexpand-set">True</property>
+            <property name="label" translatable="yes">Authentication required</property>
+            <property name="wrap">1</property>
+            <property name="xalign">0</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="prompt">
+            <property name="hexpand">True</property>
+            <property name="hexpand-set">True</property>
+            <property name="label" translatable="yes">LABEL</property>
+            <property name="wrap">1</property>
+            <property name="xalign">0</property>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPasswordEntryRow" id="tokenEntry">
+            <property name="title">App token</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

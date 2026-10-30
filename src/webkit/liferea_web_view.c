@@ -27,7 +27,7 @@
 #include "download.h"
 #include "feedlist.h"
 #include "itemlist.h"
-#include "social.h"
+#include "social/bookmark.h"
 #include "actions/link_actions.h"
 #include "ui/ui_common.h"
 #include "ui/browser_tabs.h"

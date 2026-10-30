@@ -43,7 +43,7 @@ typedef void (*LifereaDialogCallback) (GtkWidget *dialog, gpointer user_data);
  * 
  * For more complex scenarios and AdwAlertDialogs use liferea_dialog_new()
  */
-void liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata);
+GtkWidget * liferea_dialog_run (const gchar *name, LifereaDialogCallback applyCb, LifereaDialogCallback cancelCb, gpointer userdata);
 
 /**
  * liferea_dialog_new:

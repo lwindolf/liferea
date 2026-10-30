@@ -29,6 +29,82 @@
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 
+/* token dialog */
+
+typedef struct {
+	AuthTokenCallback	cb;
+	gpointer		user_data;
+} AuthTokenContext;
+
+static void
+auth_token_context_free (gpointer user_data, GClosure* closure) 
+{
+	g_free (user_data);
+}
+
+/* There is only one token dialog at any time */
+static GtkWidget *tokenDialog = NULL;
+
+static void
+on_auth_token_changed (GtkEditable *editable, gpointer user_data)
+{
+	g_autofree gchar *token = g_strstrip (g_strdup (gtk_editable_get_text (editable)));
+
+	adw_alert_dialog_set_response_enabled (ADW_ALERT_DIALOG (user_data), "ok", token[0] != '\0');
+}
+
+static void
+on_auth_token_dialog_response (AdwDialog *dialog, gchar *response_id, gpointer user_data)
+{
+	AuthTokenContext *ctx = (AuthTokenContext *)user_data;
+	g_autofree gchar *token = NULL;
+
+	if (g_strcmp0 (response_id, "ok") == 0)
+		token = g_strstrip (g_strdup (liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "tokenEntry")));
+
+	ctx->cb (token, ctx->user_data);
+}
+
+void
+auth_token_dialog_new (const gchar *url, const gchar *tokenId, AuthTokenCallback cb, gpointer user_data)
+{
+	GtkWidget		*dialog;
+	AuthTokenContext	*ctx;
+	g_autofree gchar	*promptStr = NULL;
+
+	g_return_if_fail (tokenId != NULL);
+	g_return_if_fail (cb != NULL);
+
+	if (tokenDialog)
+		adw_dialog_force_close (ADW_DIALOG (tokenDialog));
+
+	dialog = liferea_dialog_new ("auth_token");
+	if (!dialog)
+		return;
+
+	tokenDialog = dialog;
+	g_object_add_weak_pointer (G_OBJECT (dialog), (gpointer *)&tokenDialog);
+
+	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "cancel", _("_Cancel"));
+	adw_alert_dialog_add_response (ADW_ALERT_DIALOG (dialog), "ok", _("_OK"));
+	adw_alert_dialog_set_response_appearance (ADW_ALERT_DIALOG (dialog), "ok", ADW_RESPONSE_SUGGESTED);
+	adw_alert_dialog_set_default_response (ADW_ALERT_DIALOG (dialog), "ok");
+	adw_alert_dialog_set_close_response (ADW_ALERT_DIALOG (dialog), "cancel");
+	adw_alert_dialog_set_response_enabled (ADW_ALERT_DIALOG (dialog), "ok", FALSE);
+
+	promptStr = g_strdup_printf (_("Please enter the app token for \"%s\":"), url);
+	gtk_label_set_text (GTK_LABEL (liferea_dialog_lookup (dialog, "prompt")), promptStr);
+
+	g_signal_connect (liferea_dialog_lookup (dialog, "tokenEntry"), "changed", G_CALLBACK (on_auth_token_changed), dialog);
+
+	ctx = g_new0 (AuthTokenContext, 1);
+	ctx->cb = cb;
+	ctx->user_data = user_data;
+	g_signal_connect_data (dialog, "response", G_CALLBACK (on_auth_token_dialog_response), ctx, (GClosureNotify)auth_token_context_free, 0);
+}
+
+/* user + password dialog */
+
 static void
 on_authdialog_response (AdwDialog *dialog,
                         gchar *response_id,
