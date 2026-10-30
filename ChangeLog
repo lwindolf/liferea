@@ -16,9 +16,7 @@ To be released
 	
 	* DnD of feeds causes random crashes
 	* Node sources do login despite empty password
-	* Node sources fail on another login as authToken is already set
-	* Node sources do not login after auth fail and user enters credentials
-	* Auth cancelling currently does not work as intended
+	* Node sources do not query credentials again after cancelling auth dialog and doing a manual update
 
 
 2026-10-20  Lars Windolf <lars.windolf@gmx.de>

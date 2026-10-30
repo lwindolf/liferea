@@ -46,7 +46,7 @@ on_force_update_response (GtkWidget *btn, gpointer user_data)
 {
 	AdwDialog *dialog = ADW_DIALOG (user_data);
 	Node *node = g_object_get_data (G_OBJECT (dialog), "node");
-	subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+	node_update_subscription (node, GINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
 	adw_dialog_close (dialog);
 }
 
@@ -101,7 +101,7 @@ do_menu_update (Node *node, gboolean doForce)
 			if (doForce)
 				on_force_update (node);
 		} else {
-			subscription_update (node->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+			node_update_subscription (node, GINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
 		}
 		// No return here to allow force updating node sources (which have a subscription and children)
 	}

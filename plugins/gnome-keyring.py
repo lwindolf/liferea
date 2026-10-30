@@ -61,7 +61,6 @@ class LibsecretPlugin(GObject.Object, Liferea.Activatable, Liferea.AuthActivatab
                 return items[0].get_secret().get_text()
 
     def do_set(self, id, label, value):
-        print("do_set", id, label, value)
         coll = self.get_collection()
         if not coll:
             coll = Secret.Collection.create_sync(None, LABEL, None, Secret.CollectionCreateFlags(0), None)

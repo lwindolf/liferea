@@ -25,6 +25,7 @@
 
 #include "common.h"
 #include "debug.h"
+#include "node_source.h"
 #include "update.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -125,14 +126,18 @@ on_authdialog_response (AdwDialog *dialog,
 {
 
 	subscriptionPtr subscription = (subscriptionPtr)userdata;
-g_print("auth response %s\n", response_id);
+
 	if (g_strcmp0 (response_id, "ok") == 0) {
 		subscription_set_auth_info (subscription,
 		                            liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "usernameEntry"),
 		                            liferea_dialog_entryrow_get (GTK_WIDGET (dialog), "passwordEntry"));
-		subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+
+		/* If this is a node source: reset login state, so auto-update will automatically relogin with the new credentials */
+		if (subscription->node == subscription->node->source->root)
+			node_source_relogin (subscription->node);
+		else
+			subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 	} else {
-g_print ("disabled reauth\n");
 		/* ensure we do not automatically ask again */
 		subscription->authCancelled = TRUE;
 	}
