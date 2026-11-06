@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Liferea package.
 # Mehmet Atif Ergun <mehmetaergun@gmail.com>, 2007.
 # Eren Türkay <turkay.eren@gmail.com>, 2007.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018, 2024.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018, 2024, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-26 21:53+0200\n"
-"PO-Revision-Date: 2024-08-01 08:00+0300\n"
+"PO-Revision-Date: 2026-11-06 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -40,16 +40,15 @@ msgstr ""
 
 #: plugins/add-bookmark-site.ui:7
 msgid "Add Bookmark Service"
-msgstr ""
+msgstr "Yer İmi Hizmeti Ekle"
 
 #: plugins/add-bookmark-site.ui:50
 msgid "Configure a custom social bookmarking site. "
-msgstr ""
+msgstr "Özel sosyal yer imleme sitesi yapılandır. "
 
 #: plugins/add-bookmark-site.ui:75
-#, fuzzy
 msgid "Service _Name"
-msgstr "Arama _Adı:"
+msgstr "Hizmet _Adı"
 
 #: plugins/add-bookmark-site.ui:88 resources/ui/properties.ui:233
 msgid "_URL"
@@ -57,7 +56,7 @@ msgstr "_Adres"
 
 #: plugins/add-bookmark-site.ui:121
 msgid "_Apply custom bookmark site"
-msgstr ""
+msgstr "Özel yer imi sitesi _uygula"
 
 #. Feed update interval hint in preference dialog.
 #: plugins/add-bookmark-site.ui:158
@@ -68,10 +67,15 @@ msgid ""
 "Example: \n"
 "https://bookmarks.org/add?u={url}&t={title}"
 msgstr ""
+"Not: URL, ana \"{url}\" yer tutucusunu içermelidir ve\n"
+"bir \"{title}\" (başlık) yer tutucusu içerebilir.\n"
+"\n"
+"Örneğin: \n"
+"https://yerimi.org/ekle?u={url}&t={title}"
 
 #: plugins/getfocus.ui:13
 msgid "Configure Plugin"
-msgstr ""
+msgstr "Eklentiyi Yapılandır"
 
 #: plugins/getfocus.ui:26
 msgid "Save"
@@ -512,7 +516,7 @@ msgstr ""
 
 #: src/net.c:491
 msgid "Too many requests. Liferea has to wait a while before trying again."
-msgstr ""
+msgstr "Çok fazla istek. Liferea, yeniden denemeden önce beklemelidir."
 
 #. http 5xx server errors
 #: src/net.c:494
@@ -739,7 +743,6 @@ msgid "_New"
 msgstr "_Yeni"
 
 #: src/ui/feed_list_view.c:295
-#, fuzzy
 msgid "Sort Feeds"
 msgstr "Beslemeleri Sırala"
 
@@ -814,9 +817,8 @@ msgid "Couldn't find pixmap file: %s"
 msgstr "Pixmap dosyasını bulamadı: %s"
 
 #: src/ui/item_list_view.c:601
-#, fuzzy
 msgid " <span background='red' color='white'> important </span> "
-msgstr " <span background='red' color='black'> önemli </span> "
+msgstr " <span background='red' color='white'> önemli </span> "
 
 #: src/ui/item_list_view.c:736 resources/ui/mainwindow.ui:369
 msgid "Open In _Tab"
@@ -912,13 +914,12 @@ msgid "Manual"
 msgstr "El İle"
 
 #: src/ui/preferences_dialog.c:383
-#, fuzzy
 msgid "Enable or disable this plugin"
-msgstr "Eklenti (%s) devre dışı bırakılamadı"
+msgstr "Bu eklentiyi etkinleştir ya da devre dışı bırak"
 
 #: src/ui/preferences_dialog.c:389
 msgid "Configure this plugin"
-msgstr ""
+msgstr "Bu eklentiyi yapılandır"
 
 #. add remove button
 #: src/ui/rule_editor.c:180
@@ -1070,13 +1071,12 @@ msgstr "_Parola:"
 
 #: resources/ui/auth.ui:111 resources/ui/google_source.ui:148
 #: resources/ui/reedah_source.ui:100
-#, fuzzy
 msgid "Cancel"
-msgstr "_İptal Et"
+msgstr "İptal Et"
 
 #: resources/ui/auth.ui:117 resources/ui/reedah_source.ui:106
 msgid "OK"
-msgstr ""
+msgstr "Tamam"
 
 #: resources/ui/google_source.ui:7
 msgid "Add Google Reader API Account"
@@ -1219,9 +1219,8 @@ msgid "_Update Monitor"
 msgstr "_Güncelleme Gözlemcisi"
 
 #: resources/ui/mainwindow.ui:423
-#, fuzzy
 msgid "_Sort Feeds"
-msgstr "Beslemeleri Sırala"
+msgstr "Beslemeleri _Sırala"
 
 #: resources/ui/mainwindow.ui:429
 msgid "_Preferences"
@@ -1245,7 +1244,7 @@ msgstr "_İçindekiler"
 
 #: resources/ui/mainwindow.ui:457
 msgid "_Shortcuts"
-msgstr ""
+msgstr "_Kısayollar"
 
 #: resources/ui/mainwindow.ui:463
 msgid "_About"
@@ -1256,9 +1255,8 @@ msgid "Mark all as read ?"
 msgstr "Tümü okundu imlensin mi?"
 
 #: resources/ui/mark_read_dialog.ui:27
-#, fuzzy
 msgid "_Mark all as read"
-msgstr "Tümünü okundu imle"
+msgstr "Tümünü okundu _imle"
 
 #: resources/ui/mark_read_dialog.ui:46
 msgid "Do not ask again"
@@ -1278,7 +1276,7 @@ msgstr "_Klasör adı:"
 #: resources/ui/search_folder.ui:143 resources/ui/simple_subscription.ui:95
 #: resources/ui/theoldreader_source.ui:103 resources/ui/ttrss_source.ui:123
 msgid "_OK"
-msgstr ""
+msgstr "_Tamam"
 
 #: resources/ui/new_newsbin.ui:23
 msgid "_News Bin Name:"
@@ -1297,9 +1295,8 @@ msgid "_Select the source type you want to add..."
 msgstr "Eklemek istediğiniz kaynak türünü _seçiniz..."
 
 #: resources/ui/opml_source.ui:7
-#, fuzzy
 msgid "Add OPML"
-msgstr "OPML/Planet Ekle"
+msgstr "OPML Ekle"
 
 #: resources/ui/opml_source.ui:23
 msgid ""
@@ -1317,17 +1314,16 @@ msgid "_Select File"
 msgstr "_Dosya Seç"
 
 #: resources/ui/plugins.ui:9
-#, fuzzy
 msgid "Plugin Manager"
-msgstr "Eklenti Kurucu"
+msgstr "Eklenti Yönetici"
 
 #: resources/ui/plugins.ui:43
 msgid "Con_figure"
-msgstr ""
+msgstr "_Yapılandır"
 
 #: resources/ui/plugins.ui:51 resources/ui/prefs.ui:786
 msgid "_Close"
-msgstr ""
+msgstr "_Kapat"
 
 #: resources/ui/prefs.ui:19
 msgid "Liferea Preferences"
@@ -1683,17 +1679,16 @@ msgid "Advanced Search"
 msgstr "Gelişmiş Arama"
 
 #: resources/ui/search.ui:26
-#, fuzzy
 msgid "Find items that meet the following criteria"
-msgstr "Aşağıdaki koşula uyan ögeleri bul"
+msgstr "Şu koşula uyan ögeleri bul"
 
 #: resources/ui/search.ui:100 resources/ui/update_monitor.ui:111
 msgid "Close"
-msgstr ""
+msgstr "Kapat"
 
 #: resources/ui/search.ui:113
 msgid "Find"
-msgstr ""
+msgstr "Bul"
 
 #: resources/ui/simple_subscription.ui:26
 msgid "Feed _Source"
@@ -1750,528 +1745,3 @@ msgstr "Ş_imdi İndiriliyor"
 #: resources/ui/update_monitor.ui:104
 msgid "Stop All"
 msgstr "Tümünü Durdur"
-
-#, fuzzy
-#~ msgid "HeOdlines"
-#~ msgstr "Haber Başlıkları"
-
-#, fuzzy
-#~ msgid "Play Podcasts"
-#~ msgstr "Podcast"
-
-#, fuzzy
-#~ msgid "Preferences window"
-#~ msgstr "_Seçenekler"
-
-#, fuzzy
-#~ msgid "New hot key Ctrl-D for 'Open in External Browser'"
-#~ msgstr "_Dış Tarayıcıda Aç"
-
-#, fuzzy
-#~ msgid "Deprecations:"
-#~ msgstr "Bölüm"
-
-#~ msgid "Liferea Feed Reader"
-#~ msgstr "Liferea Besleme Okuyucu"
-
-#~ msgid "Min"
-#~ msgstr "Asgari"
-
-#~ msgid "Max"
-#~ msgstr "Azami"
-
-#~ msgid "Activate Plugins"
-#~ msgstr "Eklentileri Etkinleştir"
-
-#~ msgid "Download Plugins"
-#~ msgstr "Eklentiler İndir"
-
-#, python-format
-#~ msgid "Bad fields for plugin entry %s"
-#~ msgstr "Eklenti girdisi için kötü alanlar: %s"
-
-#~ msgid "All"
-#~ msgstr "Tümü"
-
-#~ msgid "Menu"
-#~ msgstr "Menü"
-
-#~ msgid "Notifications"
-#~ msgstr "Bildirimler"
-
-#~ msgid "Filter by category"
-#~ msgstr "Kategoriye göre süz"
-
-#~ msgid "_Install"
-#~ msgstr "_Kur"
-
-#~ msgid "_Uninstall"
-#~ msgstr "_Kaldır"
-
-#, python-format
-#~ msgid ""
-#~ "Missing package manager '%s'. Cannot check nor install necessary "
-#~ "dependencies!"
-#~ msgstr ""
-#~ "Paket yöneticisi '%s' yok. Gerekli bağımlılıklar denetlenemiyor ya da "
-#~ "kurulamıyor."
-
-#, python-format
-#~ msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-#~ msgstr "'%s' paketi eksik. Kurmak ister misiniz? ('%s' çalıştırılacak)"
-
-#, python-format
-#~ msgid ""
-#~ "Package installation failed (%s)! Check console output for further "
-#~ "problem details!"
-#~ msgstr ""
-#~ "Paket kurulumu başarısız (%s)! İleri sorun ayrıntıları için konsol "
-#~ "çıktısını gözden geçirin!"
-
-#, python-format
-#~ msgid "Failed to check plugin dependencies (%s)!"
-#~ msgstr "Eklenti bağımlılıkları denetlenemedi (%s)!"
-
-#~ msgid "Command \"git\" not found, please install it!"
-#~ msgstr "\"git\" komutu bulunamadı, lütfen kurun!"
-
-#, python-format
-#~ msgid "Copying %s to %s"
-#~ msgstr "%s şuna kopyalanıyor: %s"
-
-#, python-format
-#~ msgid "Failed to copy plugin directory (%s)!"
-#~ msgstr "Eklenti dizini kopyalanamadı (%s)!"
-
-#, python-format
-#~ msgid "Failed to copy plugin .py file (%s)!"
-#~ msgstr "Eklenti .py dosyası kopyalanamadı (%s)!"
-
-#, python-format
-#~ msgid "Failed to copy .plugin file (%s)!"
-#~ msgstr ".plugin dosyası kopyalanamadı (%s)!"
-
-#, python-format
-#~ msgid "Creating schema directory %s"
-#~ msgstr "Şema dizini %s yaratılamadı"
-
-#, python-format
-#~ msgid "Installing schema %s"
-#~ msgstr "%s şeması kuruluyor"
-
-#~ msgid "Compiling schemas..."
-#~ msgstr "Şemalar derleniyor..."
-
-#, python-format
-#~ msgid "Failed to install schema files (%s)!"
-#~ msgstr "Şema dosyaları (%s) kurulamadı!"
-
-#, python-format
-#~ msgid "Failed to enable plugin (%s)!"
-#~ msgstr "Eklenti (%s) etkinleştirilemedi!"
-
-#, python-format
-#~ msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-#~ msgstr "'%s' eklentisi kuruldu. Liferea'yı yeniden başlatınız!"
-
-#, python-format
-#~ msgid "Deleting '%s'"
-#~ msgstr "'%s' siliniyor"
-
-#, python-format
-#~ msgid "Failed to remove directory '%s' (%s)!"
-#~ msgstr "'%s' dizini kaldırılamadı (%s)!"
-
-#~ msgid "Failed to remove .py file!"
-#~ msgstr ".py dosyası kaldırılamadı!"
-
-#~ msgid "Failed to remove .plugin file!"
-#~ msgstr ".plugn dosyası kaldırılamadı!"
-
-#~ msgid "Sorry! Plugin removal failed!"
-#~ msgstr "Üzgünüz! Eklenti kaldırılamadı!"
-
-#~ msgid ""
-#~ "Plugin was removed. Please restart Liferea once for it to take full "
-#~ "effect!"
-#~ msgstr ""
-#~ "Eklenti kaldırıldı. Tümüyle etkin olması için lütfen Liferea'yı yeniden "
-#~ "başlatın!"
-
-#~ msgid "Liferea unread icon"
-#~ msgstr "Liferea okunmadı simgesi"
-
-#~ msgid "Show / Hide"
-#~ msgstr "Göster / Gizle"
-
-#~ msgid "Minimize to tray on close"
-#~ msgstr "Kapatınca sistem tepsisine küçült"
-
-#~ msgid "Quit"
-#~ msgstr "Çık"
-
-#~ msgid "Quick Reference"
-#~ msgstr "Hızlı Başvuru"
-
-#~ msgid "FAQ"
-#~ msgstr "SSS"
-
-#~ msgid "There are no unread items"
-#~ msgstr "Okunmamış öge yok"
-
-#~ msgid "Deleting entry"
-#~ msgstr "Girdi siliniyor"
-
-#~ msgid "Content download failed! Try disabling reader mode."
-#~ msgstr "İçerik indirilemedi! Okuyucu kipi devre dışı bırakmayı deneyin."
-
-#~ msgid "Content extraction failed! Try disabling reader mode."
-#~ msgstr "İçerik ayıklanamadı! Okuyucu kipi devre dışı bırakmayı deneyin."
-
-#, c-format
-#~ msgid " (%d new)"
-#~ msgid_plural " (%d new)"
-#~ msgstr[0] " (%d yeni)"
-
-#, c-format
-#~ msgid "%d unread%s"
-#~ msgid_plural "%d unread%s"
-#~ msgstr[0] "%d okunmamış%s"
-
-#~ msgid "_Reader Mode"
-#~ msgstr "_Okuyucu Kip"
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Hızlı Başvuru"
-
-#~ msgid "_FAQ"
-#~ msgstr "_SSS"
-
-#~ msgid "Download / Postprocessing"
-#~ msgstr "İndirme / Ardişlem"
-
-#~ msgid ""
-#~ "Liferea can use external filter plugins in order to access feeds and "
-#~ "directories in non-supported formats.  See the documentation for more "
-#~ "information."
-#~ msgstr ""
-#~ "Liferea, desteklenmeyen biçim kullanan haber kaynağına ve dizinlere "
-#~ "erişmek için dış süzgeç eklentileri kullanabilir. Daha çok bilgi için "
-#~ "yardım belgelerine bakınız."
-
-#~ msgid ""
-#~ "Note: <i>Please remember to set a reasonable refresh time. Usually it is "
-#~ "a waste of bandwidth to poll feeds more often than each hour.</i>"
-#~ msgstr ""
-#~ "Not: <i>Lütfen güncelleme aralığı için akla yatkın bir değer seçin. "
-#~ "Genellikle 1 saat aralığından az güncelleme aralığı belirlemek bant "
-#~ "genişliğinin boşa kullanılması anlamına gelir.</i>"
-
-#~ msgid "_Enable browser plugins."
-#~ msgstr "Tarayıcı eklentilerini _etkinleştir."
-
-#, no-c-format
-#~ msgid "<small>(%s for URL)</small>"
-#~ msgstr "<small>(Adres için %s)</small>"
-
-#~ msgid "Toolbar Settings"
-#~ msgstr "Araç Çubuğu Ayarları"
-
-#~ msgid "_Hide toolbar."
-#~ msgstr "Araç çubuğunu _gizle."
-
-#~ msgid "Toolbar _button labels:"
-#~ msgstr "Araç çubuğu _düğme etiketleri:"
-
-#~ msgid "Desktop"
-#~ msgstr "Masaüstü"
-
-#~ msgid "_Manual Setting:"
-#~ msgstr "E_l İle Ayar:"
-
-#~ msgid "Proxy _Host:"
-#~ msgstr "Vekil Makina _Adı:"
-
-#~ msgid "Proxy _Port:"
-#~ msgstr "Vekil _Bağlantı Noktası:"
-
-#~ msgid "Use Proxy Au_thentication"
-#~ msgstr "Vekil _Kimlik Doğrulaması Kullan"
-
-#~ msgid "Proxy _Username:"
-#~ msgstr "Vekil _Kullanıcı Adı:"
-
-#~ msgid "Proxy Pass_word:"
-#~ msgstr "Vekil Par_olası:"
-
-#~ msgid "Use _Reader mode."
-#~ msgstr "_Okuyucu kipi kullan."
-
-#~ msgid ""
-#~ "This enables <a href=\"https://github.com/mozilla/"
-#~ "readability\">stripping</a> all non-content elements (like scripts, "
-#~ "fonts, tracking)"
-#~ msgstr ""
-#~ "Bu, içerik dışı ögelerin (betikler, yazı tipleri, izleme) <a "
-#~ "href=\"https://github.com/mozilla/readability\">ayıklanmasını</a> "
-#~ "etkinleştirir."
-
-#~ msgid "Rules"
-#~ msgstr "Kurallar"
-
-#~ msgid "All rules for this search folder"
-#~ msgstr "Bu arama klasörü için tüm kurallar"
-
-#~ msgid "_Search Folder..."
-#~ msgstr "_Arama Klasörü..."
-
-#~ msgid "Search All Feeds"
-#~ msgstr "Tüm Beslemeleri Ara"
-
-#~ msgid ""
-#~ "Starts searching for the specified text in all feeds. The search result "
-#~ "will appear in the item list."
-#~ msgstr ""
-#~ "Belirtilen metni tüm beslemelerde aramaya başlar. Arama sonucu öge "
-#~ "listesinde gözükecek."
-
-#~ msgid "_Search for:"
-#~ msgstr "_Ara:"
-
-#~ msgid ""
-#~ "Enter a search string Liferea should find either in a items title or in "
-#~ "its content."
-#~ msgstr ""
-#~ "Liferea’nın ögenin başlığında ya da içeriğinde bulmasını istediğiniz "
-#~ "dizgiyi belirtiniz."
-
-#~ msgid "Advanced..."
-#~ msgstr "Gelişmiş..."
-
-#~ msgid "Feed:"
-#~ msgstr "Besleme:"
-
-#~ msgid "Source:"
-#~ msgstr "Kaynak:"
-
-#~ msgid "Publisher"
-#~ msgstr "Yayımcı"
-
-#~ msgid "Copyright"
-#~ msgstr "Telif Hakkı"
-
-#~ msgid "There was a problem when fetching this subscription!"
-#~ msgstr "Bu abonelik alınırken sorunla karşılaşıldı!"
-
-#~ msgid "1. Authentication"
-#~ msgstr "1. Kimlik Doğrulama"
-
-#~ msgid "2. Download"
-#~ msgstr "2. İndirme"
-
-#~ msgid "3. Feed Discovery"
-#~ msgstr "3. Besleme Keşfi"
-
-#~ msgid "4. Parsing"
-#~ msgstr "4. Ayıklama"
-
-#~ msgid "Details:"
-#~ msgstr "Ayrıntılar:"
-
-#~ msgid "Authentication failed. Please check the credentials and try again!"
-#~ msgstr ""
-#~ "Kimlik doğrulama başarısız. Lütfen kimlik bilgilerini gözden geçirin ve "
-#~ "yeniden deneyin!"
-
-#~ msgid "There was an error when downloading the feed source:"
-#~ msgstr "Besleme kaynağı indirilirken hata:"
-
-#~ msgid "There was an error when running the feed filter command:"
-#~ msgstr "Besleme süzme komutu çalıştırılırken hata:"
-
-#~ msgid ""
-#~ "The source does not point directly to a feed or a webpage with a link to "
-#~ "a feed!"
-#~ msgstr ""
-#~ "Kaynak, doğrudan beslemeyi ya da beslemeye bağlanan web sayfasını "
-#~ "göstermiyor!"
-
-#~ msgid "Sorry, the feed could not be parsed!"
-#~ msgstr "Üzgünüz, besleme ayrıştırılamadı!"
-
-#~ msgid "You may want to contact the author/webmaster of the feed about this!"
-#~ msgstr ""
-#~ "Bununla ilgili olarak beslemenin yazarı ya da yöneticisiyle iletişime "
-#~ "geçmek isteyebilirsiniz!"
-
-#~ msgid "Folder:"
-#~ msgstr "Klasör:"
-
-#~ msgid "children with"
-#~ msgstr "alt ile birlikte"
-
-#~ msgid "unread headlines"
-#~ msgstr "okunmamış haber başlığı"
-
-#~ msgid "Feed"
-#~ msgstr "Besleme"
-
-#~ msgid "Filed under"
-#~ msgstr "Dosyalandığı yer"
-
-#~ msgid "Author"
-#~ msgstr "Yazar"
-
-#~ msgid "Shared by"
-#~ msgstr "Paylaşan"
-
-#~ msgid "Via"
-#~ msgstr "Aracılığıyla"
-
-#~ msgid "Related"
-#~ msgstr "İlişkili"
-
-#~ msgid "Also posted in"
-#~ msgstr "Yinelenen yer"
-
-#~ msgid "Creator"
-#~ msgstr "Oluşturan"
-
-#~ msgid "Coordinates"
-#~ msgstr "Koordinatlar"
-
-#~ msgid "Map"
-#~ msgstr "Harita"
-
-#~ msgid "View count"
-#~ msgstr "Görüntüleme sayısı"
-
-#~ msgid "Rating"
-#~ msgstr "Oy"
-
-#~ msgid "Comments"
-#~ msgstr "Yorumlar"
-
-#~ msgid "Updating..."
-#~ msgstr "Güncelleniyor..."
-
-#~ msgid "Department"
-#~ msgstr "Şube"
-
-#~ msgid "News Bin:"
-#~ msgstr "Haber Sepeti:"
-
-#~ msgid ""
-#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
-#~ "item list context menu."
-#~ msgstr ""
-#~ "Öge listesi bağlam menüsünden \"Haber Sepetine Kopyala\" seçeneğini "
-#~ "seçerek ögeleri bu haber sepetine ekle."
-
-#~ msgid "Search Folder:"
-#~ msgstr "Arama Klasörü:"
-
-#, c-format
-#~ msgid "\"%s\" is not a valid enclosure type config file!"
-#~ msgstr "\"%s\" geçerli bir ek türü ayar dosyası değil!"
-
-#, fuzzy, c-format
-#~ msgid ""
-#~ "Command failed: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ msgstr "E-posta komutu başarısız: %s"
-
-#~ msgid "No feed list source types found!"
-#~ msgstr "Hiçbir besleme listesi türü bulunamadı!"
-
-#~ msgid "GNOME default"
-#~ msgstr "GNOME öntanımlısı"
-
-#~ msgid "Text below icons"
-#~ msgstr "Simgelerin altında yazı"
-
-#~ msgid "Text beside icons"
-#~ msgstr "Simgelerin yanında yazı"
-
-#~ msgid "Icons only"
-#~ msgstr "Yalnızca simge"
-
-#~ msgid "Text only"
-#~ msgstr "Yalnızca yazı"
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Besleme listesine yeni abonelik ekler."
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Seçili besleme listesi düğümündeki ya da öge listesindeki tüm ögeleri "
-#~ "okundu olarak imle."
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Tüm abonelikleri günceller."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Arama penceresini göster."
-
-#~ msgid ""
-#~ "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
-#~ "application proxy settings. The system's default proxy settings will be "
-#~ "used."
-#~ msgstr ""
-#~ "WebKitGTK+ sürümünüz 2.15.3’ten eskidir. Her bir uygulama için başka "
-#~ "vekil ayarlarını desteklemez. Sistemin öntanımlı vekil ayarları "
-#~ "kullanılacak."
-
-#~ msgid ""
-#~ "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
-#~ "higher."
-#~ msgstr ""
-#~ "Akıllı izleme önlemesi yalnızca WebKitGtk+ 2.30 ya da üstünde "
-#~ "kullanılabilir."
-
-#~ msgid ""
-#~ "You have not configured a download tool yet! Please do so in the "
-#~ "'Enclosures' tab in Tools/Preferences."
-#~ msgstr ""
-#~ "Henüz bir indirme aracı yapılandırmadınız! Lütfen bunu Araçlar/Seçenekler "
-#~ "içindeki Ekler sekmesinden yapınız."
-
-#, c-format
-#~ msgid ""
-#~ "Command failed: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ " Please check whether the configured download tool is installed and "
-#~ "working correctly! You can change it in the 'Download' tab in Tools/"
-#~ "Preferences."
-#~ msgstr ""
-#~ "Komut başarısız: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ " Lütfen indirme aracınızın kurulduğunu ya da doğru çalıştığını "
-#~ "denetleyin! Bunu, Araçlar/Seçenekler içindeki 'Ekler' sekemesinden "
-#~ "değiştirebilirsiniz."
-
-#~ msgid "*** No title ***"
-#~ msgstr "*** Başlık yok ***"
-
-#~ msgid "Type"
-#~ msgstr "Tür"
-
-#~ msgid "Program"
-#~ msgstr "Program"
-
-#~ msgid "Downloading Content"
-#~ msgstr "İçerik İndirme"
-
-#~ msgid "_Download using"
-#~ msgstr "Şunu kullanarak _indir"
-
-#, no-c-format
-#~ msgid "custom-command %s"
-#~ msgstr "özel-komut %s"
