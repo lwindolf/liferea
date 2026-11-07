@@ -275,8 +275,9 @@ async function load_item(data, baseURL, direction) {
 		let el = Array.from(document.getElementById('content').querySelectorAll('*')).find(el => el.textContent.trim() === item.title);
 		if (el) {
 			let innermost = el;
-			while (innermost.children.length > 0) {
-				innermost = Array.from(innermost.children).find(child => child.textContent.trim() === item.title) || innermost;
+			let child;
+			while ((child = Array.from(innermost.children).find(c => c.textContent.trim() === item.title))) {
+				innermost = child;
 			}
 			innermost.remove();
 			debugfooter += " titleDuplicateRemove";
