@@ -4,6 +4,7 @@
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2007,2009,2012.
 # Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>, 2012.
 # IWAI, Masaharu <iwaim.sub@gmail.com>, 2016-2017.
+# Lesstep <275432938+rogervokma-stack@users.noreply.github.com>, 2026.
 #
 # 翻訳の用例 (since 2004-08-16)
 # subscription: 購読
@@ -15,8 +16,8 @@ msgstr ""
 "Project-Id-Version: liferea-1.12-rc2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-26 21:53+0200\n"
-"PO-Revision-Date: 2017-02-15 16:56+0900\n"
-"Last-Translator: IWAI, Masaharu <iwaim.sub@gmail.com>\n"
+"PO-Revision-Date: 2026-11-02 12:00+0900\n"
+"Last-Translator: Lesstep <275432938+rogervokma-stack@users.noreply.github.com>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -35,24 +36,23 @@ msgstr "フィード・リーダ"
 
 #: data/net.sourceforge.liferea.desktop.in:5
 msgid "Read news feeds and blogs"
-msgstr ""
+msgstr "ニュースの配信元やブログを読む"
 
 #: data/net.sourceforge.liferea.desktop.in:6
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
-msgstr ""
+msgstr "news;feed;aggregator;blog;podcast;syndication;rss;atom;ニュース;フィード;アグリゲータ;ブログ;ポッドキャスト;シンジケーション"
 
 #: plugins/add-bookmark-site.ui:7
 msgid "Add Bookmark Service"
-msgstr ""
+msgstr "ブックマーク・サービスの追加"
 
 #: plugins/add-bookmark-site.ui:50
 msgid "Configure a custom social bookmarking site. "
-msgstr ""
+msgstr "独自のソーシャル・ブックマーク・サイトを設定します。 "
 
 #: plugins/add-bookmark-site.ui:75
-#, fuzzy
 msgid "Service _Name"
-msgstr "検索する内容(_N):"
+msgstr "サービス名(_N)"
 
 #: plugins/add-bookmark-site.ui:88 resources/ui/properties.ui:233
 msgid "_URL"
@@ -60,7 +60,7 @@ msgstr "URL(_U)"
 
 #: plugins/add-bookmark-site.ui:121
 msgid "_Apply custom bookmark site"
-msgstr ""
+msgstr "独自のブックマーク・サイトを適用(_A)"
 
 #. Feed update interval hint in preference dialog.
 #: plugins/add-bookmark-site.ui:158
@@ -71,25 +71,30 @@ msgid ""
 "Example: \n"
 "https://bookmarks.org/add?u={url}&t={title}"
 msgstr ""
+"注記: URL には必須の \"{url}\"\n"
+"プレースホルダを含める必要があります。\"{title}\" プレースホルダを含めることも"
+"できます。\n"
+"\n"
+"例:\n"
+"https://bookmarks.org/add?u={url}&t={title}"
 
 #: plugins/getfocus.ui:13
 msgid "Configure Plugin"
-msgstr ""
+msgstr "プラグインの設定"
 
 #: plugins/getfocus.ui:26
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: plugins/getfocus.ui:52
 msgid "Opacity"
-msgstr ""
+msgstr "不透明度"
 
 #: plugins/getfocus.ui:53
 msgid "Opacity:"
-msgstr ""
+msgstr "不透明度:"
 
 #: plugins/libnotify.py:41
-#, fuzzy
 msgid "Feed Updates"
 msgstr "配信元の更新"
 
@@ -99,9 +104,9 @@ msgid "No item has been selected"
 msgstr "トピックが選択されていません"
 
 #: src/actions/item_actions.c:170
-#, fuzzy, c-format
+#, c-format
 msgid "Email command failed: %s"
-msgstr "ブラウザの起動に失敗しました: %s"
+msgstr "メール・コマンドの実行に失敗しました: %s"
 
 #: src/actions/item_actions.c:173 src/browser.c:104
 #, c-format
@@ -114,7 +119,7 @@ msgstr "Liferea はオフライン・モードです (更新はできません)"
 
 #: src/actions/node_actions.c:163
 msgid "Save items to file"
-msgstr ""
+msgstr "トピックをファイルに保存"
 
 #: src/actions/node_actions.c:166 src/ui/feed_list_view.c:957
 #: src/ui/feed_list_view.c:1000 resources/ui/mark_read_dialog.ui:35
@@ -124,18 +129,17 @@ msgstr ""
 #: resources/ui/search_folder.ui:136 resources/ui/simple_subscription.ui:81
 #: resources/ui/theoldreader_source.ui:96 resources/ui/ttrss_source.ui:116
 msgid "_Cancel"
-msgstr "キャンセル(_A)"
+msgstr "キャンセル(_C)"
 
 #: src/actions/node_actions.c:168
 msgid "_Save"
-msgstr ""
+msgstr "保存(_S)"
 
 #: src/actions/node_actions.c:177
 msgid "RSS 2.0 files"
-msgstr ""
+msgstr "RSS 2.0 ファイル"
 
 #: src/actions/node_actions.c:183
-#, fuzzy
 msgid "All files"
 msgstr "全てのファイル"
 
@@ -144,19 +148,18 @@ msgid "Untitled"
 msgstr "タイトルなし"
 
 #: src/actions/shell_actions.c:95
-#, fuzzy
 msgid "all feeds"
-msgstr "全ての配信元から検索"
+msgstr "全ての配信元"
 
 #: src/actions/shell_actions.c:96
-#, fuzzy, c-format
+#, c-format
 msgid "Mark %s as read ?"
-msgstr "全て既読にする"
+msgstr "%s を既読にしますか？"
 
 #: src/actions/shell_actions.c:100
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
-msgstr "本当に \"%s\" を削除してもよろしいですか？"
+msgstr "本当に %s のトピックを全て既読にしてもよろしいですか？"
 
 #: src/actions/shell_actions.c:121
 msgid "You must select a feed to delete its items!"
@@ -279,7 +282,7 @@ msgstr "XML が間違っています！"
 
 #: src/node_source.c:113
 msgid "Miniflux"
-msgstr ""
+msgstr "Miniflux"
 
 #: src/node_source.c:340
 msgid "Source Type"
@@ -289,13 +292,14 @@ msgstr "ソースの種類"
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
+"'%s' のログインはまだ完了していません！ログインが終わるまでお待ち下さい。"
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
 #: src/node_source.c:557
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr ""
+msgstr "購読 '%s' をローカルの配信元に変換しました！"
 
 #: src/node_sources/default_source.c:135 resources/ui/simple_subscription.ui:11
 msgid "New Subscription"
@@ -307,14 +311,12 @@ msgid "Login failed!"
 msgstr "ログインに失敗しました！"
 
 #: src/node_sources/google_source.c:402
-#, fuzzy
 msgid "Google Reader API"
-msgstr "Google リーダ"
+msgstr "Google Reader API"
 
 #: src/node_sources/google_source_feed.c:159
-#, fuzzy
 msgid "Could not parse JSON returned by Google Reader API!"
-msgstr "Reedah API が返した JSON を解析できませんでした！"
+msgstr "Google Reader API が返した JSON を解析できませんでした！"
 
 #: src/node_sources/opml_source.c:312
 msgid "Planet, BlogRoll, OPML"
@@ -335,7 +337,7 @@ msgstr "新しい OPML の購読"
 
 #: src/node_sources/reedah_source.c:331
 msgid "Reedah"
-msgstr ""
+msgstr "Reedah"
 
 #: src/node_sources/reedah_source_feed.c:154
 msgid "Could not parse JSON returned by Reedah API!"
@@ -347,17 +349,19 @@ msgstr "TheOldReader"
 
 #: src/node_sources/ttrss_source.c:227 src/node_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr ""
+msgstr "Tiny Tiny RSS の HTTP API に接続できません！"
 
 #: src/node_sources/ttrss_source.c:234
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
+"Tiny Tiny RSS での配信元の購読に失敗しました！配信元の URL を正しく指定したか確"
+"認して下さい！"
 
 #: src/node_sources/ttrss_source.c:300
 msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr ""
+msgstr "Tiny Tiny RSS での配信元の購読解除に失敗しました！"
 
 #: src/node_sources/ttrss_source.c:318
 #, c-format
@@ -365,6 +369,8 @@ msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
+"このバージョンの Tiny Tiny RSS は配信元の削除をサポートしていません。バージョン "
+"%s 以降にアップグレードして下さい！"
 
 #: src/node_sources/ttrss_source.c:468
 msgid "Tiny Tiny RSS"
@@ -375,9 +381,8 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Tiny Tiny RSS API が返した JSON を解析できませんでした！"
 
 #: src/node_providers/newsbin.c:100
-#, fuzzy
 msgid "News Bin Properties"
-msgstr "購読先のプロパティ"
+msgstr "NewsBin のプロパティ"
 
 #: src/node_providers/newsbin.c:104 resources/ui/new_newsbin.ui:8
 msgid "Create News Bin"
@@ -388,12 +393,11 @@ msgid "New Search Folder"
 msgstr "新しい検索フォルダ"
 
 #: src/liferea_application.c:257
-#, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
-"指定した状態でメイン・ウィンドウを表示する (STATE: 'shown', "
-"'iconified','hidden')"
+"メイン・ウィンドウを STATE の状態にして Liferea を起動する。STATE には `shown' また"
+"は `hidden' を指定できる"
 
 #: src/liferea_application.c:257
 msgid "STATE"
@@ -413,7 +417,7 @@ msgstr "uri"
 
 #: src/liferea_application.c:260
 msgid "Start with all plugins disabled"
-msgstr ""
+msgstr "全てのプラグインを無効にして起動する"
 
 #: src/liferea_application.c:265
 msgid "Print debugging messages of all types"
@@ -484,7 +488,7 @@ msgstr ""
 
 #: src/net.c:483
 msgid "Payment required"
-msgstr "課金請求がありました"
+msgstr "支払いが必要です"
 
 #: src/net.c:484
 msgid "You're not allowed to access this resource"
@@ -500,7 +504,7 @@ msgstr "メソッドを実行できません"
 
 #: src/net.c:487
 msgid "Not Acceptable"
-msgstr "アクセスできません"
+msgstr "受け付けられません"
 
 #: src/net.c:488
 msgid "Proxy authentication required"
@@ -511,45 +515,44 @@ msgid "Request timed out"
 msgstr "要求がタイムアウトしました"
 
 #: src/net.c:490
-#, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
 "headlines."
 msgstr ""
-"この配信元は停止しているので、利用できません。今後 Liferea が更新することはあ"
-"りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
+"ウェブサーバによると、この配信元は停止しており、もう利用できません。今後 Lifer"
+"ea が更新することはありませんが、キャッシュに保存したヘッドラインには引き続き"
+"アクセスできます。"
 
 #: src/net.c:491
 msgid "Too many requests. Liferea has to wait a while before trying again."
 msgstr ""
+"リクエストが多すぎます。Liferea はしばらく待ってから再試行する必要があります。"
 
 #. http 5xx server errors
 #: src/net.c:494
-#, fuzzy
 msgid "Internal Server Error"
-msgstr "サーバのエラー"
+msgstr "サーバ内部エラー"
 
 #: src/net.c:495
 msgid "Not Implemented"
-msgstr ""
+msgstr "実装されていません"
 
 #: src/net.c:496
 msgid "Bad Gateway"
-msgstr ""
+msgstr "不正なゲートウェイ"
 
 #: src/net.c:497
-#, fuzzy
 msgid "Service Unavailable"
-msgstr "サービス名"
+msgstr "サービスを利用できません"
 
 #: src/net.c:498
 msgid "Gateway Timeout"
-msgstr ""
+msgstr "ゲートウェイがタイムアウトしました"
 
 #: src/net.c:499
 msgid "HTTP Version Not Supported"
-msgstr ""
+msgstr "サポートされていない HTTP バージョン"
 
 #: src/net.c:503
 msgid "An unknown networking error happened!"
@@ -558,17 +561,16 @@ msgstr "原因不明のネットワーク・エラーが発生しました"
 #: src/node.c:651
 #, c-format
 msgid "Failed to create feed file: %s"
-msgstr ""
+msgstr "配信元ファイルの作成に失敗しました: %s"
 
 #: src/node.c:670
-#, fuzzy
 msgid "Feed file exported from Liferea"
-msgstr "配信元一覧をエキスポートしました！"
+msgstr "Liferea からエキスポートした配信元ファイル"
 
 #: src/node.c:685
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving feed file"
-msgstr "配信元一覧のエキスポート時にエラーが発生しました！"
+msgstr "配信元ファイルの保存中にエラーが発生しました"
 
 #: src/parsers/atom10.c:241
 msgid "Website"
@@ -603,9 +605,8 @@ msgid "Item body"
 msgstr "本文"
 
 #: src/rule.c:275
-#, fuzzy
 msgid "Item author"
-msgstr "本文"
+msgstr "作者"
 
 #: src/rule.c:276
 msgid "Read status"
@@ -632,7 +633,6 @@ msgid "is unflagged"
 msgstr "がセットされていない"
 
 #: src/rule.c:278
-#, fuzzy
 msgid "Enclosure"
 msgstr "エンクロージャ"
 
@@ -665,18 +665,17 @@ msgid "Feed title"
 msgstr "配信元のタイトル"
 
 #: src/rule.c:282
-#, fuzzy
 msgid "Feed source"
 msgstr "配信元の場所"
 
 #: src/rule.c:283
 msgid "Parent folder title"
-msgstr ""
+msgstr "親フォルダのタイトル"
 
 #: src/subscription.c:111
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
-msgstr "この配信元 \"%s\" は既に更新済みです！"
+msgstr "この配信元 \"%s\" は既に更新中です！"
 
 #: src/subscription.c:116
 #, c-format
@@ -703,14 +702,14 @@ msgstr ""
 "\"%s\" の更新は停止しています (今後 Liferea が更新することはありません！)"
 
 #: src/subscription.c:265 src/subscription.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "Updating (%d / %d) ..."
-msgstr "更新中..."
+msgstr "更新中（%d / %d）..."
 
 #: src/subscription.c:337
-#, fuzzy, c-format
+#, c-format
 msgid "Updating '%s'..."
-msgstr "更新中..."
+msgstr "'%s' を更新中..."
 
 #: src/ui/auth_dialog.c:83
 #, c-format
@@ -758,7 +757,6 @@ msgid "_New"
 msgstr "新規(_N)"
 
 #: src/ui/feed_list_view.c:295
-#, fuzzy
 msgid "Sort Feeds"
 msgstr "配信元の並べ替え"
 
@@ -768,7 +766,7 @@ msgstr "全て既読にする(_M)"
 
 #: src/ui/feed_list_view.c:305
 msgid "_Export Items To File"
-msgstr ""
+msgstr "トピックをファイルにエキスポート(_E)"
 
 #: src/ui/feed_list_view.c:313
 msgid "_Rebuild"
@@ -776,16 +774,15 @@ msgstr "再構築(_R)"
 
 #: src/ui/feed_list_view.c:321 src/ui/feed_list_view.c:958
 msgid "_Delete"
-msgstr "削除(_D):"
+msgstr "削除(_D)"
 
 #: src/ui/feed_list_view.c:322 resources/ui/mainwindow.ui:330
 msgid "_Properties"
 msgstr "プロパティ(_P)"
 
 #: src/ui/feed_list_view.c:329
-#, fuzzy
 msgid "Convert To Local Subscriptions..."
-msgstr "新しい購読(_N)..."
+msgstr "ローカルの購読に変換..."
 
 #: src/ui/feed_list_view.c:612
 #, c-format
@@ -793,6 +790,8 @@ msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
+"%s\n"
+"<i>再構築中</i>"
 
 #: src/ui/feed_list_view.c:948
 #, c-format
@@ -814,16 +813,17 @@ msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
+"本当に URL が \"%s\" の購読を新しく追加してもよろしいですか？同じ URL の購読が既に"
+"存在します（\"%s\"）。"
 
 #: src/ui/feed_list_view.c:1001 resources/ui/google_source.ui:154
 #: resources/ui/search_folder.ui:59
 msgid "_Add"
-msgstr ""
+msgstr "追加(_A)"
 
 #: src/ui/feed_list_view.c:1003
-#, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
-msgstr "削除の確認"
+msgstr "重複する購読の追加の確認"
 
 #: src/ui/icons.c:54
 #, c-format
@@ -832,7 +832,7 @@ msgstr "Pixmap ファイルが見つかりませんでした: %s"
 
 #: src/ui/item_list_view.c:601
 msgid " <span background='red' color='white'> important </span> "
-msgstr ""
+msgstr " <span background='red' color='white'> 重要 </span> "
 
 #: src/ui/item_list_view.c:736 resources/ui/mainwindow.ui:369
 msgid "Open In _Tab"
@@ -848,7 +848,7 @@ msgstr "外部ブラウザで開く(_E)"
 
 #: src/ui/item_list_view.c:749
 msgid "Email The Author"
-msgstr ""
+msgstr "作者にメールを送る"
 
 #: src/ui/item_list_view.c:774
 msgid "Copy to News Bin"
@@ -917,7 +917,7 @@ msgstr "ワイド表示"
 
 #: src/ui/preferences_dialog.c:84
 msgid "Automatic"
-msgstr ""
+msgstr "自動"
 
 #: src/ui/preferences_dialog.c:89
 msgid "Default Browser"
@@ -928,24 +928,21 @@ msgid "Manual"
 msgstr "手動"
 
 #: src/ui/preferences_dialog.c:383
-#, fuzzy
 msgid "Enable or disable this plugin"
-msgstr "ブラウザのプラグインを使う(_E)"
+msgstr "このプラグインを有効または無効にします"
 
 #: src/ui/preferences_dialog.c:389
 msgid "Configure this plugin"
-msgstr ""
+msgstr "このプラグインを設定します"
 
 #. add remove button
 #: src/ui/rule_editor.c:180
-#, fuzzy
 msgid "Remove"
-msgstr "削除(_R)"
+msgstr "削除"
 
 #: src/ui/search_dialog.c:127
-#, fuzzy
 msgid "Saved Search"
-msgstr "拡張検索"
+msgstr "保存した検索"
 
 #: src/ui/subscription_dialog.c:302 src/ui/subscription_dialog.c:309
 msgid "Choose File"
@@ -975,7 +972,7 @@ msgstr ""
 #: src/update_job.c:90
 #, c-format
 msgid "%s exited with status %d"
-msgstr "ステータス %2$d のトピック %1$s"
+msgstr "%s が終了ステータス %d で終了しました"
 
 #: src/update_job.c:96 src/update_job.c:317
 #, c-format
@@ -983,9 +980,8 @@ msgid "Error: Could not open pipe \"%s\""
 msgstr "エラー: パイプ \"%s\" を開けませんでした"
 
 #: src/update_job.c:100
-#, fuzzy
 msgid "Error: Could not write temporary file!"
-msgstr "エラー: ファイル \"%s\" を開けませんでした"
+msgstr "エラー: 一時ファイルを書き込めませんでした！"
 
 #. FIXME: maybe setting request->returncode would be better
 #: src/update_job.c:348
@@ -1021,9 +1017,8 @@ msgid "_Copy Link Location"
 msgstr "リンク先のコピー(_C)"
 
 #: src/webkit/liferea_web_view.c:187
-#, fuzzy
 msgid "_View Image"
-msgstr "画像を別名で保存(_A)"
+msgstr "画像を表示(_V)"
 
 #: src/webkit/liferea_web_view.c:188
 msgid "_Copy Image Location"
@@ -1043,7 +1038,7 @@ msgstr "購読する(_S)..."
 
 #: src/webkit/liferea_web_view.c:203
 msgid "_Copy"
-msgstr "コピー(_C):"
+msgstr "コピー(_C)"
 
 #: src/webkit/liferea_web_view.c:207
 msgid "_Increase Text Size"
@@ -1078,9 +1073,8 @@ msgid "Authentication"
 msgstr "認証"
 
 #: resources/ui/auth.ui:32
-#, fuzzy
 msgid "Enter the username and password for \"%s\" (%s)"
-msgstr "\"%s\" (%s) のユーザ名とパスワードを入力して下さい:"
+msgstr "\"%s\"（%s）のユーザ名とパスワードを入力して下さい"
 
 #: resources/ui/auth.ui:49 resources/ui/properties.ui:513
 msgid "User_name:"
@@ -1092,29 +1086,26 @@ msgstr "パスワード(_P):"
 
 #: resources/ui/auth.ui:111 resources/ui/google_source.ui:148
 #: resources/ui/reedah_source.ui:100
-#, fuzzy
 msgid "Cancel"
-msgstr "キャンセル(_A)"
+msgstr "キャンセル"
 
 #: resources/ui/auth.ui:117 resources/ui/reedah_source.ui:106
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: resources/ui/google_source.ui:7
-#, fuzzy
 msgid "Add Google Reader API Account"
-msgstr "Google リーダのアカウントの追加"
+msgstr "Google Reader API アカウントの追加"
 
 #: resources/ui/google_source.ui:23
 msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
-msgstr ""
+msgstr "新しい Google Reader API 互換の購読の詳細を入力して下さい。"
 
 #: resources/ui/google_source.ui:38
-#, fuzzy
 msgid "_Name"
-msgstr "配信元の名前(_N):"
+msgstr "名前(_N)"
 
 #: resources/ui/google_source.ui:64 resources/ui/reedah_source.ui:71
 #: resources/ui/theoldreader_source.ui:67
@@ -1127,17 +1118,16 @@ msgid "_Password"
 msgstr "パスワード(_P)"
 
 #: resources/ui/google_source.ui:115
-#, fuzzy
 msgid "_Server"
-msgstr "サーバの URL(_S)"
+msgstr "サーバ(_S)"
 
 #: resources/ui/mainwindow.ui:160
 msgid "page 1"
-msgstr ""
+msgstr "ページ1"
 
 #: resources/ui/mainwindow.ui:195
 msgid "page 2"
-msgstr ""
+msgstr "ページ2"
 
 #: resources/ui/mainwindow.ui:204 resources/ui/prefs.ui:437
 msgid "Headlines"
@@ -1205,7 +1195,7 @@ msgstr "前のトピック"
 
 #: resources/ui/mainwindow.ui:349
 msgid "Next Item"
-msgstr "次トピック"
+msgstr "次のトピック"
 
 #: resources/ui/mainwindow.ui:363
 msgid "R_emove"
@@ -1221,16 +1211,15 @@ msgstr "フルスクリーン(_F)"
 
 #: resources/ui/mainwindow.ui:392
 msgid "Zoom _In"
-msgstr ""
+msgstr "拡大(_I)"
 
 #: resources/ui/mainwindow.ui:396
 msgid "Zoom _Out"
-msgstr ""
+msgstr "縮小(_O)"
 
 #: resources/ui/mainwindow.ui:400
-#, fuzzy
 msgid "_Normal size"
-msgstr "通常の表示(_N)"
+msgstr "標準サイズ(_N)"
 
 #: resources/ui/mainwindow.ui:406
 msgid "_Reduced Feed List"
@@ -1245,9 +1234,8 @@ msgid "_Update Monitor"
 msgstr "更新モニタ(_U)"
 
 #: resources/ui/mainwindow.ui:423
-#, fuzzy
 msgid "_Sort Feeds"
-msgstr "配信元の並べ替え"
+msgstr "配信元の並べ替え(_S)"
 
 #: resources/ui/mainwindow.ui:429
 msgid "_Preferences"
@@ -1271,25 +1259,23 @@ msgstr "目次(_C)"
 
 #: resources/ui/mainwindow.ui:457
 msgid "_Shortcuts"
-msgstr ""
+msgstr "ショートカット・キー(_S)"
 
 #: resources/ui/mainwindow.ui:463
 msgid "_About"
 msgstr "このアプリケーションについて(_A)"
 
 #: resources/ui/mark_read_dialog.ui:11
-#, fuzzy
 msgid "Mark all as read ?"
-msgstr "全て既読にする"
+msgstr "全て既読にしますか？"
 
 #: resources/ui/mark_read_dialog.ui:27
-#, fuzzy
 msgid "_Mark all as read"
-msgstr "全て既読にする"
+msgstr "全て既読にする(_M)"
 
 #: resources/ui/mark_read_dialog.ui:46
 msgid "Do not ask again"
-msgstr ""
+msgstr "今後は確認しない"
 
 #: resources/ui/new_folder.ui:8
 msgid "New Folder"
@@ -1305,30 +1291,27 @@ msgstr "フォルダ名(_F):"
 #: resources/ui/search_folder.ui:143 resources/ui/simple_subscription.ui:95
 #: resources/ui/theoldreader_source.ui:103 resources/ui/ttrss_source.ui:123
 msgid "_OK"
-msgstr ""
+msgstr "OK(_O)"
 
 #: resources/ui/new_newsbin.ui:23
 msgid "_News Bin Name:"
 msgstr "NewsBin の名前(_N):"
 
 #: resources/ui/new_newsbin.ui:47
-#, fuzzy
 msgid "_Always show in Reduced Feed List"
-msgstr "既読の配信一覧を隠す(_R)"
+msgstr "既読の配信元を隠す表示でも常に表示する(_A)"
 
 #: resources/ui/node_source.ui:11
 msgid "Source Selection"
 msgstr "ソースの選択"
 
 #: resources/ui/node_source.ui:28
-#, fuzzy
 msgid "_Select the source type you want to add..."
-msgstr "追加するソースの種類を選択して下さい..."
+msgstr "追加するソースの種類を選択して下さい(_S)..."
 
 #: resources/ui/opml_source.ui:7
-#, fuzzy
 msgid "Add OPML"
-msgstr "OPML/Planet の追加"
+msgstr "OPML の追加"
 
 #: resources/ui/opml_source.ui:23
 msgid ""
@@ -1345,17 +1328,16 @@ msgid "_Select File"
 msgstr "選択(_S)..."
 
 #: resources/ui/plugins.ui:9
-#, fuzzy
 msgid "Plugin Manager"
-msgstr "プラグイン"
+msgstr "プラグインの管理"
 
 #: resources/ui/plugins.ui:43
 msgid "Con_figure"
-msgstr ""
+msgstr "設定(_F)"
 
 #: resources/ui/plugins.ui:51 resources/ui/prefs.ui:786
 msgid "_Close"
-msgstr ""
+msgstr "閉じる(_C)"
 
 #: resources/ui/prefs.ui:19
 msgid "Liferea Preferences"
@@ -1367,11 +1349,11 @@ msgstr "キャッシュの扱い"
 
 #: resources/ui/prefs.ui:59
 msgid "Default _number of items per feed to save:"
-msgstr "配信元毎に保存するトピックの数(_U):"
+msgstr "配信元毎に保存するトピックの数(_N):"
 
 #: resources/ui/prefs.ui:76 resources/ui/properties.ui:456
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: resources/ui/prefs.ui:97
 msgid "Feed Update Settings"
@@ -1379,7 +1361,7 @@ msgstr "更新の設定"
 
 #: resources/ui/prefs.ui:113
 msgid "_Update all subscriptions at startup."
-msgstr "起動時に全ての配信先を更新する(_U)"
+msgstr "起動時に全ての配信元を更新する(_U)"
 
 #: resources/ui/prefs.ui:125
 msgid "Default Feed Refresh _Interval:"
@@ -1387,7 +1369,7 @@ msgstr "配信元を更新する間隔(_I):"
 
 #: resources/ui/prefs.ui:140 resources/ui/properties.ui:128
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: resources/ui/prefs.ui:169
 msgid "Feeds"
@@ -1419,7 +1401,7 @@ msgstr "フォルダ"
 
 #: resources/ui/prefs.ui:295
 msgid "Reading Headlines"
-msgstr "ヘッドラインの読み込み"
+msgstr "ヘッドラインの閲覧"
 
 #: resources/ui/prefs.ui:309
 msgid "_Skim through articles with:"
@@ -1431,11 +1413,11 @@ msgstr "デフォルトの表示モード(_D):"
 
 #: resources/ui/prefs.ui:335
 msgid "_Defer removing read items from folders and search folders."
-msgstr ""
+msgstr "既読のトピックをフォルダと検索フォルダから削除するのを遅らせる(_D)"
 
 #: resources/ui/prefs.ui:349
 msgid "Ask for confirmation when marking all items as read."
-msgstr ""
+msgstr "全てのトピックを既読にする時に確認する"
 
 #: resources/ui/prefs.ui:393
 msgid "Web Integration"
@@ -1455,7 +1437,7 @@ msgstr "リンクを Liferea のウィンドウ内で開く(_W)"
 
 #: resources/ui/prefs.ui:486
 msgid "_Never run external Javascript."
-msgstr ""
+msgstr "外部の JavaScript を一切実行しない(_N)"
 
 #: resources/ui/prefs.ui:508
 msgid "External Browser Settings"
@@ -1495,21 +1477,23 @@ msgstr "プライバシーの設定"
 
 #: resources/ui/prefs.ui:669
 msgid "Tell websites that I do _not want to be tracked."
-msgstr ""
+msgstr "追跡されたくないことをウェブサイトに伝える(_N)"
 
 #: resources/ui/prefs.ui:682
 msgid "Tell websites not to _sell or share my data."
-msgstr ""
+msgstr "データを販売・共有しないようウェブサイトに伝える(_S)"
 
 #: resources/ui/prefs.ui:697
 msgid "_Intelligent Tracking Prevention. "
-msgstr ""
+msgstr "インテリジェント・トラッキング防止(_I) "
 
 #: resources/ui/prefs.ui:705
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
+"これは、<a href=\"https://webkit.org/tracking-prevention/\">こちら</a>で説明"
+"されている WebKit の機能を有効にします。"
 
 #: resources/ui/prefs.ui:721
 msgid "Privacy"
@@ -1524,14 +1508,12 @@ msgid "Subscription Properties"
 msgstr "購読先のプロパティ"
 
 #: resources/ui/properties.ui:48
-#, fuzzy
 msgid "Feed _Name"
-msgstr "配信元の名前(_N):"
+msgstr "配信元の名前(_N)"
 
 #: resources/ui/properties.ui:84
-#, fuzzy
 msgid "Update _Interval"
-msgstr "更新間隔"
+msgstr "更新間隔(_I)"
 
 #: resources/ui/properties.ui:101
 msgid "_Use global default update interval."
@@ -1539,7 +1521,7 @@ msgstr "デフォルトの更新間隔を使用する(_U)"
 
 #: resources/ui/properties.ui:114
 msgid "_Feed specific update interval of"
-msgstr "配信元で指定した更新間隔にする(_F): "
+msgstr "配信元固有の更新間隔(_F)"
 
 #: resources/ui/properties.ui:155
 msgid "_Don't update this feed automatically."
@@ -1657,7 +1639,7 @@ msgstr "ダウンロードしたトピックを既読にする(_M)"
 
 #: resources/ui/properties.ui:629
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr ""
+msgstr "HTML5 と Google AMP から全文を抽出する"
 
 #: resources/ui/properties.ui:642
 msgid "Advanced"
@@ -1673,7 +1655,7 @@ msgstr "Reedah のアカウント情報を入力して下さい:"
 
 #: resources/ui/rename_node.ui:9
 msgid "Rename"
-msgstr "フォルダ名の変更"
+msgstr "名前の変更"
 
 #: resources/ui/rename_node.ui:25
 msgid "_New Name:"
@@ -1685,17 +1667,15 @@ msgstr "検索フォルダのプロパティ"
 
 #: resources/ui/search_folder.ui:30
 msgid "Search _Name:"
-msgstr "検索する内容(_N):"
+msgstr "検索フォルダの名前(_N):"
 
 #: resources/ui/search_folder.ui:45
-#, fuzzy
 msgid "Search Rules"
-msgstr "全ての配信元から検索"
+msgstr "検索ルール"
 
 #: resources/ui/search_folder.ui:81
-#, fuzzy
 msgid "Rule Matching"
-msgstr "幾つかを満足するもの(_N)"
+msgstr "ルールの一致条件"
 
 #: resources/ui/search_folder.ui:96 resources/ui/search.ui:49
 msgid "A_ny Rule Matches"
@@ -1706,31 +1686,28 @@ msgid "_All Rules Must Match"
 msgstr "全てを満足するもの(_A)"
 
 #: resources/ui/search_folder.ui:114
-#, fuzzy
 msgid "Hide read items"
-msgstr "既読のトピックを隠す(_H)"
+msgstr "既読のトピックを隠す"
 
 #: resources/ui/search.ui:9
 msgid "Advanced Search"
 msgstr "拡張検索"
 
 #: resources/ui/search.ui:26
-#, fuzzy
 msgid "Find items that meet the following criteria"
-msgstr "次の条件を満足するトピックを検索します:"
+msgstr "次の条件を満たすトピックを検索"
 
 #: resources/ui/search.ui:100 resources/ui/update_monitor.ui:111
 msgid "Close"
-msgstr ""
+msgstr "閉じる"
 
 #: resources/ui/search.ui:113
 msgid "Find"
-msgstr ""
+msgstr "検索"
 
 #: resources/ui/simple_subscription.ui:26
-#, fuzzy
 msgid "Feed _Source"
-msgstr "配信元の場所"
+msgstr "配信元の場所(_S)"
 
 #: resources/ui/simple_subscription.ui:41
 msgid ""
@@ -1746,7 +1723,7 @@ msgstr "拡張(_A)..."
 
 #: resources/ui/theoldreader_source.ui:7
 msgid "Add TheOldReader Account"
-msgstr "TheOldReader のアカウントの追加 "
+msgstr "TheOldReader のアカウントの追加"
 
 #: resources/ui/theoldreader_source.ui:22
 msgid "Please enter your TheOldReader account settings."
@@ -1773,18 +1750,16 @@ msgid "Update Monitor"
 msgstr "更新モニタ"
 
 #: resources/ui/update_monitor.ui:66
-#, fuzzy
 msgid "_Pending Requests"
-msgstr "保留中のリクエスト"
+msgstr "保留中のリクエスト(_P)"
 
 #: resources/ui/update_monitor.ui:81
-#, fuzzy
 msgid "_Downloading Now"
-msgstr "ダウンロード中のリクエスト"
+msgstr "ダウンロード中のリクエスト(_D)"
 
 #: resources/ui/update_monitor.ui:104
 msgid "Stop All"
-msgstr ""
+msgstr "全て停止"
 
 #, fuzzy
 #~ msgid "HeOdlines"
