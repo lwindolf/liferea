@@ -22,6 +22,7 @@
 
 #include "conf.h"
 #include "subscription.h"
+#include "update.h"
 
 // update interval test cases
 typedef struct tc {
@@ -269,6 +270,57 @@ static struct tcCanBeUpdated tc_can_be_updated[] = {
 	{ NULL }
 };
 
+// Test cases for scheduling of non-interactive updates (as done on application startup)
+typedef struct tcStartupUpdate {
+	const gchar	*name;
+	gint		propsInterval;	/* user defined interval (-1 for global default, -2 for no auto update) */
+	guint		flags;		/* update flags passed to subscription_update() */
+	gboolean	updateExpected;	/* TRUE if update is allowed */
+} *tcStartupUpdatePtr;
+
+static struct tcStartupUpdate tc_startup_updates[] = {
+	{
+		.name = "/subscription/startup-update-default-interval",
+		.propsInterval = -1,
+		.flags = 0,
+		.updateExpected = TRUE
+	},
+	{
+		.name = "/subscription/startup-update-custom-interval",
+		.propsInterval = 60,
+		.flags = 0,
+		.updateExpected = TRUE
+	},
+	{
+		.name = "/subscription/startup-update-skips-never-update",
+		.propsInterval = -2,
+		.flags = 0,
+		.updateExpected = FALSE
+	},
+	{
+		.name = "/subscription/manual-update-ignores-never-update",
+		.propsInterval = -2,
+		.flags = UPDATE_REQUEST_PRIORITY_HIGH,
+		.updateExpected = TRUE
+	},
+	{ NULL }
+};
+
+static void
+tc_startup_update (gconstpointer user_data)
+{
+	tcStartupUpdatePtr	tc = (tcStartupUpdatePtr)user_data;
+	subscriptionPtr		s = subscription_new (NULL, NULL, NULL);
+
+	// Do not use subscription_set_source/_update_interval () as they trigger feed list saving
+	s->source = g_strdup ("http://example.com/feed");
+	s->updateInterval = tc->propsInterval;
+
+	g_assert_true (subscription_can_be_updated (s, tc->flags) == tc->updateExpected);
+
+	subscription_free (s);
+}
+
 static void
 tc_interval (gconstpointer user_data)
 {
@@ -354,6 +406,10 @@ test_subscription (int argc, char *argv[])
 	}
 	for (int i = 0; tc_can_be_updated[i].name != NULL; i++) {
 		g_test_add_data_func (tc_can_be_updated[i].name, &tc_can_be_updated[i], &tc_can_be_updated_func);
+	}
+
+	for (int i = 0; tc_startup_updates[i].name != NULL; i++) {
+		g_test_add_data_func (tc_startup_updates[i].name, &tc_startup_updates[i], &tc_startup_update);
 	}
 
 	result = g_test_run();

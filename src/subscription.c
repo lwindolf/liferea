@@ -123,6 +123,12 @@ subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 		return FALSE;
 	}
 
+	// "Don't update this feed automatically" must only be overridden by interactive updates
+	if (!interactive && -2 == subscription->updateInterval) {
+		debug (DEBUG_UPDATE, "subscription: |%s| is set to never update automatically!", subscription->source);
+		return FALSE;
+	}
+
 	// can be the case for newsbins
 	if (!subscription_get_source (subscription)) {
 		debug (DEBUG_UPDATE, "subscription: || has no source!");
@@ -341,7 +347,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	debug (DEBUG_UPDATE, "subscription: |%s| scheduling update (flags=%u)", subscription->source, flags);
 
 	if (!subscription_can_be_updated (subscription, flags)) {
-		debug (DEBUG_UPDATE, "subscription: %s |%s| update cannot be scheduled", subscription->node->id, subscription->node->title);
+		debug (DEBUG_UPDATE, "subscription: |%s| update cannot be scheduled", subscription->source);
 		return;
 	}
 
