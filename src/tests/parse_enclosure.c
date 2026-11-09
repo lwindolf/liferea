@@ -247,6 +247,10 @@ test_parse_enclosure (int argc, char *argv[])
 
 	g_test_init (&argc, &argv, NULL);
 
+	#if LIBXML_VERSION < 21400
+		return 0;	/* github #1628 */
+	#endif
+
         for (guint i = 0; i < G_N_ELEMENTS (tc_discovery); i++)
                 g_test_add_data_func (tc_discovery[i].name, &tc_discovery[i], &tc_enclosure_discovery);
 
