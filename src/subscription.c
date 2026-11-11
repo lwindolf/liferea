@@ -116,6 +116,13 @@ subscription_can_be_updated (subscriptionPtr subscription, guint flags)
 		return FALSE;
 	}
 
+	if (subscription->node && subscription->node->source &&
+	    (NODE_SOURCE_TYPE (subscription->node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) &&
+	    subscription->node->source->loginState != NODE_SOURCE_STATE_ACTIVE) {
+		debug (DEBUG_UPDATE, "subscription: |%s| node source is not logged in yet!", subscription->source);
+		return FALSE;
+	}
+
 	if (subscription->discontinued) {
 		debug (DEBUG_UPDATE, "subscription: |%s| is discontinued!", subscription->source);
 		if (interactive)
@@ -343,12 +350,6 @@ subscription_update (subscriptionPtr subscription, guint flags)
 
 	if (!subscription || !subscription->type)
 		return;
-
-	if ((NODE_SOURCE_TYPE (subscription->node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) &&
-	    subscription->node->source->loginState != NODE_SOURCE_STATE_ACTIVE) {
-		debug (DEBUG_UPDATE, "Skipping update %s as node source is not logged in yet", subscription->node->id);
-		return;
-	}
 
 	debug (DEBUG_UPDATE, "subscription: |%s| scheduling update (flags=%u)", subscription->source, flags);
 

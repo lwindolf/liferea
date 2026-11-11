@@ -21,6 +21,8 @@
 #include <glib.h>
 
 #include "conf.h"
+#include "node.h"
+#include "node_source.h"
 #include "subscription.h"
 #include "update.h"
 
@@ -306,6 +308,61 @@ static struct tcStartupUpdate tc_startup_updates[] = {
 	{ NULL }
 };
 
+// Test cases for updating subscriptions of node sources that are not logged in (yet)
+typedef struct tcNodeSourceUpdate {
+	const gchar		*name;
+	nodeSourceState		loginState;	/* login state of the node source */
+} *tcNodeSourceUpdatePtr;
+
+static struct tcNodeSourceUpdate tc_node_source_updates[] = {
+	{
+		.name = "/subscription/node-source-update-skipped-not-logged-in",
+		.loginState = NODE_SOURCE_STATE_NONE
+	},
+	{
+		.name = "/subscription/node-source-update-skipped-login-in-progress",
+		.loginState = NODE_SOURCE_STATE_IN_PROGRESS
+	},
+	{
+		.name = "/subscription/node-source-update-skipped-auth-failed",
+		.loginState = NODE_SOURCE_STATE_AUTH_FAILED
+	},
+	{
+		.name = "/subscription/node-source-update-skipped-auth-challenge",
+		.loginState = NODE_SOURCE_STATE_AUTH_CHALLENGE
+	},
+	{
+		.name = "/subscription/node-source-update-skipped-migrate",
+		.loginState = NODE_SOURCE_STATE_MIGRATE
+	},
+	{ NULL }
+};
+
+static void
+tc_node_source_update (gconstpointer user_data)
+{
+	tcNodeSourceUpdatePtr	tc = (tcNodeSourceUpdatePtr)user_data;
+	struct nodeSourceType	type = { .capabilities = NODE_SOURCE_CAPABILITY_CAN_LOGIN };
+	struct nodeSource	source = { .type = &type, .loginState = tc->loginState };
+	Node			*node = node_new ("feed");
+	subscriptionPtr		s = subscription_new (NULL, NULL, NULL);
+
+	// Do not use subscription_set_source () as it triggers feed list saving
+	s->source = g_strdup ("http://example.com/source/api/v1/reader");
+	node_set_subscription (node, s);
+	node->source = &source;
+	source.root = node;
+
+	g_assert_false (subscription_can_be_updated (s, UPDATE_REQUEST_PRIORITY_HIGH));
+
+	// Once logged in the same subscription must be updatable
+	source.loginState = NODE_SOURCE_STATE_ACTIVE;
+	g_assert_true (subscription_can_be_updated (s, UPDATE_REQUEST_PRIORITY_HIGH));
+
+	node->source = NULL;	// avoid finalizing stack allocated source
+	g_object_unref (node);
+}
+
 static void
 tc_startup_update (gconstpointer user_data)
 {
@@ -410,6 +467,10 @@ test_subscription (int argc, char *argv[])
 
 	for (int i = 0; tc_startup_updates[i].name != NULL; i++) {
 		g_test_add_data_func (tc_startup_updates[i].name, &tc_startup_updates[i], &tc_startup_update);
+	}
+
+	for (int i = 0; tc_node_source_updates[i].name != NULL; i++) {
+		g_test_add_data_func (tc_node_source_updates[i].name, &tc_node_source_updates[i], &tc_node_source_update);
 	}
 
 	result = g_test_run();
