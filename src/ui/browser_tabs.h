@@ -47,7 +47,7 @@ BrowserTabs * browser_tabs_create (GtkNotebook *notebook);
  *
  * Adds a new tab with the specified URL and title.
  *
- * Returns: the newly created HTML view
+ * Returns: (transfer none): the newly created HTML view (owned by the tab)
  */
 LifereaBrowser * browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate);
 
