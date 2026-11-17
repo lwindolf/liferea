@@ -126,10 +126,18 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 static void
 theoldreader_feed_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult* const result, updateFlags flags)
 {
+	g_autofree gchar *homepage;
+
 	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| process feed update result", subscription->node->id, subscription->node->title);
+
+	/* TheOldReader Atom feeds override the homepage */
+	homepage = g_strdup (subscription_get_homepage (subscription));
 
 	/* Always do standard feed parsing to get the items... */
 	feed_get_subscription_type ()->process_update_result (subscription, result, flags);
+
+	/* Restore original homepage */
+	subscription_set_homepage (subscription, homepage);
 
 	if (!result->data || result->httpstatus != 200) {
 		debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| ERROR: feed update failed (HTTP status %d)", subscription->node->id, subscription->node->title, result->httpstatus);
