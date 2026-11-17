@@ -126,20 +126,10 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 static void
 theoldreader_feed_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult* const result, updateFlags flags)
 {
-	g_autofree gchar *id;
-
 	debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| process feed update result", subscription->node->id, subscription->node->title);
-
-	/* Save old subscription metadata which contains "theoldreader-feed-id"
-	   which is mission critical and the feed parser currently drops all
-	   previous metadata :-( */
-	id = g_strdup (metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
 
 	/* Always do standard feed parsing to get the items... */
 	feed_get_subscription_type ()->process_update_result (subscription, result, flags);
-
-	/* Set remote id again */
-	metadata_list_set (&subscription->metadata, "theoldreader-feed-id", id);
 
 	if (!result->data || result->httpstatus != 200) {
 		debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| ERROR: feed update failed (HTTP status %d)", subscription->node->id, subscription->node->title, result->httpstatus);
