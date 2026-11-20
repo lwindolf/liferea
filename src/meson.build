@@ -169,3 +169,13 @@ plugins_static = static_library('plugins', plugins_sources,
   dependencies: liferea_deps,
   gnu_symbol_visibility: 'hidden'
 )
+
+shared_module('liferea-web-extension',
+  files(
+    'webkit/web_extension/web_extension_main.c',
+    'webkit/web_extension/liferea_web_extension.c',
+  ),
+  dependencies: dependency('webkitgtk-web-process-extension-6.0'),
+  install: true,
+  install_dir: webprocessextensionsdir,
+)

@@ -46,15 +46,6 @@ GType liferea_web_view_get_type (void);
 LifereaWebView *liferea_web_view_new (void);
 
 /**
- * liferea_web_view_set_dbus_connection: (skip)
- * Set the D-Bus connection to be used by the web view.
- *
- * @self: a #LifereaWebView
- * @connection: a #GDBusConnection
- */
-void liferea_web_view_set_dbus_connection (LifereaWebView *self, GDBusConnection *connection);
-
-/**
  * liferea_web_view_scroll_pagedown:
  * Scroll the web view down by one page.
  *
