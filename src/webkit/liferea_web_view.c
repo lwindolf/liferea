@@ -34,13 +34,11 @@
 #include "ui/liferea_browser.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
-#include "web_extension/liferea_web_extension_names.h"
 
 struct _LifereaWebView {
 	WebKitWebView		parent;
 
 	GActionGroup            *menu_action_group;
-	GDBusConnection 	*dbus_connection;
 };
 
 struct _LifereaWebViewClass {
@@ -52,12 +50,6 @@ G_DEFINE_TYPE (LifereaWebView, liferea_web_view, WEBKIT_TYPE_WEB_VIEW)
 static void
 liferea_web_view_finalize(GObject *gobject)
 {
-	LifereaWebView *self = LIFEREA_WEB_VIEW(gobject);
-
-	if (self->dbus_connection) {
-		g_object_remove_weak_pointer (G_OBJECT (self->dbus_connection), (gpointer *) &self->dbus_connection);
-	}
-
 	/* Chaining finalize from parent class. */
 	G_OBJECT_CLASS(liferea_web_view_parent_class)->finalize(gobject);
 }
@@ -565,8 +557,6 @@ liferea_web_view_progress_changed (GObject *webview, GParamSpec *pspec, gpointer
 static void
 liferea_web_view_init(LifereaWebView *self)
 {
-	self->dbus_connection = NULL;
-
 	/* Context menu actions */
 	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
 
@@ -637,67 +627,43 @@ liferea_web_view_init(LifereaWebView *self)
 static void
 liferea_web_view_scroll_pagedown_callback (GObject *source_object, GAsyncResult *res, gpointer user_data)
 {
-	GVariant 	*result = NULL;
-	GError 		*error = NULL;
-	gchar		*output = NULL;
+	JSCValue *result = NULL;
+	GError *error = NULL;
 
-	result = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object), res, &error);
+	result = webkit_web_view_evaluate_javascript_finish (WEBKIT_WEB_VIEW (source_object), res, &error);
 
-	if (result == NULL) {
-		g_warning ("Error invoking scrollPageDown: %s\n", error->message);
-		g_error_free (error);
+	if (!result) {
+		g_warning ("Error invoking scrollPageDown: %s", error->message);
+		g_clear_error (&error);
 		return;
         }
 
-	g_variant_get (result, "(s)", &output);
-
-	if (g_str_equal(output, "false"))
+	if (jsc_value_is_boolean (result) && !jsc_value_to_boolean (result))
 		itemlist_select_next_unread ();
 
-	g_free (output);
+	g_object_unref (result);
 }
 
 void
 liferea_web_view_scroll_pagedown (LifereaWebView *self)
 {
-	gchar *cmd = "\
-		window.scrollTo({top: window.pageYOffset + window.innerHeight, behavior: 'smooth'}); \
-		doc = document.documentElement; \
-		console.log(window.pageYOffset); \
-		console.log(doc.scrollHeight - (doc.scrollTop + doc.clientHeight) > 0); \
-		doc.scrollHeight - (doc.scrollTop + doc.clientHeight) > 0; \
-	";
+	static const gchar *script = "(() => {"
+	                             "const doc = document.scrollingElement || document.documentElement;"
+	                             "if (doc.scrollHeight - doc.clientHeight - doc.scrollTop < 1) return false;"
+	                             "window.scrollBy({top: doc.clientHeight, behavior: 'smooth'});"
+	                             "return true;"
+	                             "})();";
 
-	if (!self->dbus_connection)
-		return;
-
-	g_dbus_connection_call (self->dbus_connection,
-		 LIFEREA_WEB_EXTENSION_BUS_NAME,
-		 LIFEREA_WEB_EXTENSION_OBJECT_PATH,
-		 LIFEREA_WEB_EXTENSION_INTERFACE_NAME,
-		"EvalJs",
-		g_variant_new (
-			"(ts)",
-			webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (self)),
-			cmd
-		),
-		((const GVariantType *) "(s)"),
-		G_DBUS_CALL_FLAGS_NONE,
-		-1, /* Default timeout */
+	webkit_web_view_evaluate_javascript (
+		WEBKIT_WEB_VIEW (self),
+		script,
+		-1,
+		NULL,
+		NULL,
 		NULL,
 		liferea_web_view_scroll_pagedown_callback,
 		NULL
 	);
-}
-
-void
-liferea_web_view_set_dbus_connection (LifereaWebView *self, GDBusConnection *connection)
-{
-	if (self->dbus_connection) {
-		g_object_remove_weak_pointer (G_OBJECT (self->dbus_connection), (gpointer *) &self->dbus_connection);
-	}
-	self->dbus_connection = connection;
-	g_object_add_weak_pointer (G_OBJECT (self->dbus_connection), (gpointer *) &self->dbus_connection);
 }
 
 LifereaWebView *

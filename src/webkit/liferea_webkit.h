@@ -35,8 +35,6 @@
 
 typedef struct _LifereaWebKit {
 	GObject parent;
-	GDBusServer 	*dbus_server;
-	GList 		*dbus_connections;
 } LifereaWebKit;
 
 typedef struct _LifereaWebKitClass {
