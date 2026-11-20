@@ -66,7 +66,7 @@ liferea_webkit_disable_javascript_cb (GSettings *gsettings,
 
 	g_object_set (
 		webkit_settings,
-		"enable-javascript",
+		"enable-javascript-markup",
 		!g_settings_get_boolean (gsettings, key),
 		NULL
 	);
@@ -297,7 +297,7 @@ liferea_webkit_write_html (
 	// FIXME Avoid doing a copy ?
 	GBytes *string_bytes = g_bytes_new (string, length);
 
-	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)), "enable-javascript", TRUE, NULL);
+	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)), "enable-javascript-markup", TRUE, NULL);
 
 	/* Note: we explicitely ignore the passed base URL
 	   because we don't need it as Webkit supports <div href="">
@@ -357,7 +357,7 @@ liferea_webkit_default_settings (WebKitSettings *settings)
 	gboolean	disable_javascript;
 
 	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
-	g_object_set (settings, "enable-javascript", !disable_javascript, NULL);
+	g_object_set (settings, "enable-javascript-markup", !disable_javascript, NULL);
 
 	user_agent = network_get_user_agent ();
 	webkit_settings_set_user_agent (settings, user_agent);
