@@ -311,7 +311,7 @@ on_opml_source_selected (GtkButton *button, gpointer user_data)
 	node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
 	node_source_new (node, opml_source_get_type (), liferea_dialog_entryrow_get (dialog, "locationEntry"));
 	feedlist_node_added (node);
-	node_source_update (node);
+	node_source_update (node, 0);
 
 	adw_dialog_close (ADW_DIALOG (dialog));
 }

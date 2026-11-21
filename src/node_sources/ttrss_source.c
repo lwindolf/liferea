@@ -174,7 +174,7 @@ ttrss_source_subscribe_cb (UpdateJob *job)
 
 	/* As TinyTinyRSS does not return the id of the newly subscribed feed
 	   we need to reload the entire feed list. */
-	node_source_update (subscription->node->source->root);
+	node_source_update (subscription->node->source->root, 0);
 
 	return TRUE;
 }

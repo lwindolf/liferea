@@ -379,7 +379,7 @@ on_new_node_source_create (GtkButton *button, gpointer user_data)
         subscription_set_auth_info (node->subscription, username, password);
 
         feedlist_node_added (node);
-        node_source_update (node);
+        node_source_update (node, 0);
 
         adw_dialog_close (ADW_DIALOG (dialog));
 }
@@ -508,19 +508,19 @@ node_source_ensure_login (Node *node, updateFlags flags)
 }
 
 void
-node_source_update (Node *node)
+node_source_update (Node *node, updateFlags flags)
 {
 	if (node->subscription) {
-		if (!node_source_ensure_login (node, 0))
+		if (!node_source_ensure_login (node, flags))
 			return;
 
-		subscription_update (node->subscription, 0);
+		subscription_update (node->subscription, flags);
 
 		/* Note that node sources are required to auto-update child
 		   nodes themselves once login and feed list update is fine. */
 	} else {
 		/* only for default source we update all childs here */
-		node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
+		node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (flags));
 	}
 }
 

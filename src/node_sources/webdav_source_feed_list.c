@@ -547,7 +547,7 @@ webdav_merge_op_finalize (WebDAVMergeOp *op)
 		node_source_set_active (op->root);
 
 	if (!op->any_error && !(op->flags & NODE_SOURCE_UPDATE_ONLY_LIST))
-		node_foreach_child (op->root, node_auto_update_subscription);
+		node_foreach_child_data (op->root, node_auto_update_subscription, NULL);
 
 	g_hash_table_destroy (op->remote_folder_ids);
 	g_hash_table_destroy (op->visiting);
