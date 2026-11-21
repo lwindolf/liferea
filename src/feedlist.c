@@ -721,6 +721,7 @@ feedlist_new_items (guint newCount)
 void
 feedlist_node_was_updated (Node *node)
 {
+	node_update_counters (node);
 	feedlist_schedule_save ();
 
 	g_signal_emit_by_name (feedlist, "node-updated", node->id);
