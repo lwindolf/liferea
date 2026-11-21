@@ -38,7 +38,6 @@
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
 
-#include "web_extension/liferea_web_extension_names.h"
 #include "liferea_web_view.h"
 
 G_DEFINE_TYPE (LifereaWebKit, liferea_webkit, G_TYPE_OBJECT)
@@ -48,45 +47,9 @@ static LifereaWebKit *liferea_webkit = NULL;
 static WebKitUserStyleSheet *default_stylesheet = NULL;
 static WebKitUserStyleSheet *user_stylesheet = NULL;
 
-enum {
-	PAGE_CREATED_SIGNAL,
-	N_SIGNALS
-};
-
-static guint liferea_webkit_signals [N_SIGNALS];
-
-static void
-liferea_webkit_dispose (GObject *gobject)
-{
-	LifereaWebKit *self = LIFEREA_WEBKIT(gobject);
-
-	g_clear_object (&self->dbus_server);
-	g_list_free_full (self->dbus_connections, g_object_unref);
-
-	/* Chaining dispose from parent class. */
-	G_OBJECT_CLASS(liferea_webkit_parent_class)->dispose(gobject);
-}
-
 static void
 liferea_webkit_class_init (LifereaWebKitClass *klass)
 {
-	GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
-
-	GType signal_params[2] = {G_TYPE_POINTER, G_TYPE_UINT64};
-
-	liferea_webkit_signals[PAGE_CREATED_SIGNAL] = g_signal_newv (
-		"page-created",
-		LIFEREA_TYPE_WEBKIT,
-		G_SIGNAL_RUN_FIRST,
-		NULL,
-		NULL,
-		NULL,
-		NULL,
-		G_TYPE_NONE,
-		2,
-		signal_params);
-
-	gobject_class->dispose = liferea_webkit_dispose;
 }
 
 /**
@@ -103,7 +66,7 @@ liferea_webkit_disable_javascript_cb (GSettings *gsettings,
 
 	g_object_set (
 		webkit_settings,
-		"enable-javascript",
+		"enable-javascript-markup",
 		!g_settings_get_boolean (gsettings, key),
 		NULL
 	);
@@ -121,150 +84,11 @@ liferea_webkit_enable_itp_cb (GSettings *gsettings,
 	    g_settings_get_boolean (gsettings, key));
 }
 
-static gboolean
-liferea_webkit_authorize_authenticated_peer (GDBusAuthObserver 	*observer,
-					     GIOStream		*stream,
-					     GCredentials	*credentials,
-					     gpointer		user_data)
-{
-	gboolean authorized = FALSE;
-	GCredentials *own_credentials = NULL;
-	GError *error = NULL;
-
-	if (!credentials) {
-		g_printerr ("No credentials received from web extension.\n");
-		return FALSE;
-	}
-
-	own_credentials = g_credentials_new ();
-
-	if (g_credentials_is_same_user (credentials, own_credentials, &error)) {
-		authorized = TRUE;
-	} else {
-		g_printerr ("Error authorizing web extension : %s\n", error->message);
-		g_error_free (error);
-	}
-	g_object_unref (own_credentials);
-
-	return authorized;
-}
-
-static void
-liferea_webkit_on_dbus_connection_close (GDBusConnection *connection,
-					 gboolean        remote_peer_vanished,
-					 GError          *error,
-					 gpointer        user_data)
-{
-	LifereaWebKit *webkit_impl = LIFEREA_WEBKIT (user_data);
-
-	if (!remote_peer_vanished && error)
-		g_warning ("DBus connection closed with error : %s", error->message);
-
-	webkit_impl->dbus_connections = g_list_remove (webkit_impl->dbus_connections, connection);
-	g_object_unref (connection);
-}
-
-static void
-liferea_webkit_emit_page_created (GDBusConnection *connection,
-			     const gchar *sender_name,
-			     const gchar *object_path,
-			     const gchar *interface_name,
-			     const gchar *signal_name,
-			     GVariant *parameters,
-			     gpointer user_data)
-{
-	guint64 page_id;
-	LifereaWebKit *webkit_impl = LIFEREA_WEBKIT (user_data);
-
-	g_variant_get (parameters, "(t)", &page_id);
-	g_signal_emit (webkit_impl,
-		liferea_webkit_signals[PAGE_CREATED_SIGNAL],
-		0,
-		(gpointer) connection,
-		page_id);
-}
-
-static void
-on_page_created (LifereaWebKit *instance,
-		 GDBusConnection *connection,
-		 guint64 page_id,
-		 gpointer web_view)
-{
-	if (webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (web_view)) == page_id)
-		liferea_web_view_set_dbus_connection (LIFEREA_WEB_VIEW (web_view), connection);
-}
-
-
-static gboolean
-liferea_webkit_on_new_dbus_connection (GDBusServer *server, GDBusConnection *connection, gpointer user_data)
-{
-	LifereaWebKit *webkit_impl = LIFEREA_WEBKIT (user_data);
-
-	webkit_impl->dbus_connections = g_list_append (webkit_impl->dbus_connections, g_object_ref (connection));
-	g_signal_connect (connection,
-			  "closed",
-			  G_CALLBACK (liferea_webkit_on_dbus_connection_close),
-			  webkit_impl);
-
-	g_dbus_connection_signal_subscribe (
-		connection,
-		NULL,
-		LIFEREA_WEB_EXTENSION_INTERFACE_NAME,
-		"PageCreated",
-		LIFEREA_WEB_EXTENSION_OBJECT_PATH,
-		NULL,
-		G_DBUS_SIGNAL_FLAGS_NONE,
-		(GDBusSignalCallback)liferea_webkit_emit_page_created,
-                webkit_impl,
-                NULL);
-
-	return TRUE;
-}
-
 static void
 liferea_webkit_initialize_web_extensions (WebKitWebContext 	*context,
 					  gpointer		user_data)
 {
-	gchar 	*guid = NULL;
-	gchar 	*address = NULL;
-	gchar 	*server_address = NULL;
-	GError	*error = NULL;
-	GDBusAuthObserver *observer = NULL;
-	LifereaWebKit *webkit_impl = LIFEREA_WEBKIT (user_data);
-
-	guid = g_dbus_generate_guid ();
-	address = g_strdup_printf ("unix:tmpdir=%s", g_get_tmp_dir ());
-	observer = g_dbus_auth_observer_new ();
-
-	g_signal_connect (observer,
-			  "authorize-authenticated-peer",
-			  G_CALLBACK (liferea_webkit_authorize_authenticated_peer),
-			  NULL);
-
-	webkit_impl->dbus_server = g_dbus_server_new_sync (address,
-					      G_DBUS_SERVER_FLAGS_NONE,//Flags
-					      guid,
-					      observer,
-					      NULL, //Cancellable
-					      &error);
-	g_free (guid);
-	g_free (address);
-	g_object_unref (observer);
-	if (webkit_impl->dbus_server == NULL) {
-		g_printerr ("Error creating DBus server : %s\n", error->message);
-		g_error_free (error);
-		return;
-        }
-	g_dbus_server_start (webkit_impl->dbus_server);
-
-	g_signal_connect (webkit_impl->dbus_server,
-			  "new-connection",
-			  G_CALLBACK (liferea_webkit_on_new_dbus_connection),
-			  webkit_impl);
-
 	webkit_web_context_set_web_process_extensions_directory (context, WEB_EXTENSIONS_DIR);
-	server_address = g_strdup (g_dbus_server_get_client_address (webkit_impl->dbus_server));
-	webkit_web_context_set_web_process_extensions_initialization_user_data (context, g_variant_new_take_string (server_address));
 }
 
 static void
@@ -428,7 +252,6 @@ liferea_webkit_init (LifereaWebKit *self)
 	gboolean			enable_itp;
 	WebKitSecurityManager		*security_manager;
 		
-	self->dbus_connections = NULL;
 	webkit_web_context_register_uri_scheme (webkit_web_context_get_default (), "liferea",
 		(WebKitURISchemeRequestCallback) liferea_webkit_handle_liferea_scheme, NULL, NULL);
 	webkit_web_context_register_uri_scheme (webkit_web_context_get_default (), "feed",
@@ -474,7 +297,7 @@ liferea_webkit_write_html (
 	// FIXME Avoid doing a copy ?
 	GBytes *string_bytes = g_bytes_new (string, length);
 
-	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)), "enable-javascript", TRUE, NULL);
+	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)), "enable-javascript-markup", TRUE, NULL);
 
 	/* Note: we explicitely ignore the passed base URL
 	   because we don't need it as Webkit supports <div href="">
@@ -534,7 +357,7 @@ liferea_webkit_default_settings (WebKitSettings *settings)
 	gboolean	disable_javascript;
 
 	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
-	g_object_set (settings, "enable-javascript", !disable_javascript, NULL);
+	g_object_set (settings, "enable-javascript-markup", !disable_javascript, NULL);
 
 	user_agent = network_get_user_agent ();
 	webkit_settings_set_user_agent (settings, user_agent);
@@ -570,13 +393,6 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 		webkit_network_session_get_website_data_manager (webkit_network_session_get_default ()),
 		WEBKIT_WEBSITE_DATA_ALL, 0, NULL, NULL, NULL);
   
-	g_signal_connect_object (
-		liferea_webkit,
-		"page-created",
-		G_CALLBACK (on_page_created),
-		view,
-		G_CONNECT_AFTER);
-
 	g_signal_connect (
 		webkit_network_session_get_default (),
 		"download-started",

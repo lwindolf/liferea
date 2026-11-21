@@ -898,6 +898,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (update_job_queue_get_instance (), "update-running", G_CALLBACK (on_update_job_queue_changed), NULL);
 
 	keypress = gtk_event_controller_key_new ();
+	gtk_event_controller_set_propagation_phase (keypress, GTK_PHASE_CAPTURE);
 	gtk_widget_add_controller (GTK_WIDGET (shell->window), keypress);
 	g_signal_connect (keypress, "key-pressed", G_CALLBACK (on_shell_key_pressed_event), shell);
 		
