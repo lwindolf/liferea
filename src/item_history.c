@@ -40,6 +40,9 @@ static guint signals[LAST_SIGNAL] = { 0 };
 static void
 on_itemlist_selection_changed (gpointer obj, gint id, gpointer userdata)
 {
+	/* Ignore NULL selection when itemlist unloads, e.g. when navigating across feeds */
+	if (id == 0) return;
+
 	/* Duplicate add by some selection effect */
 	if (itemHistory->lastId == (guint)id)
 		return;

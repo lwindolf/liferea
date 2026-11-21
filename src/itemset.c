@@ -407,7 +407,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	vfolder_foreach (node_update_counters);
 
 	node = node_from_id (itemSet->nodeId);
-	if (node && (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC))
+	if (node)
 		node_update_counters (node);
 
 	debug (DEBUG_UPDATE, "added %d new items", newCount);
