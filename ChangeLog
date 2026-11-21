@@ -1,3 +1,38 @@
+2026-11-??  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 2.0.4
+
+	* New application icon representing a news paper holder
+	  (Hylke Bons)
+
+	* MR #1622: Fix external browser preference, keyboard shortcut
+	  (Matthew Horan)
+
+	* MR #1617: Scroll feed into view when navigating feed items
+	  (Matthew Horan)
+
+	* MR #1615: Respect load in browser preference when navigating
+	  (Matthew Horan)
+
+	* MR #1613: Save all supported properties for non-feed sources
+	  (Matthew Horan)
+
+	* MR #1612: Restore node source metadata before initial update
+	  (Matthew Horan)
+	
+	* MR #1611: Refresh node source auth token before syncing
+	  (Matthew Horan)
+
+	* Fix infinite loop in load_item title deduplication
+	  (Lars Windolf)
+
+	* Updated Swedish translation
+	  (Jonatan Nyberg)
+
+	* Updated Japanese translation
+	  (rogervokma-stack)
+	
+
 2026-10-20  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0.3
