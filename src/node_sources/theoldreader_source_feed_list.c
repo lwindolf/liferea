@@ -75,7 +75,7 @@ theoldreader_source_check_node_for_removal (Node *node, gpointer user_data)
 }
 
 static void
-theoldreader_source_merge_feed (Node *root, const gchar *url, const gchar *title, const gchar *id, Node *folder)
+theoldreader_source_merge_feed (Node *root, const gchar *url, const gchar *title, const gchar *id, const gchar *homepage, const gchar *icon, Node *folder)
 {
 	Node *node = feedlist_find_node (root, NODE_BY_URL, url);
 	if (!node) {
@@ -86,6 +86,9 @@ theoldreader_source_merge_feed (Node *root, const gchar *url, const gchar *title
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = root->source->type->feedSubscriptionType;
 		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
+		subscription_set_homepage (node->subscription, homepage);
+		if (icon)
+			metadata_list_set (&node->subscription->metadata, "icon", icon);
 
 		feedlist_node_imported (node);
 
@@ -95,6 +98,9 @@ theoldreader_source_merge_feed (Node *root, const gchar *url, const gchar *title
 	} else {
 		node->syncState &= ~NODE_SYNC_STATE_INITIAL_IMPORT;
 		node_set_title (node, title);
+		subscription_set_homepage (node->subscription, homepage);
+		if (icon)
+			metadata_list_set (&node->subscription->metadata, "icon", icon);
 		node_source_update_folder (node, folder?folder:root);
 	}
 }
@@ -157,11 +163,21 @@ theoldreader_source_opml_subscription_process_update_result (subscriptionPtr sub
 
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "url")) {
+					g_autofree gchar *iconUrl = g_strdup (json_get_string (node, "iconUrl"));
+
+					if (iconUrl && g_str_has_prefix (iconUrl, "//")) {
+						gchar *absoluteIconUrl = g_strdup_printf ("https:%s", iconUrl);
+						g_free (iconUrl);
+						iconUrl = absoluteIconUrl;
+					}
+
 					theoldreader_source_merge_feed (root,
 					                                json_get_string (node, "url"),
 					                                json_get_string (node, "title"),
 					                                json_get_string (node, "id"),
-									folder);
+					                                json_get_string (node, "htmlUrl"),
+					                                iconUrl,
+					                                folder);
 				}
 				iter = g_list_next (iter);
 			}
