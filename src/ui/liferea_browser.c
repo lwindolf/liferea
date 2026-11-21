@@ -182,18 +182,10 @@ static void
 liferea_browser_class_init (LifereaBrowserClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-	gint zoom;
 
 	object_class->get_property = liferea_browser_get_property;
 	object_class->set_property = liferea_browser_set_property;
 	object_class->finalize = liferea_browser_finalize;
-
-	/* Load preferences */
-	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
-	if (zoom == 0) {
-		zoom = 100;
-		conf_set_int_value (LAST_ZOOMLEVEL, zoom);
-	}
 
 	/* LifereaBrowser:renderWidget: */
 	g_object_class_install_property (
@@ -461,6 +453,7 @@ void
 liferea_browser_set_zoom (LifereaBrowser *browser, gfloat diff)
 {
 	liferea_webkit_change_zoom_level (browser->renderWidget, diff);
+	conf_set_int_value (LAST_ZOOMLEVEL, (gint)(diff * 100.0 + 0.5));
 }
 
 gfloat
@@ -639,6 +632,12 @@ liferea_browser_init (LifereaBrowser *browser)
 	browser->content = NULL;
 	browser->url = NULL;
 	browser->renderWidget = liferea_webkit_new (browser);
+
+	gint zoom = 0;
+	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
+	if (zoom > 0)
+		liferea_webkit_change_zoom_level (browser->renderWidget, zoom / 100.0);
+
 	browser->history = browser_history_new ();
 	browser->urlHoverTimeout = 0;
 
