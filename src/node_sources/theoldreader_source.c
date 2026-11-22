@@ -213,28 +213,28 @@ theoldreader_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus
 }
 
 static void
-theoldreader_source_reparent_node (Node *root, Node *oldParent, Node *newParent)
+theoldreader_source_reparent_node (Node *node, Node *oldParent, Node *newParent)
 {
 	gchar			*categoryId = NULL;
 	g_autofree gchar	*id = NULL;
-	GHashTable		*h = g_object_get_data (G_OBJECT (root), "folderToCategory");
+	GHashTable		*h = g_object_get_data (G_OBJECT (node->source->root), "folderToCategory");
 
 	if (oldParent == newParent)
 		return;
 
-	id = theoldreader_source_get_stream_id_for_node (root);
+	id = theoldreader_source_get_stream_id_for_node (node);
 	if (!id) {
 		g_warning ("Cannot sync parent on remote side as theoldreader-feed-id is unknown!\n");
 		return;
 	}
 
 	// Note: this will only work without nested folders
-	if (newParent == root) {
+	if (newParent == node->source->root) {
 		categoryId = g_hash_table_lookup (h, oldParent->id);
-		google_reader_api_edit_remove_label (root->source, id, categoryId);
+		google_reader_api_edit_remove_label (node->source, id, categoryId);
 	} else {
 		categoryId = g_hash_table_lookup (h, newParent->id);
-		google_reader_api_edit_add_label (root->source, id, categoryId);
+		google_reader_api_edit_add_label (node->source, id, categoryId);
 	}
 }
 
