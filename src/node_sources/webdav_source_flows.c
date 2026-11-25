@@ -344,7 +344,7 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
         UpdateResult    *result = job->result;
         FlowBootstrap   *flow = (FlowBootstrap *) job->user_data;
 
-	debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: step=%d for node '%s' (%s)", flow->step, flow->root->id, flow->root->title);
+	debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: step=%d for node '%s' (%s), http status=%d", flow->step, flow->root->id, flow->root->title, result?result->httpstatus:-1);
 
         /* result processing */
         if (result && result->httpstatus == 401) {
@@ -363,6 +363,9 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                                 if (flow->root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
                                         node_source_set_auth_failed (flow->root, FALSE);
                                 return TRUE;
+                        } else {
+                                // the MKCOL was successful, so we consider the webdav source logged in
+                                node_source_set_active (flow->root);
                         }
                         break;
 
@@ -370,12 +373,19 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                         // For index fetch we accept a 404 and a normal result.
                         // A fresh remote collection should start life with an empty index.
                         if (result && result->httpstatus == 404) {
+                                debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: index 404 -> upload empty index for node '%s' (%s)", flow->root->id, flow->root->title);
+
                                 // FIXME: this is not race safe in regards to the 1st update
                                 webdav_source_feed_list_upload (flow->root);
                                 (flow->callback) (flow->root, "{\"nodes\":[ ]}");
+
+                                // Set source to active to avoid showing the user a fetch failure
+                                node_source_set_active (flow->root);
                                 return TRUE;
                         }
                         if (!((result->httpstatus >= 200 && result->httpstatus < 400) || result->httpstatus == 404)) {
+                                debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: failed bootstrap for node '%s' (%s)", flow->root->id, flow->root->title);
+
                                 // FIXME: provide better error for user
                                 flow->root->available = FALSE;
                                 flow->root->subscription->error = FETCH_ERROR_NET;

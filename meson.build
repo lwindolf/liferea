@@ -113,6 +113,14 @@ foreach name: [
   )
 endforeach
 
+# Network heavy and timing dependent, so no memcheck variant
+test(
+  'webdav_source',
+  testrunner,
+  args: [liferea, '--test', 'webdav_source'],
+  env: test_env
+)
+
 
 install_subdir('plugins', install_dir: libdir)
 install_subdir('css', install_dir: datadir)

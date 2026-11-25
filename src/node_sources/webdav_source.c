@@ -264,6 +264,17 @@ webdav_flush_state_cb (gpointer user_data)
 	return G_SOURCE_REMOVE;
 }
 
+static guint lazy_sync_delay_ms = WEBDAV_LAZY_SYNC_DELAY_S * 1000;
+static guint state_sync_delay_ms = WEBDAV_STATE_SYNC_DELAY_S * 1000;
+
+/* Allows tests to shorten the lazy upload delays */
+void
+webdav_source_set_sync_delays_ms (guint lazy_ms, guint state_ms)
+{
+	lazy_sync_delay_ms = lazy_ms;
+	state_sync_delay_ms = state_ms;
+}
+
 void
 webdav_source_mark_feed_dirty (Node *node)
 {
@@ -277,10 +288,10 @@ webdav_source_mark_feed_dirty (Node *node)
 	FlushCtx *ctx     = g_new0 (FlushCtx, 1);
 	ctx->root         = node->source->root;
 	ctx->node_id      = g_strdup (node->id);
-	de->feed_timer_id = g_timeout_add_seconds (WEBDAV_LAZY_SYNC_DELAY_S,
-	                                            webdav_flush_feed_cb, ctx);
+	de->feed_timer_id = g_timeout_add (lazy_sync_delay_ms,
+	                                    webdav_flush_feed_cb, ctx);
 
-	debug (DEBUG_UPDATE, "webdav: node %s feed dirty (%ds)", node->id, WEBDAV_LAZY_SYNC_DELAY_S);
+	debug (DEBUG_UPDATE, "webdav: node %s feed dirty (%ums)", node->id, lazy_sync_delay_ms);
 }
 
 void
@@ -296,10 +307,10 @@ webdav_source_mark_items_dirty (Node *node)
 	FlushCtx *ctx     = g_new0 (FlushCtx, 1);
 	ctx->root         = node->source->root;
 	ctx->node_id      = g_strdup (node->id);
-	de->state_timer_id = g_timeout_add_seconds (WEBDAV_STATE_SYNC_DELAY_S,
-	                                             webdav_flush_state_cb, ctx);
+	de->state_timer_id = g_timeout_add (state_sync_delay_ms,
+	                                     webdav_flush_state_cb, ctx);
 
-	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ds)", node->id, WEBDAV_STATE_SYNC_DELAY_S);
+	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ums)", node->id, state_sync_delay_ms);
 }
 
 // FIXME: also implement set_flag and set_read to mark dirty and delay the upload instead of uploading immediately

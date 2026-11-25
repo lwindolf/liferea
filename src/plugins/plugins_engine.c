@@ -175,6 +175,9 @@ liferea_plugin_call_foreach (PeasExtensionSet	*set,
 void
 liferea_plugin_call (GType type, GFunc func, gpointer user_data)
 {
+	if (!plugins)	/* no plugin engine, e.g. in test cases */
+		return;
+
 	PeasExtensionSet *set = g_hash_table_lookup (plugins->extension_sets, (gpointer)type);
 
 	g_assert (set);

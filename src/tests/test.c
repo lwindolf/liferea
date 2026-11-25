@@ -14,6 +14,7 @@ extern int test_social (int argc, char *argv[]);
 extern int test_subscription (int argc, char *argv[]);
 extern int test_favicon (int argc, char *argv[]);
 extern int test_update (int argc, char *argv[]);
+extern int test_webdav_source (int argc, char *argv[]);
 
 int run_test (int argc, char *argv[]) {
         // We expect the test name to be in argv[2]
@@ -46,6 +47,8 @@ int run_test (int argc, char *argv[]) {
                         return test_subscription (argc, argv);
                 if (g_str_equal (argv[2], "update"))
                         return test_update (argc, argv);
+                if (g_str_equal (argv[2], "webdav_source"))
+                        return test_webdav_source (argc, argv);
         }
 
         g_printerr ("Unknown test '%s'\n", argv[2]);

@@ -40,11 +40,6 @@
  */
 #define WEBDAV_STATE_SYNC_DELAY_S   5
 
-/**
- * How often to poll the WebDAV server for remote changes (seconds).
- */
-#define WEBDAV_SOURCE_UPDATE_INTERVAL  (60 * 15)   /* 15 minutes */
-
 /** Metadata key that stores the stable remote feed id for WebDAV sync. */
 #define WEBDAV_REMOTE_FEED_ID_METADATA "feed-id"
 
@@ -55,6 +50,8 @@ gchar * webdav_state_json_url (Node *root, const gchar *node_id);
 gchar * webdav_index_url (Node *root);
 gchar * webdav_feed_dir_url (Node *root, const gchar *node_id);
 void webdav_request_set_basic_auth (UpdateRequest *request, Node *root);
+
+void webdav_source_set_sync_delays_ms (guint lazy_ms, guint state_ms);
 
 gboolean webdav_is_feed_upload_pending (Node *root, const gchar *node_id);
 gboolean webdav_is_state_upload_pending (Node *root, const gchar *node_id);

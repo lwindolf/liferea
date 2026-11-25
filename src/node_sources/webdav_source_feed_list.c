@@ -64,6 +64,7 @@ typedef struct {
 	updateFlags flags;
 	gint        pending_requests;
 	gboolean    any_error;
+	GList      *index;			/* owns the IndexEntry data the hash tables point into */
 	GHashTable *entries_by_id;
 	GHashTable *ensured_folders;
 	GHashTable *visiting;
@@ -125,8 +126,14 @@ webdav_find_feed_by_remote_id (Node *parent, const gchar *remote_id)
 	return NULL;
 }
 
-static GList *
-webdav_parse_index_json (const gchar *json_str)
+/**
+ * Parses an index.json document.
+ *
+ * Returns FALSE if the document is invalid. A valid document with
+ * no nodes returns TRUE with *entries set to NULL.
+ */
+static gboolean
+webdav_parse_index_json (const gchar *json_str, GList **entries)
 {
 	JsonParser *parser;
 	JsonNode   *root;
@@ -137,27 +144,29 @@ webdav_parse_index_json (const gchar *json_str)
 	GList      *result = NULL;
 	guint       n;
 
+	*entries = NULL;
+
 	if (!json_str)
-		return NULL;
+		return FALSE;
 
 	parser = json_parser_new ();
 	if (!json_parser_load_from_data (parser, json_str, -1, &err)) {
 		debug (DEBUG_UPDATE, "webdav_read_index: parse error: %s", err->message);
 		g_error_free (err);
 		g_object_unref (parser);
-		return NULL;
+		return FALSE;
 	}
 
 	root = json_parser_get_root (parser);
 	if (!JSON_NODE_HOLDS_OBJECT (root)) {
 		g_object_unref (parser);
-		return NULL;
+		return FALSE;
 	}
 
 	obj = json_node_get_object (root);
 	if (!json_object_has_member (obj, "feeds") && !json_object_has_member (obj, "nodes")) {
 		g_object_unref (parser);
-		return NULL;
+		return FALSE;
 	}
 
 	feeds_node = json_object_has_member (obj, "nodes")
@@ -165,7 +174,7 @@ webdav_parse_index_json (const gchar *json_str)
 	             : json_object_get_member (obj, "feeds");
 	if (!JSON_NODE_HOLDS_ARRAY (feeds_node)) {
 		g_object_unref (parser);
-		return NULL;
+		return FALSE;
 	}
 
 	feeds = json_node_get_array (feeds_node);
@@ -212,7 +221,8 @@ webdav_parse_index_json (const gchar *json_str)
 	}
 
 	g_object_unref (parser);
-	return g_list_reverse (result);
+	*entries = g_list_reverse (result);
+	return TRUE;
 }
 
 static Node *
@@ -553,6 +563,7 @@ webdav_merge_op_finalize (WebDAVMergeOp *op)
 	g_hash_table_destroy (op->visiting);
 	g_hash_table_destroy (op->ensured_folders);
 	g_hash_table_destroy (op->entries_by_id);
+	g_list_free_full (op->index, (GDestroyNotify)index_entry_free);
 	g_free (op);
 }
 
@@ -704,13 +715,17 @@ static void
 webdav_source_feed_list_index_fetch_cb (Node *root, const gchar *jsonStr)
 {
 	if (jsonStr) {
-		GList *index = webdav_parse_index_json (jsonStr);
-		if (index) {
+		GList *index = NULL;
+
+		if (!webdav_parse_index_json (jsonStr, &index)) {
+			debug (DEBUG_UPDATE, "webdav_source: |%s| bootstrap: failed to parse index.json", root->title);
+		} else if (index) {
+			debug (DEBUG_UPDATE, "webdav_source: |%s| bootstrap: fetching success, merging index", root->title);
 			webdav_merge_index (root, index);
 			/* GList is cleaned up by webdav_merge_index */
-		} else {
-			debug (DEBUG_UPDATE, "webdav_bootstrap: failed to parse index.json");
 		}
+		/* an empty index must not trigger a merge, as this would
+		   drop all local folders that are still to be uploaded */
 	} else {
 		/* even if we got no "index.json" from remote the subscription_update()
 		   below will trigger an initial sync */
@@ -798,8 +813,7 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 		return;
 	}
 
-	index = webdav_parse_index_json (result->data);
-	if (!index) {
+	if (!webdav_parse_index_json (result->data, &index)) {
 		subscription->node->available = FALSE;
 		subscription->error = FETCH_ERROR_XML;
 		if (subscription->node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
@@ -811,6 +825,7 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 	op = g_new0 (WebDAVMergeOp, 1);
 	op->root = subscription->node;
 	op->flags = flags;
+	op->index = index;
 	op->entries_by_id = g_hash_table_new (g_str_hash, g_str_equal);
 	op->ensured_folders = g_hash_table_new (g_str_hash, g_str_equal);
 	op->visiting = g_hash_table_new (g_str_hash, g_str_equal);
@@ -841,7 +856,8 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 
 		Node *local_node = webdav_find_feed_by_remote_id (op->root, e->node_id);
 
-		if (local_node && (local_node->syncState & NODE_SYNC_STATE_INITIAL_IMPORT))
+		// An index entry without mtime was only generated from local data, so the remote has no feed data yet
+		if (local_node && e->feed_mtime > 0 && (local_node->syncState & NODE_SYNC_STATE_INITIAL_IMPORT))
 			local_node->syncState &= ~NODE_SYNC_STATE_INITIAL_IMPORT;
 
 		if (!local_node || !webdav_is_feed_upload_pending (op->root, local_node->id)) {
@@ -882,8 +898,6 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 	}
 
 	node_foreach_child (op->root, webdav_queue_initial_import_upload);
-
-	g_list_free_full (index, (GDestroyNotify)index_entry_free);
 
 	if (op->pending_requests == 0)
 		webdav_merge_op_finalize (op);
