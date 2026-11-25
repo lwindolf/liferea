@@ -475,6 +475,9 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                         update_request_set_source (job->request, url);
                         break;
                 }
+                case BOOTSTRAP_STEP_PUT_INDEX:
+                        /* request was already prepared when the index fetch found nothing */
+                        break;
                 case BOOTSTRAP_STEP_FINISH: {
                         (flow->callback) (flow->root, result->data);
                         return TRUE;

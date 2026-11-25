@@ -323,20 +323,6 @@ fs_lacks_wait_key (Fx *fx)
 	return !fs_has_wait_key (fx);
 }
 
-static Node *
-find_node_by_id (Node *parent, const gchar *id)
-{
-	for (GSList *l = parent->children; l; l = g_slist_next (l)) {
-		Node *node = l->data, *found;
-
-		if (!g_strcmp0 (node->id, id))
-			return node;
-		if ((found = find_node_by_id (node, id)))
-			return found;
-	}
-	return NULL;
-}
-
 // Logs in and waits for the initial sync to settle
 static void
 fx_ready (Fx *fx)
