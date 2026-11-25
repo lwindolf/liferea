@@ -26,6 +26,7 @@
 #include "subscription.h"
 #include "update.h"
 
+gchar * webdav_source_feed_list_build_index (Node *root);
 void webdav_source_feed_list_upload (Node *root);
 void webdav_source_feed_list_import (Node *root);
 

@@ -329,7 +329,8 @@ typedef enum {
         BOOTSTRAP_STEP_START     = 0,
 	BOOTSTRAP_STEP_MKCOL     = 1,
 	BOOTSTRAP_STEP_GET_INDEX = 2,
-	BOOTSTRAP_STEP_FINISH    = 3
+	BOOTSTRAP_STEP_PUT_INDEX = 3,	/* only if there was no index yet */
+	BOOTSTRAP_STEP_FINISH    = 4
 } StepBootstrap;
 
 typedef struct {
@@ -373,15 +374,18 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                         // For index fetch we accept a 404 and a normal result.
                         // A fresh remote collection should start life with an empty index.
                         if (result && result->httpstatus == 404) {
-                                debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: index 404 -> upload empty index for node '%s' (%s)", flow->root->id, flow->root->title);
+                                g_autofree gchar *json = webdav_source_feed_list_build_index (flow->root);
+                                g_autofree gchar *url = webdav_index_url (flow->root);
 
-                                // FIXME: this is not race safe in regards to the 1st update
-                                webdav_source_feed_list_upload (flow->root);
-                                (flow->callback) (flow->root, "{\"nodes\":[ ]}");
+                                debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: index 404 -> upload index for node '%s' (%s)", flow->root->id, flow->root->title);
 
-                                // Set source to active to avoid showing the user a fetch failure
-                                node_source_set_active (flow->root);
-                                return TRUE;
+                                // Continue only after the upload is done, otherwise the following
+                                // index fetch of the 1st update could race with it and find nothing.
+                                flow->step = BOOTSTRAP_STEP_PUT_INDEX;
+                                update_request_set_method (job->request, "PUT");
+                                update_request_set_source (job->request, url);
+                                update_request_set_postdata (job->request, json, "application/json");
+                                return FALSE;
                         }
                         if (!((result->httpstatus >= 200 && result->httpstatus < 400) || result->httpstatus == 404)) {
                                 debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: failed bootstrap for node '%s' (%s)", flow->root->id, flow->root->title);
@@ -394,6 +398,24 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                                 return TRUE;
                         }
                         break;
+                case BOOTSTRAP_STEP_PUT_INDEX:
+                        if (!(result && result->httpstatus >= 200 && result->httpstatus < 300)) {
+                                debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: index upload failed for node '%s' (%s)", flow->root->id, flow->root->title);
+
+                                // FIXME: provide better error for user
+                                flow->root->available = FALSE;
+                                flow->root->subscription->error = FETCH_ERROR_NET;
+                                if (flow->root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
+                                        node_source_set_auth_failed (flow->root, FALSE);
+                                return TRUE;
+                        }
+
+                        // A fresh remote collection starts life with an empty index, nothing to merge
+                        (flow->callback) (flow->root, "{\"nodes\":[ ]}");
+
+                        // Set source to active to avoid showing the user a fetch failure
+                        node_source_set_active (flow->root);
+                        return TRUE;
                 default:
                         break;
         }

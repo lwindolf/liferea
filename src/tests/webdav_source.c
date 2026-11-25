@@ -312,7 +312,7 @@ tc_mkcol_fails (void)
 	fx_free (fx);
 }
 
-// Known race: the bootstrap flow does not wait for the index upload before fetching the index
+// Regression: the bootstrap flow must wait for the index upload before the 1st update fetches the index
 static void
 tc_slow_index_upload (void)
 {

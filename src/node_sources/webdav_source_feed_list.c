@@ -352,8 +352,8 @@ build_index_entry (IndexBuildCtx *ctx, Node *node, const gchar *parent_id)
 	}
 }
 
-void
-webdav_source_feed_list_upload (Node *root)
+gchar *
+webdav_source_feed_list_build_index (Node *root)
 {
 	g_assert (root->source->root == root);
 
@@ -367,8 +367,16 @@ webdav_source_feed_list_upload (Node *root)
 	json_builder_end_array (ctx.builder);
 	json_builder_end_object (ctx.builder);
 
-	g_autofree gchar *json = json_dump (ctx.builder);
+	gchar *json = json_dump (ctx.builder);
 	g_object_unref (ctx.builder);
+
+	return json;
+}
+
+void
+webdav_source_feed_list_upload (Node *root)
+{
+	g_autofree gchar *json = webdav_source_feed_list_build_index (root);
 
 	if (json)
 		webdav_request_put_index (root, json, NULL);

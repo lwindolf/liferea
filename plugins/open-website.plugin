@@ -1,0 +1,12 @@
+[Plugin]
+Module=open-website
+Loader=python
+IAge=2
+Name=Open Website
+Icon=web-browser
+Version=0.1
+Description=Adds a Tools menu entry that opens a defined website in a new browser tab
+Authors=Lars Windolf <lars.windolf@gmx.de>
+Copyright=Lars Windolf <lars.windolf@gmx.de>
+Website=http://lzone.de/liferea/
+Help=http://lzone.de/liferea/
