@@ -457,6 +457,72 @@ webdav_cleanup_stale_folders (Node *node, gpointer user_data)
 	feedlist_node_removed (node);
 }
 
+typedef struct {
+	Node		*root;
+	GHashTable	*index_ids;	/* feed ids in the fetched index */
+	GHashTable	*known_ids;	/* feed ids in the previously fetched index */
+	GSList		*stale;		/* local feeds that were removed remotely */
+} RemovedFeedsCtx;
+
+static void
+webdav_collect_removed_feeds (Node *node, gpointer user_data)
+{
+	RemovedFeedsCtx *ctx = (RemovedFeedsCtx *)user_data;
+	const gchar *remote_id;
+
+	if (IS_FOLDER (node)) {
+		node_foreach_child_data (node, webdav_collect_removed_feeds, user_data);
+		return;
+	}
+
+	if (!IS_FEED (node))
+		return;
+
+	remote_id = webdav_feed_remote_id (node);
+
+	/* Feeds with a pending upload are local changes that win over the removal */
+	if (g_hash_table_contains (ctx->known_ids, remote_id) &&
+	    !g_hash_table_contains (ctx->index_ids, remote_id) &&
+	    !webdav_is_feed_upload_pending (ctx->root, node->id))
+		ctx->stale = g_slist_prepend (ctx->stale, node);
+}
+
+/* Removes local feeds that were in the previous index but are gone from the fetched one */
+static void
+webdav_remove_remotely_removed_feeds (Node *root, GList *index)
+{
+	RemovedFeedsCtx ctx = {
+		.root = root,
+		.index_ids = g_hash_table_new (g_str_hash, g_str_equal),
+		.known_ids = (GHashTable *)g_object_get_data (G_OBJECT (root), "knownRemoteIds")
+	};
+
+	for (GList *l = index; l; l = g_list_next (l)) {
+		IndexEntry *e = (IndexEntry *)l->data;
+
+		if (!e->is_folder)
+			g_hash_table_add (ctx.index_ids, e->node_id);
+	}
+
+	node_foreach_child_data (root, webdav_collect_removed_feeds, &ctx);
+	for (GSList *iter = ctx.stale; iter; iter = g_slist_next (iter)) {
+		Node *node = (Node *)iter->data;
+
+		debug (DEBUG_UPDATE, "webdav: removing feed %s that was removed remotely", node->id);
+		feedlist_node_removed (node);
+	}
+
+	g_hash_table_remove_all (ctx.known_ids);
+	GHashTableIter iter;
+	gpointer key;
+	g_hash_table_iter_init (&iter, ctx.index_ids);
+	while (g_hash_table_iter_next (&iter, &key, NULL))
+		g_hash_table_add (ctx.known_ids, g_strdup (key));
+
+	g_slist_free (ctx.stale);
+	g_hash_table_destroy (ctx.index_ids);
+}
+
 static void
 webdav_merge_index (Node *root, GList *index)
 {
@@ -829,6 +895,8 @@ webdav_subscription_process_update_result (subscriptionPtr subscription, const U
 		debug (DEBUG_UPDATE, "webdav_subscription_process_update_result(): invalid index.json");
 		return;
 	}
+
+	webdav_remove_remotely_removed_feeds (subscription->node, index);
 
 	op = g_new0 (WebDAVMergeOp, 1);
 	op->root = subscription->node;

@@ -71,6 +71,8 @@
  * dirtyFeeds  maps node-id (gchar*) -> DirtyEntry* (two lazy-upload timers).
  * feedMtimes  maps node-id (gchar*) -> gint64*     (last feed.json upload time).
  * stateMtimes maps node-id (gchar*) -> gint64*     (last state.json upload time).
+ * knownRemoteIds  set of feed ids listed in the last fetched index.json. Used to tell
+ *                 feeds removed remotely from feeds that were not uploaded yet.
  */
 
 /*  Per-node lazy-upload timers                                         */
@@ -370,6 +372,10 @@ webdav_source_new (Node *root)
 				g_hash_table_new_full (g_str_hash, g_str_equal,
 	                                               g_free, g_free),
 				(GDestroyNotify)g_hash_table_destroy);
+	g_object_set_data_full (G_OBJECT (root), "knownRemoteIds",
+				g_hash_table_new_full (g_str_hash, g_str_equal,
+	                                               g_free, NULL),
+				(GDestroyNotify)g_hash_table_destroy);
 	g_object_set_data_full (G_OBJECT (root), "stateMtimes",
 				g_hash_table_new_full (g_str_hash, g_str_equal,
 	                                               g_free, g_free),
@@ -446,9 +452,31 @@ webdav_source_add_folder (Node *node, const gchar *title)
 }
 
 static void
+webdav_collect_remote_ids (Node *node, gpointer user_data)
+{
+	GSList **ids = (GSList **)user_data;
+
+	if (IS_FEED (node))
+		*ids = g_slist_prepend (*ids, g_strdup (webdav_feed_remote_id (node)));
+
+	node_foreach_child_data (node, webdav_collect_remote_ids, user_data);
+}
+
+static void
 webdav_source_remove_node (Node *node, Node *child)
 {
+	Node   *root = node->source->root;
+	GSList *ids = NULL;
+
+	/* A folder takes all its feeds with it, so the remote collections of all of them need to go */
+	webdav_collect_remote_ids (child, &ids);
+
 	feedlist_node_removed (child);
+	webdav_source_feed_list_upload (root);
+
+	for (GSList *iter = ids; iter; iter = g_slist_next (iter))
+		webdav_source_delete_feed (root, (const gchar *)iter->data);
+	g_slist_free_full (ids, g_free);
 }
 
 static struct nodeSourceType nst = {

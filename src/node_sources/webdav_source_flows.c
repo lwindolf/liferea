@@ -323,6 +323,25 @@ webdav_source_flow_upload_feed (Node *root, const gchar *node_id, gboolean uploa
                 0);
 }
 
+/* feed removal */
+
+static gboolean
+webdav_source_delete_feed_result (UpdateJob *job)
+{
+	debug (DEBUG_UPDATE, "webdav_source_delete_feed: http status=%d", job->result ? job->result->httpstatus : -1);
+	return TRUE;
+}
+
+void
+webdav_source_delete_feed (Node *root, const gchar *remote_id)
+{
+	g_autofree gchar *url = webdav_feed_dir_url (root, remote_id);
+	UpdateRequest *request = update_request_new ("DELETE", url, NULL, NULL);
+
+	webdav_request_set_basic_auth (request, root);
+	(void)update_job_new (root, request, webdav_source_delete_feed_result, NULL, 0);
+}
+
 /* index bootstrap flow */
 
 typedef enum {

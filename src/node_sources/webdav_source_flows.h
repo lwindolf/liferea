@@ -42,4 +42,9 @@ void webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb);
  */
 void webdav_source_flow_upload_feed (Node *root, const gchar *node_id, gboolean upload_state, gboolean upload_feed);
 
+/**
+ * Delete the remote collection of a feed (best effort, result is ignored)
+ */
+void webdav_source_delete_feed (Node *root, const gchar *remote_id);
+
 #endif
