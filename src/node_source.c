@@ -379,7 +379,7 @@ on_new_node_source_create (GtkButton *button, gpointer user_data)
         subscription_set_auth_info (node->subscription, username, password);
 
         feedlist_node_added (node);
-        node_source_update (node);
+        node_source_update (node, 0);
 
         adw_dialog_close (ADW_DIALOG (dialog));
 }
@@ -486,6 +486,19 @@ feed_list_node_source_type_dialog (void)
 static gboolean
 node_source_ensure_login (Node *node, updateFlags flags)
 {
+	/* A failed login is only retried when the user asks for it, because
+	   retrying asks for the credentials again. Automatic updates never do. */
+	if (node->source->loginState == NODE_SOURCE_STATE_AUTH_FAILED ||
+	    node->source->loginState == NODE_SOURCE_STATE_AUTH_CHALLENGE) {
+		if (!(flags & UPDATE_REQUEST_PRIORITY_HIGH)) {
+			debug (DEBUG_UPDATE, "node_source: %s |%s| skipped as login failed (needs a manual update)", node->id, node->title);
+			return FALSE;
+		}
+
+		debug (DEBUG_UPDATE, "node_source: %s |%s| retrying failed login", node->id, node->title);
+		node_source_set_state (node, NODE_SOURCE_STATE_NONE);
+	}
+
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		if (node->source->type->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) {
 			debug (DEBUG_UPDATE, "node_source: %s |%s| start login", node->id, node->title);
@@ -508,19 +521,19 @@ node_source_ensure_login (Node *node, updateFlags flags)
 }
 
 void
-node_source_update (Node *node)
+node_source_update (Node *node, updateFlags flags)
 {
 	if (node->subscription) {
-		if (!node_source_ensure_login (node, 0))
+		if (!node_source_ensure_login (node, flags))
 			return;
 
-		subscription_update (node->subscription, 0);
+		subscription_update (node->subscription, flags);
 
 		/* Note that node sources are required to auto-update child
 		   nodes themselves once login and feed list update is fine. */
 	} else {
 		/* only for default source we update all childs here */
-		node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
+		node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (flags));
 	}
 }
 

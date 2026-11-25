@@ -809,9 +809,9 @@ webdav_source_feed_list_index_fetch_cb (Node *root, const gchar *jsonStr)
 }
 
 void
-webdav_source_feed_list_import (Node *root)
+webdav_source_feed_list_import (Node *root, updateFlags flags)
 {
-	webdav_source_flow_bootstrap_index (root, webdav_source_feed_list_index_fetch_cb);
+	webdav_source_flow_bootstrap_index (root, webdav_source_feed_list_index_fetch_cb, flags);
 }
 
 void

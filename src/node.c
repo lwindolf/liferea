@@ -174,7 +174,7 @@ void
 node_update_subscription (Node *node, gpointer user_data)
 {
 	if (node->source->root == node) {
-		node_source_update (node);
+		node_source_update (node, GPOINTER_TO_UINT (user_data));
 		return;
 	}
 

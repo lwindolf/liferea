@@ -28,7 +28,7 @@
 
 gchar * webdav_source_feed_list_build_index (Node *root);
 void webdav_source_feed_list_upload (Node *root);
-void webdav_source_feed_list_import (Node *root);
+void webdav_source_feed_list_import (Node *root, updateFlags flags);
 
 void webdav_source_feed_list_update_feed_mtime (Node *root, const gchar *remote_id);
 void webdav_source_feed_list_update_state_mtime (Node *root, const gchar *remote_id);

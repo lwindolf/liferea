@@ -245,7 +245,7 @@ fx_start (Fx *fx, const gchar *password, const gchar *outlines)
 	node_set_title (fx->root, "test");
 	subscription_set_auth_info (fx->root->subscription, "user", password);
 	feedlist_node_added (fx->root);
-	node_source_update (fx->root);
+	node_source_update (fx->root, 0);
 }
 
 static void
@@ -295,6 +295,12 @@ login_done (Fx *fx)
 {
 	return fx->root->source->loginState == NODE_SOURCE_STATE_ACTIVE ||
 	       fx->root->source->loginState == NODE_SOURCE_STATE_AUTH_FAILED;
+}
+
+static gboolean
+login_active (Fx *fx)
+{
+	return fx->root->source->loginState == NODE_SOURCE_STATE_ACTIVE;
 }
 
 static gboolean
@@ -436,6 +442,38 @@ tc_wrong_password (void)
 	g_assert_true (wait_for (login_done, fx, 5));
 	g_assert_cmpint (fx->root->source->loginState, ==, NODE_SOURCE_STATE_AUTH_FAILED);
 	g_assert_false (g_hash_table_contains (fx->fs, DAV_COL));
+
+	// The node info view needs these to show the reason
+	g_assert_cmpint (fx->root->subscription->error, ==, FETCH_ERROR_AUTH);
+	g_assert_cmpint (fx->root->subscription->httpErrorCode, ==, 401);
+	g_assert_nonnull (fx->root->subscription->httpError);
+	fx_free (fx);
+}
+
+// A failed login must only be retried (asking for credentials again) on a manual update
+static void
+tc_login_retry_only_when_manual (void)
+{
+	Fx *fx = fx_new ();
+	guint requests;
+
+	fx_start (fx, "wrong", "");
+	g_assert_true (wait_for (login_done, fx, 5));
+	g_assert_cmpint (fx->root->source->loginState, ==, NODE_SOURCE_STATE_AUTH_FAILED);
+	subscription_set_auth_info (fx->root->subscription, "user", "pass");
+	wait_idle (fx);
+	requests = test_http_server_request_count (fx->srv, "");
+
+	node_source_auto_update (fx->root, 0);
+	wait_idle (fx);
+	g_assert_cmpint (fx->root->source->loginState, ==, NODE_SOURCE_STATE_AUTH_FAILED);
+	g_assert_cmpuint (test_http_server_request_count (fx->srv, ""), ==, requests);
+
+	subscription_update (fx->root->subscription, UPDATE_REQUEST_PRIORITY_HIGH);
+	g_assert_true (wait_for (login_active, fx, 5));
+	g_assert_true (fx->root->available);
+	g_assert_cmpint (fx->root->subscription->error, ==, FETCH_ERROR_NONE);
+	g_assert_true (g_hash_table_contains (fx->fs, DAV_COL));
 	fx_free (fx);
 }
 
@@ -448,6 +486,9 @@ tc_mkcol_fails (void)
 	fx_start (fx, "pass", "");
 	g_assert_true (wait_for (login_done, fx, 5));
 	g_assert_false (fx->root->available);
+	g_assert_cmpint (fx->root->subscription->error, ==, FETCH_ERROR_NET);
+	g_assert_cmpint (fx->root->subscription->httpErrorCode, ==, 500);
+	g_assert_nonnull (fx->root->subscription->httpError);
 	fx_free (fx);
 }
 
@@ -503,7 +544,7 @@ tc_remote_feed_moved (void)
 
 	dav_feed (fx, "mvr-feed", "mvr-f2");
 	dav_publish (fx);
-	node_source_update (fx->root);
+	node_source_update (fx->root, 0);
 
 	fx->needle = "mvr-f2";
 	g_assert_true (wait_for (feed_in_folder2, fx, 5));
@@ -541,7 +582,7 @@ tc_remote_feed_removed (void)
 
 	dav_remove (fx, "rmr-feed");
 	dav_publish (fx);
-	node_source_update (fx->root);
+	node_source_update (fx->root, 0);
 
 	g_assert_true (wait_for (feed_gone, fx, 5));
 	wait_idle (fx);
@@ -562,7 +603,7 @@ tc_remote_folder_removed (void)
 	dav_remove (fx, "rmfr-feed");
 	dav_remove (fx, "rmfr-f1");
 	dav_publish (fx);
-	node_source_update (fx->root);
+	node_source_update (fx->root, 0);
 
 	g_assert_true (wait_for (feed_gone, fx, 5));
 	g_assert_null (node_from_id ("rmfr-f1"));
@@ -590,7 +631,7 @@ tc_local_feed_removed (void)
 	fx->waitKey = dir;
 	g_assert_true (wait_for (fs_lacks_wait_key, fx, 5));
 
-	node_source_update (fx->root);
+	node_source_update (fx->root, 0);
 	wait_idle (fx);
 	g_assert_true (feed_gone (fx));
 	fx_free (fx);
@@ -614,7 +655,7 @@ tc_local_folder_removed (void)
 	fx->waitKey = dir;
 	g_assert_true (wait_for (fs_lacks_wait_key, fx, 5));
 
-	node_source_update (fx->root);
+	node_source_update (fx->root, 0);
 	wait_idle (fx);
 	g_assert_true (feed_gone (fx));
 	g_assert_null (node_from_id ("rmfl-f1"));
@@ -634,7 +675,7 @@ tc_remote_feed_added (void)
 
 	dav_feed (fx, "feed1", NULL);
 	dav_publish (fx);
-	node_source_update (fx->root);
+	node_source_update (fx->root, 0);
 
 	g_assert_true (wait_for (feed_has_items, fx, 5));
 	g_assert_true (feedlist_find_node (fx->root, NODE_BY_URL, fx->feedUrl)->parent == fx->root);
@@ -681,6 +722,7 @@ test_webdav_source (int argc, char *argv[])
 	g_test_add_func ("/webdav_source/remote-feeds-imported", tc_remote_feeds_imported);
 	g_test_add_func ("/webdav_source/local-feeds-uploaded", tc_local_feeds_uploaded);
 	g_test_add_func ("/webdav_source/wrong-password", tc_wrong_password);
+	g_test_add_func ("/webdav_source/login-retry-only-when-manual", tc_login_retry_only_when_manual);
 	g_test_add_func ("/webdav_source/mkcol-fails", tc_mkcol_fails);
 	g_test_add_func ("/webdav_source/slow-index-upload", tc_slow_index_upload);
 	g_test_add_func ("/webdav_source/remote-feed-added", tc_remote_feed_added);

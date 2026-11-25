@@ -22,6 +22,7 @@
 #define _WEBDAV_SOURCE_FLOWS_H
 
 #include "node.h"
+#include "update.h"
 
 /**
  * callback for webdav_source_flow_bootstrap_index 
@@ -34,8 +35,11 @@ typedef void (*indexFetchCallback) (Node *root, const gchar *jsonStr);
 /**
  * Performs initial feed list import right after login.
  * Ensures proper index structure on remote side.
+ *
+ * With UPDATE_REQUEST_PRIORITY_HIGH in flags a failing authentication
+ * asks the user for the credentials again.
  */
-void webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb);
+void webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb, updateFlags flags);
 
 /**
  * Perform asynchronous feed upload

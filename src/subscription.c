@@ -353,6 +353,16 @@ subscription_update (subscriptionPtr subscription, guint flags)
 
 	debug (DEBUG_UPDATE, "subscription: |%s| scheduling update (flags=%u)", subscription->source, flags);
 
+	/* A user triggered update of a source with a failed login retries the login,
+	   which in turn updates the subscription once it succeeded */
+	if ((flags & UPDATE_REQUEST_PRIORITY_HIGH) && subscription->node && subscription->node->source &&
+	    subscription->node->source->root == subscription->node &&
+	    (subscription->node->source->loginState == NODE_SOURCE_STATE_AUTH_FAILED ||
+	     subscription->node->source->loginState == NODE_SOURCE_STATE_AUTH_CHALLENGE)) {
+		node_source_update (subscription->node, flags);
+		return;
+	}
+
 	if (!subscription_can_be_updated (subscription, flags)) {
 		debug (DEBUG_UPDATE, "subscription: |%s| update cannot be scheduled", subscription->source);
 		return;

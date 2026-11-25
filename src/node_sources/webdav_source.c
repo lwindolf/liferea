@@ -220,7 +220,7 @@ webdav_source_login (Node *root, updateFlags flags)
 {
 	/* No login. Just basic auth. So we can directly start with 
 	   the subscription list update. */
-	webdav_source_feed_list_import (root);
+	webdav_source_feed_list_import (root, flags);
 }
 
 /*  Lazy sync flushing */

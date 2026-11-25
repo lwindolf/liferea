@@ -21,10 +21,38 @@
 #include "webdav_source_flows.h"
 
 #include "debug.h"
+#include "net.h"
 #include "update.h"
 #include "node_providers/feed.h"
 #include "webdav_source.h"
 #include "webdav_source_feed_list.h"
+
+/* error helpers */
+
+/* Records a failed request so the node info view can tell the user what went wrong.
+   Call this before changing the login state, as this triggers the info view update. */
+static void
+webdav_flow_set_error (Node *root, const UpdateResult *result)
+{
+	subscriptionPtr	subscription = root->subscription;
+	gint		status = result ? result->httpstatus : 0;
+
+	root->available = FALSE;
+	subscription->error = (status == 401) ? FETCH_ERROR_AUTH : FETCH_ERROR_NET;
+	subscription->httpErrorCode = status;
+	g_free (subscription->httpError);
+	subscription->httpError = (status >= 200 && status < 400) ? NULL : g_strdup (network_strerror (status));
+}
+
+static void
+webdav_flow_clear_error (Node *root)
+{
+	subscriptionPtr	subscription = root->subscription;
+
+	subscription->error = FETCH_ERROR_NONE;
+	subscription->httpErrorCode = 0;
+	g_clear_pointer (&subscription->httpError, g_free);
+}
 
 /* data helpers */
 
@@ -186,6 +214,7 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
 
         /* result processing */
         if (result && result->httpstatus == 401) {
+                webdav_flow_set_error (flow->root, result);
                 node_source_set_auth_failed (flow->root, job->flags & UPDATE_REQUEST_PRIORITY_HIGH);
                 return TRUE;
         }
@@ -195,17 +224,13 @@ webdav_source_flow_upload_feed_step (UpdateJob *job)
                         break;
                 case UPLOAD_FEED_MKCOL:
                         if (!((result->httpstatus >= 200 && result->httpstatus < 300) || result->httpstatus == 405)) {
-                                // FIXME: provide better error for user
-                                flow->root->available = FALSE;
-                                flow->root->subscription->error = FETCH_ERROR_NET;
+                                webdav_flow_set_error (flow->root, result);
                                 return TRUE;
                         }
                         break;
                 default:
                         if (!(result->httpstatus >= 200 && result->httpstatus < 400)) {
-                                // FIXME: provide better error for user
-                                flow->root->available = FALSE;
-                                flow->root->subscription->error = FETCH_ERROR_NET;
+                                webdav_flow_set_error (flow->root, result);
                                 return TRUE;
                         }
                         break;
@@ -368,6 +393,7 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
 
         /* result processing */
         if (result && result->httpstatus == 401) {
+                webdav_flow_set_error (flow->root, result);
                 node_source_set_auth_failed (flow->root, job->flags & UPDATE_REQUEST_PRIORITY_HIGH);
                 return TRUE;
         }
@@ -377,14 +403,13 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                         break;
                 case BOOTSTRAP_STEP_MKCOL:
                         if (!((result->httpstatus >= 200 && result->httpstatus < 300) || result->httpstatus == 405)) {
-                                // FIXME: provide better error for user
-                                flow->root->available = FALSE;
-                                flow->root->subscription->error = FETCH_ERROR_NET;
+                                webdav_flow_set_error (flow->root, result);
                                 if (flow->root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
                                         node_source_set_auth_failed (flow->root, FALSE);
                                 return TRUE;
                         } else {
                                 // the MKCOL was successful, so we consider the webdav source logged in
+                                webdav_flow_clear_error (flow->root);
                                 node_source_set_active (flow->root);
                         }
                         break;
@@ -409,9 +434,7 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                         if (!((result->httpstatus >= 200 && result->httpstatus < 400) || result->httpstatus == 404)) {
                                 debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: failed bootstrap for node '%s' (%s)", flow->root->id, flow->root->title);
 
-                                // FIXME: provide better error for user
-                                flow->root->available = FALSE;
-                                flow->root->subscription->error = FETCH_ERROR_NET;
+                                webdav_flow_set_error (flow->root, result);
                                 if (flow->root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
                                         node_source_set_auth_failed (flow->root, FALSE);
                                 return TRUE;
@@ -421,9 +444,7 @@ webdav_source_flow_bootstrap_step (UpdateJob *job)
                         if (!(result && result->httpstatus >= 200 && result->httpstatus < 300)) {
                                 debug (DEBUG_UPDATE, "webdav_source_flow_bootstrap: index upload failed for node '%s' (%s)", flow->root->id, flow->root->title);
 
-                                // FIXME: provide better error for user
-                                flow->root->available = FALSE;
-                                flow->root->subscription->error = FETCH_ERROR_NET;
+                                webdav_flow_set_error (flow->root, result);
                                 if (flow->root->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
                                         node_source_set_auth_failed (flow->root, FALSE);
                                 return TRUE;
@@ -495,7 +516,7 @@ webdav_source_flow_bootstrap_free (gpointer data)
 }
 
 void
-webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb)
+webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb, updateFlags flags)
 {
         FlowBootstrap *flow = g_new0(FlowBootstrap, 1);
         flow->step = BOOTSTRAP_STEP_START;
@@ -507,5 +528,5 @@ webdav_source_flow_bootstrap_index (Node *root, indexFetchCallback cb)
                 webdav_source_flow_bootstrap_step,
                 flow,
                 webdav_source_flow_bootstrap_free,
-                0);
+                flags);
 }
