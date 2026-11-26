@@ -43,11 +43,13 @@
 /** default TheOldReader subscription list update interval = once a day */
 #define THEOLDREADER_SOURCE_UPDATE_INTERVAL 60*60*24
 
-#define BASE_URL "https://theoldreader.com/reader/api/0/"
+#define DEFAULT_SERVER_URL "https://theoldreader.com"
 
 static void
 theoldreader_source_new (Node *node)
 {
+	g_autofree gchar *BASE_URL = g_strdup_printf ("%s/reader/api/0/", node->source->type->serverUrl);
+
 	g_object_set_data_full (
 		G_OBJECT (node),
 		"lastTimestampMap",
@@ -120,9 +122,11 @@ theoldreader_source_login (Node *root, guint32 flags)
 {
 	UpdateRequest		*request;
 
+	g_autofree gchar *loginUrl = g_strdup_printf ("%s" THEOLDREADER_READER_LOGIN_PATH, root->source->type->serverUrl);
+
 	request = update_request_new (
 		"POST",
-		THEOLDREADER_READER_LOGIN_URL,
+		loginUrl,
 		NULL,
 		root->subscription->updateOptions
 	);
@@ -243,6 +247,7 @@ extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
 
 static struct nodeSourceType nst = {
 	.id                  = "fl_theoldreader",
+	.serverUrl           = DEFAULT_SERVER_URL,
 	.name                = N_("TheOldReader"),
 	.addInfo             = N_("Please provide your <a href='https://theoldreader.com'>TheOldReader</a> account credentials."),
 	.url                 = "https://theoldreader.com/reader",

@@ -106,6 +106,7 @@ liferea_sources = files(
   'tests/rule.c',
   'tests/social.c',
   'tests/subscription.c',
+  'tests/theoldreader_source.c',
   'tests/test.c',
   'tests/test_http_server.c',
   'tests/update.c',

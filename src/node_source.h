@@ -114,6 +114,7 @@ typedef struct nodeSourceType {
 	const gchar	*name;		/*<< a descriptive source name (for preferences and menus) */
 	const gchar	*addInfo;       /*<< label text for creation dialog */
 	const gchar	*url;		/*<< (optional) server URL for online services */
+	const gchar	*serverUrl;	/*<< (optional) base URL of the service API without trailing slash (overridable by tests) */
 	gulong		capabilities;	/*<< bitmask of feed list source capabilities */
 
 	/* The subscription type for all child nodes that are subscriptions */

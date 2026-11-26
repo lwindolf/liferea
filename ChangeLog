@@ -5,6 +5,9 @@
 	* New application icon representing a news paper holder
 	  (Hylke Bons)
 
+	* MR #1640: Implement close to tray
+	  (Matthew Moran)
+
 	* MR #1622: Fix external browser preference, keyboard shortcut
 	  (Matthew Horan)
 
@@ -24,6 +27,9 @@
 	  (Matthew Horan)
 
 	* Fix infinite loop in load_item title deduplication
+	  (Lars Windolf)
+	
+	* New automated tests for webdav and theoldreader sources
 	  (Lars Windolf)
 
 	* Updated Swedish translation

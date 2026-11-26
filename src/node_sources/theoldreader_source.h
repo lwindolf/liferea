@@ -37,7 +37,7 @@
  * @return The return data has a line "Auth=xxxx" which will be used as an
  *         Authorization header in future requests. 
  */ 
-#define THEOLDREADER_READER_LOGIN_URL "https://theoldreader.com/accounts/ClientLogin" 
+#define THEOLDREADER_READER_LOGIN_PATH "/accounts/ClientLogin"
 #define THEOLDREADER_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=https://theoldreader.com"
 
 /**

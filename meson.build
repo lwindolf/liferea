@@ -114,12 +114,14 @@ foreach name: [
 endforeach
 
 # Network heavy and timing dependent, so no memcheck variant
-test(
-  'webdav_source',
-  testrunner,
-  args: [liferea, '--test', 'webdav_source'],
-  env: test_env
-)
+foreach name: ['theoldreader_source', 'webdav_source']
+  test(
+    name,
+    testrunner,
+    args: [liferea, '--test', name],
+    env: test_env
+  )
+endforeach
 
 
 install_subdir('plugins', install_dir: libdir)
