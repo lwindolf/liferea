@@ -74,6 +74,22 @@ theoldreader_source_check_node_for_removal (Node *node, gpointer user_data)
 	}
 }
 
+/* Feeds known only from the OPML cache have no remote id in the DB, so we know
+   nothing about them. Drop them, the ones that exist remotely are added again. */
+static void
+theoldreader_source_drop_nodes_without_id (Node *node, gpointer user_data)
+{
+	if (IS_FOLDER (node)) {
+		node_foreach_child_data (node, theoldreader_source_drop_nodes_without_id, user_data);
+		return;
+	}
+
+	if (!metadata_list_get (node->subscription->metadata, "theoldreader-feed-id")) {
+		debug (DEBUG_UPDATE, "theoldreader_source: %s |%s| no remote id known -> dropping node", node->id, node->title);
+		feedlist_node_removed (node);
+	}
+}
+
 static void
 theoldreader_source_merge_feed (Node *root, const gchar *url, const gchar *title, const gchar *id, const gchar *homepage, const gchar *icon, Node *folder)
 {
@@ -133,6 +149,8 @@ theoldreader_source_opml_subscription_process_update_result (subscriptionPtr sub
                              "iconUrl":"http://s.yeoldereader.com/system/uploads/feed/picture/5152/884a/4dce/57aa/7e00/icon_0a6a.ico"},
                            ...
 			*/
+			node_foreach_child_data (root, theoldreader_source_drop_nodes_without_id, NULL);
+
 			elements = iter = json_array_get_elements (array);
 			/* Add all new nodes we find */
 			while (iter) {

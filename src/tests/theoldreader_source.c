@@ -33,6 +33,7 @@
 #include "net_monitor.h"
 #include "node.h"
 #include "node_source.h"
+#include "metadata.h"
 #include "node_sources/theoldreader_source.h"
 #include "subscription.h"
 #include "update_job_queue.h"
@@ -488,6 +489,26 @@ tc_local_feed_dropped (void)
 	fx_free (fx);
 }
 
+// Feeds known only from the OPML cache (no remote id in the DB) are dropped and added again from the remote list
+static void
+tc_local_feed_without_id_refetched (void)
+{
+	Fx *fx = fx_new ();
+	g_autofree gchar *url = feed_url (fx, "feed1");
+	g_autofree gchar *outline = g_strdup_printf ("<outline id=\"localfeed\" title=\"Local\" xmlUrl=\"%s\"/>", url);
+	Node *feed;
+
+	remote_set (fx, "feed1", NULL);
+	fx_start (fx, "pass", outline);
+	g_assert_true (wait_for (login_done, fx, 5));
+	g_assert_true (wait_for (feed1_has_items, fx, 10));
+	feed = find_feed (fx, "feed1");
+	g_assert_cmpstr (feed->id, !=, "localfeed");
+	g_assert_null (node_from_id ("localfeed"));
+	g_assert_cmpstr (metadata_list_get (feed->subscription->metadata, "theoldreader-feed-id"), ==, "feed/feed1");
+	fx_free (fx);
+}
+
 int
 test_theoldreader_source (int argc, char *argv[])
 {
@@ -506,6 +527,7 @@ test_theoldreader_source (int argc, char *argv[])
 	g_test_add_func ("/theoldreader_source/remote-feed-moved", tc_remote_feed_moved);
 	g_test_add_func ("/theoldreader_source/remote-feed-removed", tc_remote_feed_removed);
 	g_test_add_func ("/theoldreader_source/local-feed-dropped", tc_local_feed_dropped);
+	g_test_add_func ("/theoldreader_source/local-feed-without-id-refetched", tc_local_feed_without_id_refetched);
 
 	return g_test_run ();
 }
