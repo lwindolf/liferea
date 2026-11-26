@@ -11,6 +11,7 @@ Arnold Noronha <arnstein87@users.sf.net>
 Emilio Pozuelo Monfort <pochu27@gmail.com>
 Adrian Bunk <bunk@stusta.de>
 Laetitia Berthelot <leiaz@mailbox.org>
+Matthew Horan <matt@matthoran.com>
 
 
 Code Contributors
@@ -78,6 +79,7 @@ Simon Kågedal Reimer <skagedal@gmail.com>		Seekable GStreamer media player
 Daneil Aleksandersen 					Partial RFC3229 support saving bandwidth
                                                         Security fixes, network improvements
 Lorenzo L. Ancora <admin@lorenzoancora.info>		Support for anonymous/random HTTP/S UA string
+Hylke Bons <hello@planetpeanut.studio>			Application Icon
 
 
 Maintainer Credits
