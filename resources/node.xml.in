@@ -44,6 +44,12 @@
 				</div>
 			{{/compare}}
 			{{#with node.nodeSource}}
+				{{#compare loginState "==" 3}}
+					<div id="errors">
+						<p><_span>⛔ Account login for '{{ title }}' failed!</_span></p>
+						<p><_span>Please check your credentials!</_span></p>
+					</div>
+				{{/compare}}
 				{{#compare loginState "==" 4}}
 					<div id="errors">
 						<p><_span>⛔ Account login for '{{ title }}' failed!</_span></p>

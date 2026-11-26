@@ -71,6 +71,8 @@
  * dirtyFeeds  maps node-id (gchar*) -> DirtyEntry* (two lazy-upload timers).
  * feedMtimes  maps node-id (gchar*) -> gint64*     (last feed.json upload time).
  * stateMtimes maps node-id (gchar*) -> gint64*     (last state.json upload time).
+ * knownRemoteIds  set of feed ids listed in the last fetched index.json. Used to tell
+ *                 feeds removed remotely from feeds that were not uploaded yet.
  */
 
 /*  Per-node lazy-upload timers                                         */
@@ -218,7 +220,7 @@ webdav_source_login (Node *root, updateFlags flags)
 {
 	/* No login. Just basic auth. So we can directly start with 
 	   the subscription list update. */
-	webdav_source_feed_list_import (root);
+	webdav_source_feed_list_import (root, flags);
 }
 
 /*  Lazy sync flushing */
@@ -264,6 +266,17 @@ webdav_flush_state_cb (gpointer user_data)
 	return G_SOURCE_REMOVE;
 }
 
+static guint lazy_sync_delay_ms = WEBDAV_LAZY_SYNC_DELAY_S * 1000;
+static guint state_sync_delay_ms = WEBDAV_STATE_SYNC_DELAY_S * 1000;
+
+/* Allows tests to shorten the lazy upload delays */
+void
+webdav_source_set_sync_delays_ms (guint lazy_ms, guint state_ms)
+{
+	lazy_sync_delay_ms = lazy_ms;
+	state_sync_delay_ms = state_ms;
+}
+
 void
 webdav_source_mark_feed_dirty (Node *node)
 {
@@ -277,10 +290,10 @@ webdav_source_mark_feed_dirty (Node *node)
 	FlushCtx *ctx     = g_new0 (FlushCtx, 1);
 	ctx->root         = node->source->root;
 	ctx->node_id      = g_strdup (node->id);
-	de->feed_timer_id = g_timeout_add_seconds (WEBDAV_LAZY_SYNC_DELAY_S,
-	                                            webdav_flush_feed_cb, ctx);
+	de->feed_timer_id = g_timeout_add (lazy_sync_delay_ms,
+	                                    webdav_flush_feed_cb, ctx);
 
-	debug (DEBUG_UPDATE, "webdav: node %s feed dirty (%ds)", node->id, WEBDAV_LAZY_SYNC_DELAY_S);
+	debug (DEBUG_UPDATE, "webdav: node %s feed dirty (%ums)", node->id, lazy_sync_delay_ms);
 }
 
 void
@@ -296,10 +309,10 @@ webdav_source_mark_items_dirty (Node *node)
 	FlushCtx *ctx     = g_new0 (FlushCtx, 1);
 	ctx->root         = node->source->root;
 	ctx->node_id      = g_strdup (node->id);
-	de->state_timer_id = g_timeout_add_seconds (WEBDAV_STATE_SYNC_DELAY_S,
-	                                             webdav_flush_state_cb, ctx);
+	de->state_timer_id = g_timeout_add (state_sync_delay_ms,
+	                                     webdav_flush_state_cb, ctx);
 
-	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ds)", node->id, WEBDAV_STATE_SYNC_DELAY_S);
+	debug (DEBUG_UPDATE, "webdav: node %s state dirty (%ums)", node->id, state_sync_delay_ms);
 }
 
 // FIXME: also implement set_flag and set_read to mark dirty and delay the upload instead of uploading immediately
@@ -358,6 +371,10 @@ webdav_source_new (Node *root)
 	g_object_set_data_full (G_OBJECT (root), "feedMtimes",
 				g_hash_table_new_full (g_str_hash, g_str_equal,
 	                                               g_free, g_free),
+				(GDestroyNotify)g_hash_table_destroy);
+	g_object_set_data_full (G_OBJECT (root), "knownRemoteIds",
+				g_hash_table_new_full (g_str_hash, g_str_equal,
+	                                               g_free, NULL),
 				(GDestroyNotify)g_hash_table_destroy);
 	g_object_set_data_full (G_OBJECT (root), "stateMtimes",
 				g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -435,9 +452,31 @@ webdav_source_add_folder (Node *node, const gchar *title)
 }
 
 static void
+webdav_collect_remote_ids (Node *node, gpointer user_data)
+{
+	GSList **ids = (GSList **)user_data;
+
+	if (IS_FEED (node))
+		*ids = g_slist_prepend (*ids, g_strdup (webdav_feed_remote_id (node)));
+
+	node_foreach_child_data (node, webdav_collect_remote_ids, user_data);
+}
+
+static void
 webdav_source_remove_node (Node *node, Node *child)
 {
+	Node   *root = node->source->root;
+	GSList *ids = NULL;
+
+	/* A folder takes all its feeds with it, so the remote collections of all of them need to go */
+	webdav_collect_remote_ids (child, &ids);
+
 	feedlist_node_removed (child);
+	webdav_source_feed_list_upload (root);
+
+	for (GSList *iter = ids; iter; iter = g_slist_next (iter))
+		webdav_source_delete_feed (root, (const gchar *)iter->data);
+	g_slist_free_full (ids, g_free);
 }
 
 static struct nodeSourceType nst = {

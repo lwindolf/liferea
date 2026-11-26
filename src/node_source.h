@@ -304,6 +304,10 @@ void node_source_set_auth_token (Node *node, gchar *token);
  *
  * Force the source to update its subscription list and
  * the child subscriptions themselves.
+ *
+ * With UPDATE_REQUEST_PRIORITY_HIGH (updates triggered by the user) a
+ * failed login is retried, which asks for the credentials again if the
+ * login fails once more. Automatic updates never retry a failed login.
  */
 void node_source_update (Node *node, updateFlags flags);
 

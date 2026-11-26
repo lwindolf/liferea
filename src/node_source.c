@@ -486,6 +486,19 @@ feed_list_node_source_type_dialog (void)
 static gboolean
 node_source_ensure_login (Node *node, updateFlags flags)
 {
+	/* A failed login is only retried when the user asks for it, because
+	   retrying asks for the credentials again. Automatic updates never do. */
+	if (node->source->loginState == NODE_SOURCE_STATE_AUTH_FAILED ||
+	    node->source->loginState == NODE_SOURCE_STATE_AUTH_CHALLENGE) {
+		if (!(flags & UPDATE_REQUEST_PRIORITY_HIGH)) {
+			debug (DEBUG_UPDATE, "node_source: %s |%s| skipped as login failed (needs a manual update)", node->id, node->title);
+			return FALSE;
+		}
+
+		debug (DEBUG_UPDATE, "node_source: %s |%s| retrying failed login", node->id, node->title);
+		node_source_set_state (node, NODE_SOURCE_STATE_NONE);
+	}
+
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		if (node->source->type->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) {
 			debug (DEBUG_UPDATE, "node_source: %s |%s| start login", node->id, node->title);

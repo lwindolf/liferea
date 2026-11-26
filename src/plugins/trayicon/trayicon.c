@@ -72,6 +72,11 @@ typedef struct {
 
         TrayIcon        *tray;
 	GObject         *shell;
+	GtkWidget       *window;
+	TrayMenu        *menu;
+	GSettings       *settings;
+	gulong           shell_close_handler_id;
+	gulong           tray_close_handler_id;
 	guint            timeout_id;
 } TrayiconPlugin;
 
@@ -92,6 +97,15 @@ G_DEFINE_FINAL_TYPE_WITH_CODE (TrayiconPlugin, trayicon_plugin, G_TYPE_OBJECT,
 static void
 trayicon_remove (TrayiconPlugin *plugin)
 {
+	plugin->menu = NULL;
+	g_clear_object (&plugin->settings);
+	if (plugin->window) {
+		g_signal_handler_disconnect (plugin->window, plugin->tray_close_handler_id);
+		g_signal_handler_unblock (plugin->window, plugin->shell_close_handler_id);
+		g_clear_object (&plugin->window);
+	}
+	plugin->tray_close_handler_id = 0;
+	plugin->shell_close_handler_id = 0;
 	if (plugin->timeout_id) {
 		g_source_remove (plugin->timeout_id);
 		plugin->timeout_id = 0;
@@ -190,10 +204,29 @@ on_button_cb (G_GNUC_UNUSED TrayButton button, G_GNUC_UNUSED int x, G_GNUC_UNUSE
 	on_toggle_visibility (0, userdata);
 }
 
-/*static void
-on_close_checkbox_changed (G_GNUC_UNUSED int id, G_GNUC_UNUSED void *userdata)
+static void
+on_close_checkbox_changed (int id, void *userdata)
 {
-}*/
+	TrayiconPlugin *plugin = (TrayiconPlugin *)userdata;
+	gboolean checked = !g_settings_get_boolean(plugin->settings, "close-to-tray");
+
+	g_settings_set_boolean(plugin->settings, "close-to-tray", checked);
+	stray_menu_set_item_checked(plugin->menu, id,
+				    g_settings_get_boolean(plugin->settings, "close-to-tray"));
+}
+
+static gboolean
+on_window_close (G_GNUC_UNUSED GtkWindow *window, gpointer userdata)
+{
+	TrayiconPlugin *plugin = (TrayiconPlugin *)userdata;
+
+	if (g_settings_get_boolean (plugin->settings, "close-to-tray"))
+		g_object_set (plugin->shell, "visibility", FALSE, NULL);
+	else
+		liferea_application_shutdown ();
+
+	return TRUE;
+}
 
 gboolean
 TrayEvents(gpointer Data)
@@ -209,6 +242,7 @@ trayicon_activate (LifereaActivatable *activatable)
 {
 	TrayiconPlugin *plugin = (TrayiconPlugin *)activatable;
 	TrayMenu *menu;
+	int close_menu_item_id;
 
 	plugin->tray = stray_create ("Liferea", "net.sourceforge.liferea", "Liferea");
 	stray_set_status (plugin->tray, STRAY_STATUS_ACTIVE);
@@ -222,16 +256,27 @@ trayicon_activate (LifereaActivatable *activatable)
 		return;
 	}
 
+	plugin->menu = menu;
+	plugin->settings = g_settings_new ("net.sf.liferea.plugins.trayicon");
+	plugin->window = g_object_ref (liferea_shell_get_window ());
+	plugin->shell_close_handler_id = g_signal_handler_find(plugin->window, G_SIGNAL_MATCH_ID | G_SIGNAL_MATCH_DATA,
+							       g_signal_lookup("close-request", GTK_TYPE_WINDOW),
+							       0, NULL, NULL, NULL);
+	g_signal_handler_block(plugin->window, plugin->shell_close_handler_id);
+	plugin->tray_close_handler_id = g_signal_connect (plugin->window, "close-request", G_CALLBACK (on_window_close), plugin);
+
 	stray_menu_add_item (menu, _("Show / Hide"), on_toggle_visibility, plugin);
-	//stray_menu_add_check_item (menu, _("Minimize to tray on close"), on_close_checkbox_changed, plugin);
-	//stray_menu_set_item_checked(menu, id, checked);
+	close_menu_item_id = stray_menu_add_check_item (menu, _("Minimize to tray on close"), on_close_checkbox_changed, plugin);
+	stray_menu_set_item_checked (menu, close_menu_item_id,
+	                             g_settings_get_boolean (plugin->settings, "close-to-tray"));
 	stray_menu_add_item (menu, _("Quit"), on_quit, NULL);
 	stray_set_button_callback (plugin->tray, on_button_cb, plugin);
 
 	plugin->timeout_id = g_timeout_add (100, TrayEvents, plugin->tray);
 
 	// Always force show window upon activation to avoid hidden window on startup
-	g_object_set (plugin->shell, "visibility", TRUE, NULL);
+	if (plugin->window && !gtk_widget_get_visible (plugin->window))
+		g_object_set (plugin->shell, "visibility", TRUE, NULL);
 }
 
 static void
@@ -239,6 +284,8 @@ trayicon_deactivate (LifereaActivatable *activatable)
 {
 	TrayiconPlugin *plugin = (TrayiconPlugin *)activatable;
 
+	if (plugin->window && !gtk_widget_get_visible (plugin->window))
+		g_object_set (plugin->shell, "visibility", TRUE, NULL);
 	trayicon_remove (plugin);
 }
 
