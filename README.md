@@ -2,8 +2,6 @@
 
 Liferea is a desktop feed reader/news aggregator that brings together all of the content from your favorite subscriptions into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/news client, with an embedded web browser.
 
-[![Build Status](https://github.com/lwindolf/liferea/actions/workflows/cb.yml/badge.svg)](https://github.com/lwindolf/liferea/actions/workflows/cb.yml)
-
 ## Installation from Package
 
 Many distributions have packaged Liferea:
