@@ -1,4 +1,4 @@
-2026-11-??  Lars Windolf <lars.windolf@gmx.de>
+2026-11-26  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 2.0.4
 
@@ -26,6 +26,18 @@
 	* MR #1611: Refresh node source auth token before syncing
 	  (Matthew Horan)
 
+	* Fixes #1639: Fix TheOldReader reparenting
+	  (Matthew Horan)
+
+	* Fixes #1631: Liferea doesn't show tree of Example feeds on Debian
+	  (Lars Windolf)
+
+	* Fixes #1618: Increasing fonts forgotten after restart
+	  (Paul Gevers)
+
+	* Fixes #1594: WebDAV sync backend does not work
+	  (Lars Windolf)
+
 	* Fix infinite loop in load_item title deduplication
 	  (Lars Windolf)
 	
@@ -37,6 +49,9 @@
 
 	* Updated Japanese translation
 	  (rogervokma-stack)
+
+	* Updated Turkish translation
+	  (Emin Tufan Çetin)
 	
 
 2026-10-20  Lars Windolf <lars.windolf@gmx.de>
