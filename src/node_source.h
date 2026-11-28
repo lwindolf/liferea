@@ -300,8 +300,8 @@ void node_source_set_auth_token (Node *node, gchar *token);
 
 /**
  * node_source_update: (skip)
- * @node:			the source node
- * @flags:			update flags
+ * @node:	the source node
+ * @flags:	update flags
  *
  * Force the source to update its subscription list and
  * the child subscriptions themselves.

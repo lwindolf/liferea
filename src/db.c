@@ -776,7 +776,6 @@ db_init (void)
 	                  "last_favicon_poll,"
 			  "cookies,"
 	                  "etag,"
-	                  "last_update,"
 			  "max_age_minutes,"
 			  "syn_frequency,"
 			  "syn_period,"

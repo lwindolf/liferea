@@ -41,7 +41,7 @@ default_source_auto_update (gpointer userdata)
 {
 	if (network_monitor_is_online ()) {
 		debug (DEBUG_UPDATE, "default_source: auto update\n");
-		node_foreach_child ((Node *)userdata, node_auto_update_subscription);
+		node_foreach_child_data ((Node *)userdata, node_auto_update_subscription, NULL);
 	} else {
 		debug (DEBUG_UPDATE, "default_source: no update processing because we are offline!");
 	}
